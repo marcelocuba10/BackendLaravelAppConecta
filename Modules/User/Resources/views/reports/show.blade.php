@@ -8,7 +8,7 @@
                 <div class="row align-items-center">
                     <div class="col-md-6">
                         <div class="titlemb-30">
-                            <h2>Detail Funcionario</h2>
+                            <h2>Detail Report</h2>
                         </div>
                     </div>
                     <div class="col-md-6">

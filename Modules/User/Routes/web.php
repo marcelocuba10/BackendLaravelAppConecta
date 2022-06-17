@@ -50,6 +50,9 @@ Route::prefix('user')->group(function () {
         /*** Reports Routes ***/
         Route::resource('/reports', 'ReportsController');
 
+        /*** Notifications Routes ***/
+        Route::resource('/notifications', 'NotificationsController');
+
         /*** Bookings Routes ***/
         Route::resource('/bookings', 'BookingController');
 

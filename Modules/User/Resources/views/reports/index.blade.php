@@ -8,9 +8,9 @@
         <div class="row align-items-center">
           <div class="col-md-6">
             <div class="title d-flex align-items-center flex-wrap mb-30">
-              <h2 class="mr-40">Funcionarios</h2>
-              @can('user-create')
-                <a href="{{ route('users.create') }}" class="main-btn info-btn btn-hover btn-sm"><i class="lni lni-plus mr-5"></i> Nuevo</a>
+              <h2 class="mr-40">Listado de presencia laboral</h2>
+              @can('report-create')
+                <a href="{{ route('reports.create') }}" class="main-btn info-btn btn-hover btn-sm"><i class="lni lni-plus mr-5"></i> Nuevo</a>
               @endcan  
             </div>
           </div>
@@ -22,7 +22,7 @@
                   <li class="breadcrumb-item">
                     <a href="{{ route('user.dashboard') }}">Dashboard</a>
                   </li>
-                  <li class="breadcrumb-item active" aria-current="page">Funcionarios</li>
+                  <li class="breadcrumb-item active" aria-current="page">Listado</li>
                 </ol>
               </nav>
             </div>
@@ -69,42 +69,44 @@
                         <th><h6>#</h6></th>
                         <th><h6>Nombre</h6></th>
                         <th><h6>Apellidos</h6></th>
-                        <th><h6>Cédula Identidad</h6></th>
-                        <th><h6>Teléfono</h6></th>
                         <th><h6>Email</h6></th>
+                        <th><h6>Fecha</h6></th>
+                        <th><h6>Horario Entrada</h6></th>
+                        <th><h6>Horario Salida</h6></th>
                         <th><h6>Acciones</h6></th>
                       </tr>
                       <!-- end table row-->
                     </thead>
                     <tbody>
-                        @foreach ($users as $user)
+                        @foreach ($reports as $report)
                         <tr>
                             <td class="min-width"><p>{{ ++$i }}</p></td>
-                            <td class="min-width"><p>{{ $user->name }}</p></td>
-                            <td class="min-width"><p>{{ $user->last_name }}</p></td>
-                            <td class="min-width"><p>{{ $user->ci }}</p></td>
-                            <td class="min-width"><p>{{ $user->phone }}</p></td>
-                            <td class="min-width"><span class="status-btn success-btn">{{ $user->email }}</span></td>
+                            <td class="min-width"><p>{{ $report->name }}</p></td>
+                            <td class="min-width"><p>{{ $report->last_name }}</p></td>
+                            <td class="min-width"><span class="status-btn success-btn">{{ $report->email }}</span></td>
+                            <td class="min-width"><p>{{ $report->date }}</p></td>
+                            <td class="min-width"><p>{{ $report->check_in_time }}</p></td>
+                            <td class="min-width"><p>{{ $report->check_out_time }}</p></td>
                             <td class="text-right">
                                 <div class="btn-group">
                                     <div class="action">
-                                        <a href="{{ route('users.show', $user->id) }}">
+                                        <a href="{{ route('reports.show', $report->id) }}">
                                             <button class="text-active">
                                                 <i class="lni lni-eye"></i>
                                             </button>
                                         </a>
                                     </div>
-                                    @can('user-edit')
+                                    @can('report-edit')
                                     <div class="action">
-                                        <a href="{{ route('users.edit', $user->id) }}">
+                                        <a href="{{ route('reports.edit', $report->id) }}">
                                             <button class="text-info">
                                                 <i class="lni lni-pencil"></i>
                                             </button>
                                         </a>
                                     </div>
                                     @endcan
-                                    @can('user-delete')
-                                    <form method="POST" action="{{ route('users.destroy', $user->id) }}">
+                                    @can('report-delete')
+                                    <form method="POST" action="{{ route('reports.destroy', $report->id) }}">
                                         @csrf
                                         <div class="action">
                                             <input name="_method" type="hidden" value="DELETE">
@@ -122,7 +124,7 @@
                     </tbody>
                   </table>
                   <!-- end table -->
-                  {{ $users->links() }} <!-- paginacion default -->
+                  {{ $reports->links() }} <!-- paginacion default -->
                 </div>
               </div>
               <!-- end card -->

@@ -2,7 +2,7 @@
 <div class="row">
     <div class="col-6">
       <div class="input-style-1">
-        <label>(*) Funcionario</label>
+        <label>Funcionario</label>
         <input type="text" name="name" value="{{ $report->name ?? old('name') }}" class="bg-transparent">
       </div>
     </div>

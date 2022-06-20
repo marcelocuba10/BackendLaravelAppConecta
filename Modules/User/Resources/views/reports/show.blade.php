@@ -21,9 +21,7 @@
                                 <li class="breadcrumb-item" aria-current="page">
                                 <a href="{{ route('reports.index') }}">Reportes</a>
                                 </li>
-                                <li class="breadcrumb-item active" aria-current="page">
-                                    Detail Report
-                                </li>
+                                <li class="breadcrumb-item active" aria-current="page">Detail Report</li>
                             </ol>
                             </nav>
                         </div>

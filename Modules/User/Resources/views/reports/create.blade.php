@@ -8,7 +8,7 @@
                 <div class="row align-items-center">
                     <div class="col-md-6">
                         <div class="titlemb-30">
-                            <h2>Crear Nuevo Funcionario</h2>
+                            <h2>Crear Nuevo Reporte</h2>
                         </div>
                     </div>
                     <!-- end col -->
@@ -20,9 +20,9 @@
                                     <a href="/user/dashboard">Dashboard</a>
                                     </li>
                                     <li class="breadcrumb-item" aria-current="page">
-                                    <a href="{{ route('users.index') }}">Funcionarios</a>
+                                    <a href="{{ route('reports.index') }}">Reportes</a>
                                     </li>
-                                    <li class="breadcrumb-item active" aria-current="page">Nuevo Funcionario</li>
+                                    <li class="breadcrumb-item active" aria-current="page">Nuevo Reporte</li>
                                 </ol>
                             </nav>
                         </div>
@@ -36,8 +36,8 @@
                 <div class="row">
                   <div class="col-lg-12">
                     <div class="card-style mb-30">
-                        <form method="POST" action="{{ route('users.store') }}">
-                            @include('user::users._partials.form')
+                        <form method="POST" action="{{ route('reports.store') }}">
+                            @include('user::reports._partials.form')
                       </form>
                     </div>
                 </div>

@@ -25,7 +25,8 @@ class UserTableSeeder extends Seeder
             'name' => 'User teste', 
             'last_name' => 'teste', 
             'phone' => '168451212', 
-            'address' => 'av mensu 521', 
+            'address' => 'av mensu 521',
+            'ci' => '1234567',
             'email' => 'user@user.com',
             'password' => 'teste123',
 

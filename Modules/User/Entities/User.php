@@ -14,7 +14,7 @@ use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable
 {
-    
+
     use HasFactory, Notifiable, HasRoles, HasApiTokens;  //importante adicionar HasRoles
 
     protected $guard_name = 'web';
@@ -28,7 +28,7 @@ class User extends Authenticatable
         'ci',
         'password',
         'terms',
-        
+
         'company_name',
         'manager',
         'ruc',
@@ -38,6 +38,11 @@ class User extends Authenticatable
     public function grounds()
     {
         return $this->hasMany(Ground::class);
+    }
+
+    public function reports()
+    {
+        return $this->hasMany(Reports::class);
     }
 
     protected $hidden = [

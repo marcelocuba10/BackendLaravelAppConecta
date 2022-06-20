@@ -10,11 +10,17 @@ class Reports extends Model
     use HasFactory;
 
     protected $fillable = [
-        'userId',
+        'user_id',
         'date',
         'check_in_time',
         'check_out_time',
+        'status',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
     
     protected static function newFactory()
     {

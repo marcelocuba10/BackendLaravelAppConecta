@@ -17,10 +17,8 @@ class UserDatabaseSeeder extends Seeder
     {
         Model::unguard();
 
-        //$this->call(DaysTableSeeder::class);
-        //$this->call(SchedulesTableSeeder::class);
-        $this->call(PermissionTableSeederTableSeeder::class);
-        $this->call(RoleTableSeeder::class);
+        //$this->call(PermissionTableSeederTableSeeder::class);
+        //$this->call(RoleTableSeeder::class);
         $this->call(UserTableSeeder::class);
     }
 }

@@ -81,9 +81,9 @@
                         @foreach ($reports as $report)
                         <tr>
                             <td class="min-width"><p>{{ ++$i }}</p></td>
-                            <td class="min-width"><p>{{ $report->name }}</p></td>
-                            <td class="min-width"><p>{{ $report->last_name }}</p></td>
-                            <td class="min-width"><span class="status-btn success-btn">{{ $report->email }}</span></td>
+                            <td class="min-width"><p> nombre funcionario</p></td>
+                            <td class="min-width"><p> apellido funcionario</p></td>
+                            <td class="min-width"><span class="status-btn success-btn"> email funcionario</span></td>
                             <td class="min-width"><p>{{ $report->date }}</p></td>
                             <td class="min-width"><p>{{ $report->check_in_time }}</p></td>
                             <td class="min-width"><p>{{ $report->check_out_time }}</p></td>

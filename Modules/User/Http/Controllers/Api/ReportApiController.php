@@ -6,37 +6,51 @@ use App\Models\User;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\DB;
 use Modules\User\Entities\Reports;
 
 class ReportApiController extends Controller
 {
     public function index()
     {
-        $reports= Reports::all();
+        $reports = DB::table('reports')->orderBy('id','desc');
+        //$reports= Reports::all()->latest();
         return response()->json($reports);
     }
 
     public function getReportsByUser($id)
     {
         //$user = User::find($id);
-
-        $reports = Reports::where('userId', '=', $id)->get();
+        $reports = Reports::where('user_id', '=', $id)->get();
 
         return response()->json($reports);
+    }
+
+    public function checkReport($id)
+    {
+        //$user = User::find($id);
+        //$report = Reports::where('user_id', '=', $id)->get();
+
+        $now = '06/20/2022';
+        $result = Reports::where('user_id', '=', $id)
+                           ->where('date', '=', $now)
+                           ->get();
+
+        return response()->json($result);
+
     }
 
     public function edit($id)
     {
 
         $reports = Reports::find($id);
-        
         return response()->json($reports);
     }
 
     public function store(Request $request){
         //validation
         $request->validate([
-            'userId'=> 'required',
+            'user_id'=> 'required',
             'date'=>'required',
             'check_in_time'=>'required',
             'check_out_time'=>'required',
@@ -44,7 +58,7 @@ class ReportApiController extends Controller
 
         //save to DB
         $report = Reports::create([
-            'userId'=>$request->userId,
+            'user_id'=>$request->user_id,
             'date'=>$request->date,
             'check_in_time'=>$request->check_in_time,
             'check_out_time'=>$request->check_out_time,
@@ -55,25 +69,26 @@ class ReportApiController extends Controller
         
     }
 
-    public function update(Request $request , Reports $report){
+    public function update($id, Request $request){
         //validation
         $request->validate([
-            'userId'=> 'required',
+            'user_id'=> 'required',
             'date'=>'required',
-            'check_in_time'=>'required',
             'check_out_time'=>'required',
         ]);
 
-        //update in DB
-        $report->update([
-            'userId'=>$request->userId,
-            'date'=>$request->date,
-            'check_in_time'=>$request->check_in_time,
-            'check_out_time'=>$request->check_out_time,
-        ]);
+        $report = Reports::find($id);
+        $report->update($request->all());
+
+        // //update in DB
+        // $report->update([
+        //     'user_id'=>$request->user_id,
+        //     'date'=>$request->date,
+        //     'check_out_time'=>$request->check_out_time,
+        // ]);
 
         //return response
-        return response()->json($report);
+        return response()->json($request->id);
         
     }
 

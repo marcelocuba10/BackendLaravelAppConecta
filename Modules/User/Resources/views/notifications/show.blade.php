@@ -8,7 +8,7 @@
                 <div class="row align-items-center">
                     <div class="col-md-6">
                         <div class="titlemb-30">
-                            <h2>Detail Report</h2>
+                            <h2>Detalle del Aviso</h2>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -19,11 +19,9 @@
                                 <a href="/user/dashboard">Dashboard</a>
                                 </li>
                                 <li class="breadcrumb-item" aria-current="page">
-                                <a href="{{ route('reports.index') }}">Reportes</a>
+                                <a href="{{ route('notifications.index') }}">Notificaciones</a>
                                 </li>
-                                <li class="breadcrumb-item active" aria-current="page">
-                                    Detail Report
-                                </li>
+                                <li class="breadcrumb-item active" aria-current="page">Detalle Aviso</li>
                             </ol>
                             </nav>
                         </div>
@@ -40,49 +38,28 @@
                         <div class="row">
                             <div class="col-6">
                               <div class="input-style-1">
-                                <label>First Name</label>
-                                <input type="text" value="{{ $report->name ?? old('name') }}" name="name" readonly>
+                                <label>Título</label>
+                                <input type="text" name="title" value="{{ $notification->title ?? old('title') }}" readonly>
                               </div>
                             </div>
                             <!-- end col -->
                             <div class="col-6">
                               <div class="input-style-1">
-                                <label>Last Name</label>
-                                <input type="text" value="{{ $report->last_name ?? old('last_name') }}" name="last_name" readonly>
-                              </div>
-                            </div>
-                            <!-- end col -->
-                            <div class="col-6">
-                                <div class="input-style-1">
-                                    <label>Email</label>
-                                    <input type="email" name="email" value="{{ $report->email ?? old('email') }}" readonly>
-                                </div>
-                            </div>
-                            <!-- end col -->
-                            <div class="col-6">
-                              <div class="input-style-1">
-                                <label>Date</label>
-                                <input type="text" name="date" value="{{ $report->date ?? old('date') }}" readonly>
+                                <label>Fecha</label>
+                                <input type="text" name="date" value="{{ $notification->date ?? old('date') }}" readonly>
                               </div>
                             </div>
                             <!-- end col -->
                             <div class="col-6">
                               <div class="input-style-1">
-                                <label>Hora de entrada</label>
-                                <input type="text" name="check_in_time" value="{{ $report->check_in_time ?? old('check_in_time') }}" readonly>
-                              </div>
-                            </div>
-                            <!-- end col -->
-                            <div class="col-6">
-                              <div class="input-style-1">
-                                <label>Hora de salida</label>
-                                <input type="text" name="check_out_time" value="{{ $report->check_out_time ?? old('check_out_time') }}"readonly>
+                                <label>Mensaje</label>
+                                <textarea rows="5" name="subject" readonly>{{ $notification->subject ?? old('subject') }}</textarea>
                               </div>
                             </div>
                             <!-- end col -->
                             <div class="col-12">
                                 <div class="button-groupd-flexjustify-content-centerflex-wrap">
-                                    <a class="main-btn danger-btn-outline m-2" href="{{ route('reports.index') }}">Back</a>
+                                    <a class="main-btn danger-btn-outline m-2" href="{{ route('notifications.index') }}">Back</a>
                                 </div>
                               </div>
                         </div>

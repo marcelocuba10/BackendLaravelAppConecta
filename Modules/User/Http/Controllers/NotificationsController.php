@@ -5,6 +5,7 @@ namespace Modules\User\Http\Controllers;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Modules\User\Entities\Notifications;
 
 class NotificationsController extends Controller
 {
@@ -14,7 +15,8 @@ class NotificationsController extends Controller
      */
     public function index()
     {
-        return view('user::index');
+        $notifications = Notifications::latest()->paginate(5);
+        return view('user::notifications.index', compact('notifications'))->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
     /**
@@ -23,7 +25,7 @@ class NotificationsController extends Controller
      */
     public function create()
     {
-        return view('user::create');
+        return view('user::notifications.create');
     }
 
     /**
@@ -33,7 +35,15 @@ class NotificationsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'title' => 'required|max:100|min:5',
+            'date' => 'required',
+            'subject' => 'required|max:255|min:5',
+        ]);
+
+        Notifications::create($request->all());
+
+        return redirect()->route('notifications.index')->with('message', 'Notification created successfully.');
     }
 
     /**
@@ -43,7 +53,8 @@ class NotificationsController extends Controller
      */
     public function show($id)
     {
-        return view('user::show');
+        $notification = Notifications::find($id);
+        return view('user::notifications.show', compact('notification'));
     }
 
     /**
@@ -53,7 +64,8 @@ class NotificationsController extends Controller
      */
     public function edit($id)
     {
-        return view('user::edit');
+        $notification = Notifications::find($id);
+        return view('user::notifications.edit', compact('notification'));
     }
 
     /**
@@ -64,7 +76,16 @@ class NotificationsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'title' => 'required|max:100|min:5',
+            'date' => 'required',
+            'subject' => 'required|max:255|min:5',
+        ]);
+
+        $notification = Notifications::find($id);
+        $notification->update($request->all());
+
+        return redirect()->route('notifications.index')->with('message', 'Notification updated successfully.');
     }
 
     /**
@@ -74,6 +95,7 @@ class NotificationsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Notifications::find($id)->delete();
+        return redirect()->route('notifications.index')->with('message', 'Notification deleted successfully');
     }
 }

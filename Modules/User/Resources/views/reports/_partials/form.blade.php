@@ -3,7 +3,7 @@
     <div class="col-6">
       <div class="input-style-1">
         <label>(*) Funcionario</label>
-        <input type="text" class="bg-transparent" value="{{ $report->name ?? old('name') }}" name="name">
+        <input type="text" name="name" value="{{ $report->name ?? old('name') }}" class="bg-transparent">
       </div>
     </div>
     <!-- end col -->

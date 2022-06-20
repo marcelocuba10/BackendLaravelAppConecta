@@ -41,6 +41,11 @@ class PermissionTableSeederTableSeeder extends Seeder
             'report-create',
             'report-edit',
             'report-delete',
+
+            'notification-list',
+            'notification-create',
+            'notification-edit',
+            'notification-delete',
          ];
       
          foreach ($permissions as $permission) {

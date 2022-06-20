@@ -17,7 +17,7 @@ class ReportsController extends Controller
 
     public function index()
     {
-        $reports = Reports::latest()->paginate(5);
+        $reports = Reports::latest()->paginate(10);
         return view('user::reports.index', compact('reports'))->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
@@ -33,7 +33,8 @@ class ReportsController extends Controller
 
     public function show($id)
     {
-        return view('user::show');
+        $report=Reports::find($id);
+        return view('user::reports.show',compact('report'));
     }
 
     public function edit($id)

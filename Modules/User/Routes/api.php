@@ -2,10 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use Modules\User\Http\Controllers\Api\GroundApiController;
 use Modules\User\Http\Controllers\Api\NotificationApiController;
 use Modules\User\Http\Controllers\Api\ReportApiController;
-use Modules\User\Http\Controllers\OrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,10 +31,6 @@ Route::group(['prefix' => 'auth'], function () {
 });
 
 Route::middleware(['cors'])->group(function () {
-    Route::resource('orders','OrderController');
-
-    Route::get('grounds',[GroundApiController::class,'index']);
-    Route::get('grounds/{id}',[GroundApiController::class,'edit']);
 
     /** Routes Reports */
     Route::get('reports',[ReportApiController::class,'index']);

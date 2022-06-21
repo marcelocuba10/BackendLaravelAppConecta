@@ -44,17 +44,12 @@ Route::prefix('user')->group(function () {
             Route::put('/update/profile/{id}', 'UserController@updateProfile')->name('users_.update.profile');
         });
 
-        /*** Grounds Routes ***/
-        Route::resource('/grounds', 'GroundController');
-
         /*** Reports Routes ***/
         Route::resource('/reports', 'ReportsController');
 
         /*** Notifications Routes ***/
         Route::resource('/notifications', 'NotificationsController');
 
-        /*** Bookings Routes ***/
-        Route::resource('/bookings', 'BookingController');
 
         Route::resource('roles', 'ACL\RolesController');
         Route::resource('permissions', 'ACL\PermissionsController');

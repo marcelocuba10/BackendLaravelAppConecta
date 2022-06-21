@@ -14,7 +14,10 @@ class Reports extends Model
         'date',
         'check_in_time',
         'check_out_time',
-        'status',
+        'address_latitude_in',
+        'address_longitude_in',
+        'address_latitude_out',
+        'address_longitude_out'
     ];
 
     public function user()

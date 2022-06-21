@@ -2,7 +2,6 @@
 
 namespace Modules\User\Http\Controllers\Api;
 
-use App\Models\User;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -19,7 +18,7 @@ class ReportApiController extends Controller
 
     public function getReportsByUser($id)
     {
-        $reports = Reports::where('user_id', '=', $id)->orderBy('id','desc')->get();
+        $reports = Reports::where('user_id', '=', $id)->orderBy('id', 'desc')->get();
 
         return response()->json($reports);
     }
@@ -47,15 +46,13 @@ class ReportApiController extends Controller
         $request->validate([
             'user_id' => 'required',
             'date' => 'required',
-            'check_in_time' => 'required'
+            'check_in_time' => 'required',
+            'address_latitude_in' => 'required',
+            'address_longitude_in' => 'required'
         ]);
 
         //save to DB
-        $report = Reports::create([
-            'user_id' => $request->user_id,
-            'date' => $request->date,
-            'check_in_time' => $request->check_in_time
-        ]);
+        $report = Reports::create($request->all());
 
         //return response
         return response()->json($report);
@@ -68,17 +65,13 @@ class ReportApiController extends Controller
             'user_id' => 'required',
             'date' => 'required',
             'check_out_time' => 'required',
+            'address_latitude_out' => 'required',
+            'address_longitude_out' => 'required'
         ]);
 
+        //update in DB
         $report = Reports::find($id);
         $report->update($request->all());
-
-        // //update in DB
-        // $report->update([
-        //     'user_id'=>$request->user_id,
-        //     'date'=>$request->date,
-        //     'check_out_time'=>$request->check_out_time,
-        // ]);
 
         //return response
         return response()->json($request->id);

@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Modules\User\Http\Controllers\Api\GroundApiController;
+use Modules\User\Http\Controllers\Api\NotificationApiController;
 use Modules\User\Http\Controllers\Api\ReportApiController;
 use Modules\User\Http\Controllers\OrderController;
 
@@ -37,13 +38,16 @@ Route::middleware(['cors'])->group(function () {
     Route::get('grounds',[GroundApiController::class,'index']);
     Route::get('grounds/{id}',[GroundApiController::class,'edit']);
 
+    /** Routes Reports */
     Route::get('reports',[ReportApiController::class,'index']);
     Route::put('report/{id}', [ReportApiController::class,'update']);
     Route::get('report/{id}',[ReportApiController::class,'edit']);
     Route::get('report/user/{id}',[ReportApiController::class,'getReportsByUser']);
     Route::post('report', [ReportApiController::class,'store']);
     Route::get('report/user/check/{id}', [ReportApiController::class,'checkReport']);
-
-    Route::put('report/{id}', [ReportApiController::class,'update']);
     Route::delete('report/{id}', [ReportApiController::class,'destroy']);
+
+    /** Routes Notifications */
+    Route::get('notifications',[NotificationApiController::class,'index']);
+
 });

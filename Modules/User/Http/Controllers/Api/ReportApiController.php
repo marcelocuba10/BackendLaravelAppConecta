@@ -13,7 +13,7 @@ class ReportApiController extends Controller
 {
     public function index()
     {
-        $reports = DB::table('reports')->orderBy('id', 'desc');
+        $reports = Reports::all();
         return response()->json($reports);
     }
 

@@ -10,7 +10,7 @@
     <div class="col-6">
       <div class="input-style-1">
         <label>Fecha</label>
-        <input type="text" name="date" id="date" value="{{ $notification->date ?? old('date') }}" class="bg-transparent">
+        <input type="text" name="date" id="date" placeholder="DD/MM/YYYY" value="{{ $notification->date ?? old('date') }}" class="bg-transparent">
       </div>
     </div>
     <!-- end col -->

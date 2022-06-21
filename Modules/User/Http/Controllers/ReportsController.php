@@ -58,6 +58,8 @@ class ReportsController extends Controller
 
     public function destroy($id)
     {
-        
+        Reports::find($id)->delete();
+
+        return redirect()->route('reports.index')->with('message','Report deleted successfully');
     }
 }

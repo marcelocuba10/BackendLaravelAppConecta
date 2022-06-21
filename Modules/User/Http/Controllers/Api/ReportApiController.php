@@ -14,35 +14,29 @@ class ReportApiController extends Controller
     public function index()
     {
         $reports = DB::table('reports')->orderBy('id', 'desc');
-        //$reports= Reports::all()->latest();
         return response()->json($reports);
     }
 
     public function getReportsByUser($id)
     {
-        //$user = User::find($id);
-        $reports = Reports::where('user_id', '=', $id)->get();
+        $reports = Reports::where('user_id', '=', $id)->orderBy('id','desc')->get();
 
         return response()->json($reports);
     }
 
     public function checkReport($id)
     {
-        //$user = User::find($id);
-        //$report = Reports::where('user_id', '=', $id)->get();
-
-        $now = date('d/m/Y');
-        $date = str_replace('', '/', $now);
+        /** verify if there are any reports in the day */
+        $now = date('d-m-Y');
         $result = Reports::where('user_id', '=', $id)
             ->where('date', '=', $now)
             ->get();
 
-        return response()->json($date);
+        return response()->json($result);
     }
 
     public function edit($id)
     {
-
         $reports = Reports::find($id);
         return response()->json($reports);
     }
@@ -53,16 +47,14 @@ class ReportApiController extends Controller
         $request->validate([
             'user_id' => 'required',
             'date' => 'required',
-            'check_in_time' => 'required',
-            'check_out_time' => 'required',
+            'check_in_time' => 'required'
         ]);
 
         //save to DB
         $report = Reports::create([
             'user_id' => $request->user_id,
             'date' => $request->date,
-            'check_in_time' => $request->check_in_time,
-            'check_out_time' => $request->check_out_time,
+            'check_in_time' => $request->check_in_time
         ]);
 
         //return response

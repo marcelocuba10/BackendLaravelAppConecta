@@ -70,6 +70,7 @@
                         <th><h6>Nombre</h6></th>
                         <th><h6>Apellidos</h6></th>
                         <th><h6>Email</h6></th>
+                        <th><h6>Phone</h6></th>
                         <th><h6>Fecha</h6></th>
                         <th><h6>Horario Entrada</h6></th>
                         <th><h6>Horario Salida</h6></th>
@@ -81,12 +82,13 @@
                         @foreach ($reports as $report)
                         <tr>
                             <td class="min-width"><p>{{ ++$i }}</p></td>
-                            <td class="min-width"><p> nombre funcionario</p></td>
-                            <td class="min-width"><p> apellido funcionario</p></td>
-                            <td class="min-width"><span class="status-btn success-btn"> email funcionario</span></td>
+                            <td class="min-width"><p>{{ $report->name }}</p></td>
+                            <td class="min-width"><p>{{ $report->last_name }}</p></td>
+                            <td class="min-width"><p>{{ $report->email }}</p></td>
+                            <td class="min-width"><p>{{ $report->phone }}</p></td>
                             <td class="min-width"><p>{{ $report->date }}</p></td>
-                            <td class="min-width"><p>{{ $report->check_in_time }}</p></td>
-                            <td class="min-width"><p>{{ $report->check_out_time }}</p></td>
+                            <td class="min-width"><span class="status-btn success-btn">{{ $report->check_in_time }}</span></td>
+                            <td class="min-width"><span class="status-btn secondary-btn">{{ $report->check_out_time }}</span></td>
                             <td class="text-right">
                                 <div class="btn-group">
                                     <div class="action">

@@ -18,8 +18,13 @@ class ReportsController extends Controller
 
     public function index()
     {
-        $reports = DB::table('reports')->orderBy('id','desc')->paginate(10);
-        //$reports = Reports::latest()->paginate(10);
+        //$reports = DB::table('reports')->orderBy('id','desc')->paginate(10);
+
+        $reports = DB::table('reports')
+        ->join('users', 'reports.user_id', '=', 'users.id')
+        ->select('users.*','reports.*')
+        ->Paginate(10);
+
         return view('user::reports.index', compact('reports'))->with('i', (request()->input('page', 1) - 1) * 5);
     }
 

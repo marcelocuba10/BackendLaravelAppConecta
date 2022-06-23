@@ -87,16 +87,16 @@
                             <td class="min-width"><p>{{ $report->email }}</p></td>
                             <td class="min-width"><p>{{ $report->phone }}</p></td>
                             <td class="min-width"><p>{{ $report->date }}</p></td>
-                            <td class="min-width"><span class="status-btn success-btn">{{ $report->check_in_time }}</span></td>
-                            <td class="min-width"><span class="status-btn secondary-btn">{{ $report->check_out_time }}</span></td>
+                            <td class="min-width"><a target="_blank" href="https://maps.google.com/?q={{ $report->address_latitude_in }},{{ $report->address_longitude_in }}&ll={{ $report->address_latitude_in }},{{ $report->address_longitude_in }}&z=17"><span class="status-btn success-btn"><i class="lni lni-move"></i> {{ $report->check_in_time }}</span></a></td>
+                            <td class="min-width"><a target="_blank" href="https://maps.google.com/?q={{ $report->address_latitude_out }},{{ $report->address_longitude_out }}&ll={{ $report->address_latitude_out }},{{ $report->address_longitude_out }}&z=17"><span class="status-btn secondary-btn"><i class="lni lni-move"></i> {{ $report->check_out_time }}</span></a></td>
                             <td class="text-right">
                                 <div class="btn-group">
                                     <div class="action">
-                                        <a href="{{ route('reports.show', $report->id) }}">
-                                            <button class="text-active">
-                                                <i class="lni lni-eye"></i>
-                                            </button>
-                                        </a>
+                                      <a href="{{ route('reports.show', $report->id) }}">
+                                          <button class="text-active">
+                                              <i class="lni lni-eye"></i>
+                                          </button>
+                                      </a>
                                     </div>
                                     @can('report-edit')
                                     <div class="action">

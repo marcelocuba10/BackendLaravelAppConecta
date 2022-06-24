@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Modules\User\Http\Controllers\QrCodeController;
 
 Route::prefix('user')->group(function () {
 
@@ -53,5 +54,11 @@ Route::prefix('user')->group(function () {
 
         Route::resource('roles', 'ACL\RolesController');
         Route::resource('permissions', 'ACL\PermissionsController');
+
+        /** QrCode Route*/
+        Route::get('/qrcode', 'QrCodeController@index')->name('user.qrcode');
+
+        /** Machines Routes*/
+        Route::resource('/machines', 'MachinesController');
     });
 });

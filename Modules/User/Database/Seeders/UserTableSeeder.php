@@ -29,12 +29,7 @@ class UserTableSeeder extends Seeder
             'ci' => '1234567',
             'email' => 'user@user.com',
             'password' => 'teste123',
-
             'company_name' => 'empresa one', 
-            'manager' => 'roberto carlos',
-            'ruc' => '45255-2', 
-            'location_iframe' => 'url maps aqui',
-            'terms' => '1',
             'status' => '1'
         ]);
 

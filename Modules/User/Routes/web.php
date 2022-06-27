@@ -56,7 +56,15 @@ Route::prefix('user')->group(function () {
         Route::resource('permissions', 'ACL\PermissionsController');
 
         /** Machines Routes*/
-        Route::resource('/machines', 'MachinesController');
+        Route::group(['prefix' => 'machines'], function () {
+            Route::get('/', 'MachinesController@index')->name('machines.index');
+            Route::get('/create', 'MachinesController@create')->name('machines.create');
+            Route::post('/create', 'MachinesController@store')->name('machines.store');
+            Route::get('/{user}/show', 'MachinesController@show')->name('machines.show');
+            Route::get('/edit/{id}', 'MachinesController@edit')->name('machines.edit');
+            Route::put('/update/{id}', 'MachinesController@update')->name('machines.update');
+            Route::delete('/{user}/delete', 'MachinesController@destroy')->name('machines.destroy');
+        });
 
         /** Customers Routes*/
         Route::resource('/customers', 'CustomersController');

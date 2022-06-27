@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Modules\User\Entities\Customers;
 use Modules\User\Entities\Machines;
+use Illuminate\Support\Str;
 
 class MachinesController extends Controller
 {
@@ -20,21 +21,29 @@ class MachinesController extends Controller
     public function index()
     {
         $machines = DB::table('machines')
-            ->join('users', 'machines.user_id', '=', 'users.id')
-            ->join('customers', 'machines.customer_id', '=', 'customers.id')
-            ->select('users.name AS user_name', 'machines.*', 'customers.name AS customer_name')
-            ->Paginate(10);
+            ->leftjoin('users', 'machines.user_id', '=', 'users.id')
+            ->leftjoin('customers', 'machines.customer_id', '=', 'customers.id')
+            ->select('users.name AS user_name', 'machines.id', 'machines.name', 'machines.status', 'machines.observation', 'customers.name AS customer_name')
+            ->paginate(10);
 
-        //dd($machines);   
+        // echo("<pre>");
+        // print_r($machines);
+        // echo("<\pre>");
+
+        //exit;
+
+        //dd($machines);
 
         return view('user::machines.index', compact('machines'))->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
     public function create()
     {
-        $customers = Customers::all();
+        $customers = DB::table('customers')->get();
         $status = ['Encendido', 'Apagado', 'Mantenimiento'];
-        return view('user::machines.create', compact('customers', 'status'));
+        $machine = null;
+        $codeQR = Str::random(8);
+        return view('user::machines.create', compact('customers', 'status', 'machine', 'codeQR'));
     }
 
     public function store(Request $request)
@@ -43,12 +52,12 @@ class MachinesController extends Controller
             'name' => 'required|max:20|min:5',
             'status' => 'required|max:15|min:5',
             'customer_id' => 'required',
+            'codeQR' => 'required|max:20|min:5',
             'observation' => 'nullable|max:200|min:5',
         ]);
 
         $input = $request->all();
-        $input['user_id'] = 1;
-
+        $input['user_id'] = $request->user()->id;
         Machines::create($input);
 
         return redirect()->route('machines.index')->with('message', 'Machine created successfully.');
@@ -56,25 +65,33 @@ class MachinesController extends Controller
 
     public function show($id)
     {
-        //$machine = Machines::find($id);
         $machine = DB::table('machines')
-                    ->select('machines.name')            
-                    ->get();
+            ->leftjoin('customers', 'machines.customer_id', '=', 'customers.id')
+            ->select('customers.name AS customer_name', 'machines.id', 'machines.name', 'machines.codeQR', 'machines.customer_id', 'machines.status', 'machines.observation')
+            ->where('machines.id', '=', $id)
+            ->first();
 
-        //dd($machine);
-        return view('user::machines.show', compact('machine'));
+        //to generate the qr code in the view from the obtained data
+        $codeQR = $machine->codeQR;
+
+        return view('user::machines.show', compact('machine', 'codeQR'));
     }
 
     public function edit($id)
     {
-        $machine = DB::table('machines')
-        ->join('users', 'machines.user_id', '=', 'users.id')
-        ->join('customers', 'machines.customer_id', '=', 'customers.id')
-        ->select('users.last_name', 'machines.*', 'customers.name')
-        ->where('machines.id', '=', $id)
-        ->get();
+        $customers = Customers::all();
+        $status = ['Encendido', 'Apagado', 'Mantenimiento'];
 
-        return view('user::machines.edit', compact('machine'));
+        $machine = DB::table('machines')
+            ->leftjoin('customers', 'machines.customer_id', '=', 'customers.id')
+            ->select('customers.name AS customer_name', 'machines.id', 'machines.name', 'machines.codeQR', 'machines.customer_id', 'machines.status', 'machines.observation')
+            ->where('machines.id', '=', $id)
+            ->first();
+
+        //to generate the qr code in the view from the obtained data
+        $codeQR = $machine->codeQR;
+
+        return view('user::machines.edit', compact('machine', 'status', 'customers','codeQR'));
     }
 
     public function update(Request $request, $id)
@@ -83,13 +100,14 @@ class MachinesController extends Controller
             'name' => 'required|max:20|min:5',
             'status' => 'required|max:15|min:5',
             'customer_id' => 'required',
+            'codeQR' => 'required|max:20|min:5',
             'observation' => 'nullable|max:200|min:5',
         ]);
 
-        $machine = Machines::find($id);
+        $input = $request->all();
         $input['user_id'] = $request->user()->id;
-
-        $machine->update($request->all());
+        $machine = Machines::find($id);
+        $machine->update($input);
 
         return redirect()->route('machines.index')->with('message', 'Machine updated successfully.');
     }

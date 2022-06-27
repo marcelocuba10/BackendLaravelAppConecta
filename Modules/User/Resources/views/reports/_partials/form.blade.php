@@ -6,10 +6,10 @@
           <div class="select-position">
             <select name="user_id">
               @foreach ($users as $user)
-                  @if (!$report)
-                    <option value="{{ $user->id }}"> {{ $user->name}} </option>
-                  @else
+                  @if ($report)
                     <option value="{{ $user->id }}" {{ ( $user->id === $report->user_id) ? 'selected' : '' }}> {{ $user->name}} </option>
+                  @else
+                    <option value="{{ $user->id }}"> {{ $user->name}} </option>
                   @endif
               @endforeach 
             </select>

@@ -39,28 +39,28 @@
                             <div class="col-6">
                               <div class="input-style-1">
                                 <label>Funcionario</label>
-                                <input type="text" value="{{ $report->name ?? old('name') }}" name="name" readonly>
+                                <input type="text" value="{{ $report->user_name }}" readonly>
                               </div>
                             </div>
                             <!-- end col -->
                             <div class="col-6">
                               <div class="input-style-1">
                                 <label>Fecha</label>
-                                <input type="text" name="date" value="{{ $report->date ?? old('date') }}" readonly>
+                                <input type="text" value="{{ $report->date }}" readonly>
                               </div>
                             </div>
                             <!-- end col -->
                             <div class="col-6">
                               <div class="input-style-1">
                                 <label>Hora de entrada</label>
-                                <input type="text" name="check_in_time" value="{{ $report->check_in_time ?? old('check_in_time') }}" readonly>
+                                <input type="text" value="{{ $report->check_in_time }}" readonly>
                               </div>
                             </div>
                             <!-- end col -->
                             <div class="col-6">
                               <div class="input-style-1">
                                 <label>Hora de salida</label>
-                                <input type="text" name="check_out_time" value="{{ $report->check_out_time ?? old('check_out_time') }}"readonly>
+                                <input type="text" value="{{ $report->check_out_time }}"readonly>
                               </div>
                             </div>
                             <!-- end col -->
@@ -68,7 +68,7 @@
                                 <div class="button-groupd-flexjustify-content-centerflex-wrap">
                                     <a class="main-btn danger-btn-outline m-2" href="{{ route('reports.index') }}">Atrás</a>
                                 </div>
-                              </div>
+                            </div>
                         </div>
                       </form>
                     </div>

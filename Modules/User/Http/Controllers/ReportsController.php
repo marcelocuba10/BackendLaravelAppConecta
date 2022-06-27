@@ -18,7 +18,6 @@ class ReportsController extends Controller
 
     public function index()
     {
-        //$reports = DB::table('reports')->orderBy('id','desc')->paginate(10);
 
         $reports = DB::table('reports')
         ->join('users', 'reports.user_id', '=', 'users.id')
@@ -41,7 +40,7 @@ class ReportsController extends Controller
         $request->validate([
             'user_id' => 'required',
             'check_in_time' => 'required|max:5|min:5',
-            'check_out_time' => 'required|max:5|min:5',
+            'check_out_time' => 'nullable|max:5|min:5',
             'date' => 'required|max:15|min:10',
         ]);
 
@@ -52,35 +51,44 @@ class ReportsController extends Controller
 
     public function show($id)
     {
-        $report=DB::table('users')
-        ->join('reports', function ($join) {
-            $join->on('users.id', '=', 'reports.user_id')
-                 ->where('users.id', '=',1);
-        })
-        ->get();
-
-        //dd($report);
-
         $users = DB::table('users')->get();
+
+        $report = DB::table('reports')
+        ->leftjoin('users', 'reports.user_id', '=', 'users.id')
+        ->select('users.name AS user_name', 'reports.id','reports.user_id', 'reports.date', 'reports.check_in_time', 'reports.check_out_time')
+        ->where('reports.id', '=', $id)
+        ->first();
 
         return view('user::reports.show',compact('report','users'));
     }
 
     public function edit($id)
     {
-        $report = Reports::where('reports.id','=', $id)
-            ->join('users', 'reports.user_id', '=', 'users.id')
-            ->select('reports.*','users.name')->get();
-
-        //dd($report);
         $users = DB::table('users')->get();
+
+        $report = DB::table('reports')
+        ->leftjoin('users', 'reports.user_id', '=', 'users.id')
+        ->select('users.name AS user_name', 'reports.id','reports.user_id', 'reports.date', 'reports.check_in_time', 'reports.check_out_time')
+        ->where('reports.id', '=', $id)
+        ->first();
 
         return view('user::reports.edit', compact('report','users'));
     }
 
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'user_id' => 'required',
+            'check_in_time' => 'required|max:5|min:5',
+            'check_out_time' => 'nullable|max:5|min:5',
+            'date' => 'required|max:15|min:10',
+        ]);
+
+        $input = $request->all();
         $report = Reports::find($id);
+        $report->update($input);
+
+        return redirect()->route('reports.index')->with('message', 'Report updated successfully.');
 
     }
 

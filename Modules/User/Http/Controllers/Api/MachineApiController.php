@@ -5,6 +5,7 @@ namespace Modules\User\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\DB;
 use Modules\User\Entities\Machines;
 
 class MachineApiController extends Controller
@@ -16,9 +17,9 @@ class MachineApiController extends Controller
         return response()->json($machines);
     }
 
-    public function edit($id)
+    public function edit($qrcode)
     {
-        $machines = Machines::find($id);
+        $machines = DB::table('machines')->where('codeQR','=', $qrcode)->first();
         return response()->json($machines);
     }
 

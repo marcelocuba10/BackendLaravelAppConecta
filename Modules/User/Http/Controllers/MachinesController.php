@@ -52,7 +52,7 @@ class MachinesController extends Controller
             'name' => 'required|max:20|min:5',
             'status' => 'required|max:15|min:5',
             'customer_id' => 'required',
-            'codeQR' => 'required|max:20|min:5',
+            'codeQR' => 'required|max:20|min:5|unique:machines,codeQR',
             'observation' => 'nullable|max:200|min:5',
         ]);
 
@@ -100,7 +100,7 @@ class MachinesController extends Controller
             'name' => 'required|max:20|min:5',
             'status' => 'required|max:15|min:5',
             'customer_id' => 'required',
-            'codeQR' => 'required|max:20|min:5',
+            'codeQR' => 'required|max:20|min:5|unique:machines,codeQR,' . $id,
             'observation' => 'nullable|max:200|min:5',
         ]);
 

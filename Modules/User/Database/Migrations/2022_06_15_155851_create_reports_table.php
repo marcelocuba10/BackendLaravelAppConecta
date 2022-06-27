@@ -25,6 +25,8 @@ return new class extends Migration
             $table->double('address_longitude_out')->nullable();
             $table->timestamps();
         });
+
+        DB::statement("ALTER TABLE reports AUTO_INCREMENT = 1;");
     }
 
     /**

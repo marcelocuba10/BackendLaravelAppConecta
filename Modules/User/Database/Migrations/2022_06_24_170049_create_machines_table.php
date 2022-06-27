@@ -17,7 +17,7 @@ class CreateMachinesTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('status');
-            $table->string('codeQR')->nullable();
+            $table->string('codeQR')->unique();
             $table->integer('customer_id');
             $table->integer('user_id');
             $table->string('observation')->nullable();

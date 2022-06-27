@@ -20,6 +20,8 @@ class CreateNotificationsTable extends Migration
             $table->string('date');
             $table->timestamps();
         });
+
+        DB::statement("ALTER TABLE notifications AUTO_INCREMENT = 1;");
     }
 
     /**

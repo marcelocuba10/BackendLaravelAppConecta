@@ -20,6 +20,8 @@ class CreateCustomersTable extends Migration
             $table->string('address');
             $table->timestamps();
         });
+
+        DB::statement("ALTER TABLE customers AUTO_INCREMENT = 1;");
     }
 
     /**

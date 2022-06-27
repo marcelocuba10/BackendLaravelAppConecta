@@ -75,7 +75,7 @@
       <div style="text-align: center">
         {!! QrCode::size(300)->generate( $codeQR ) !!}           
         <div class="input-style-1" style="margin-top: 30px">
-          <input style="text-align: center" type="text" name="codeQR" value="{{ $machine->codeQR }}" readonly>
+          <input style="text-align: center" type="text" name="codeQR" value="{{ $machine->codeQR ?? $codeQR}}" readonly>
         </div>
       </div>
     </div>

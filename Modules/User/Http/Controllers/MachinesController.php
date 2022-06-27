@@ -23,7 +23,7 @@ class MachinesController extends Controller
         $machines = DB::table('machines')
             ->leftjoin('users', 'machines.user_id', '=', 'users.id')
             ->leftjoin('customers', 'machines.customer_id', '=', 'customers.id')
-            ->select('users.name AS user_name', 'machines.id', 'machines.name', 'machines.status', 'machines.observation', 'customers.name AS customer_name')
+            ->select('users.name AS user_name', 'machines.id', 'machines.name','machines.codeQR', 'machines.status', 'machines.observation', 'customers.name AS customer_name')
             ->paginate(10);
 
         // echo("<pre>");

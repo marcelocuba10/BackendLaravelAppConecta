@@ -8,9 +8,9 @@
         <div class="row align-items-center">
           <div class="col-md-6">
             <div class="title d-flex align-items-center flex-wrap mb-30">
-              <h2 class="mr-40">Listado de máquinas</h2>
-              @can('machine-create')
-                <a href="{{ route('machines.create') }}" class="main-btn info-btn btn-hover btn-sm"><i class="lni lni-plus mr-5"></i> Nuevo</a>
+              <h2 class="mr-40">Listado de Clientes</h2>
+              @can('customer-create')
+                <a href="{{ route('customers.create') }}" class="main-btn info-btn btn-hover btn-sm"><i class="lni lni-plus mr-5"></i> Nuevo</a>
               @endcan  
             </div>
           </div>
@@ -68,45 +68,39 @@
                       <tr>
                         <th><h6>#</h6></th>
                         <th><h6>Nombre</h6></th>
-                        <th><h6>Estado</h6></th>
-                        <th><h6>Cliente</h6></th>
-                        <th><h6>Funcionario</h6></th>
-                        <th><h6>Observación</h6></th>
+                        <th><h6>Teléfono</h6></th>
+                        <th><h6>Dirección</h6></th>
                         <th><h6>Acciones</h6></th>
                       </tr>
                       <!-- end table row-->
                     </thead>
                     <tbody>
-                        @foreach ($machines as $machine)
+                        @foreach ($customers as $customer)
                         <tr>
                             <td class="min-width"><p>{{ ++$i }}</p></td>
-                            <td class="min-width"><p>{{ $machine->name }}</p></td>
-                            <td class="min-width">
-                              <span class="status-btn @if($machine->status == 'Encendido') success-btn @elseIf($machine->status == 'Apagado') close-btn @elseIf($machine->status == 'Mantenimiento') warning-btn @endif">{{ $machine->status }}</span>
-                            </td>
-                            <td class="min-width"><p>{{ $machine->customer_name }}</p></td>
-                            <td class="min-width"><p>{{ $machine->user_name }}</p></td>
-                            <td class="min-width"><p>{{ $machine->observation }}</p></td>
+                            <td class="min-width"><p>{{ $customer->name }}</p></td>
+                            <td class="min-width"><p>{{ $customer->phone }}</p></td>
+                            <td class="min-width"><p>{{ $customer->address }}</p></td>
                             <td class="text-right">
                                 <div class="btn-group">
                                     <div class="action">
-                                      <a href="{{ route('machines.show', $machine->id) }}">
+                                      <a href="{{ route('customers.show', $customer->id) }}">
                                           <button class="text-active">
                                               <i class="lni lni-eye"></i>
                                           </button>
                                       </a>
                                     </div>
-                                    @can('machine-edit')
+                                    @can('customer-edit')
                                     <div class="action">
-                                        <a href="{{ route('machines.edit', $machine->id) }}">
+                                        <a href="{{ route('customers.edit', $customer->id) }}">
                                             <button class="text-info">
                                                 <i class="lni lni-pencil"></i>
                                             </button>
                                         </a>
                                     </div>
                                     @endcan
-                                    @can('machine-delete')
-                                    <form method="POST" action="{{ route('machines.destroy', $machine->id) }}">
+                                    @can('customer-delete')
+                                    <form method="POST" action="{{ route('customers.destroy', $customer->id) }}">
                                         @csrf
                                         <div class="action">
                                             <input name="_method" type="hidden" value="DELETE">
@@ -124,7 +118,7 @@
                     </tbody>
                   </table>
                   <!-- end table -->
-                  {{ $machines->links() }} <!-- paginacion default -->
+                  {{ $customers->links() }} <!-- paginacion default -->
                 </div>
               </div>
               <!-- end card -->

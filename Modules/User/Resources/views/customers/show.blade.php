@@ -8,7 +8,7 @@
                 <div class="row align-items-center">
                     <div class="col-md-6">
                         <div class="titlemb-30">
-                            <h2>Detail Report</h2>
+                            <h2>Detalle Cliente</h2>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -19,9 +19,9 @@
                                 <a href="/user/dashboard">Dashboard</a>
                                 </li>
                                 <li class="breadcrumb-item" aria-current="page">
-                                <a href="{{ route('reports.index') }}">Reportes</a>
+                                <a href="{{ route('customers.index') }}">Clientes</a>
                                 </li>
-                                <li class="breadcrumb-item active" aria-current="page">Detail Report</li>
+                                <li class="breadcrumb-item active" aria-current="page">Detalle Cliente</li>
                             </ol>
                             </nav>
                         </div>
@@ -38,35 +38,28 @@
                         <div class="row">
                             <div class="col-6">
                               <div class="input-style-1">
-                                <label>Funcionario</label>
-                                <input type="text" value="{{ $report->name ?? old('name') }}" name="name" readonly>
+                                <label>Nombre</label>
+                                <input type="text" value="{{ $customer->name ?? old('name') }}" name="name" readonly>
                               </div>
                             </div>
                             <!-- end col -->
                             <div class="col-6">
                               <div class="input-style-1">
-                                <label>Fecha</label>
-                                <input type="text" name="date" value="{{ $report->date ?? old('date') }}" readonly>
+                                <label>Teléfono</label>
+                                <input type="text" value="{{ $customer->phone ?? old('phone') }}" name="phone" readonly>
                               </div>
                             </div>
                             <!-- end col -->
                             <div class="col-6">
-                              <div class="input-style-1">
-                                <label>Hora de entrada</label>
-                                <input type="text" name="check_in_time" value="{{ $report->check_in_time ?? old('check_in_time') }}" readonly>
-                              </div>
-                            </div>
-                            <!-- end col -->
-                            <div class="col-6">
-                              <div class="input-style-1">
-                                <label>Hora de salida</label>
-                                <input type="text" name="check_out_time" value="{{ $report->check_out_time ?? old('check_out_time') }}"readonly>
-                              </div>
+                                <div class="input-style-1">
+                                    <label>Dirección</label>
+                                    <input type="text" value="{{ $customer->address ?? old('address') }}" name="address" readonly>
+                                </div>
                             </div>
                             <!-- end col -->
                             <div class="col-12">
                                 <div class="button-groupd-flexjustify-content-centerflex-wrap">
-                                    <a class="main-btn danger-btn-outline m-2" href="{{ route('reports.index') }}">Atrás</a>
+                                    <a class="main-btn danger-btn-outline m-2" href="{{ route('customers.index') }}">Back</a>
                                 </div>
                               </div>
                         </div>

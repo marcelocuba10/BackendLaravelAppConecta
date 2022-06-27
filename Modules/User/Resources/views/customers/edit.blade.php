@@ -8,7 +8,7 @@
                 <div class="row align-items-center">
                     <div class="col-md-6">
                     <div class="titlemb-30">
-                        <h2>Editar Máquina</h2>
+                        <h2>Editar Cliente</h2>
                     </div>
                     </div>
                     <!-- end col -->
@@ -20,9 +20,9 @@
                             <a href="/user/dashboard">Dashboard</a>
                             </li>
                             <li class="breadcrumb-item" aria-current="page">
-                            <a href="{{ route('machines.index') }}">Máquinas</a>
+                            <a href="{{ route('customers.index') }}">Clientes</a>
                             </li>
-                            <li class="breadcrumb-item active" aria-current="page">Editar Máquina</li>
+                            <li class="breadcrumb-item active" aria-current="page">Editar Cliente</li>
                         </ol>
                         </nav>
                     </div>
@@ -35,11 +35,13 @@
             <div class="form-layout-wrapper">
                 <div class="row">
                   <div class="col-lg-12">
-                    <form method="POST" action="{{ route('machines.update', $machine->id) }}">
-                        @csrf
-                        @method('PUT') <!-- menciono el metodo PUT, ya que en mi route utilzo Route::put(); -->
-                        @include('user::machines._partials.form')
-                    </form>
+                    <div class="card-style mb-30">
+                        <form method="POST" action="{{ route('customers.update', $customer->id) }}">
+                            @csrf
+                            @method('PUT') <!-- menciono el metodo PUT, ya que en mi route utilzo Route::put(); -->
+                            @include('user::customers._partials.form')
+                      </form>
+                    </div>
                 </div>
             </div>
         </div>

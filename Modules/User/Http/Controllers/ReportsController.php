@@ -2,7 +2,7 @@
 
 namespace Modules\User\Http\Controllers;
 
-use App\Models\User;
+use Modules\User\Entities\User;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -30,29 +30,52 @@ class ReportsController extends Controller
 
     public function create()
     {
-        return view('user::reports.create');
+        $users = DB::table('users')->get();
+        $report = null;
+
+        return view('user::reports.create',compact('users','report'));
     }
 
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'user_id' => 'required',
+            'check_in_time' => 'required|max:5|min:5',
+            'check_out_time' => 'required|max:5|min:5',
+            'date' => 'required|max:15|min:10',
+        ]);
+
+        Reports::create($request->all());
+
+        return redirect()->route('reports.index')->with('message', 'Report created successfully.');
     }
 
     public function show($id)
     {
-        $report=Reports::find($id);
-        return view('user::reports.show',compact('report'));
+        $report=DB::table('users')
+        ->join('reports', function ($join) {
+            $join->on('users.id', '=', 'reports.user_id')
+                 ->where('users.id', '=',1);
+        })
+        ->get();
+
+        //dd($report);
+
+        $users = DB::table('users')->get();
+
+        return view('user::reports.show',compact('report','users'));
     }
 
     public function edit($id)
     {
-        $report = Reports::find($id);
+        $report = Reports::where('reports.id','=', $id)
+            ->join('users', 'reports.user_id', '=', 'users.id')
+            ->select('reports.*','users.name')->get();
 
-        $user=$report->user;
+        //dd($report);
+        $users = DB::table('users')->get();
 
-        dd($user);
-
-        return view('user::reports.edit', compact('report'));
+        return view('user::reports.edit', compact('report','users'));
     }
 
     public function update(Request $request, $id)

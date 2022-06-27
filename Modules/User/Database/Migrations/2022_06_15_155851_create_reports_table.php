@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('reports', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('user_id')->unsigned()->index();
+            $table->integer('user_id');
             $table->string('date');
             $table->string('check_in_time')->nullable();
             $table->string('check_out_time')->nullable();
@@ -24,8 +24,6 @@ return new class extends Migration
             $table->double('address_latitude_out')->nullable();
             $table->double('address_longitude_out')->nullable();
             $table->timestamps();
-
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

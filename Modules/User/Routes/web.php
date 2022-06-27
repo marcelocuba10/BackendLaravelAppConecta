@@ -51,14 +51,14 @@ Route::prefix('user')->group(function () {
         /*** Notifications Routes ***/
         Route::resource('/notifications', 'NotificationsController');
 
-
+        /*** ACL Routes ***/
         Route::resource('roles', 'ACL\RolesController');
         Route::resource('permissions', 'ACL\PermissionsController');
 
-        /** QrCode Route*/
-        Route::get('/qrcode', 'QrCodeController@index')->name('user.qrcode');
-
         /** Machines Routes*/
         Route::resource('/machines', 'MachinesController');
+
+        /** Customers Routes*/
+        Route::resource('/customers', 'CustomersController');
     });
 });

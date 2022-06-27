@@ -50,7 +50,6 @@ class UserController extends Controller
         ]);
 
         $input = $request->all();
-        $input['terms'] = 1;
 
         User::create($input);
 

@@ -27,6 +27,6 @@ class Reports extends Model
     
     protected static function newFactory()
     {
-        return \Modules\User\Database\factories\ReportsFactory::new();
+        //return \Modules\User\Database\factories\ReportsFactory::new();
     }
 }

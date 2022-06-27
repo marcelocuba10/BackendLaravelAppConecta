@@ -46,6 +46,16 @@ class PermissionTableSeederTableSeeder extends Seeder
             'notification-create',
             'notification-edit',
             'notification-delete',
+
+            'machine-list',
+            'machine-create',
+            'machine-edit',
+            'machine-delete',
+
+            'customer-list',
+            'customer-create',
+            'customer-edit',
+            'customer-delete',
          ];
       
          foreach ($permissions as $permission) {

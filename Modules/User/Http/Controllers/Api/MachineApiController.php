@@ -23,41 +23,28 @@ class MachineApiController extends Controller
         return response()->json($machines);
     }
 
-    public function store(Request $request)
+    public function update($qrcode, Request $request)
     {
         //validation
         $request->validate([
+            'name' => 'required',
+            'status' => 'required',
+            'codeQR' => 'required',
+            'customer_id' => 'required',
             'user_id' => 'required',
-            'date' => 'required',
-            'check_in_time' => 'required',
-            'address_latitude_in' => 'required',
-            'address_longitude_in' => 'required'
-        ]);
-
-        //save to DB
-        $machine = Machines::create($request->all());
-
-        //return response
-        return response()->json($machine);
-    }
-
-    public function update($id, Request $request)
-    {
-        //validation
-        $request->validate([
-            'user_id' => 'required',
-            'date' => 'required',
-            'check_out_time' => 'required',
-            'address_latitude_out' => 'required',
-            'address_longitude_out' => 'required'
+            'observation' => 'required'
         ]);
 
         //update in DB
-        $machine = Machines::find($id);
-        $machine->update($request->all());
+        $machine = DB::table('machines')->where('codeQR','=', $qrcode)->first();
+        //$machine->update($request->all());
+
+        DB::table('machines')
+        ->where('codeQR','=', $qrcode)  
+        ->update( [ 'status' => $request['status'], 'user_id' => $request['user_id'], 'observation' => $request['observation'] ]);
 
         //return response
-        return response()->json($request->id);
+        return response()->json('Machine updated successfully');
     }
 
     public function destroy(Machines $machine)

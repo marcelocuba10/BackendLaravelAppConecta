@@ -11,7 +11,20 @@
               <h2 class="mr-40">Listado de máquinas</h2>
               @can('machine-create')
                 <a href="{{ route('machines.create') }}" class="main-btn info-btn btn-hover btn-sm"><i class="lni lni-plus mr-5"></i> Nuevo</a>
-              @endcan  
+              @endcan 
+              <a href="#"><i class="hthtg lni lni-grid-alt"></i></a>
+              <a href="#"><i style="margin-left: 23px;" class="hthtg lni lni-list"></i></a>
+              <div class="select-style-1" style="margin-left: 23px;">
+                <label>View metric</label>
+                <div class="select-position">
+                  <select>
+                    <option value="">Status</option>
+                    <option value="">Encendido</option>
+                    <option value="">Apagado</option>
+                    <option value="">Mantenimiento</option>
+                  </select>
+                </div>
+              </div>
             </div>
           </div>
           <!-- end col -->

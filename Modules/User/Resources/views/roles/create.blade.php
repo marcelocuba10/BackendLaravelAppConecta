@@ -1,32 +1,42 @@
-@extends('user::tema.app')
+@extends('user::layouts.adminLTE.app')
 @section('content')
 
-<div class="row wrapper border-bottom white-bg page-heading">
-    <div class="col-lg-10">
-        <h2>Create new rol</h2>
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item">
-                <a href="{{ route('roles.index') }}">Roles</a>
-            </li>
-            <li class="breadcrumb-item active">
-                <a href="{{ route('roles.create') }}"><b>New Role</b></a>
-            </li>
-        </ol>
-    </div>
-</div>
-
-<div class="wrapper wrapper-content animated fadeInRight ecommerce">
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="ibox ">
-                <div class="ibox-content">
-                    <form method="POST" action="{{ route('roles.store') }}">
-                        @include('user::roles._partials.form')
-                    </form>
+    <section class="section">
+        <div class="container-fluid">
+            <!-- ========== title-wrapper start ========== -->
+            <div class="title-wrapper pt-30">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <div class="titlemb-30">
+                            <h2>Crear Nuevo Rol</h2>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="breadcrumb-wrapper mb-30">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="/user/dashboard">Dashboard</a></li>
+                                    <li class="breadcrumb-item" aria-current="page"><a href="{{ route('roles.index') }}">Roles</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page">Nuevo Rol</li>
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+                <!-- end row -->
+            </div>
+            <!-- ========== title-wrapper end ========== -->
+            <div class="form-layout-wrapper">
+                <div class="row">
+                  <div class="col-lg-12">
+                    <div class="card-style mb-30">
+                        <form method="POST" action="{{ route('roles.store') }}">
+                            @include('user::roles._partials.form')
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
+    </section>
 
-@endsection
+@endsection  

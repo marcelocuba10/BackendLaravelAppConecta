@@ -26,7 +26,7 @@ class RolesController extends Controller
     {
         $roles = Role::paginate(5);
 
-        return view('user::roles.index', compact('roles'));
+        return view('user::roles.index', compact('roles'))->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
     public function create()
@@ -49,12 +49,14 @@ class RolesController extends Controller
         return redirect()->route('roles.index')->with('message', 'Role created successfully');
     }
 
-    public function show(Role $role)
+    public function show($id)
     {
-        $role = $role;
-        $rolePermissions = $role->permissions;
+        $role = DB::table('roles')
+                ->select('roles.name','roles.guard_name')
+                ->where('roles.id','=',$id)
+                ->first();
 
-        return view('user::roles.show', compact('role', 'rolePermissions'));
+        return view('user::roles.show', compact('role'));
     }
 
     public function edit($id)

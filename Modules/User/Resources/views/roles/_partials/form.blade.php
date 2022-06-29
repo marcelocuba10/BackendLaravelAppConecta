@@ -1,27 +1,35 @@
 @csrf
-<div class="form-group  row"><label class="col-sm-2 col-form-label">*Name</label>
-    <div class="col-sm-10">
-        <input type="text" name="name" class="form-control" placeholder="Enter name" autocomplete="off" value="{{ $role->name ?? old('name') }}">
+<div class="row">
+    <div class="col-6">
+      <div class="input-style-1">
+        <label>(*) Nombre</label>
+        <input type="text" name="name" value="{{ $role->name ?? old('name') }}" class="bg-transparent" placeholder="Ingrese Nombre">
+      </div>
     </div>
-</div>
-
-<div class="form-group  row"><label class="col-sm-2 col-form-label">*Permisos</label>
-    <div class="col-sm-10">
+    <!-- end col -->
+    <div class="col-6">
+        <div class="input-style-1">
+          <label>Guard</label>
+          <input type="text" name="guard_name" value="{{ $role->guard_name ?? old('guard_name') }}" readonly>
+        </div>
+    </div>
+    <!-- end col -->
+    <div class="col-12">
+        <div class="input-style-1">
+            <label>(*) Permisos</label>
+        </div>
         @foreach ($permissions as $permission )
-            <div class="i-checks">
-                <label>
-                    <!-- guardo en array ya que se puede marcar mas de un valor -->
-                    <input name="permission[]" type="checkbox" value="{{ $permission->id }}" @if(!empty($rolePermission)) {{ in_array($permission->name, $rolePermission)  ? 'checked' : '' }} @endif><i></i> {{ $permission->name }} 
-                </label>
+            <div class="form-check checkbox-style checkbox-success mb-20">
+                <input class="form-check-input" name="permission[]" type="checkbox" value="{{ $permission->id }}" @if(!empty($rolePermission)) {{ in_array($permission->name, $rolePermission)  ? 'checked' : '' }} @endif>
+                <label class="form-check-label" for="checkbox-1">{{ $permission->name }} </label>
             </div>
         @endforeach
     </div>
-</div>
-
-<div class="hr-line-dashed"></div>
-<div class="form-group row">
-    <div class="col-sm-4 col-sm-offset-2">
-        <a class="btn btn-white btn-sm" href="{{ route('roles.index') }}" >Cancelar</a>
-        <button class="btn btn-primary btn-sm" type="submit">Guardar Cambios</button>
+    <!-- end col -->
+    <div class="col-12">
+      <div class="button-group d-flex justify-content-center flex-wrap">
+        <button type="submit" class="main-btn primary-btn btn-hover m-2">Guardar</button>
+        <a class="main-btn danger-btn-outline m-2" href="{{ route('roles.index') }}">Cancelar</a>
+      </div>
     </div>
 </div>

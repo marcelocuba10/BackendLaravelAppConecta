@@ -1,14 +1,24 @@
 @csrf
-<div class="form-group  row"><label class="col-sm-2 col-form-label">*Name</label>
-    <div class="col-sm-10">
-        <input type="text" name="name" class="form-control" placeholder="Enter name" autocomplete="off" value="{{ $permission->name ?? old('name') }}">
+<div class="row">
+    <div class="col-6">
+      <div class="input-style-1">
+        <label>(*) Nombre</label>
+        <input type="text" placeholder="Ingrese Nombre" class="bg-transparent" value="{{ $permission->name ?? old('name') }}" name="name">
+        <span class="form-text m-b-none">Exemplo: role-list, role-create, role-edit, role-delete</span>
+      </div>
     </div>
-</div>
-
-<div class="hr-line-dashed"></div>
-<div class="form-group row">
-    <div class="col-sm-4 col-sm-offset-2">
-        <a class="btn btn-white btn-sm" href="{{ route('permissions.index') }}" >Cancelar</a>
-        <button class="btn btn-primary btn-sm" type="submit">Guardar Cambios</button>
+    <!-- end col -->
+    <div class="col-6">
+        <div class="input-style-1">
+            <label>Guard</label>
+            <input type="text" value="{{ $permission->guard_name ?? old('guard_name')}}" readonly>
+        </div>
+    </div>
+    <!-- end col -->
+    <div class="col-12">
+      <div class="button-group d-flex justify-content-center flex-wrap">
+        <button type="submit" class="main-btn primary-btn btn-hover m-2">Guardar</button>
+        <a class="main-btn danger-btn-outline m-2" href="{{ route('permissions.index') }}" >Cancelar</a>
+      </div>
     </div>
 </div>

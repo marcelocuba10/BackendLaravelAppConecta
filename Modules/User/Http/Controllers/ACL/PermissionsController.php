@@ -5,7 +5,7 @@ namespace Modules\User\Http\Controllers\ACL;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-
+use Illuminate\Support\Facades\DB;
 //spatie
 use Spatie\Permission\Models\Permission;
 
@@ -24,7 +24,7 @@ class PermissionsController extends Controller
     {
         $permissions = Permission::paginate(10);
 
-        return view('user::permissions.index', compact('permissions'));
+        return view('user::permissions.index', compact('permissions'))->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
     public function create()
@@ -35,19 +35,23 @@ class PermissionsController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|unique:super_users,name',
+            'name' => 'required|unique:permissions,name',
         ]);
 
-        //Permission::create($request->only('name')); old out modular
         // Define a `publish articles` permission for the user users belonging to the user guard
-        Permission::create(['guard_name' => 'web', 'name' => $request->only('name')]);
+        Permission::create(['name' => $request->input('name'), 'guard_name' => 'web']);
 
         return redirect()->route('permissions.index')->with('message', 'Permission created successfully!');
     }
 
     public function show($id)
     {
-        return view('user::permissions.show');
+        $permission = DB::table('permissions')
+            ->select('permissions.name', 'permissions.guard_name')
+            ->where('permissions.id', '=', $id)
+            ->first();
+
+        return view('user::permissions.show', compact('permission'));
     }
 
     public function edit($id)

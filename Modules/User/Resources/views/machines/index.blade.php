@@ -14,6 +14,7 @@
               @endcan 
               <a href="#"><i class="hthtg lni lni-grid-alt"></i></a>
               <a href="#"><i style="margin-left: 23px;" class="hthtg lni lni-list"></i></a>
+              <a href="{{route('machines.createPDF',['download'=>'pdf'])}}"><i style="margin-left: 23px;" class="hthtg lni lni-printer"></i></a>
               <div class="select-style-1" style="margin-left: 23px;">
                 <label>View metric</label>
                 <div class="select-position">
@@ -98,7 +99,7 @@
                             <td class="min-width">
                               <span class="status-btn @if($machine->status == 'Encendido') success-btn @elseIf($machine->status == 'Apagado') close-btn @elseIf($machine->status == 'Mantenimiento') warning-btn @endif">{{ $machine->status }}</span>
                             </td>
-                            <td class="min-width"><p>{{ $machine->codeQR }}</p></td>
+                            <td class="min-width"><p>{!! QrCode::size(50)->generate( $machine->codeQR ) !!}</p></td>
                             <td class="min-width"><p>{{ $machine->customer_name }}</p></td>
                             <td class="min-width"><p>{{ $machine->user_name }}</p></td>
                             <td class="min-width"><p>{{ $machine->observation }}</p></td>

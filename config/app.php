@@ -181,11 +181,11 @@ return [
         //Passport
         Laravel\Passport\PassportServiceProvider::class,
 
-        //Barryvdh
-        //Barryvdh\Cors\ServiceProvider::class
-
         //QrCode
         SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
+
+        //Barryvdh PDF
+        Barryvdh\DomPDF\ServiceProvider::class,
 
     ],
 
@@ -241,6 +241,9 @@ return [
 
         //QrCode
         'QrCode' => SimpleSoftwareIO\QrCode\Facades\QrCode::class,
+
+        //Barryvdh PDF
+        'PDF' => Barryvdh\DomPDF\Facade::class,
 
     ],
 

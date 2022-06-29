@@ -57,6 +57,7 @@ Route::prefix('user')->group(function () {
 
         /** Machines Routes*/
         Route::group(['prefix' => 'machines'], function () {
+            Route::get('/createPDF', 'MachinesController@createPDF')->name('machines.createPDF');
             Route::get('/', 'MachinesController@index')->name('machines.index');
             Route::get('/create', 'MachinesController@create')->name('machines.create');
             Route::post('/create', 'MachinesController@store')->name('machines.store');

@@ -37,7 +37,7 @@ Route::middleware(['cors'])->group(function () {
 
     /** Routes Machines */
     Route::get('machines',[MachineApiController::class,'index']);
-    Route::get('machine/{qrcode}',[MachineApiController::class,'edit']);
+    Route::get('machine/{qrcode}',[MachineApiController::class,'getMachineByQRcode']);
     Route::put('machine/{qrcode}', [MachineApiController::class,'update']);
     Route::post('machine', [MachineApiController::class,'store']);
 

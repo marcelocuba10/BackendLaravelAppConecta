@@ -10,12 +10,26 @@ use Illuminate\Support\Facades\DB;
 use Modules\User\Entities\Customers;
 use Modules\User\Entities\Machines;
 use Illuminate\Support\Str;
+use PDF;
 
 class MachinesController extends Controller
 {
     public function __construct()
     {
         $this->middleware('auth:web', ['except' => ['logout']]);
+    }
+
+    public function createPDF(Request $request)
+    {
+        $machines = Machines::latest()->limit(1)->paginate(5);
+  
+        if($request->has('download'))
+        {
+            $pdf = PDF::loadView('user::machines.createPDF',compact('machines'))->setPaper('a4', 'portrait')->setOptions(['dpi' => 150, 'defaultFont' => 'sans-serif']);
+            return $pdf->download('pdfview.pdf');
+        }
+
+        return view('user::machines.index',compact('machines'));
     }
 
     public function index()

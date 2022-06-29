@@ -17,7 +17,7 @@ class MachineApiController extends Controller
         return response()->json($machines);
     }
 
-    public function edit($qrcode)
+    public function getMachineByQRcode($qrcode)
     {
         $machines = DB::table('machines')->where('codeQR','=', $qrcode)->first();
         return response()->json($machines);
@@ -27,12 +27,10 @@ class MachineApiController extends Controller
     {
         //validation
         $request->validate([
-            'name' => 'required',
             'status' => 'required',
             'codeQR' => 'required',
-            'customer_id' => 'required',
             'user_id' => 'required',
-            'observation' => 'required'
+            'observation' => 'nullable'
         ]);
 
         //update in DB

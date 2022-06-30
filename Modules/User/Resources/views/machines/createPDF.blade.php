@@ -1,100 +1,63 @@
-<!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
-    <title>Print PDF</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-
-    <style>
-
-      .page-break {
-          page-break-after: always;
-      }
-      tr {
-        page-break-inside: avoid;
-        page-break-before: auto;
-        page-break-after: auto;
-        width: 100%;
-      }
-      
-      html,
-      body {
-        font-family: "Trebuchet MS", Helvetica, sans-serif;
-        padding: 0;
-        margin: 0;
-        width: 100%;
-      }
-      
-      table {
-        border-collapse: collapse;
-        width: 98%;
-        table-layout: fixed;
-        page-break-after: auto;
-        margin:auto;
-      }
-      
-      th,
-      td {
-        border: 0.5px solid black;
-        border-collapse: collapse;
-        page-break-after: auto;
-      }
-      
-      th {
-        width: 30%;
-      }
-      
-      th+th {
-        width: 40%;
-        text-align: center;
-      }
-      
-      th+th+th {
-        width: 15%;
-      }
-      
-      th+th+th+th {
-        width: 15%;
-      }
-      
-      td+td {
-        text-align: center;
-      }
-      
-      td+td+td {
-        text-align: center
-      }
-      
-      h1 {
-        margin-bottom: 0.2cm;
-      }
-      
-      hr {
-        background-color: #000000;
-        height: 1cm;
-        float: left;
-      }
-    </style>
+      <title>sdfsfsdf</title>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+      <style>
+          table {
+              border-collapse: collapse;
+              page-break-inside:auto;
+              margin: auto;
+          }
+          tr    { 
+              page-break-inside:avoid; 
+              page-break-after:auto;
+              margin: 5px 0px 5px 0px;
+          }
+          thead { 
+              display:table-header-group 
+          }
+          th, td {
+              border: black 1px solid;
+              padding-left: 5px;
+              padding-right: 5px;
+              min-width: 150px;
+          }
+          @page {
+              size: legal landscape;
+              margin: 1cm;
+  
+          }
+      </style>
+  </head>
   <body>
-    <table style="overflow: hidden; page-break-after:always;">
+    <table>
       <thead>
-        <tr>
-          <th><h6>Nombre</h6></th>
-          <th><h6>Estado</h6></th>
-          <th><h6>CódigoQR</h6></th>
-        </tr>
+          <tr>
+              
+              <?php
+                  // table headers
+                  for($x=1 ; $x<=$machinesLength; $x++) {
+                      echo '<th>Header ' . $x . '</th>';
+                  }
+                ?>
+          </tr>
       </thead>
       <tbody>
-          @foreach ($machines as $machine)
-          <tr>
-              <td class="min-width"><p>{{ $machine->name }}</p></td>
-              <td class="min-width">
-                <span class="status-btn @if($machine->status == 'Encendido') success-btn @elseIf($machine->status == 'Apagado') close-btn @elseIf($machine->status == 'Mantenimiento') warning-btn @endif">{{ $machine->status }}</span>
-              </td>
-              <td class="min-width"><img src="data:image/png;base64, {!! base64_encode(QrCode::size(50)->generate($machine->codeQR)) !!} "></td>
-          </tr>
-          @endforeach
+
+          <?php
+                  //table body data
+                  for($y=1 ; $y<=$machinesLength; $y++) {
+                      echo '<tr>';
+                      for($x=1 ; $x<=$machinesLength; $x++) {
+                          $text="helloworld";
+                          echo '<td>data ' . $y . ' - '. $x . ' <img src="data:image/png;base64,' . base64_encode(QrCode::size(70)->generate($text)) . '" /> </td>';
+                      }
+                      echo '</tr>';
+                  }
+                ?>
       </tbody>
-    </table>
+  
+  </table>
+  
   </body>
-</html>
+  </html>

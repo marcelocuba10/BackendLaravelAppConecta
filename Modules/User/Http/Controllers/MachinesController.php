@@ -21,11 +21,13 @@ class MachinesController extends Controller
 
     public function createPDF(Request $request)
     {
-        $machines = Machines::latest()->limit(1)->paginate(5);
+        $machines = Machines::get();
+        $machinesLength = count($machines); 
+
   
         if($request->has('download'))
         {
-            $pdf = PDF::loadView('user::machines.createPDF',compact('machines'))->setPaper('a4', 'portrait')->setOptions(['dpi' => 150, 'defaultFont' => 'sans-serif']);
+            $pdf = PDF::loadView('user::machines.createPDF',compact('machines','machinesLength'))->setPaper('a4', 'portrait')->setOptions(['dpi' => 150, 'defaultFont' => 'sans-serif']);
             return $pdf->download('pdfview.pdf');
         }
 

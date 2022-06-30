@@ -84,6 +84,7 @@
                         <th><h6>Nombre</h6></th>
                         <th><h6>Estado</h6></th>
                         <th><h6>CódigoQR</h6></th>
+                        <th><h6>CódigoQR</h6></th>
                         <th><h6>Cliente</h6></th>
                         <th><h6>Funcionario</h6></th>
                         <th><h6>Observación</h6></th>
@@ -99,6 +100,7 @@
                             <td class="min-width">
                               <span class="status-btn @if($machine->status == 'Encendido') success-btn @elseIf($machine->status == 'Apagado') close-btn @elseIf($machine->status == 'Mantenimiento') warning-btn @endif">{{ $machine->status }}</span>
                             </td>
+                            <td class="min-width"><p>{{ $machine->codeQR }}</p></td>
                             <td class="min-width"><p>{!! QrCode::size(50)->generate( $machine->codeQR ) !!}</p></td>
                             <td class="min-width"><p>{{ $machine->customer_name }}</p></td>
                             <td class="min-width"><p>{{ $machine->user_name }}</p></td>

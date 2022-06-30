@@ -1,13 +1,13 @@
   <!-- ======== sidebar-nav start =========== -->
   <aside class="sidebar-nav-wrapper style-2">
     <div class="navbar-logo">
-      <a href="index.html">
-        <img src="/assets/images/logo/logo.svg" alt="logo" />
+      <a href="/">
+        <img src="/img/logo-300x90.png" alt="logo" width="175px" height="58px"/>
       </a>
     </div>
     <nav class="sidebar-nav">
       <ul>
-        <li class="nav-item active">
+        <li class="nav-item {{ (request()->is('user/dashboard')) ? 'active' : '' }}">
           <a href="/user/dashboard">
             <span class="icon">
               <svg width="22" height="22" viewBox="0 0 22 22">
@@ -17,8 +17,9 @@
             <span class="text">Dashboard</span>
           </a>
         </li>
-        <li class="nav-item">
-          <a href="{{ route('users.index') }}">
+        @can('user-list')
+        <li class="nav-item {{ (request()->is('user/users')) ? 'active' : '' }}">
+          <a href="/user/users">
             <span class="icon">
               <svg style="width:24px;height:24px" viewBox="0 0 24 24">
                 <path fill="currentColor" d="M12,5A3.5,3.5 0 0,0 8.5,8.5A3.5,3.5 0 0,0 12,12A3.5,3.5 0 0,0 15.5,8.5A3.5,3.5 0 0,0 12,5M12,7A1.5,1.5 0 0,1 13.5,8.5A1.5,1.5 0 0,1 12,10A1.5,1.5 0 0,1 10.5,8.5A1.5,1.5 0 0,1 12,7M5.5,8A2.5,2.5 0 0,0 3,10.5C3,11.44 3.53,12.25 4.29,12.68C4.65,12.88 5.06,13 5.5,13C5.94,13 6.35,12.88 6.71,12.68C7.08,12.47 7.39,12.17 7.62,11.81C6.89,10.86 6.5,9.7 6.5,8.5C6.5,8.41 6.5,8.31 6.5,8.22C6.2,8.08 5.86,8 5.5,8M18.5,8C18.14,8 17.8,8.08 17.5,8.22C17.5,8.31 17.5,8.41 17.5,8.5C17.5,9.7 17.11,10.86 16.38,11.81C16.5,12 16.63,12.15 16.78,12.3C16.94,12.45 17.1,12.58 17.29,12.68C17.65,12.88 18.06,13 18.5,13C18.94,13 19.35,12.88 19.71,12.68C20.47,12.25 21,11.44 21,10.5A2.5,2.5 0 0,0 18.5,8M12,14C9.66,14 5,15.17 5,17.5V19H19V17.5C19,15.17 14.34,14 12,14M4.71,14.55C2.78,14.78 0,15.76 0,17.5V19H3V17.07C3,16.06 3.69,15.22 4.71,14.55M19.29,14.55C20.31,15.22 21,16.06 21,17.07V19H24V17.5C24,15.76 21.22,14.78 19.29,14.55M12,16C13.53,16 15.24,16.5 16.23,17H7.77C8.76,16.5 10.47,16 12,16Z" />
@@ -27,8 +28,10 @@
             <span class="text">Funcionarios</span>
           </a>
         </li>
-        <li class="nav-item">
-          <a href="{{ route('reports.index') }}">
+        @endcan
+        @can('report-list')
+        <li class="nav-item {{ (request()->is('user/reports')) ? 'active' : '' }}">
+          <a href="/user/reports">
             <span class="icon">
               <svg style="width:24px;height:24px" viewBox="0 0 24 24">
                 <path fill="currentColor" d="M4,2A2,2 0 0,0 2,4V14H4V4H14V2H4M8,6A2,2 0 0,0 6,8V18H8V8H18V6H8M20,12V20H12V12H20M20,10H12A2,2 0 0,0 10,12V20A2,2 0 0,0 12,22H20A2,2 0 0,0 22,20V12A2,2 0 0,0 20,10Z" />
@@ -37,8 +40,10 @@
             <span class="text">Registros</span>
           </a>
         </li>
-        <li class="nav-item">
-          <a href="{{ route('notifications.index') }}">
+        @endcan
+        @can('notification-list')
+        <li class="nav-item {{ (request()->is('user/notifications')) ? 'active' : '' }}">
+          <a href="/user/notifications">
             <span class="icon">
               <svg style="width:24px;height:24px" viewBox="0 0 24 24">
                 <path fill="currentColor" d="M12,23A1,1 0 0,1 11,22V19H7A2,2 0 0,1 5,17V7C5,5.89 5.9,5 7,5H21A2,2 0 0,1 23,7V17A2,2 0 0,1 21,19H16.9L13.2,22.71C13,22.9 12.75,23 12.5,23V23H12M13,17V20.08L16.08,17H21V7H7V17H13M3,15H1V3A2,2 0 0,1 3,1H19V3H3V15Z" />
@@ -47,10 +52,12 @@
             <span class="text">Avisos</span>
           </a>
         </li>
+        @endcan
         <span class="divider">
           <hr />
         </span>
-        <li class="nav-item">
+        @can('machine-list')
+        <li class="nav-item {{ (request()->is('user/machines/grid_view')) ? 'active' : '' }}">
           <a href="/user/machines/grid_view">
             <span class="icon">
               <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -60,8 +67,10 @@
             <span class="text">Máquinas</span>
           </a>
         </li>
-        <li class="nav-item">
-          <a href="{{ route('customers.index') }}">
+        @endcan
+        @can('customer-list')
+        <li class="nav-item {{ (request()->is('user/customers')) ? 'active' : '' }}">
+          <a href="/user/customers">
             <span class="icon">
               <svg style="width:24px;height:24px" viewBox="0 0 24 24">
                 <path fill="currentColor" d="M12,5A3.5,3.5 0 0,0 8.5,8.5A3.5,3.5 0 0,0 12,12A3.5,3.5 0 0,0 15.5,8.5A3.5,3.5 0 0,0 12,5M12,7A1.5,1.5 0 0,1 13.5,8.5A1.5,1.5 0 0,1 12,10A1.5,1.5 0 0,1 10.5,8.5A1.5,1.5 0 0,1 12,7M5.5,8A2.5,2.5 0 0,0 3,10.5C3,11.44 3.53,12.25 4.29,12.68C4.65,12.88 5.06,13 5.5,13C5.94,13 6.35,12.88 6.71,12.68C7.08,12.47 7.39,12.17 7.62,11.81C6.89,10.86 6.5,9.7 6.5,8.5C6.5,8.41 6.5,8.31 6.5,8.22C6.2,8.08 5.86,8 5.5,8M18.5,8C18.14,8 17.8,8.08 17.5,8.22C17.5,8.31 17.5,8.41 17.5,8.5C17.5,9.7 17.11,10.86 16.38,11.81C16.5,12 16.63,12.15 16.78,12.3C16.94,12.45 17.1,12.58 17.29,12.68C17.65,12.88 18.06,13 18.5,13C18.94,13 19.35,12.88 19.71,12.68C20.47,12.25 21,11.44 21,10.5A2.5,2.5 0 0,0 18.5,8M12,14C9.66,14 5,15.17 5,17.5V19H19V17.5C19,15.17 14.34,14 12,14M4.71,14.55C2.78,14.78 0,15.76 0,17.5V19H3V17.07C3,16.06 3.69,15.22 4.71,14.55M19.29,14.55C20.31,15.22 21,16.06 21,17.07V19H24V17.5C24,15.76 21.22,14.78 19.29,14.55M12,16C13.53,16 15.24,16.5 16.23,17H7.77C8.76,16.5 10.47,16 12,16Z" />
@@ -70,6 +79,7 @@
             <span class="text">Clientes</span>
           </a>
         </li>
+        @endcan
         <span class="divider">
           <hr />
         </span>
@@ -83,28 +93,28 @@
             <span class="text">Configuraciones</span>
           </a>
           <ul id="ddmenu_2" class="dropdown-nav collapse show" style="">
-            @can('super_user-list')
+            @can('user-list')
             <li>
-              <a href="{{ route('users.index') }}">
+              <a href="/user/users" class="{{ (request()->is('user/users')) ? 'active' : '' }}">
                 <span class="text">Usuarios</span>
               </a>
             </li>
             @endcan
-            <li class="nav-item nav-item-has-children">
+            <li class="nav-item nav-item-has-children {{ (request()->is('user/roles')) ? 'active' : '' }}">
               <a href="#0" class="" data-bs-toggle="collapse" data-bs-target="#ddmenu_3" aria-controls="ddmenu_3" aria-expanded="true" aria-label="Toggle navigation">
                 <span class="text">ACL</span>
               </a>
               <ul id="ddmenu_3" class="dropdown-nav collapse show" style="">
+                @can('role-list')
                 <li>
-                  <a href="{{ route('roles.index') }}">
-                    <span class="text">Roles</span>
-                  </a>
+                  <a href="/user/roles" class="{{ (request()->is('user/roles')) ? 'active' : '' }}"><span class="text">Roles</span></a>
                 </li>
+                @endcan
+                @can('permission-list')
                 <li>
-                  <a href="{{ route('permissions.index') }}">
-                    <span class="text">Permisos</span>
-                  </a>
+                  <a href="/user/permissions" class="{{ (request()->is('user/permissions')) ? 'active' : '' }}"><span class="text">Permisos</span></a>
                 </li>
+                @endcan
               </ul>
             </li>
           </ul>

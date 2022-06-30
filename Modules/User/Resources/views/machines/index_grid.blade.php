@@ -9,11 +9,11 @@
           <div class="title d-flex align-items-center flex-wrap mb-30">
             <h2 class="mr-40">Listado de máquinas</h2>
             @can('machine-create')
-              <a href="{{ route('machines.create') }}" class="main-btn success-btn btn-hover btn-sm"><i class="lni lni-plus mr-5"></i> Nuevo</a>
-            @endcan 
+            <a href="{{ route('machines.create') }}" class="main-btn success-btn btn-hover btn-sm"><i class="lni lni-plus mr-5"></i> Nuevo</a>
+            @endcan
             <a href="/user/machines/grid_view"><i class="hthtg lni lni-grid-alt"></i></a>
             <a href="/user/machines"><i style="margin-left: 23px;" class="hthtg lni lni-list"></i></a>
-            <a href="{{route('machines.createPDF',['download'=>'pdf'])}}"><i style="margin-left: 23px;" class="hthtg lni lni-printer"></i></a>
+            <a href="{{route('machines.createPDF',['download'=>'pdf'])}}"><i style="margin-left: 23px;"class="hthtg lni lni-printer"></i></a>
           </div>
         </div>
         <!-- end col -->
@@ -71,7 +71,7 @@
             </li>
           </ul>
         </div>
-        <div class="row">
+        <div class="row" style="">
           @foreach ($machines as $machine)
           <div class="col-xl-1 col-lg-1 col-sm-1">
             <a href="{{ route('machines.edit', $machine->id) }}">
@@ -83,6 +83,51 @@
             </a>
           </div>
           @endforeach
+        </div>
+        <div class="row">
+          <div id="grid">
+            <div id="item1">1</div>
+            <div id="item1">2</div>
+            <div id="item1">3</div>
+            <div id="item1">4</div>
+            <div id="item1">5</div>
+            <div id="item1">6</div>
+            <div id="item1">7</div>
+            <div id="item1">8</div>
+            <div id="item1">9</div>
+            <div id="item1">10</div>
+            <div id="item1">11</div>
+            <div id="item1">12</div>
+            <div id="item1">13</div>
+            <div id="item1">14</div>
+            <div id="item1">15</div>
+            <div id="item1">16</div>
+            <div id="item1">17</div>
+            <div id="item1">18</div>
+            <div id="item1">19</div>
+            <div id="item1">20</div>
+            <div id="item1">21</div>
+            <div id="item1">22</div>
+            <div id="item1">23</div>
+            <div id="item1">24</div>
+            <div id="item1">25</div>
+            <div id="item1">10</div>
+            <div id="item1">11</div>
+            <div id="item1">12</div>
+            <div id="item1">13</div>
+            <div id="item1">14</div>
+            <div id="item1">15</div>
+            <div id="item1">16</div>
+            <div id="item1">17</div>
+            <div id="item1">18</div>
+            <div id="item1">19</div>
+            <div id="item1">20</div>
+            <div id="item1">21</div>
+            <div id="item1">22</div>
+            <div id="item1">23</div>
+            <div id="item1">24</div>
+            <div id="item1">25</div>
+          </div>
         </div>
       </div>
       <!-- end row -->

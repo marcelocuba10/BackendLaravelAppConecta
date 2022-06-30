@@ -53,6 +53,25 @@ class MachinesController extends Controller
         return view('user::machines.index', compact('machines'))->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
+    public function grid_view()
+    {
+        $machines = DB::table('machines')
+            ->leftjoin('users', 'machines.user_id', '=', 'users.id')
+            ->leftjoin('customers', 'machines.customer_id', '=', 'customers.id')
+            ->select('users.name AS user_name', 'machines.id', 'machines.name','machines.codeQR', 'machines.status', 'machines.observation', 'customers.name AS customer_name')
+            ->get();
+
+        // echo("<pre>");
+        // print_r($machines);
+        // echo("<\pre>");
+
+        //exit;
+
+        //dd($machines);
+
+        return view('user::machines.index_grid', compact('machines'))->with('i', (request()->input('page', 1) - 1) * 5);
+    }
+
     public function create()
     {
         $customers = DB::table('customers')->get();
@@ -65,7 +84,7 @@ class MachinesController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|max:20|min:5',
+            'name' => 'required|max:20|min:4',
             'status' => 'required|max:15|min:5',
             'customer_id' => 'required',
             'codeQR' => 'required|max:20|min:5|unique:machines,codeQR',
@@ -74,6 +93,7 @@ class MachinesController extends Controller
 
         $input = $request->all();
         $input['user_id'] = $request->user()->id;
+        $input['name'] = strtoupper($request->input('name'));
         Machines::create($input);
 
         return redirect()->route('machines.index')->with('message', 'Machine created successfully.');
@@ -113,7 +133,7 @@ class MachinesController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => 'required|max:20|min:5',
+            'name' => 'required|max:20|min:4',
             'status' => 'required|max:15|min:5',
             'customer_id' => 'required',
             'codeQR' => 'required|max:20|min:5|unique:machines,codeQR,' . $id,
@@ -122,6 +142,7 @@ class MachinesController extends Controller
 
         $input = $request->all();
         $input['user_id'] = $request->user()->id;
+        $input['name'] = strtoupper($request->input('name'));
         $machine = Machines::find($id);
         $machine->update($input);
 

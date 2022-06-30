@@ -6,7 +6,7 @@
         <div class="col-sm-6">
           <div class="input-style-1">
             <label>(*) Nombre</label>
-            <input type="text" name="name" value="{{ $machine->name ?? old('name') }}" class="bg-transparent">
+            <input style="text-transform: uppercase" type="text" name="name" value="{{ $machine->name ?? old('name') }}" class="bg-transparent">
           </div>
         </div>
         <!-- end col -->
@@ -63,7 +63,7 @@
       <div class="col-12">
         <div class="button-group d-flex justify-content-center flex-wrap">
           <button type="submit" class="main-btn primary-btn btn-hover m-2">Guardar</button>
-          <a class="main-btn danger-btn-outline m-2" href="{{ route('machines.index') }}">Cancelar</a>
+          <a class="main-btn danger-btn-outline m-2" href="/user/machines/grid_view">Cancelar</a>
         </div>
       </div>
     </div>

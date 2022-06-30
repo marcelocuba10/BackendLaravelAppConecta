@@ -1,3 +1,12 @@
+.icon-card-grid {
+    display: inline-flex;
+    align-items: center;
+    padding: 12px 12px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0px 10px 20px rgb(200 208 216 / 30%);
+    border-radius: 10px;
+}
+
 .hthtg{
     max-width: 45px;
     width: 141%;

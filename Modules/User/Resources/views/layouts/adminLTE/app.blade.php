@@ -22,6 +22,7 @@
   <link rel="stylesheet" href="/assets/css/vanilla-dataTables.min.css" />
 
   <link href="/css/custom-style.css" rel="stylesheet">
+
 </head>
 
 <body>
@@ -61,6 +62,8 @@
   <script src="/assets/js/main.js"></script>
 
   <script src="/js/vanilla-masker.min.js"></script>
+  <!--jQuery-->
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script> 
 
   <script>
     // ======== InputMask in all forms only inputs Date & Phone
@@ -89,6 +92,13 @@
         zeroCents: true
       });
     }
+  </script>
+
+  <script>
+    $(document).ready(function() {
+      //initializing tooltip
+      $('[data-toggle="tooltip"]').tooltip();
+    });
   </script>
 
   <script>

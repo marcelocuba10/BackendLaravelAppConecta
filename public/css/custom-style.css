@@ -4,26 +4,27 @@
     grid-template-columns: repeat(16, 1fr);
     grid-template-rows: auto;
   }
+
+  #item.success-bg:hover {
+    background-color: #4dc480;
+  }
+
+  #item.danger-bg:hover {
+    background-color: #ED6969;
+  }
+
+  #item.warning-bg:hover {
+    background-color: #F3CD59;
+  }
   
-  #item1 {
-    background-color: lime;
+  #item {
+    /* background-color: lime; */
     height: 45px;
-    border: 1px solid #252323;
+    border: 1px solid #adabab;
     margin-right: 4px;
     text-align: center;
     margin-bottom: 4px;
   }
-  
-  #item2 {
-    background-color: yellow;
-    grid-column: 2 / 4;
-  }
-  
-  #item3 {
-    background-color: blue;
-    grid-column: span 2 / 7;
-  }
-
 
 .icon-card-grid {
     display: inline-flex;
@@ -50,6 +51,18 @@
     margin-right: 10px;
     margin-left: 10px;
 }
+
+.tooltip-inner {
+    background-color: #E8F1FE !important;
+    color: #262d3f !important;
+    font-weight: 700;
+    font-size: 16px;
+    padding: 10px 25px;
+  }
+  
+  .tooltip.bottom .tooltip-arrow {
+    border-bottom-color: #00acd6;
+  }
 
 .table-pagination ul li a {
     width: 32px;

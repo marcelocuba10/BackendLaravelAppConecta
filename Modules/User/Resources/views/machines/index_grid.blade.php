@@ -35,47 +35,85 @@
 
     <div class="form-layout-wrapper">
       <div class="card-style activity-card mb-30">
-        <div id="legend3">
-          <ul class="legend3 d-flex align-items-center mb-30">
-            <li>
-              <div class="d-flex">
-                <span class="bg-color info-bg"></span>
-                <div class="text">
-                  <p class="text-sm text-dark">Encendido</p>
-                </div>
+        <div class="row">
+          <div class="d-flex flex-wrap justify-content-between align-items-center py-3">
+            <div class="left col-md-9">
+              <div id="legend3">
+                <ul class="legend3 d-flex align-items-center mb-30">
+                  <li>
+                    <div class="d-flex">
+                      <span class="bg-color info-bg"></span>
+                      <div class="text">
+                        <p class="text-sm text-dark">Encendido</p>
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="d-flex">
+                      <span class="bg-color dark-bg"></span>
+                      <div class="text">
+                        <p class="text-sm text-dark">Apagado</p>
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="d-flex">
+                      <span class="bg-color warning-bg"> </span>
+                      <div class="text">
+                        <p class="text-sm text-dark">Requiere Atención</p>
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="d-flex">
+                      <span class="bg-color primary-bg"></span>
+                      <div class="text">
+                        <p class="text-sm text-dark">Mantenimiento</p>
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="d-flex">
+                      <span class="bg-color danger-bg"> </span>
+                      <div class="text">
+                        <p class="text-sm text-dark">Error</p>
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="d-flex">
+                      <span class="bg-color gray-bg-custom"></span>
+                      <div class="text">
+                        <p class="text-sm text-dark">Deshabilitado</p>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
               </div>
-            </li>
-            <li>
-              <div class="d-flex">
-                <span class="bg-color danger-bg"></span>
-                <div class="text">
-                  <p class="text-sm text-dark">Apagado</p>
-                </div>
+            </div>
+            <div class="right col-md-3">
+              <div class="table-search d-flex" style="margin-top: -35px;">
+                <form action="#">
+                  <input type="text" placeholder="Buscar por cliente...">
+                  <button><i class="lni lni-search-alt"></i></button>
+                </form>
               </div>
-            </li>
-            <li>
-              <div class="d-flex">
-                <span class="bg-color primary-bg"> </span>
-                <div class="text">
-                  <p class="text-sm text-dark">Actualizando</p>
-                </div>
-              </div>
-            </li>
-            <li>
-              <div class="d-flex">
-                <span class="bg-color warning-bg"></span>
-                <div class="text">
-                  <p class="text-sm text-dark">Mantenimiento</p>
-                </div>
-              </div>
-            </li>
-          </ul>
+            </div>
+          </div>
         </div>
         <div class="row">
           <div id="grid">
             @foreach ($machines as $machine)
               <a href="{{ route('machines.edit', $machine->id) }}">
-                <div id="item" data-toggle="tooltip" data-placement="bottom" title="{{ $machine->name }}" class="@if($machine->status == 'Encendido') success-bg @elseIf($machine->status == 'Apagado') danger-bg @elseIf($machine->status == 'Mantenimiento') warning-bg @endif">
+                <div id="item" data-toggle="tooltip" data-placement="bottom" title="{{ $machine->name }}" 
+                  class="
+                  @if($machine->status == 'Encendido') success-bg 
+                  @elseIf($machine->status == 'Apagado') dark-bg 
+                  @elseIf($machine->status == 'Requiere Atención') warning-bg
+                  @elseIf($machine->status == 'Mantenimiento') primary-bg
+                  @elseIf($machine->status == 'Error') danger-bg
+                  @elseIf($machine->status == 'Deshabilitado') gray-bg-custom 
+                  @endif">
                   <p class="text-sm  text-white" style="margin-top: 10px;">{{ Str::limit($machine->name, 5) }}</p>
                 </div>
               </a>  

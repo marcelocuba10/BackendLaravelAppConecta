@@ -70,8 +70,6 @@
                         <th><h6>#</h6></th>
                         <th><h6>Nombre</h6></th>
                         <th><h6>Estado</h6></th>
-                        <th><h6>CódigoQR</h6></th>
-                        <th><h6>CódigoQR</h6></th>
                         <th><h6>Cliente</h6></th>
                         <th><h6>Funcionario</h6></th>
                         <th><h6>Observación</h6></th>
@@ -83,12 +81,19 @@
                         @foreach ($machines as $machine)
                         <tr>
                             <td class="min-width"><p>{{ ++$i }}</p></td>
-                            <td class="min-width"><h5 class="text-bold text-dark">{{ $machine->name }}</h5></td>
+                            <td class="min-width"><h5 class="text-bold text-dark"><a href="{{ route('machines.edit', $machine->id) }}">{{ $machine->name }}</a></h5></td>
                             <td class="min-width">
-                              <span class="status-btn @if($machine->status == 'Encendido') success-btn @elseIf($machine->status == 'Apagado') close-btn @elseIf($machine->status == 'Mantenimiento') warning-btn @endif">{{ $machine->status }}</span>
+                              <span class="status-btn 
+                              @if($machine->status == 'Encendido') success-btn
+                              @elseIf($machine->status == 'Apagado') gray-btn-custom
+                              @elseIf($machine->status == 'Requiere Atención') warning-btn
+                              @elseIf($machine->status == 'Mantenimiento') primary-btn
+                              @elseIf($machine->status == 'Error') danger-btn
+                              @elseIf($machine->status == 'Deshabilitado') dark-btn
+                              @endif">
+                                {{ $machine->status }}
+                              </span>
                             </td>
-                            <td class="min-width"><p>{{ $machine->codeQR }}</p></td>
-                            <td class="min-width"><p>{!! QrCode::size(50)->generate( $machine->codeQR ) !!}</p></td>
                             <td class="min-width"><p>{{ $machine->customer_name }}</p></td>
                             <td class="min-width"><p>{{ $machine->user_name }}</p></td>
                             <td class="min-width"><p>{{ $machine->observation }}</p></td>

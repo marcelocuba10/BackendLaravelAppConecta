@@ -1,3 +1,12 @@
+.gray-bg-custom{
+    background-color: #5f5f5f;
+}
+
+.gray-btn-custom{
+    background-color: #5f5f5f;
+    color: #fff;
+}
+
 #grid {
     display: grid;
     /* height: 100px; */
@@ -16,14 +25,26 @@
   #item.warning-bg:hover {
     background-color: #F3CD59;
   }
+
+  #item.dark-bg:hover {
+    background-color: #454b5e;
+  }
+
+  #item.primary-bg:hover {
+    background-color: #7C9AFF;
+  }
+
+  #item.gray-bg-custom:hover {
+    background-color: #817e7e;
+  }
   
   #item {
-    /* background-color: lime; */
     height: 45px;
-    border: 1px solid #adabab;
-    margin-right: 4px;
+    border: 1px solid #eaeaea;
+    margin-right: 1px;
     text-align: center;
-    margin-bottom: 4px;
+    box-shadow: 0px 1px 8px 1px #d7d7d7;
+    margin-bottom: 1px;
   }
 
 .icon-card-grid {

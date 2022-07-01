@@ -48,8 +48,6 @@ class MachinesController extends Controller
 
         //exit;
 
-        //dd($machines);
-
         return view('user::machines.index', compact('machines'))->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
@@ -75,7 +73,7 @@ class MachinesController extends Controller
     public function create()
     {
         $customers = DB::table('customers')->get();
-        $status = ['Encendido', 'Apagado', 'Mantenimiento'];
+        $status = ['Encendido', 'Apagado', 'Mantenimiento', 'Requiere Atención', 'Error', 'Deshabilitado'];
         $machine = null;
         $codeQR = Str::random(8);
         return view('user::machines.create', compact('customers', 'status', 'machine', 'codeQR'));
@@ -85,7 +83,7 @@ class MachinesController extends Controller
     {
         $request->validate([
             'name' => 'required|max:20|min:4',
-            'status' => 'required|max:15|min:5',
+            'status' => 'required|max:30|min:5',
             'customer_id' => 'required',
             'codeQR' => 'required|max:20|min:5|unique:machines,codeQR',
             'observation' => 'nullable|max:200|min:5',
@@ -96,7 +94,7 @@ class MachinesController extends Controller
         $input['name'] = strtoupper($request->input('name'));
         Machines::create($input);
 
-        return redirect()->route('machines.index')->with('message', 'Machine created successfully.');
+        return redirect()->route('machines.grid_view')->with('message', 'Machine created successfully.');
     }
 
     public function show($id)
@@ -107,16 +105,22 @@ class MachinesController extends Controller
             ->where('machines.id', '=', $id)
             ->first();
 
+        $machines = DB::table('machines')
+            ->leftjoin('users', 'machines.user_id', '=', 'users.id')
+            ->leftjoin('customers', 'machines.customer_id', '=', 'customers.id')
+            ->select('users.name AS user_name', 'machines.id', 'machines.name','machines.created_at', 'machines.status', 'machines.observation', 'customers.name AS customer_name')
+            ->get();
+
         //to generate the qr code in the view from the obtained data
         $codeQR = $machine->codeQR;
 
-        return view('user::machines.show', compact('machine', 'codeQR'));
+        return view('user::machines.show', compact('machine', 'codeQR','machines'))->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
     public function edit($id)
     {
         $customers = Customers::all();
-        $status = ['Encendido', 'Apagado', 'Mantenimiento'];
+        $status = ['Encendido', 'Apagado', 'Mantenimiento', 'Requiere Atención', 'Error', 'Deshabilitado'];
 
         $machine = DB::table('machines')
             ->leftjoin('customers', 'machines.customer_id', '=', 'customers.id')
@@ -124,17 +128,23 @@ class MachinesController extends Controller
             ->where('machines.id', '=', $id)
             ->first();
 
+        $machines = DB::table('machines')
+            ->leftjoin('users', 'machines.user_id', '=', 'users.id')
+            ->leftjoin('customers', 'machines.customer_id', '=', 'customers.id')
+            ->select('users.name AS user_name', 'machines.id', 'machines.name','machines.created_at', 'machines.status', 'machines.observation', 'customers.name AS customer_name')
+            ->get();    
+
         //to generate the qr code in the view from the obtained data
         $codeQR = $machine->codeQR;
 
-        return view('user::machines.edit', compact('machine', 'status', 'customers','codeQR'));
+        return view('user::machines.edit', compact('machine', 'status', 'customers','codeQR','machines'))->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
     public function update(Request $request, $id)
     {
         $request->validate([
             'name' => 'required|max:20|min:4',
-            'status' => 'required|max:15|min:5',
+            'status' => 'required|max:30|min:5',
             'customer_id' => 'required',
             'codeQR' => 'required|max:20|min:5|unique:machines,codeQR,' . $id,
             'observation' => 'nullable|max:200|min:5',
@@ -146,7 +156,7 @@ class MachinesController extends Controller
         $machine = Machines::find($id);
         $machine->update($input);
 
-        return redirect()->route('machines.index')->with('message', 'Machine updated successfully.');
+        return redirect()->route('machines.grid_view')->with('message', 'Machine updated successfully.');
     }
 
     public function destroy($id)

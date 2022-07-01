@@ -34,13 +34,13 @@
             <!-- ========== title-wrapper end ========== -->
             <div class="form-layout-wrapper">
                 <div class="row">
-                  <div class="col-lg-12">
-                    <form method="POST" action="{{ route('machines.store') }}">
-                        @include('user::machines._partials.form')
-                    </form>
+                    <div class="col-lg-12">
+                        <form method="POST" action="{{ route('machines.store') }}">
+                            @include('user::machines._partials.form')
+                        </form>
+                    </div>
                 </div>
             </div>
-        </div>
     </section>
 
 @endsection  

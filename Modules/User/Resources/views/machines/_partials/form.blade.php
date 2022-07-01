@@ -101,6 +101,7 @@
   </div>
 </div>
 
+@if ($machine_changes)
 <div class="row">
   <div class="col-lg-12">
     <div class="card-style mb-30">
@@ -119,26 +120,15 @@
             <!-- end table row-->
           </thead>
           <tbody>
-              @foreach ($machines as $machine)
+              @foreach ($machine_changes as $machine)
               <tr>
                   <td class="min-width"><p>{{ ++$i }}</p></td>
-                  <td class="min-width"><h5 class="text-bold text-dark"><a href="{{ route('machines.edit', $machine->id) }}">{{ $machine->name }}</a></h5></td>
-                  <td class="min-width">
-                    <span class="status-btn 
-                    @if($machine->status == 'Encendido') success-btn
-                    @elseIf($machine->status == 'Apagado') gray-btn-custom
-                    @elseIf($machine->status == 'Requiere Atención') warning-btn
-                    @elseIf($machine->status == 'Mantenimiento') primary-btn
-                    @elseIf($machine->status == 'Error') danger-btn
-                    @elseIf($machine->status == 'Deshabilitado') dark-btn
-                    @endif">
-                      {{ $machine->status }}
-                    </span>
-                  </td>
-                  <td class="min-width"><p>{{ $machine->created_at }}</p></td>
-                  <td class="min-width"><p>{{ $machine->customer_name }}</p></td>
-                  <td class="min-width"><p>{{ $machine->user_name }}</p></td>
-                  <td class="min-width"><p>{{ $machine->observation }}</p></td>
+                  <td class="min-width"><p>{{ $machine->name }}</p></td>
+                  <td class="min-width"><h5 class="text-bold text-dark">{{ $machine->status }}</h5></td>
+                  <td class="min-width"><p><i class="lni lni-calendar mr-10"></i>{{ $machine->created_at }}</p></td>
+                  <td class="min-width"><p><i class="lni lni-user mr-10"></i>{{ $machine->customer_name }}</p></td>
+                  <td class="min-width"><p><i class="lni lni-user mr-10"></i>{{ $machine->user_name }}</p></td>
+                  <td class="min-width"><p><i class="lni lni-comments-alt mr-10"></i>{{ $machine->observation }}</p></td>
               </tr>
               @endforeach
             <!-- end table row -->
@@ -152,3 +142,43 @@
   <!-- end col -->
 </div>
 <!-- end row -->
+@else
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card-style mb-30">
+      <div class="table-wrapper table-responsive">
+        <table class="table">
+          <thead>
+            <tr>
+              <th><h6>#</h6></th>
+              <th><h6>Nombre</h6></th>
+              <th><h6>Estado</h6></th>
+              <th><h6>Fecha</h6></th>
+              <th><h6>Cliente</h6></th>
+              <th><h6>Funcionario</h6></th>
+              <th><h6>Observación</h6></th>
+            </tr>
+            <!-- end table row-->
+          </thead>
+          <tbody>
+              <tr>
+                  <td class="min-width"><p></p></td>
+                  <td class="min-width"><p></p></td>
+                  <td class="min-width"><p></p></td>
+                  <td class="min-width"><p></p></td>
+                  <td class="min-width"><p></p></td>
+                  <td class="min-width"><p></p></td>
+                  <td class="min-width"><p></p></td>
+              </tr>
+            <!-- end table row -->
+          </tbody>
+        </table>
+        <!-- end table -->
+      </div>
+    </div>
+    <!-- end card -->
+  </div>
+  <!-- end col -->
+</div>
+<!-- end row -->
+@endif

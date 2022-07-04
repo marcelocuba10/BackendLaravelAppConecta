@@ -18,13 +18,14 @@
         </div>
         <!-- end col -->
         <div class="col-md-4">
-          <div class="breadcrumb-wrapper mb-30">
-            <nav aria-label="breadcrumb">
-              <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="/user/dashboard">Dashboard</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Vista Cuadrícula</li>
-              </ol>
-            </nav>
+          <div class="right">
+            <div class="table-search d-flex" style="margin-top: -35px;float: right;">
+              <form action="{{ route('machines.search_gridview') }}" method="POST">
+                @csrf
+                <input style="background-color: #fff;" type="text" name="filter" value="{{ $filter ?? '' }}" placeholder="Buscar por cliente...">
+                <button type="submit"><i class="lni lni-search-alt"></i></button>
+              </form>    
+            </div>
           </div>
         </div>
         <!-- end col -->
@@ -42,9 +43,23 @@
                 <ul class="legend3 d-flex align-items-center mb-30">
                   <li>
                     <div class="d-flex">
+                      <span class="bg-color secondary-bg"></span>
+                      <div class="text">
+                        <form action="{{ route('machines.search_gridview') }}" method="POST">
+                          @csrf
+                          <button class="btn-group-status" name="filter" value="Todos" type="submit"><p class="text-sm text-dark">Todos</p></button>
+                        </form> 
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="d-flex">
                       <span class="bg-color info-bg"></span>
                       <div class="text">
-                        <p class="text-sm text-dark">Encendido</p>
+                        <form action="{{ route('machines.search_gridview') }}" method="POST">
+                          @csrf
+                          <button class="btn-group-status" name="filter" value="Encendido" type="submit"><p class="text-sm text-dark">Encendido</p></button>
+                        </form> 
                       </div>
                     </div>
                   </li>
@@ -52,7 +67,10 @@
                     <div class="d-flex">
                       <span class="bg-color dark-bg"></span>
                       <div class="text">
-                        <p class="text-sm text-dark">Apagado</p>
+                        <form action="{{ route('machines.search_gridview') }}" method="POST">
+                          @csrf
+                          <button class="btn-group-status" name="filter" value="Apagado" type="submit"><p class="text-sm text-dark">Apagado</p></button>
+                        </form> 
                       </div>
                     </div>
                   </li>
@@ -60,7 +78,10 @@
                     <div class="d-flex">
                       <span class="bg-color warning-bg"> </span>
                       <div class="text">
-                        <p class="text-sm text-dark">Requiere Atención</p>
+                        <form action="{{ route('machines.search_gridview') }}" method="POST">
+                          @csrf
+                          <button class="btn-group-status" name="filter" value="Requiere Atención" type="submit"><p class="text-sm text-dark">Requiere Atención</p></button>
+                        </form> 
                       </div>
                     </div>
                   </li>
@@ -68,7 +89,10 @@
                     <div class="d-flex">
                       <span class="bg-color primary-bg"></span>
                       <div class="text">
-                        <p class="text-sm text-dark">Mantenimiento</p>
+                        <form action="{{ route('machines.search_gridview') }}" method="POST">
+                          @csrf
+                          <button class="btn-group-status" name="filter" value="Mantenimiento" type="submit"><p class="text-sm text-dark">Mantenimiento</p></button>
+                        </form> 
                       </div>
                     </div>
                   </li>
@@ -76,7 +100,10 @@
                     <div class="d-flex">
                       <span class="bg-color danger-bg"> </span>
                       <div class="text">
-                        <p class="text-sm text-dark">Error</p>
+                        <form action="{{ route('machines.search_gridview') }}" method="POST">
+                          @csrf
+                          <button class="btn-group-status" name="filter" value="Error" type="submit"><p class="text-sm text-dark">Error</p></button>
+                        </form> 
                       </div>
                     </div>
                   </li>
@@ -84,20 +111,17 @@
                     <div class="d-flex">
                       <span class="bg-color gray-bg-custom"></span>
                       <div class="text">
-                        <p class="text-sm text-dark">Deshabilitado</p>
+                        <form action="{{ route('machines.search_gridview') }}" method="POST">
+                          @csrf
+                          <button class="btn-group-status" name="filter" value="Deshabilitado" type="submit"><p class="text-sm text-dark">Deshabilitado</p></button>
+                        </form> 
                       </div>
                     </div>
                   </li>
                 </ul>
               </div>
             </div>
-            <div class="right col-md-3">
-              <div class="table-search d-flex" style="margin-top: -35px;">
-                <form action="#">
-                  <input type="text" placeholder="Buscar por cliente...">
-                  <button><i class="lni lni-search-alt"></i></button>
-                </form>
-              </div>
+            <div class="right">
             </div>
           </div>
         </div>

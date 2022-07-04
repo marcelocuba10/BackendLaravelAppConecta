@@ -20,11 +20,57 @@ class MachinesController extends Controller
         $this->middleware('auth:web', ['except' => ['logout']]);
     }
 
+    public function search_list(Request $request)
+    {
+        $filter = $request->input('filter');
+
+        if ($filter == 'Todos') {
+            $machines = DB::table('machines')
+                ->leftjoin('users', 'machines.user_id', '=', 'users.id')
+                ->leftjoin('customers', 'machines.customer_id', '=', 'customers.id')
+                ->select('users.name AS user_name', 'machines.id', 'machines.name', 'machines.codeQR', 'machines.status', 'machines.observation', 'customers.name AS customer_name')
+                ->paginate(10);
+
+        } else {
+            $machines = DB::table('machines')
+                ->leftjoin('users', 'machines.user_id', '=', 'users.id')
+                ->leftjoin('customers', 'machines.customer_id', '=', 'customers.id')
+                ->select('users.name AS user_name', 'machines.id', 'machines.name', 'machines.codeQR', 'machines.status', 'machines.observation', 'customers.name AS customer_name')
+                ->where('customers.name', 'LIKE', "%{$filter}%")
+                ->orWhere('machines.status', 'LIKE', "%{$filter}%")
+                ->paginate(10);
+        }
+
+        return view('user::machines.index', compact('machines', 'filter'))->with('i', (request()->input('page', 1) - 1) * 10);
+    }
+
+    public function search_gridview(Request $request)
+    {
+        $filter = $request->input('filter');
+
+        if ($filter == 'Todos') {
+            $machines = DB::table('machines')
+                ->leftjoin('users', 'machines.user_id', '=', 'users.id')
+                ->leftjoin('customers', 'machines.customer_id', '=', 'customers.id')
+                ->select('users.name AS user_name', 'machines.id', 'machines.name', 'machines.codeQR', 'machines.status', 'machines.observation', 'customers.name AS customer_name')
+                ->get();
+        } else {
+            $machines = DB::table('machines')
+                ->leftjoin('users', 'machines.user_id', '=', 'users.id')
+                ->leftjoin('customers', 'machines.customer_id', '=', 'customers.id')
+                ->select('users.name AS user_name', 'machines.id', 'machines.name', 'machines.codeQR', 'machines.status', 'machines.observation', 'customers.name AS customer_name')
+                ->where('customers.name', 'LIKE', "%{$filter}%")
+                ->orWhere('machines.status', 'LIKE', "%{$filter}%")
+                ->get();
+        }
+
+        return view('user::machines.index_grid', compact('machines', 'filter'))->with('i', (request()->input('page', 1) - 1) * 10);
+    }
+
     public function createPDF(Request $request)
     {
         $machines = Machines::get();
         $machinesLength = count($machines);
-
 
         if ($request->has('download')) {
             $pdf = PDF::loadView('user::machines.createPDF', compact('machines', 'machinesLength'))->setPaper('a4', 'portrait')->setOptions(['dpi' => 150, 'defaultFont' => 'sans-serif']);
@@ -36,6 +82,7 @@ class MachinesController extends Controller
 
     public function index()
     {
+        $filter = null;
         $machines = DB::table('machines')
             ->leftjoin('users', 'machines.user_id', '=', 'users.id')
             ->leftjoin('customers', 'machines.customer_id', '=', 'customers.id')
@@ -48,7 +95,7 @@ class MachinesController extends Controller
 
         //exit;
 
-        return view('user::machines.index', compact('machines'))->with('i', (request()->input('page', 1) - 1) * 5);
+        return view('user::machines.index', compact('machines', 'filter'))->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
     public function grid_view()

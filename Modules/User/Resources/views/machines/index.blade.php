@@ -19,13 +19,14 @@
           </div>
           <!-- end col -->
           <div class="col-md-4">
-            <div class="breadcrumb-wrapper mb-30">
-              <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                  <li class="breadcrumb-item"><a href="{{ route('user.dashboard') }}">Dashboard</a></li>
-                  <li class="breadcrumb-item active" aria-current="page">Listado</li>
-                </ol>
-              </nav>
+            <div class="right">
+              <div class="table-search d-flex" style="margin-top: -35px;float: right;">
+                <form action="{{ route('machines.search_list') }}" method="POST">
+                  @csrf
+                  <input style="background-color: #fff;" type="text" name="filter" value="{{ $filter ?? '' }}" placeholder="Buscar por cliente...">
+                  <button type="submit"><i class="lni lni-search-alt"></i></button>
+                </form>    
+              </div>
             </div>
           </div>
           <!-- end col -->
@@ -39,28 +40,92 @@
       <div class="tables-wrapper">
         <div class="row">
             <div class="col-lg-12">
-              <div class="card-style mb-30">
+              <div class="card-style activity-card mb-30">
                 <div class="d-flex flex-wrap justify-content-between align-items-center py-3">
                   <div class="left">
-                    <div class="dataTable-dropdown">
-                      <label>
-                          <select class="dataTable-selector">
-                              <option value="5">5</option>
-                              <option value="10" selected="">10</option>
-                              <option value="15">15</option>
-                              <option value="20">20</option>
-                              <option value="25">25</option>
-                          </select> entries per page
-                      </label>
+                    <div id="legend3">
+                      <ul class="legend3 d-flex align-items-center mb-30">
+                        <li>
+                          <div class="d-flex">
+                            <span class="bg-color secondary-bg"></span>
+                            <div class="text">
+                              <form action="{{ route('machines.search_list') }}" method="POST">
+                                @csrf
+                                <button class="btn-group-status" name="filter" value="Todos" type="submit"><p class="text-sm text-dark">Todos</p></button>
+                              </form> 
+                            </div>
+                          </div>
+                        </li>
+                        <li>
+                          <div class="d-flex">
+                            <span class="bg-color info-bg"></span>
+                            <div class="text">
+                              <form action="{{ route('machines.search_list') }}" method="POST">
+                                @csrf
+                                <button class="btn-group-status" name="filter" value="Encendido" type="submit"><p class="text-sm text-dark">Encendido</p></button>
+                              </form> 
+                            </div>
+                          </div>
+                        </li>
+                        <li>
+                          <div class="d-flex">
+                            <span class="bg-color dark-bg"></span>
+                            <div class="text">
+                              <form action="{{ route('machines.search_list') }}" method="POST">
+                                @csrf
+                                <button class="btn-group-status" name="filter" value="Apagado" type="submit"><p class="text-sm text-dark">Apagado</p></button>
+                              </form> 
+                            </div>
+                          </div>
+                        </li>
+                        <li>
+                          <div class="d-flex">
+                            <span class="bg-color warning-bg"> </span>
+                            <div class="text">
+                              <form action="{{ route('machines.search_list') }}" method="POST">
+                                @csrf
+                                <button class="btn-group-status" name="filter" value="Requiere Atención" type="submit"><p class="text-sm text-dark">Requiere Atención</p></button>
+                              </form> 
+                            </div>
+                          </div>
+                        </li>
+                        <li>
+                          <div class="d-flex">
+                            <span class="bg-color primary-bg"></span>
+                            <div class="text">
+                              <form action="{{ route('machines.search_list') }}" method="POST">
+                                @csrf
+                                <button class="btn-group-status" name="filter" value="Mantenimiento" type="submit"><p class="text-sm text-dark">Mantenimiento</p></button>
+                              </form> 
+                            </div>
+                          </div>
+                        </li>
+                        <li>
+                          <div class="d-flex">
+                            <span class="bg-color danger-bg"> </span>
+                            <div class="text">
+                              <form action="{{ route('machines.search_list') }}" method="POST">
+                                @csrf
+                                <button class="btn-group-status" name="filter" value="Error" type="submit"><p class="text-sm text-dark">Error</p></button>
+                              </form> 
+                            </div>
+                          </div>
+                        </li>
+                        <li>
+                          <div class="d-flex">
+                            <span class="bg-color gray-bg-custom"></span>
+                            <div class="text">
+                              <form action="{{ route('machines.search_list') }}" method="POST">
+                                @csrf
+                                <button class="btn-group-status" name="filter" value="Deshabilitado" type="submit"><p class="text-sm text-dark">Deshabilitado</p></button>
+                              </form> 
+                            </div>
+                          </div>
+                        </li>
+                      </ul>
                     </div>
                   </div>
                   <div class="right">
-                    <div class="table-search d-flex">
-                      <form action="#">
-                        <input type="text" placeholder="Search...">
-                        <button><i class="lni lni-search-alt"></i></button>
-                      </form>
-                    </div>
                   </div>
                 </div>
                 <div class="table-wrapper table-responsive">
@@ -134,7 +199,13 @@
                     </tbody>
                   </table>
                   <!-- end table -->
-                  {{ $machines->links() }} <!-- paginacion default -->
+                  {{-- {{ $machines->links() }} <!-- paginacion default --> --}}
+
+                  @if (isset($filter))
+                      {!! $machines-> appends($filter)->links() !!} <!-- appends envia variable en la paginacion-->
+                  @else
+                      {!! $machines-> links() !!}    
+                  @endif
                 </div>
               </div>
               <!-- end card -->

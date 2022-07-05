@@ -47,18 +47,7 @@
                       <ul class="legend3 d-flex align-items-center mb-30">
                         <li>
                           <div class="d-flex">
-                            <span class="bg-color secondary-bg"></span>
-                            <div class="text">
-                              <form action="{{ route('machines.search_list') }}" method="POST">
-                                @csrf
-                                <button class="btn-group-status" name="filter" value="Todos" type="submit"><p class="text-sm text-dark">Todos</p></button>
-                              </form> 
-                            </div>
-                          </div>
-                        </li>
-                        <li>
-                          <div class="d-flex">
-                            <span class="bg-color info-bg"></span>
+                            <span class="bg-color bg-card-enabled"></span>
                             <div class="text">
                               <form action="{{ route('machines.search_list') }}" method="POST">
                                 @csrf
@@ -69,18 +58,7 @@
                         </li>
                         <li>
                           <div class="d-flex">
-                            <span class="bg-color dark-bg"></span>
-                            <div class="text">
-                              <form action="{{ route('machines.search_list') }}" method="POST">
-                                @csrf
-                                <button class="btn-group-status" name="filter" value="Apagado" type="submit"><p class="text-sm text-dark">Apagado</p></button>
-                              </form> 
-                            </div>
-                          </div>
-                        </li>
-                        <li>
-                          <div class="d-flex">
-                            <span class="bg-color warning-bg"> </span>
+                            <span class="bg-color bg-card-attention"> </span>
                             <div class="text">
                               <form action="{{ route('machines.search_list') }}" method="POST">
                                 @csrf
@@ -91,18 +69,7 @@
                         </li>
                         <li>
                           <div class="d-flex">
-                            <span class="bg-color primary-bg"></span>
-                            <div class="text">
-                              <form action="{{ route('machines.search_list') }}" method="POST">
-                                @csrf
-                                <button class="btn-group-status" name="filter" value="Mantenimiento" type="submit"><p class="text-sm text-dark">Mantenimiento</p></button>
-                              </form> 
-                            </div>
-                          </div>
-                        </li>
-                        <li>
-                          <div class="d-flex">
-                            <span class="bg-color danger-bg"> </span>
+                            <span class="bg-color bg-card-error"> </span>
                             <div class="text">
                               <form action="{{ route('machines.search_list') }}" method="POST">
                                 @csrf
@@ -113,7 +80,18 @@
                         </li>
                         <li>
                           <div class="d-flex">
-                            <span class="bg-color gray-bg-custom"></span>
+                            <span class="bg-color bg-card-maintenance"></span>
+                            <div class="text">
+                              <form action="{{ route('machines.search_list') }}" method="POST">
+                                @csrf
+                                <button class="btn-group-status" name="filter" value="Mantenimiento" type="submit"><p class="text-sm text-dark">Mantenimiento</p></button>
+                              </form> 
+                            </div>
+                          </div>
+                        </li>
+                        <li>
+                          <div class="d-flex">
+                            <span class="bg-color bg-card-offline"></span>
                             <div class="text">
                               <form action="{{ route('machines.search_list') }}" method="POST">
                                 @csrf
@@ -122,10 +100,35 @@
                             </div>
                           </div>
                         </li>
+                        <li>
+                          <div class="d-flex">
+                            <span class="bg-color bg-card-disabled"></span>
+                            <div class="text">
+                              <form action="{{ route('machines.search_list') }}" method="POST">
+                                @csrf
+                                <button class="btn-group-status" name="filter" value="Apagado" type="submit"><p class="text-sm text-dark">Apagado</p></button>
+                              </form> 
+                            </div>
+                          </div>
+                        </li>
                       </ul>
                     </div>
                   </div>
                   <div class="right">
+                    @if ($filter != 'Todos' && $filter != null)
+                    <ul class="legend3 d-flex align-items-center mb-30">
+                      <li>
+                        <div class="d-flex">
+                          <div class="text">
+                            <form action="{{ route('machines.search_list') }}" method="POST">
+                              @csrf
+                              <button class="btn-group-status" name="filter" value="Todos" type="submit"><p class="text-sm text-dark"><i class="lni lni-close"></i>&nbsp; Quitar Filtros</p></button>
+                            </form> 
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                    @endif
                   </div>
                 </div>
                 <div class="table-wrapper table-responsive">
@@ -149,12 +152,12 @@
                             <td class="min-width"><h5 class="text-bold text-dark"><a href="{{ route('machines.edit', $machine->id) }}">{{ $machine->name }}</a></h5></td>
                             <td class="min-width">
                               <span class="status-btn 
-                              @if($machine->status == 'Encendido') success-btn
-                              @elseIf($machine->status == 'Apagado') gray-btn-custom
-                              @elseIf($machine->status == 'Requiere Atención') warning-btn
-                              @elseIf($machine->status == 'Mantenimiento') primary-btn
-                              @elseIf($machine->status == 'Error') danger-btn
-                              @elseIf($machine->status == 'Deshabilitado') dark-btn
+                              @if($machine->status == 'Encendido') btn-custom-enabled
+                              @elseIf($machine->status == 'Apagado') btn-custom-disabled
+                              @elseIf($machine->status == 'Requiere Atención') btn-custom-attention
+                              @elseIf($machine->status == 'Mantenimiento') btn-custom-maintenance
+                              @elseIf($machine->status == 'Error') btn-custom-error
+                              @elseIf($machine->status == 'Deshabilitado') btn-custom-offline
                               @endif">
                                 {{ $machine->status }}
                               </span>

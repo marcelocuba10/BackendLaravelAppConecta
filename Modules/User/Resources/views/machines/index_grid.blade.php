@@ -43,18 +43,7 @@
                 <ul class="legend3 d-flex align-items-center mb-30">
                   <li>
                     <div class="d-flex">
-                      <span class="bg-color secondary-bg"></span>
-                      <div class="text">
-                        <form action="{{ route('machines.search_gridview') }}" method="POST">
-                          @csrf
-                          <button class="btn-group-status" name="filter" value="Todos" type="submit"><p class="text-sm text-dark">Todos</p></button>
-                        </form> 
-                      </div>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="d-flex">
-                      <span class="bg-color info-bg"></span>
+                      <span class="bg-color bg-card-enabled"></span>
                       <div class="text">
                         <form action="{{ route('machines.search_gridview') }}" method="POST">
                           @csrf
@@ -65,18 +54,7 @@
                   </li>
                   <li>
                     <div class="d-flex">
-                      <span class="bg-color dark-bg"></span>
-                      <div class="text">
-                        <form action="{{ route('machines.search_gridview') }}" method="POST">
-                          @csrf
-                          <button class="btn-group-status" name="filter" value="Apagado" type="submit"><p class="text-sm text-dark">Apagado</p></button>
-                        </form> 
-                      </div>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="d-flex">
-                      <span class="bg-color warning-bg"> </span>
+                      <span class="bg-color bg-card-attention"> </span>
                       <div class="text">
                         <form action="{{ route('machines.search_gridview') }}" method="POST">
                           @csrf
@@ -87,18 +65,7 @@
                   </li>
                   <li>
                     <div class="d-flex">
-                      <span class="bg-color primary-bg"></span>
-                      <div class="text">
-                        <form action="{{ route('machines.search_gridview') }}" method="POST">
-                          @csrf
-                          <button class="btn-group-status" name="filter" value="Mantenimiento" type="submit"><p class="text-sm text-dark">Mantenimiento</p></button>
-                        </form> 
-                      </div>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="d-flex">
-                      <span class="bg-color danger-bg"> </span>
+                      <span class="bg-color bg-card-error"> </span>
                       <div class="text">
                         <form action="{{ route('machines.search_gridview') }}" method="POST">
                           @csrf
@@ -109,7 +76,18 @@
                   </li>
                   <li>
                     <div class="d-flex">
-                      <span class="bg-color gray-bg-custom"></span>
+                      <span class="bg-color bg-card-maintenance"></span>
+                      <div class="text">
+                        <form action="{{ route('machines.search_gridview') }}" method="POST">
+                          @csrf
+                          <button class="btn-group-status" name="filter" value="Mantenimiento" type="submit"><p class="text-sm text-dark">Mantenimiento</p></button>
+                        </form> 
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="d-flex">
+                      <span class="bg-color bg-card-offline"></span>
                       <div class="text">
                         <form action="{{ route('machines.search_gridview') }}" method="POST">
                           @csrf
@@ -118,10 +96,35 @@
                       </div>
                     </div>
                   </li>
+                  <li>
+                    <div class="d-flex">
+                      <span class="bg-color bg-card-disabled"></span>
+                      <div class="text">
+                        <form action="{{ route('machines.search_gridview') }}" method="POST">
+                          @csrf
+                          <button class="btn-group-status" name="filter" value="Apagado" type="submit"><p class="text-sm text-dark">Apagado</p></button>
+                        </form> 
+                      </div>
+                    </div>
+                  </li>
                 </ul>
               </div>
             </div>
             <div class="right">
+              @if ($filter != 'Todos' && $filter != null)
+              <ul class="legend3 d-flex align-items-center mb-30">
+                <li>
+                  <div class="d-flex">
+                    <div class="text">
+                      <form action="{{ route('machines.search_gridview') }}" method="POST">
+                        @csrf
+                        <button class="btn-group-status" name="filter" value="Todos" type="submit"><p class="text-sm text-dark"><i class="lni lni-close"></i>&nbsp; Quitar Filtros</p></button>
+                      </form> 
+                    </div>
+                  </div>
+                </li>
+              </ul>
+              @endif
             </div>
           </div>
         </div>
@@ -131,12 +134,12 @@
               <a href="{{ route('machines.edit', $machine->id) }}">
                 <div id="item" data-toggle="tooltip" data-placement="bottom" title="{{ $machine->name }}" 
                   class="
-                  @if($machine->status == 'Encendido') success-bg 
-                  @elseIf($machine->status == 'Apagado') dark-bg 
-                  @elseIf($machine->status == 'Requiere Atención') warning-bg
-                  @elseIf($machine->status == 'Mantenimiento') primary-bg
-                  @elseIf($machine->status == 'Error') danger-bg
-                  @elseIf($machine->status == 'Deshabilitado') gray-bg-custom 
+                  @if($machine->status == 'Encendido') bg-card-enabled 
+                  @elseIf($machine->status == 'Apagado') bg-card-disabled
+                  @elseIf($machine->status == 'Requiere Atención') bg-card-attention
+                  @elseIf($machine->status == 'Mantenimiento') bg-card-maintenance
+                  @elseIf($machine->status == 'Error') bg-card-error
+                  @elseIf($machine->status == 'Deshabilitado') bg-card-offline 
                   @endif">
                   <p class="text-sm  text-white" style="margin-top: 10px;">{{ Str::limit($machine->name, 5) }}</p>
                 </div>

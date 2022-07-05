@@ -100,6 +100,7 @@ class MachinesController extends Controller
 
     public function grid_view()
     {
+        $filter = null;
         $machines = DB::table('machines')
             ->leftjoin('users', 'machines.user_id', '=', 'users.id')
             ->leftjoin('customers', 'machines.customer_id', '=', 'customers.id')
@@ -114,7 +115,7 @@ class MachinesController extends Controller
 
         //dd($machines);
 
-        return view('user::machines.index_grid', compact('machines'))->with('i', (request()->input('page', 1) - 1) * 5);
+        return view('user::machines.index_grid', compact('machines', 'filter'))->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
     public function create()

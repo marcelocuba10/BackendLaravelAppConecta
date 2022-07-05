@@ -95,7 +95,7 @@
                             <div class="text">
                               <form action="{{ route('machines.search_list') }}" method="POST">
                                 @csrf
-                                <button class="btn-group-status" name="filter" value="Offline" type="submit"><p class="text-sm text-dark">Deshabilitado</p></button>
+                                <button class="btn-group-status" name="filter" value="Offline" type="submit"><p class="text-sm text-dark">Offline</p></button>
                               </form> 
                             </div>
                           </div>

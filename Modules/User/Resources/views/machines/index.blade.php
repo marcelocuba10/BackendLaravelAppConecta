@@ -95,7 +95,7 @@
                             <div class="text">
                               <form action="{{ route('machines.search_list') }}" method="POST">
                                 @csrf
-                                <button class="btn-group-status" name="filter" value="Deshabilitado" type="submit"><p class="text-sm text-dark">Deshabilitado</p></button>
+                                <button class="btn-group-status" name="filter" value="Offline" type="submit"><p class="text-sm text-dark">Deshabilitado</p></button>
                               </form> 
                             </div>
                           </div>
@@ -157,7 +157,7 @@
                               @elseIf($machine->status == 'Requiere Atención') btn-custom-attention
                               @elseIf($machine->status == 'Mantenimiento') btn-custom-maintenance
                               @elseIf($machine->status == 'Error') btn-custom-error
-                              @elseIf($machine->status == 'Deshabilitado') btn-custom-offline
+                              @elseIf($machine->status == 'Offline') btn-custom-offline
                               @endif">
                                 {{ $machine->status }}
                               </span>

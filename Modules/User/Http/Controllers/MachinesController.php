@@ -87,6 +87,7 @@ class MachinesController extends Controller
             ->leftjoin('users', 'machines.user_id', '=', 'users.id')
             ->leftjoin('customers', 'machines.customer_id', '=', 'customers.id')
             ->select('users.name AS user_name', 'machines.id', 'machines.name', 'machines.codeQR', 'machines.status', 'machines.observation', 'customers.name AS customer_name')
+            ->orderBy('id','DESC')
             ->paginate(10);
 
         // echo("<pre>");
@@ -105,6 +106,7 @@ class MachinesController extends Controller
             ->leftjoin('users', 'machines.user_id', '=', 'users.id')
             ->leftjoin('customers', 'machines.customer_id', '=', 'customers.id')
             ->select('users.name AS user_name', 'machines.id', 'machines.name', 'machines.codeQR', 'machines.status', 'machines.observation', 'customers.name AS customer_name')
+            ->orderBy('id','DESC')
             ->get();
 
         // echo("<pre>");
@@ -121,7 +123,7 @@ class MachinesController extends Controller
     public function create()
     {
         $customers = DB::table('customers')->get();
-        $status = ['Encendido', 'Apagado', 'Mantenimiento', 'Requiere Atención', 'Error', 'Deshabilitado'];
+        $status = ['Encendido', 'Apagado', 'Mantenimiento', 'Requiere Atención', 'Error', 'Offline'];
         $machine = null;
         $codeQR = Str::random(8);
         $machine_changes  = null;
@@ -173,7 +175,7 @@ class MachinesController extends Controller
     public function edit($id)
     {
         $customers = Customers::all();
-        $status = ['Encendido', 'Apagado', 'Mantenimiento', 'Requiere Atención', 'Error', 'Deshabilitado'];
+        $status = ['Encendido', 'Apagado', 'Mantenimiento', 'Requiere Atención', 'Error', 'Offline'];
 
         $machine = DB::table('machines')
             ->leftjoin('customers', 'machines.customer_id', '=', 'customers.id')

@@ -80,7 +80,7 @@
                       <div class="text">
                         <form action="{{ route('machines.search_gridview') }}" method="POST">
                           @csrf
-                          <button class="btn-group-status" name="filter" value="Mantenimiento" type="submit"><p class="text-sm text-dark">Mantenimiento</p></button>
+                          <button class="btn-group-status" name="filter" value="Offline" type="submit"><p class="text-sm text-dark">Mantenimiento</p></button>
                         </form> 
                       </div>
                     </div>
@@ -139,7 +139,7 @@
                   @elseIf($machine->status == 'Requiere Atención') bg-card-attention
                   @elseIf($machine->status == 'Mantenimiento') bg-card-maintenance
                   @elseIf($machine->status == 'Error') bg-card-error
-                  @elseIf($machine->status == 'Deshabilitado') bg-card-offline 
+                  @elseIf($machine->status == 'Offline') bg-card-offline 
                   @endif">
                   <p class="text-sm  text-white" style="margin-top: 10px;">{{ Str::limit($machine->name, 5) }}</p>
                 </div>

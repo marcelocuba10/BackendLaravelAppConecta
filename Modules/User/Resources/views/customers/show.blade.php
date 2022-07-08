@@ -50,10 +50,24 @@
                               </div>
                             </div>
                             <!-- end col -->
-                            <div class="col-6">
+                            <div class="col-12">
                                 <div class="input-style-1">
                                     <label>Dirección</label>
                                     <input type="text" value="{{ $customer->address ?? old('address') }}" name="address" readonly>
+                                </div>
+                            </div>
+                            <!-- end col -->
+                            <div class="col-6">
+                                <div class="input-style-1">
+                                  <label>Access Key</label>
+                                  <input type="text" name="access_key" value="{{ $customer->access_key ?? old('access_key') }}" readonly>
+                                </div>
+                             </div>
+                            <!-- end col -->
+                            <div class="col-6">
+                                <div class="input-style-1">
+                                  <label>Puid</label>
+                                  <input type="text" name="puid" value="{{ $customer->puid ?? old('puid') }}" readonly>
                                 </div>
                             </div>
                             <!-- end col -->

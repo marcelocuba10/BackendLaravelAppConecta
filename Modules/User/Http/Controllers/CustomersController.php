@@ -33,6 +33,8 @@ class CustomersController extends Controller
             'name' => 'required|max:50|min:5',
             'phone' => 'required|max:25|min:5',
             'address' => 'required|max:255|min:5',
+            'access_key' => 'nullable|max:250|min:5',
+            'puid' => 'nullable|max:100|min:5',
         ]);
 
         Customers::create($request->all());
@@ -57,6 +59,8 @@ class CustomersController extends Controller
             'name' => 'required|max:50|min:5',
             'phone' => 'required|max:25|min:5',
             'address' => 'required|max:255|min:5',
+            'access_key' => 'nullable|max:250|min:5',
+            'puid' => 'nullable|max:100|min:5',
         ]);
 
         $customer = Customers::find($id);

@@ -12,7 +12,9 @@ class Customers extends Model
     protected $fillable = [
         'name',
         'phone',
-        'address'
+        'address',
+        'access_key',
+        'puid'
     ];
     
     protected static function newFactory()

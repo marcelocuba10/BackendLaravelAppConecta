@@ -18,10 +18,10 @@ class CreateCustomersTable extends Migration
             $table->string('name');
             $table->string('phone');
             $table->string('address');
+            $table->string('access_key')->nullable();
+            $table->string('puid')->nullable();
             $table->timestamps();
         });
-
-        DB::statement("ALTER TABLE customers AUTO_INCREMENT = 1;");
     }
 
     /**

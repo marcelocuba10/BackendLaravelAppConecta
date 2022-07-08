@@ -60,6 +60,9 @@ Route::prefix('user')->group(function () {
             Route::get('/createPDF', 'MachinesController@createPDF')->name('machines.createPDF');
             Route::get('/', 'MachinesController@index')->name('machines.index');
             Route::get('/grid_view', 'MachinesController@grid_view')->name('machines.grid_view');
+            
+            Route::get('/grid_view_api', 'MachinesController@grid_view_api')->name('machines.grid_view_api');
+
             Route::get('/create', 'MachinesController@create')->name('machines.create');
             Route::post('/create', 'MachinesController@store')->name('machines.store');
             Route::get('/{user}/show', 'MachinesController@show')->name('machines.show');

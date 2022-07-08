@@ -13,6 +13,12 @@ use Modules\User\Entities\Machines;
 use Illuminate\Support\Str;
 use PDF;
 
+use Illuminate\Support\Arr;
+
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
+use Illuminate\Support\Facades\Http;
+
 class MachinesController extends Controller
 {
     public function __construct()
@@ -30,7 +36,6 @@ class MachinesController extends Controller
                 ->leftjoin('customers', 'machines.customer_id', '=', 'customers.id')
                 ->select('users.name AS user_name', 'machines.id', 'machines.name', 'machines.codeQR', 'machines.status', 'machines.observation', 'customers.name AS customer_name')
                 ->paginate(10);
-
         } else {
             $machines = DB::table('machines')
                 ->leftjoin('users', 'machines.user_id', '=', 'users.id')
@@ -64,7 +69,7 @@ class MachinesController extends Controller
                 ->get();
         }
 
-        return view('user::machines.index_grid', compact('machines', 'filter'))->with('i', (request()->input('page', 1) - 1) * 10);
+        return view('user::machines.index_grid', compact('machines', 'filter'));
     }
 
     public function createPDF(Request $request)
@@ -87,7 +92,7 @@ class MachinesController extends Controller
             ->leftjoin('users', 'machines.user_id', '=', 'users.id')
             ->leftjoin('customers', 'machines.customer_id', '=', 'customers.id')
             ->select('users.name AS user_name', 'machines.id', 'machines.name', 'machines.codeQR', 'machines.status', 'machines.observation', 'customers.name AS customer_name')
-            ->orderBy('id','DESC')
+            ->orderBy('id', 'DESC')
             ->paginate(10);
 
         // echo("<pre>");
@@ -99,6 +104,69 @@ class MachinesController extends Controller
         return view('user::machines.index', compact('machines', 'filter'))->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
+    public function grid_view_api()
+    {
+        $filter = null;
+
+        // try {
+        //     $client = new \GuzzleHttp\Client();
+        //     //$response = $client->request('GET', 'https://pool.api.btc.com/v1/worker?access_key=r_1Jgynzble6tiF&puid=441429&status=active');
+        //     $response = $client->get('https://pool.api.btc.com/v1/worker?access_key=r_1Jgynzble6tiF&puid=441429&status=active');
+
+        //     if ($response->getStatusCode() == 200) {
+        //         $response = json_decode($response->getBody(), true);
+        //         dd($response);
+        //     }
+        // } catch (RequestException $e) {
+        //     if ($e->getResponse()->getStatusCode() == '400') {
+        //         echo "Got response 400";
+        //     }
+        // } catch (Exception $e) {
+        //     //other errors 
+        // }
+
+        // exit();
+
+        $cargaCli = [
+            [
+                'cdAccessKey' => 'r_1Jgynzble6tiF',
+                'cdPuid' => '441429',
+                'nmCli' => 'cliente 1'
+            ],
+        ];
+
+        //return view('user::machines.index_grid_api', compact('filter', 'cargaCli'));
+
+
+        foreach ($cargaCli as $listCargaCli) {
+
+            //$api_response  = json_decode(file_get_contents('https://pool.api.btc.com/v1/worker?access_key=' . $listCargaCli['cdAccessKey'] . '&puid=' . $listCargaCli['cdPuid']), true);
+            $client = new \GuzzleHttp\Client();
+            $api_response = $client->get('https://pool.api.btc.com/v1/worker?access_key=r_1Jgynzble6tiF&puid=441429&page_size=1000');
+            $response = json_decode($api_response->getBody(), true);
+            $collection = collect($response);
+            dd($collection);
+
+            echo 'cliente:' . $listCargaCli['nmCli'];
+ 
+            // $array = data_get($api_response['data']['data'], '*.worker_name');
+            // dd($array);
+            // $api_response = Arr::pluck($api_response['data']['data'], 'worker_name','status');
+            // dd($api_response);
+
+            foreach ($api_response['data']['data'] as $listApi) {
+
+                $array = data_get($listApi, '*.worker_name');
+                $api_response = Arr::pluck($listApi, 'worker_name');
+                dd($api_response);
+                //echo 'machine name: ' . $listApi['worker_name'];
+            }
+        }
+
+
+        exit;
+    }
+
     public function grid_view()
     {
         $filter = null;
@@ -106,7 +174,7 @@ class MachinesController extends Controller
             ->leftjoin('users', 'machines.user_id', '=', 'users.id')
             ->leftjoin('customers', 'machines.customer_id', '=', 'customers.id')
             ->select('users.name AS user_name', 'machines.id', 'machines.name', 'machines.codeQR', 'machines.status', 'machines.observation', 'customers.name AS customer_name')
-            ->orderBy('id','DESC')
+            ->orderBy('id', 'DESC')
             ->get();
 
         // echo("<pre>");

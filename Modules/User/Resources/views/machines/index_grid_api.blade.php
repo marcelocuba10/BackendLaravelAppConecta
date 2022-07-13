@@ -129,56 +129,81 @@
           </div>
         </div>
         <div class="row">
-          {{-- <div id="grid">
-            @foreach ($machines as $machine)
-              <a href="{{ route('machines.edit', $machine->id) }}">
-                <div id="item" data-toggle="tooltip" data-placement="bottom" title="{{ $machine->name }}" 
-                  class="
-                  @if($machine->status == 'Encendido') bg-card-enabled 
-                  @elseIf($machine->status == 'Apagado') bg-card-disabled
-                  @elseIf($machine->status == 'Requiere Atención') bg-card-attention
-                  @elseIf($machine->status == 'Mantenimiento') bg-card-maintenance
-                  @elseIf($machine->status == 'Error') bg-card-error
-                  @elseIf($machine->status == 'Offline') bg-card-offline 
-                  @endif">
-                  <p class="text-sm  text-white" style="margin-top: 10px;">{{ Str::limit($machine->name, 5) }}</p>
-                </div>
-              </a>  
-            @endforeach
-          </div> --}}
+          <div id="grid">
+            <div id="post-data">
+              @include('user::machines._partials.data')
+            </div>
+          </div>
 
           @foreach($cargaCli as $listCargaCli)
             <div class="card-style-3 mb-30">
               <div class="card-content">
-                <h4><a href="#0">{{ $listCargaCli['nmCli'] }}</a></h4>
-                <?php 
-                  $api_response  = json_decode(file_get_contents('https://pool.api.btc.com/v1/worker?access_key='.$listCargaCli['cdAccessKey'].'&puid='.$listCargaCli['cdPuid'].'&page_size=1000'), true);
-                ?>
-                <div id="grid">
-                  @foreach($api_response['data']['data'] as $listApi)
-                    <a href="#">
-                      <div id="item" data-toggle="tooltip" data-placement="bottom" title="{{ $listApi['worker_name'] }}" 
-                        class="
-                        @if($listApi['status'] == 'ACTIVE') bg-card-enabled 
-                        @elseIf($listApi['status'] == 'Apagado') bg-card-disabled
-                        @elseIf($listApi['status'] == 'Requiere Atención') bg-card-attention
-                        @elseIf($listApi['status'] == 'Mantenimiento') bg-card-maintenance
-                        @elseIf($listApi['status'] == 'Error') bg-card-error
-                        @elseIf($listApi['status'] == 'INACTIVE') bg-card-offline 
-                        @endif">
-                        <p class="text-sm  text-white" style="margin-top: 10px;">{{ Str::limit($listApi['worker_name'], 5) }}</p>
-                      </div>
-                    </a> 
-                  @endforeach
-                </div>
+                <h4><a href="#0">{{ $listCargaCli->name }}</a></h4>
+                  <div class="ph-item">
+                    <div class="ph-col-12">
+                        <div class="ph-picture"></div>
+                        <div class="ph-row">
+                            <div class="ph-col-6 big"></div>
+                            <div class="ph-col-4 empty big"></div>
+                            <div class="ph-col-2 big"></div>
+                            <div class="ph-col-4"></div>
+                            <div class="ph-col-8 empty"></div>
+                            <div class="ph-col-6"></div>
+                            <div class="ph-col-6 empty"></div>
+                            <div class="ph-col-12"></div>
+                        </div>
+                    </div>
+                  </div>
               </div>
             </div>
           @endforeach
 
         </div>
+        <div class="row">
+          <div class="ajax-load text-center" style="display:none">
+              <p><img src="{{asset('img/loader.gif')}}"/>Cargando datos ...</p>
+          </div>
+        </div>
       </div>
       <!-- end row -->
     </div>
   </div>
+
+  <script type="text/javascript">
+    var page = 1;
+    $(window).scroll(function() {
+        if($(window).scrollTop() + $(window).height() >= $(document).height()) {
+            page++;
+            loadMoreData(page);
+        }
+    });
+  
+  
+    function loadMoreData(page){
+      $.ajax(
+            {
+                url: '?page=' + page,
+                type: "get",
+                beforeSend: function()
+                {
+                    $('.ajax-load').show();
+                }
+            })
+            .done(function(data)
+            {
+                if(data.html == " "){
+                    $('.ajax-load').html("No more records found");
+                    return;
+                }
+                $('.ajax-load').hide();
+                $("#post-data").append(data.html);
+            })
+            .fail(function(jqXHR, ajaxOptions, thrownError)
+            {
+                  alert('server not responding...');
+            });
+    }
+  </script>
+
 </section>
 @endsection

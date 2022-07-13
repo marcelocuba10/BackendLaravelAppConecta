@@ -76,5 +76,10 @@ Route::prefix('user')->group(function () {
 
         /** Customers Routes*/
         Route::resource('/customers', 'CustomersController');
+
+        /** Posts */
+        Route::get('posts','PostController@index')->name('posts.index');
+        Route::any('posts/search', 'PostController@search')->name('posts.search');
+
     });
 });

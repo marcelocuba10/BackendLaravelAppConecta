@@ -54,36 +54,35 @@ class MachinesController extends Controller
     public function search_gridview(Request $request)
     {
         $filter = $request->input('filter');
-        //dd($filter);
+        $status = "all";
 
-        if ($filter == 'Todos') {
-            $machines = DB::table('machines')
-                ->leftjoin('users', 'machines.user_id', '=', 'users.id')
-                ->leftjoin('customers', 'machines.customer_id', '=', 'customers.id')
-                ->select('users.name AS user_name', 'machines.id', 'machines.name', 'machines.codeQR', 'machines.status', 'machines.observation', 'customers.name AS customer_name')
-                ->get();
-        } else {
-            $machines = DB::table('machines')
-                ->leftjoin('users', 'machines.user_id', '=', 'users.id')
-                ->leftjoin('customers', 'machines.customer_id', '=', 'customers.id')
-                ->select('users.name AS user_name', 'machines.id', 'machines.name', 'machines.codeQR', 'machines.status', 'machines.observation', 'customers.name AS customer_name')
+        if (!$filter || $filter == 'Todos') {
+            $customers = DB::table('customers')->paginate(1);
+            return redirect()->route('machines.grid_view', compact('customers','status'));
+        }else{
+            $customers = DB::table('customers')
+                ->select('customers.id', 'customers.name', 'customers.access_key', 'customers.puid')
                 ->where('customers.name', 'LIKE', "%{$filter}%")
-                ->orWhere('machines.status', 'LIKE', "%{$filter}%")
-                ->get();
+                ->orWhere('customers.puid', 'LIKE', "%{$filter}%")
+                ->get(); 
         }
 
-        $customers = DB::table('customers')
-            ->select('customers.id', 'customers.name', 'customers.access_key', 'customers.puid')
-            ->where('customers.name', 'LIKE', "%{$filter}%")
-            ->orWhere('customers.puid', 'LIKE', "%{$filter}%")
-            ->get();
-
-        if ($request->ajax()) {
-            $view = view('user::machines._partials.data', compact('customers'))->render();
+        if ($filter == "ACTIVE") {
+            $status = "active";
+            $view = view('user::machines._partials.data', compact('customers','status'))->render();
+            return response()->json(['html' => $view]);
+        }elseif($filter == "INACTIVE"){
+            $status = "inactive";
+            $view = view('user::machines._partials.data', compact('customers','status'))->render();
             return response()->json(['html' => $view]);
         }
 
-        return view('user::machines.index_grid', compact('machines', 'filter','customers'));
+        if ($request->ajax()) {
+            $view = view('user::machines._partials.data', compact('customers','status'))->render();
+            return response()->json(['html' => $view]);
+        }
+
+        return view('user::machines.index_grid', compact('filter','customers','status'));
     }
 
     public function createPDF(Request $request)
@@ -147,19 +146,12 @@ class MachinesController extends Controller
         $filter = null;
         $customers = DB::table('customers')->paginate(1);
 
-        $machines = DB::table('machines')
-            ->leftjoin('users', 'machines.user_id', '=', 'users.id')
-            ->leftjoin('customers', 'machines.customer_id', '=', 'customers.id')
-            ->select('users.name AS user_name', 'machines.id', 'machines.name', 'machines.codeQR', 'machines.status', 'machines.observation', 'customers.name AS customer_name')
-            ->orderBy('id', 'DESC')
-            ->paginate(15);
-
         if ($request->ajax()) {
             $view = view('user::machines._partials.data', compact('customers'))->render();
             return response()->json(['html' => $view]);
         }
 
-        return view('user::machines.index_grid', compact('machines', 'filter','customers'));
+        return view('user::machines.index_grid', compact('filter','customers'));
     }
 
     public function create()

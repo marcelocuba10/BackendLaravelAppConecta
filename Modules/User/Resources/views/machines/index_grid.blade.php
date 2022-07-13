@@ -53,40 +53,7 @@
                       <div class="text">
                         <form action="{{ route('machines.search_gridview') }}" method="POST">
                           @csrf
-                          <button class="btn-group-status" name="filter" value="Encendido" type="submit"><p class="text-sm text-dark">Encendido</p></button>
-                        </form> 
-                      </div>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="d-flex">
-                      <span class="bg-color bg-card-attention"> </span>
-                      <div class="text">
-                        <form action="{{ route('machines.search_gridview') }}" method="POST">
-                          @csrf
-                          <button class="btn-group-status" name="filter" value="Requiere Atención" type="submit"><p class="text-sm text-dark">Requiere Atención</p></button>
-                        </form> 
-                      </div>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="d-flex">
-                      <span class="bg-color bg-card-error"> </span>
-                      <div class="text">
-                        <form action="{{ route('machines.search_gridview') }}" method="POST">
-                          @csrf
-                          <button class="btn-group-status" name="filter" value="Error" type="submit"><p class="text-sm text-dark">Error</p></button>
-                        </form> 
-                      </div>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="d-flex">
-                      <span class="bg-color bg-card-maintenance"></span>
-                      <div class="text">
-                        <form action="{{ route('machines.search_gridview') }}" method="POST">
-                          @csrf
-                          <button class="btn-group-status" name="filter" value="Offline" type="submit"><p class="text-sm text-dark">Mantenimiento</p></button>
+                          <button class="btn-group-status" name="filter" value="ACTIVE" type="submit"><p class="text-sm text-dark">Activo</p></button>
                         </form> 
                       </div>
                     </div>
@@ -97,18 +64,7 @@
                       <div class="text">
                         <form action="{{ route('machines.search_gridview') }}" method="POST">
                           @csrf
-                          <button class="btn-group-status" name="filter" value="Offline" type="submit"><p class="text-sm text-dark">Offline</p></button>
-                        </form> 
-                      </div>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="d-flex">
-                      <span class="bg-color bg-card-disabled"></span>
-                      <div class="text">
-                        <form action="{{ route('machines.search_gridview') }}" method="POST">
-                          @csrf
-                          <button class="btn-group-status" name="filter" value="Apagado" type="submit"><p class="text-sm text-dark">Apagado</p></button>
+                          <button class="btn-group-status" name="filter" value="INACTIVE" type="submit"><p class="text-sm text-dark">Inactivo</p></button>
                         </form> 
                       </div>
                     </div>
@@ -138,12 +94,13 @@
             {{-- @include('user::machines._partials.data') --}}
           </div>
 
-          <div id="search-data">
-            {{-- @include('user::machines._partials.data') --}}
-          </div>
+          @if ($filter)
+            <div id="post-data">
+              @include('user::machines._partials.data')
+            </div>
+          @endif
         </div>
         
-
         <div class="ajax-load" style="display:none">
           <div class="card-style-3 mb-30">
             <div class="card-content">
@@ -171,43 +128,40 @@
   </div>
 
   <script type="text/javascript">
-
-    $('#search').on('click',function(){
-        $value=$(this).val();
-        $.ajax({
-            type : 'get',
-            url:"{{ url('machines/search_gridview') }}",
-            data:{'filter':$value}
-        })
-        .done(function(data){
-	        if(data.html == ""){
-	            $('.ajax-search').html("No more records found");
-	            return;
-	        }
-	        $("#search-data").append(data.html);
-	    });
-    })
-
-  </script>
-
-  <script type="text/javascript">
     var page = 1;
-    
-    $(document).ready(function()
-    {
-        //loadMoreData(page);
-        checkPage(page);
-    });
+    var filter;
 
-    $(window).scroll(function() {
+    // capture characters from input
+    filter = document.getElementById("search").value;
+
+    // show scroll only if not set filter
+    if(filter.length == 0){
+      $(window).scroll(function() {
         if($(window).scrollTop() + $(window).height() >= $(document).height()) {
             page++;
             loadMoreData(page);
         }
+      });
+    }
+
+    // var input = document.getElementById("search");
+    // input.addEventListener("keypress", function(event) {
+    //   if (event.key === "Enter" && filter == ""){
+    //       alert('esta vacio');
+    //     }else{
+    //       search_gridview(filter);
+    //   }
+    // });
+    
+    // on load page
+    $(document).ready(function(){  
+      if(filter.length == 0){
+        //loadMoreData(page);
+        checkPage(page);
+      }
     });
 
     async function checkPage(){
-      console.log('calling');
       await loadMoreData(page);
       page++;
       loadMoreData(page);

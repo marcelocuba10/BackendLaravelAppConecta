@@ -17,7 +17,7 @@ class PostController extends Controller
     public function index(Request $request)
     {
         
-        $posts = Post::paginate(2);
+        $posts = Post::paginate(3);
 
         if ($request->ajax()) {
             $view = view('user::posts.data', compact('posts'))->render();
@@ -28,7 +28,13 @@ class PostController extends Controller
 
     public function search(Request $request)
     {
+
         $filter = $request->input('filter');
+        //dd($filter);
+        if (!$filter) {
+            $posts = Post::paginate(3);
+            return redirect()->route('posts.index', compact('posts'));
+        }
 
         $posts = DB::table('posts')
         ->select('posts.id', 'posts.title', 'posts.body')

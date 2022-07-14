@@ -53,36 +53,37 @@ class MachinesController extends Controller
 
     public function search_gridview(Request $request)
     {
+        // dd($request->all());
         $filter = $request->input('filter');
-        $status = "all";
+        $status = $request->input('status');
 
         if (!$filter || $filter == 'Todos') {
             $customers = DB::table('customers')->paginate(1);
-            return redirect()->route('machines.grid_view', compact('customers','status'));
-        }else{
+            return redirect()->route('machines.grid_view', compact('customers', 'status'));
+        } elseIf($filter != "active" && $filter != "inactive") {
             $customers = DB::table('customers')
                 ->select('customers.id', 'customers.name', 'customers.access_key', 'customers.puid')
                 ->where('customers.name', 'LIKE', "%{$filter}%")
                 ->orWhere('customers.puid', 'LIKE', "%{$filter}%")
-                ->get(); 
+                ->get();
         }
 
-        if ($filter == "ACTIVE") {
+        if ($filter == "active") {
             $status = "active";
-            $view = view('user::machines._partials.data', compact('customers','status'))->render();
-            return response()->json(['html' => $view]);
-        }elseif($filter == "INACTIVE"){
+            $customers = DB::table('customers')->paginate(1);
+            return view('user::machines.index_grid', compact('filter', 'customers', 'status'));
+        } elseif ($filter == "inactive") {
             $status = "inactive";
-            $view = view('user::machines._partials.data', compact('customers','status'))->render();
-            return response()->json(['html' => $view]);
+            $customers = DB::table('customers')->paginate(1);
+            return view('user::machines.index_grid', compact('filter', 'customers', 'status'));
         }
 
         if ($request->ajax()) {
-            $view = view('user::machines._partials.data', compact('customers','status'))->render();
+            $view = view('user::machines._partials.data', compact('customers', 'status'))->render();
             return response()->json(['html' => $view]);
         }
 
-        return view('user::machines.index_grid', compact('filter','customers','status'));
+        return view('user::machines.index_grid', compact('filter', 'customers', 'status'));
     }
 
     public function createPDF(Request $request)
@@ -144,14 +145,19 @@ class MachinesController extends Controller
     public function grid_view(Request $request)
     {
         $filter = null;
-        $customers = DB::table('customers')->paginate(1);
+        $status = $request->input('status');
+        if ($status == "active" || $status == "inactive") {
+            $customers = DB::table('customers')->paginate(1);
+        }else{
+            $customers = DB::table('customers')->paginate(1);
+        }
 
         if ($request->ajax()) {
-            $view = view('user::machines._partials.data', compact('customers'))->render();
+            $view = view('user::machines._partials.data', compact('customers','status'))->render();
             return response()->json(['html' => $view]);
         }
 
-        return view('user::machines.index_grid', compact('filter','customers'));
+        return view('user::machines.index_grid', compact('filter', 'customers','status'));
     }
 
     public function create()

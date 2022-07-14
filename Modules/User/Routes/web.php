@@ -58,7 +58,7 @@ Route::prefix('user')->group(function () {
         /** Machines Routes*/
         Route::group(['prefix' => 'machines'], function () {
             Route::get('/createPDF', 'MachinesController@createPDF')->name('machines.createPDF');
-            Route::get('/', 'MachinesController@index')->name('machines.index');
+            Route::any('/', 'MachinesController@index')->name('machines.index');
             Route::get('/grid_view', 'MachinesController@grid_view')->name('machines.grid_view');
             
             Route::get('/grid_view_api', 'MachinesController@grid_view_api')->name('machines.grid_view_api');
@@ -74,11 +74,20 @@ Route::prefix('user')->group(function () {
             Route::any('/search_gridview', 'MachinesController@search_gridview')->name('machines.search_gridview');
         });
 
-        /** Customers Routes*/
-        Route::resource('/customers', 'CustomersController');
+        /*** Customers Routes ***/
+        Route::group(['prefix' => 'customers'], function () {
+            Route::get('/', 'CustomersController@index')->name('customers.index');
+            Route::get('/create', 'CustomersController@create')->name('customers.create');
+            Route::post('/create', 'CustomersController@store')->name('customers.store');
+            Route::get('/{id}/show', 'CustomersController@show')->name('customers.show');
+            Route::get('/edit/{id}', 'CustomersController@edit')->name('customers.edit');
+            Route::put('/update/{id}', 'CustomersController@update')->name('customers.update');
+            Route::delete('/{id}/delete', 'CustomersController@destroy')->name('customers.destroy');
+        });
 
         /** Posts */
-        Route::get('posts','PostController@index')->name('posts.index');
+        Route::any('posts','PostController@index')->name('posts.index');
+        //Route::post('posts','PostController@filter')->name('posts.filter');
         Route::any('posts/search', 'PostController@search')->name('posts.search');
 
     });

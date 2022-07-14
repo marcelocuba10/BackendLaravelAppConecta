@@ -6,6 +6,7 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
+use Log;
 use Modules\User\Entities\Post;
 
 class PostController extends Controller
@@ -16,18 +17,29 @@ class PostController extends Controller
      */
     public function index(Request $request)
     {
-        
+        $status = $request->input('status');
         $posts = Post::paginate(3);
 
         if ($request->ajax()) {
-            $view = view('user::posts.data', compact('posts'))->render();
+            $view = view('user::posts.data', compact('posts','status'))->render();
             return response()->json(['html' => $view]);
         }
-        return view('user::posts.index', compact('posts'));
+        return view('user::posts.index', compact('posts','status'));
+    }
+
+    public function filter(Request $request){
+        dd($request->all());
     }
 
     public function search(Request $request)
     {
+        $status = $request->input('status');
+
+        if ($request->ajax()) {
+            $view = view('user::posts.data', compact('posts','status'))->render();
+            return response()->json(['html' => $view]);
+        }
+        return view('user::posts.index', compact('posts','status'));
 
         $filter = $request->input('filter');
         //dd($filter);

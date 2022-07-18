@@ -28,7 +28,4 @@
             </div>
         </div>
     </div>
-    <script>
-        console.log('fdsfdsfsdf');
-    </script>
 @endforeach

@@ -51,7 +51,7 @@
                             <div class="text">
                               <form action="{{ route('machines.search_list') }}" method="POST">
                                 @csrf
-                                <button class="btn-group-status" name="filter" value="Encendido" type="submit"><p class="text-sm text-dark">Encendido</p></button>
+                                <button class="btn-group-status" name="filter" value="ACTIVE" type="submit"><p class="text-sm text-dark">Encendido</p></button>
                               </form> 
                             </div>
                           </div>
@@ -95,7 +95,7 @@
                             <div class="text">
                               <form action="{{ route('machines.search_list') }}" method="POST">
                                 @csrf
-                                <button class="btn-group-status" name="filter" value="Offline" type="submit"><p class="text-sm text-dark">Offline</p></button>
+                                <button class="btn-group-status" name="filter" value="INACTIVE" type="submit"><p class="text-sm text-dark">Offline</p></button>
                               </form> 
                             </div>
                           </div>
@@ -152,12 +152,12 @@
                             <td class="min-width"><h5 class="text-bold text-dark"><a href="{{ route('machines.edit', $machine->id) }}">{{ $machine->name }}</a></h5></td>
                             <td class="min-width">
                               <span class="status-btn 
-                              @if($machine->status == 'Encendido') btn-custom-enabled
+                              @if($machine->status == 'ACTIVE') btn-custom-enabled
                               @elseIf($machine->status == 'Apagado') btn-custom-disabled
                               @elseIf($machine->status == 'Requiere Atención') btn-custom-attention
                               @elseIf($machine->status == 'Mantenimiento') btn-custom-maintenance
                               @elseIf($machine->status == 'Error') btn-custom-error
-                              @elseIf($machine->status == 'Offline') btn-custom-offline
+                              @elseIf($machine->status == 'INACTIVE') btn-custom-offline
                               @endif">
                                 {{ $machine->status }}
                               </span>
@@ -205,9 +205,11 @@
                   {{-- {{ $machines->links() }} <!-- paginacion default --> --}}
 
                   @if (isset($filter))
-                      {!! $machines-> appends($filter)->links() !!} <!-- appends envia variable en la paginacion-->
+                  {{-- {{ $machines->appends(['sort' =>$filter])->links() }}  --}}
+                  {{-- {!! $machines->appends(Request::except('page'))->render() !!} --}}
+                    {!! $machines-> appends($filter)->links() !!} <!-- appends envia variable en la paginacion-->
                   @else
-                      {!! $machines-> links() !!}    
+                    {!! $machines-> links() !!}    
                   @endif
                 </div>
               </div>

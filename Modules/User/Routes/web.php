@@ -72,6 +72,9 @@ Route::prefix('user')->group(function () {
 
             Route::any('/search_list', 'MachinesController@search_list')->name('machines.search_list');
             Route::any('/search_gridview', 'MachinesController@search_gridview')->name('machines.search_gridview');
+            Route::any('/search_gridview_api', 'MachinesController@search_gridview_api')->name('machines.search_gridview_api');
+            Route::any('/filter_gridview', 'MachinesController@filter_gridview')->name('machines.filter_gridview');
+            Route::any('/filter_gridview_api', 'MachinesController@filter_gridview_api')->name('machines.filter_gridview_api');
         });
 
         /*** Customers Routes ***/

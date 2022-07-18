@@ -1,6 +1,6 @@
 <html>
   <head>
-      <title>sdfsfsdf</title>
+      <title>Print PDF</title>
       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
       <style>
           table {
@@ -25,39 +25,48 @@
           @page {
               size: legal landscape;
               margin: 1cm;
-  
           }
       </style>
   </head>
   <body>
     <table>
-      <thead>
+      {{-- <thead>
           <tr>
-              
-              <?php
-                  // table headers
-                  for($x=1 ; $x<=$machinesLength; $x++) {
-                      echo '<th>Header ' . $x . '</th>';
-                  }
-                ?>
+            <?php
+                // table headers
+                // for($x = 1 ; $x <= $machinesCount; $x++) {
+                //     echo '<th>Header ' . $x . '</th>';
+                // }
+                // foreach ($machines as $machine) {
+                //     echo '<th>name ' . $machine->name . '</th>';
+                // }
+            ?>
           </tr>
-      </thead>
+      </thead> --}}
       <tbody>
+        <?php
+            //table body data
+            $lastCount = 0;
+            for($y = 0 ; $y < 10; $y++) {
 
-          <?php
-                  //table body data
-                  for($y=1 ; $y<=$machinesLength; $y++) {
-                      echo '<tr>';
-                      for($x=1 ; $x<=$machinesLength; $x++) {
-                          $text="helloworld";
-                          echo '<td>data ' . $y . ' - '. $x . ' <img src="data:image/png;base64,' . base64_encode(QrCode::size(70)->generate($text)) . '" /> </td>';
-                      }
-                      echo '</tr>';
-                  }
-                ?>
+                echo '<tr>';
+                for($x = 0 ; $x < 10; $x++) {
+
+                    if($lastCount < 10){
+                        $name = $machines[$lastCount]->name;
+                        $codeQR = $machines[$lastCount]->codeQR;
+                    }
+
+                    echo '<td style="text-align:center">';
+                    echo  $name . ' <img src="data:image/png;base64,' . base64_encode(QrCode::size(80)->generate($codeQR)) . '" />' ;
+                    echo ' </td>';
+
+                    $lastCount++; //9
+                }
+                echo '</tr>';
+            }
+        ?>
       </tbody>
-  
   </table>
-  
   </body>
   </html>

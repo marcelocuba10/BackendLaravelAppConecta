@@ -76,6 +76,16 @@
     background-color: #9E9E9E;
 }
 
+.text-custom-enabled{
+    color: #4CAF50;
+}
+.text-custom-offline{
+    color: #e0e0e0;
+}
+.text-custom-disabled{
+    color: #9E9E9E;
+}
+
 /** end */
 
 

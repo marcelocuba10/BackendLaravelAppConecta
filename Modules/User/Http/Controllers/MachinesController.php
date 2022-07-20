@@ -136,6 +136,7 @@ class MachinesController extends Controller
     {
         $filter = null;
         $status = $request->input('status');
+
         if ($status == "active" || $status == "inactive") {
             $customers = DB::table('customers')->paginate(1);
         } else {

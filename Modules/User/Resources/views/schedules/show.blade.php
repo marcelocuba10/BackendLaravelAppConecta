@@ -8,7 +8,7 @@
                 <div class="row align-items-center">
                     <div class="col-md-6">
                         <div class="titlemb-30">
-                            <h2>Detail Report</h2>
+                            <h2>Detalle del Horario</h2>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -19,9 +19,9 @@
                                 <a href="/user/dashboard">Dashboard</a>
                                 </li>
                                 <li class="breadcrumb-item" aria-current="page">
-                                <a href="{{ route('reports.index') }}">Reportes</a>
+                                <a href="{{ route('schedules.index') }}">Horarios</a>
                                 </li>
-                                <li class="breadcrumb-item active" aria-current="page">Detail Report</li>
+                                <li class="breadcrumb-item active" aria-current="page">Detalle Horario</li>
                             </ol>
                             </nav>
                         </div>
@@ -39,34 +39,34 @@
                             <div class="col-6">
                               <div class="input-style-1">
                                 <label>Funcionario</label>
-                                <input type="text" value="{{ $report->user_name }}" readonly>
+                                <input type="text" value="{{ $schedule->user_name }}" readonly>
                               </div>
                             </div>
                             <!-- end col -->
                             <div class="col-6">
                               <div class="input-style-1">
                                 <label>Fecha</label>
-                                <input type="text" value="{{ $report->date }}" readonly>
+                                <input type="text" value="{{ $schedule->date }}" readonly>
                               </div>
                             </div>
                             <!-- end col -->
                             <div class="col-6">
                               <div class="input-style-1">
                                 <label>Hora de entrada</label>
-                                <input type="text" value="{{ $report->check_in_time }}" readonly>
+                                <input type="text" value="{{ $schedule->check_in_time }}" readonly>
                               </div>
                             </div>
                             <!-- end col -->
                             <div class="col-6">
                               <div class="input-style-1">
                                 <label>Hora de salida</label>
-                                <input type="text" value="{{ $report->check_out_time }}"readonly>
+                                <input type="text" value="{{ $schedule->check_out_time }}"readonly>
                               </div>
                             </div>
                             <!-- end col -->
                             <div class="col-12">
                                 <div class="button-groupd-flexjustify-content-centerflex-wrap">
-                                    <a class="main-btn danger-btn-outline m-2" href="{{ route('reports.index') }}">Atrás</a>
+                                    <a class="main-btn danger-btn-outline m-2" href="{{ route('schedules.index') }}">Atrás</a>
                                 </div>
                             </div>
                         </div>

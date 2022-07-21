@@ -9,8 +9,8 @@
           <div class="col-md-6">
             <div class="title d-flex align-items-center flex-wrap mb-30">
               <h2 class="mr-40">Listado de presencia laboral</h2>
-              @can('report-create')
-                <a href="{{ route('reports.create') }}" class="main-btn info-btn btn-hover btn-sm"><i class="lni lni-plus mr-5"></i> Nuevo</a>
+              @can('schedule-create')
+                <a href="{{ route('schedules.create') }}" class="main-btn info-btn btn-hover btn-sm"><i class="lni lni-plus mr-5"></i> Nuevo</a>
               @endcan  
             </div>
           </div>
@@ -79,26 +79,26 @@
                       <!-- end table row-->
                     </thead>
                     <tbody>
-                        @foreach ($reports as $report)
+                        @foreach ($schedules as $schedule)
                         <tr>
                             <td class="min-width"><p>{{ ++$i }}</p></td>
-                            <td class="min-width"><p>{{ $report->name }}</p></td>
-                            <td class="min-width"><p>{{ $report->last_name }}</p></td>
-                            <td class="min-width"><p>{{ $report->email }}</p></td>
-                            <td class="min-width"><p>{{ $report->phone }}</p></td>
-                            <td class="min-width"><p>{{ $report->date }}</p></td>
+                            <td class="min-width"><p>{{ $schedule->name }}</p></td>
+                            <td class="min-width"><p>{{ $schedule->last_name }}</p></td>
+                            <td class="min-width"><p>{{ $schedule->email }}</p></td>
+                            <td class="min-width"><p>{{ $schedule->phone }}</p></td>
+                            <td class="min-width"><p>{{ $schedule->date }}</p></td>
                             <td class="min-width">
-                              <a target="_blank" href="https://maps.google.com/?q={{ $report->address_latitude_in }},{{ $report->address_longitude_in }}&ll={{ $report->address_latitude_in }},{{ $report->address_longitude_in }}&z=17">
+                              <a target="_blank" href="https://maps.google.com/?q={{ $schedule->address_latitude_in }},{{ $schedule->address_longitude_in }}&ll={{ $schedule->address_latitude_in }},{{ $schedule->address_longitude_in }}&z=17">
                                 <span class="status-btn success-btn">
-                                  <i class="lni lni-move"></i> {{ $report->check_in_time }}
+                                  <i class="lni lni-move"></i> {{ $schedule->check_in_time }}
                                 </span>
                               </a>
                             </td>
-                            @if ($report->check_out_time)
+                            @if ($schedule->check_out_time)
                             <td class="min-width">
-                              <a target="_blank" href="https://maps.google.com/?q={{ $report->address_latitude_out }},{{ $report->address_longitude_out }}&ll={{ $report->address_latitude_out }},{{ $report->address_longitude_out }}&z=17">
+                              <a target="_blank" href="https://maps.google.com/?q={{ $schedule->address_latitude_out }},{{ $schedule->address_longitude_out }}&ll={{ $schedule->address_latitude_out }},{{ $schedule->address_longitude_out }}&z=17">
                                 <span class="status-btn secondary-btn">
-                                  <i class="lni lni-move"></i> {{ $report->check_out_time }}
+                                  <i class="lni lni-move"></i> {{ $schedule->check_out_time }}
                                 </span>
                               </a>
                             </td>
@@ -112,23 +112,23 @@
                             <td class="text-right">
                                 <div class="btn-group">
                                     <div class="action">
-                                      <a href="{{ route('reports.show', $report->id) }}">
+                                      <a href="{{ route('schedules.show', $schedule->id) }}">
                                           <button class="text-active">
                                               <i class="lni lni-eye"></i>
                                           </button>
                                       </a>
                                     </div>
-                                    @can('report-edit')
+                                    @can('schedule-edit')
                                     <div class="action">
-                                        <a href="{{ route('reports.edit', $report->id) }}">
+                                        <a href="{{ route('schedules.edit', $schedule->id) }}">
                                             <button class="text-info">
                                                 <i class="lni lni-pencil"></i>
                                             </button>
                                         </a>
                                     </div>
                                     @endcan
-                                    @can('report-delete')
-                                    <form method="POST" action="{{ route('reports.destroy', $report->id) }}">
+                                    @can('schedule-delete')
+                                    <form method="POST" action="{{ route('schedules.destroy', $schedule->id) }}">
                                         @csrf
                                         <div class="action">
                                             <input name="_method" type="hidden" value="DELETE">
@@ -146,7 +146,7 @@
                     </tbody>
                   </table>
                   <!-- end table -->
-                  {{ $reports->links() }} <!-- paginacion default -->
+                  {{ $schedules->links() }} <!-- paginacion default -->
                 </div>
               </div>
               <!-- end card -->

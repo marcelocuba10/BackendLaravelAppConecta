@@ -7,9 +7,9 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
-use Modules\User\Entities\Reports;
+use Modules\User\Entities\Schedules;
 
-class ReportsController extends Controller
+class SchedulesController extends Controller
 {
     public function __construct()
     {
@@ -24,20 +24,20 @@ class ReportsController extends Controller
     public function index()
     {
 
-        $reports = DB::table('reports')
-        ->join('users', 'reports.user_id', '=', 'users.id')
-        ->select('users.*','reports.*')
+        $schedules = DB::table('schedules')
+        ->join('users', 'schedules.user_id', '=', 'users.id')
+        ->select('users.*','schedules.*')
         ->Paginate(10);
 
-        return view('user::reports.index', compact('reports'))->with('i', (request()->input('page', 1) - 1) * 5);
+        return view('user::schedules.index', compact('schedules'))->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
     public function create()
     {
         $users = DB::table('users')->get();
-        $report = null;
+        $schedule = null;
 
-        return view('user::reports.create',compact('users','report'));
+        return view('user::schedules.create',compact('users','schedule'));
     }
 
     public function store(Request $request)
@@ -49,35 +49,35 @@ class ReportsController extends Controller
             'date' => 'required|max:15|min:10',
         ]);
 
-        Reports::create($request->all());
+        Schedules::create($request->all());
 
-        return redirect()->route('reports.index')->with('message', 'Report created successfully.');
+        return redirect()->route('schedules.index')->with('message', 'Schedule created successfully.');
     }
 
     public function show($id)
     {
         $users = DB::table('users')->get();
 
-        $report = DB::table('reports')
-        ->leftjoin('users', 'reports.user_id', '=', 'users.id')
-        ->select('users.name AS user_name', 'reports.id','reports.user_id', 'reports.date', 'reports.check_in_time', 'reports.check_out_time')
-        ->where('reports.id', '=', $id)
+        $schedule = DB::table('schedules')
+        ->leftjoin('users', 'schedules.user_id', '=', 'users.id')
+        ->select('users.name AS user_name', 'schedules.id','schedules.user_id', 'schedules.date', 'schedules.check_in_time', 'schedules.check_out_time')
+        ->where('schedules.id', '=', $id)
         ->first();
 
-        return view('user::reports.show',compact('report','users'));
+        return view('user::schedules.show',compact('schedule','users'));
     }
 
     public function edit($id)
     {
         $users = DB::table('users')->get();
 
-        $report = DB::table('reports')
-        ->leftjoin('users', 'reports.user_id', '=', 'users.id')
-        ->select('users.name AS user_name', 'reports.id','reports.user_id', 'reports.date', 'reports.check_in_time', 'reports.check_out_time')
-        ->where('reports.id', '=', $id)
+        $schedule = DB::table('schedules')
+        ->leftjoin('users', 'schedule.user_id', '=', 'users.id')
+        ->select('users.name AS user_name', 'schedules.id','schedules.user_id', 'schedules.date', 'schedules.check_in_time', 'schedules.check_out_time')
+        ->where('schedules.id', '=', $id)
         ->first();
 
-        return view('user::reports.edit', compact('report','users'));
+        return view('user::schedules.edit', compact('schedule','users'));
     }
 
     public function update(Request $request, $id)
@@ -90,17 +90,17 @@ class ReportsController extends Controller
         ]);
 
         $input = $request->all();
-        $report = Reports::find($id);
-        $report->update($input);
+        $schedule = Schedules::find($id);
+        $schedule->update($input);
 
-        return redirect()->route('reports.index')->with('message', 'Report updated successfully.');
+        return redirect()->route('schedules.index')->with('message', 'Schedule updated successfully.');
 
     }
 
     public function destroy($id)
     {
-        Reports::find($id)->delete();
+        Schedules::find($id)->delete();
 
-        return redirect()->route('reports.index')->with('message','Report deleted successfully');
+        return redirect()->route('schedules.index')->with('message','Schedule deleted successfully');
     }
 }

@@ -4,8 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Modules\User\Http\Controllers\Api\MachineApiController;
 use Modules\User\Http\Controllers\Api\NotificationApiController;
-use Modules\User\Http\Controllers\Api\ReportApiController;
-
+use Modules\User\Http\Controllers\Api\SchedulesApiController;
 
 Route::group(['prefix' => 'auth'], function () {
 
@@ -23,14 +22,14 @@ Route::group(['prefix' => 'auth'], function () {
 
 Route::middleware(['cors'])->group(function () {
 
-    /** Routes Reports */
-    Route::get('reports',[ReportApiController::class,'index']);
-    Route::put('report/{id}', [ReportApiController::class,'update']);
-    Route::get('report/{id}',[ReportApiController::class,'edit']);
-    Route::get('report/user/{id}',[ReportApiController::class,'getReportsByUser']);
-    Route::post('report', [ReportApiController::class,'store']);
-    Route::get('report/user/check/{id}', [ReportApiController::class,'checkReport']);
-    Route::delete('report/{id}', [ReportApiController::class,'destroy']);
+    /** Routes Schedules */
+    Route::get('schedules',[SchedulesApiController::class,'index']);
+    Route::put('schedule/{id}', [SchedulesApiController::class,'update']);
+    Route::get('schedule/{id}',[SchedulesApiController::class,'edit']);
+    Route::get('schedule/user/{id}',[SchedulesApiController::class,'getSchedulesByUser']);
+    Route::post('schedule', [SchedulesApiController::class,'store']);
+    Route::get('schedule/user/check/{id}', [SchedulesApiController::class,'checkSchedule']);
+    Route::delete('schedule/{id}', [SchedulesApiController::class,'destroy']);
 
     /** Routes Notifications */
     Route::get('notifications',[NotificationApiController::class,'index']);

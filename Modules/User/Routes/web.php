@@ -46,7 +46,7 @@ Route::prefix('user')->group(function () {
         });
 
         /*** Reports Routes ***/
-        Route::resource('/reports', 'ReportsController');
+        //Route::resource('/reports', 'ReportsController');
 
         /*** Notifications Routes ***/
         Route::resource('/notifications', 'NotificationsController');
@@ -60,7 +60,7 @@ Route::prefix('user')->group(function () {
             Route::get('/createPDF', 'MachinesController@createPDF')->name('machines.createPDF');
             Route::any('/', 'MachinesController@index')->name('machines.index');
             Route::get('/grid_view', 'MachinesController@grid_view')->name('machines.grid_view');
-            
+
             Route::get('/grid_view_api', 'MachinesController@grid_view_api')->name('machines.grid_view_api');
 
             Route::get('/create', 'MachinesController@create')->name('machines.create');
@@ -88,10 +88,20 @@ Route::prefix('user')->group(function () {
             Route::delete('/{id}/delete', 'CustomersController@destroy')->name('customers.destroy');
         });
 
+        /*** Schedules Routes ***/
+        Route::group(['prefix' => 'schedules'], function () {
+            Route::get('/', 'SchedulesController@index')->name('schedules.index');
+            Route::get('/create', 'SchedulesController@create')->name('schedules.create');
+            Route::post('/create', 'SchedulesController@store')->name('schedules.store');
+            Route::get('/{id}/show', 'SchedulesController@show')->name('schedules.show');
+            Route::get('/edit/{id}', 'SchedulesController@edit')->name('schedules.edit');
+            Route::put('/update/{id}', 'SchedulesController@update')->name('schedules.update');
+            Route::delete('/{id}/delete', 'SchedulesController@destroy')->name('schedules.destroy');
+        });
+
         /** Posts */
-        Route::any('posts','PostController@index')->name('posts.index');
+        Route::any('posts', 'PostController@index')->name('posts.index');
         //Route::post('posts','PostController@filter')->name('posts.filter');
         Route::any('posts/search', 'PostController@search')->name('posts.search');
-
     });
 });

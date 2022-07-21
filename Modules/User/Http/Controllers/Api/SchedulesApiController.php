@@ -6,28 +6,28 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
-use Modules\User\Entities\Reports;
+use Modules\User\Entities\Schedules;
 
-class ReportApiController extends Controller
+class SchedulesApiController extends Controller
 {
     public function index()
     {
-        $reports = Reports::all();
-        return response()->json($reports);
+        $schedules = Schedules::all();
+        return response()->json($schedules);
     }
 
-    public function getReportsByUser($id)
+    public function getSchedulesByUser($id)
     {
-        $reports = Reports::where('user_id', '=', $id)->orderBy('id', 'desc')->get();
+        $schedules = Schedules::where('user_id', '=', $id)->orderBy('id', 'desc')->get();
 
-        return response()->json($reports);
+        return response()->json($schedules);
     }
 
-    public function checkReport($id)
+    public function checkSchedule($id)
     {
-        /** verify if there are any reports in the day */
+        /** verify if there are any schedules in the day */
         $now = date('d-m-Y');
-        $result = Reports::where('user_id', '=', $id)
+        $result = Schedules::where('user_id', '=', $id)
             ->where('date', '=', $now)
             ->get();
 
@@ -36,8 +36,8 @@ class ReportApiController extends Controller
 
     public function edit($id)
     {
-        $reports = Reports::find($id);
-        return response()->json($reports);
+        $schedules = Schedules::find($id);
+        return response()->json($schedules);
     }
 
     public function store(Request $request)
@@ -52,10 +52,10 @@ class ReportApiController extends Controller
         ]);
 
         //save to DB
-        $report = Reports::create($request->all());
+        $schedule = Schedules::create($request->all());
 
         //return response
-        return response()->json($report);
+        return response()->json($schedule);
     }
 
     public function update($id, Request $request)
@@ -70,16 +70,16 @@ class ReportApiController extends Controller
         ]);
 
         //update in DB
-        $report = Reports::find($id);
-        $report->update($request->all());
+        $schedule = Schedules::find($id);
+        $schedule->update($request->all());
 
         //return response
         return response()->json($request->id);
     }
 
-    public function destroy(Reports $report)
+    public function destroy(Schedules $schedule)
     {
-        Reports::find($report->id)->delete();
-        return response()->json('deleted successfully');
+        Schedules::find($schedule->id)->delete();
+        return response()->json('Schedule deleted successfully');
     }
 }

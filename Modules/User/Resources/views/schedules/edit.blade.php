@@ -8,7 +8,7 @@
                 <div class="row align-items-center">
                     <div class="col-md-6">
                     <div class="titlemb-30">
-                        <h2>Edit Report</h2>
+                        <h2>Editar Horario</h2>
                     </div>
                     </div>
                     <!-- end col -->
@@ -20,9 +20,9 @@
                             <a href="/user/dashboard">Dashboard</a>
                             </li>
                             <li class="breadcrumb-item" aria-current="page">
-                            <a href="{{ route('reports.index') }}">Reportes</a>
+                            <a href="{{ route('schedules.index') }}">Horarios</a>
                             </li>
-                            <li class="breadcrumb-item active" aria-current="page">Editar Reporte</li>
+                            <li class="breadcrumb-item active" aria-current="page">Editar Horario</li>
                         </ol>
                         </nav>
                     </div>
@@ -36,10 +36,10 @@
                 <div class="row">
                   <div class="col-lg-12">
                     <div class="card-style mb-30">
-                        <form method="POST" action="{{ route('reports.update', $report->id) }}">
+                        <form method="POST" action="{{ route('schedules.update', $schedule->id) }}">
                             @csrf
                             @method('PUT') <!-- menciono el metodo PUT, ya que en mi route utilzo Route::put(); -->
-                            @include('user::reports._partials.form')
+                            @include('user::schedules._partials.form')
                       </form>
                     </div>
                 </div>

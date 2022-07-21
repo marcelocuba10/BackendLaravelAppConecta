@@ -29,7 +29,7 @@
           </a>
         </li>
         @endcan
-        @can('report-list')
+        @can('schedule-list')
         <li class="nav-item {{ (request()->is('user/reports')) ? 'active' : '' }}">
           <a href="/user/reports">
             <span class="icon">
@@ -37,7 +37,7 @@
                 <path fill="currentColor" d="M4,2A2,2 0 0,0 2,4V14H4V4H14V2H4M8,6A2,2 0 0,0 6,8V18H8V8H18V6H8M20,12V20H12V12H20M20,10H12A2,2 0 0,0 10,12V20A2,2 0 0,0 12,22H20A2,2 0 0,0 22,20V12A2,2 0 0,0 20,10Z" />
               </svg>
             </span>
-            <span class="text">Registros</span>
+            <span class="text">Horarios</span>
           </a>
         </li>
         @endcan
@@ -97,6 +97,21 @@
               </svg>
             </span>
             <span class="text">Clientes</span>
+          </a>
+        </li>
+        @endcan
+        <span class="divider">
+          <hr />
+        </span>
+        @can('report-list')
+        <li class="nav-item {{ (request()->is('user/customers')) ? 'active' : '' }}">
+          <a href="/user/customers">
+            <span class="icon">
+              <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                <path fill="currentColor" d="M19,3H14.82C14.25,1.44 12.53,0.64 11,1.2C10.14,1.5 9.5,2.16 9.18,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3M12,3A1,1 0 0,1 13,4A1,1 0 0,1 12,5A1,1 0 0,1 11,4A1,1 0 0,1 12,3M7,7H17V5H19V19H5V5H7V7M17,11H7V9H17V11M15,15H7V13H15V15Z" />
+              </svg>
+            </span>
+            <span class="text">Relatorios</span>
           </a>
         </li>
         @endcan

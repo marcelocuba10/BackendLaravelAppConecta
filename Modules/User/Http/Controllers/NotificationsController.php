@@ -12,6 +12,11 @@ class NotificationsController extends Controller
     public function __construct()
     {
         $this->middleware('auth:web', ['except' => ['logout']]);
+
+        $this->middleware('permission:notification-list|notification-create|notification-edit|notification-delete', ['only' => ['index']]);
+        $this->middleware('permission:notification-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:notification-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:notification-delete', ['only' => ['destroy']]);
     }
 
     public function index()

@@ -18,6 +18,11 @@ class MachinesController extends Controller
     public function __construct()
     {
         $this->middleware('auth:web', ['except' => ['logout']]);
+
+        $this->middleware('permission:machine-list|machine-create|machine-edit|machine-delete', ['only' => ['index']]);
+        $this->middleware('permission:machine-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:machine-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:machine-delete', ['only' => ['destroy']]);
     }
 
     public function search_list(Request $request)

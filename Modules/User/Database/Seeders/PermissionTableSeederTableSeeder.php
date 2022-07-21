@@ -37,6 +37,11 @@ class PermissionTableSeederTableSeeder extends Seeder
             'movement-edit',
             'movement-delete',
 
+            'schedule-list',
+            'schedule-create',
+            'schedule-edit',
+            'schedule-delete',
+
             'report-list',
             'report-create',
             'report-edit',

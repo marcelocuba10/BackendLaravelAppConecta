@@ -6,7 +6,7 @@
     <div class="left"></div>
     <div class="right">
         <div class="ergts">
-            <a href="/"><button class="ththhf" type="button" class="btn btn-block create-account">Site ConectaCode</button></a>
+            <a href="/"><button class="ththhf" type="button" class="btn btn-block create-account">Página Web</button></a>
         </div>    
         <div class="login-texto">
             <p class="login-title">Bienvenido a ConectaCode</p>
@@ -22,7 +22,7 @@
         <div class="form-icon">
             <img class="img-logo" src="/img/conectacode.png">
         </div>
-        <p class="login-message2">Sign in to ConectaCode</p>
+        <p class="login-message2">Iniciar sesión en ConectaCode</p>
         <input type="hidden" name="_token" value="{{ csrf_token() }}" />
         @if ($errors->any())
             @foreach ($errors->all() as $error)
@@ -41,17 +41,13 @@
         </div>
 
         <div class="form-group">
-            <button type="submit" class="btn btn-block create-account">Login</button>
+            <button type="submit" class="btn btn-block create-account">Entrar</button>
         </div>
 
-        <a class="pokioj" href="#"><small>Need some help?</small></a>
-        <p class="text-muted text-center" style="margin-bottom: 0px;margin-top: 15px;"><small>Don't have an
-                account?</small></p>
-        <a class="btn btn-sm btn-white btn-block" style="text-decoration: underline;" href="#">Create an
-            account</a>
+        <a class="pokioj" href="#"><small>¿Necesita ayuda?</small></a>
+        <p class="text-muted text-center" style="margin-bottom: 0px;margin-top: 15px;"><small>¿No tienes una cuenta?</small></p>
+        <a class="btn btn-sm btn-white btn-block" style="text-decoration: underline;" href="#">Crea una cuenta</a>
     </form>
 </div>
-
--->
 
 @endsection

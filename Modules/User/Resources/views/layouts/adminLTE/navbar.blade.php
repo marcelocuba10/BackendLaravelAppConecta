@@ -70,60 +70,6 @@
                 </ul>
               </div>
               <!-- notification end -->
-              <!-- message start -->
-              <div class="header-message-box ml-15 d-none d-md-flex">
-                <button class="dropdown-toggle" type="button" id="message" data-bs-toggle="dropdown"
-                  aria-expanded="false">
-                  <i class="lni lni-envelope"></i>
-                  <span>3</span>
-                </button>
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="message">
-                  <li>
-                    <a href="#0">
-                      <div class="image">
-                        <img src="/assets/images/lead/lead-5.png" alt="" />
-                      </div>
-                      <div class="content">
-                        <h6>Jacob Jones</h6>
-                        <p>Hey!I can across your profile and ...</p>
-                        <span>10 mins ago</span>
-                      </div>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#0">
-                      <div class="image">
-                        <img src="/assets/images/lead/lead-3.png" alt="" />
-                      </div>
-                      <div class="content">
-                        <h6>John Doe</h6>
-                        <p>Would you mind please checking out</p>
-                        <span>12 mins ago</span>
-                      </div>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#0">
-                      <div class="image">
-                        <img src="/assets/images/lead/lead-2.png" alt="" />
-                      </div>
-                      <div class="content">
-                        <h6>Anee Lee</h6>
-                        <p>Hey! are you available for freelance?</p>
-                        <span>1h ago</span>
-                      </div>
-                    </a>
-                  </li>
-                </ul>
-              </div>
-              <!-- message end -->
-              <!-- filter start -->
-              <div class="filter-box ml-15 d-none d-md-flex">
-                <button class="" type="button" id="filter">
-                  <i class="lni lni-funnel"></i>
-                </button>
-              </div>
-              <!-- filter end -->
               <!-- profile start -->
               <div class="profile-box ml-15">
                 <button class="dropdown-toggle bg-transparent border-0" type="button" id="profile"
@@ -132,7 +78,7 @@
                     <div class="info">
                       <h6>@if(Auth::check()) {{Auth::user()->name}} @endif</h6>
                       <div class="image">
-                        <img src="/assets/images/profile/profile-image.png" alt="" />
+                        <img src="/assets/images/profile/profile-2.png" alt="" />
                         <span class="status"></span>
                       </div>
                     </div>
@@ -141,23 +87,19 @@
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profile">
                   <li>
-                    <a href="{{ route('users_.show.profile', Auth::user()->id) }}">
-                      <i class="lni lni-user"></i> View Profile
-                    </a>
+                    <a href="{{ route('users_.show.profile', Auth::user()->id) }}"><i class="lni lni-user"></i> Mi Perfil</a>
                   </li>
                   <li>
-                    <a href="#0">
-                      <i class="lni lni-alarm"></i> Notifications
-                    </a>
+                    <a href="/user/notifications"><i class="lni lni-alarm"></i> Avisos</a>
                   </li>
                   <li>
-                    <a href="#0"> <i class="lni lni-inbox"></i> Messages </a>
+                    <a href="/user/schedules"> <i class="lni lni-calendar"></i> Horarios </a>
                   </li>
                   <li>
-                    <a href="#0"> <i class="lni lni-cog"></i> Settings </a>
+                    <a href="#0"> <i class="lni lni-cog"></i> Configuraciones </a>
                   </li>
                   <li>
-                    <a href="/user/logout/"> <i class="lni lni-exit"></i> Sign Out </a>
+                    <a href="/user/logout/"> <i class="lni lni-exit"></i> Cerrar Sesión </a>
                   </li>
                 </ul>
               </div>

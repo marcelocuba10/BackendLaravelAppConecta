@@ -35,18 +35,18 @@
                 <div class="col-xxl-9 col-lg-8">
                   <div class="profile-wrapper mb-30">
                     <div class="profile-cover">
-                      <img src="/assets/images/profile/profile-cover.jpg" alt="cover-image">
+                      <img src="/assets/images/profile/profile-cover-2.png" alt="cover-image">
                       <div class="update-image">
-                        <input type="file">
+                        <input>
                         <label for=""><i class="lni lni-camera"></i> Edit Cover Photo</label>
                       </div>
                     </div>
                     <div class="d-md-flex">
                       <div class="profile-photo">
                         <div class="image">
-                          <img src="/assets/images/profile/profile-image.png" alt="profile">
+                          <img src="/assets/images/profile/profile-2.png" alt="profile">
                           <div class="update-image">
-                            <input type="file">
+                            <input>
                             <label for=""><i class="lni lni-camera"></i></label>
                           </div>
                         </div>

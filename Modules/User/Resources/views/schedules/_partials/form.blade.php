@@ -23,7 +23,7 @@
     <!-- end col -->
     <div class="col-6">
       <div class="input-style-1">
-        <label>Fecha</label>
+        <label>(*) Fecha</label>
         @if ($schedule)
           <input type="text" name="date" id="date" value="{{ $schedule->date ?? old('date') }}" readonly>
         @else
@@ -34,7 +34,7 @@
     <!-- end col -->
     <div class="col-6">
       <div class="input-style-1">
-        <label>Horario de entrada</label>
+        <label>(*) Horario de Entrada</label>
         @if ($schedule)
           <input type="text" name="check_in_time" value="{{ $schedule->check_in_time ?? old('check_in_time') }}" readonly>
         @else
@@ -45,7 +45,7 @@
     <!-- end col -->
     <div class="col-6">
       <div class="input-style-1">
-        <label>Horario de salida</label>
+        <label>(*) Horario de Salida</label>
         @if ($schedule)
           <input type="text" name="check_out_time" value="{{ $schedule->check_out_time ?? old('check_out_time') }}" readonly>
         @else

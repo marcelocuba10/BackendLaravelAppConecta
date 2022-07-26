@@ -52,10 +52,6 @@ class ApiCron extends Command
 
                 $created_at = \Carbon\Carbon::now();
 
-                // \DB::table('machines_api')->insert([
-                //     ['json_data' => $api_response, 'created_at' => $created_at]
-                // ]);
-
                 // $input = $api_response['data']['data']->all();
                 // $input['customer_id'] = $customer['id'];
                 // $input['created_at'] = $created_at;

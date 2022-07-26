@@ -142,18 +142,32 @@ class MachinesController extends Controller
         $filter = null;
         $status = $request->input('status');
 
+        //dd($request);
+
         if ($status == "active" || $status == "inactive") {
             $customers = DB::table('customers')->paginate(1);
         } else {
             $customers = DB::table('customers')->paginate(1);
         }
+        
+        //dd($customers);
+        if (!$customers[0] || $customers == null ) {
+            $machines = null;
+        }else{
+            $machines = DB::table('machines_api')
+            ->select('machines_api.id', 'machines_api.worker_name', 'machines_api.status')
+            ->where('machines_api.customer_id', '=', $customers[0]->id)
+            ->orderBy('created_at','DESC')
+            ->take($customers[0]->total_machines)
+            ->get();
+        }
 
         if ($request->ajax()) {
-            $view = view('user::machines._partials.data', compact('customers', 'status'))->render();
+            $view = view('user::machines._partials.data', compact('machines','customers', 'status'))->render();
             return response()->json(['html' => $view]);
         }
 
-        return view('user::machines.index_grid_api', compact('filter', 'customers', 'status'));
+        return view('user::machines.index_grid_api', compact('filter'));
     }
 
     public function grid_view()
@@ -168,6 +182,21 @@ class MachinesController extends Controller
 
         return view('user::machines.index_grid', compact('machines', 'customers', 'filter'));
     }
+
+    // public function grid_view_api()
+    // {
+    //     $filter = null;
+    //     $customers = DB::table('customers')->get();
+    //     $machines = DB::table('machines_api')
+    //         // ->leftjoin('users', 'machines.user_id', '=', 'users.id')
+    //         ->leftjoin('customers', 'machines_api.customer_id', '=', 'customers.id')
+    //         ->select('machines_api.id', 'machines_api.worker_name','machines_api.customer_id', 'machines_api.status', 'customers.name AS customer_name')
+    //         ->get();
+        
+    //         dd($machines);
+
+    //     return view('user::machines.index_grid_api', compact('machines', 'customers', 'filter'));
+    // }
 
     public function index()
     {

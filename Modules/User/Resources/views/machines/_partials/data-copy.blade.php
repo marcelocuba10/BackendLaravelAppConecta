@@ -3,8 +3,7 @@
         <div class="card-content">
             @php
                 $worker_stats = json_decode(file_get_contents('https://pool.api.btc.com/v1/worker/stats?access_key='.$customer->access_key.'&puid='.$customer->puid), true);
-                //$api_response  = json_decode(file_get_contents('https://pool.api.btc.com/v1/worker?access_key='.$customer->access_key.'&puid='.$customer->puid.'&status='.$status.'&page_size=1000'), true);
-
+                $api_response  = json_decode(file_get_contents('https://pool.api.btc.com/v1/worker?access_key='.$customer->access_key.'&puid='.$customer->puid.'&status='.$status.'&page_size=1000'), true);
             @endphp
 
             <div class="title d-flex justify-content-between">
@@ -61,18 +60,18 @@
             </div>
 
             <div id="grid">
-                @foreach($machines as $machine)
+                @foreach($api_response['data']['data'] as $listApi)
                     <a href="#">
-                        <div id="item" data-toggle="tooltip" data-placement="bottom" title="{{ $machine->worker_name }}" 
+                        <div id="item" data-toggle="tooltip" data-placement="bottom" title="{{ $listApi['worker_name'] }}" 
                             class="
-                            @if($machine->status == 'ACTIVE') bg-card-enabled 
-                            @elseIf($machine->status == 'Apagado') bg-card-disabled
-                            @elseIf($machine->status == 'Requiere Atención') bg-card-attention
-                            @elseIf($machine->status == 'Mantenimiento') bg-card-maintenance
-                            @elseIf($machine->status == 'Error') bg-card-error
-                            @elseIf($machine->status == 'INACTIVE') bg-card-offline 
+                            @if($listApi['status'] == 'ACTIVE') bg-card-enabled 
+                            @elseIf($listApi['status'] == 'DEAD') bg-card-disabled
+                            @elseIf($listApi['status'] == 'Requiere Atención') bg-card-attention
+                            @elseIf($listApi['status'] == 'Mantenimiento') bg-card-maintenance
+                            @elseIf($listApi['status'] == 'Error') bg-card-error
+                            @elseIf($listApi['status'] == 'INACTIVE') bg-card-offline 
                             @endif">
-                            <p class="text-sm  text-white" style="margin-top: 10px;">{{ Str::limit($machine->worker_name, 3) }}</p>
+                            <p class="text-sm  text-white" style="margin-top: 10px;">{{ Str::limit($listApi['worker_name'], 3) }}</p>
                         </div>
                     </a> 
                 @endforeach

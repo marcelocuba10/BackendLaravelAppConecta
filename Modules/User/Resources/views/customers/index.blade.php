@@ -41,7 +41,7 @@
               <div class="card-style mb-30">
                 <div class="d-flex flex-wrap justify-content-between align-items-center py-3">
               <div class="left">
-                <div class="dataTable-dropdown">
+                {{-- <div class="dataTable-dropdown">
                   <label>
                       <select class="dataTable-selector">
                           <option value="5">5</option>
@@ -51,7 +51,7 @@
                           <option value="25">25</option>
                       </select> entries per page
                   </label>
-              </div>
+                </div> --}}
               </div>
               <div class="right">
                 <div class="table-search d-flex">
@@ -69,6 +69,7 @@
                         <th><h6>#</h6></th>
                         <th><h6>Nombre</h6></th>
                         <th><h6>Teléfono</h6></th>
+                        <th><h6>Máquinas</h6></th>
                         <th><h6>Dirección</h6></th>
                         <th><h6>Acciones</h6></th>
                       </tr>
@@ -80,6 +81,7 @@
                             <td class="min-width"><p>{{ ++$i }}</p></td>
                             <td class="min-width"><p>{{ $customer->name }}</p></td>
                             <td class="min-width"><p>{{ $customer->phone }}</p></td>
+                            <td class="min-width"><p>{{ $customer->total_machines }}</p></td>
                             <td class="min-width"><p>{{ $customer->address }}</p></td>
                             <td class="text-right">
                                 <div class="btn-group">

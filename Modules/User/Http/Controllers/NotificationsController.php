@@ -32,10 +32,14 @@ class NotificationsController extends Controller
 
     public function store(Request $request)
     {
+        //date validation, not less than 1980 and not greater than the current year
+        $initialDate = '1980-01-01';
+        $currentDate = (date('Y')+1).'-01-01'; //2023-01-01
+
         $request->validate([
-            'title' => 'required|max:100|min:5',
-            'date' => 'required',
-            'subject' => 'required|max:255|min:5',
+            'title' => 'required|max:50|min:5',
+            'date' => 'required|date_format:Y-m-d|after_or_equal:'.$initialDate.'|before:'.$currentDate,
+            'subject' => 'required|max:150|min:5',
         ]);
 
         Notifications::create($request->all());
@@ -57,10 +61,14 @@ class NotificationsController extends Controller
 
     public function update(Request $request, $id)
     {
+        //date validation, not less than 1980 and not greater than the current year
+        $initialDate = '1980-01-01';
+        $currentDate = (date('Y')+1).'-01-01'; //2023-01-01
+
         $request->validate([
-            'title' => 'required|max:100|min:5',
-            'date' => 'required',
-            'subject' => 'required|max:255|min:5',
+            'title' => 'required|max:50|min:5',
+            'date' => 'required|date_format:Y-m-d|after_or_equal:'.$initialDate.'|before:'.$currentDate,
+            'subject' => 'required|max:150|min:5',
         ]);
 
         $notification = Notifications::find($id);

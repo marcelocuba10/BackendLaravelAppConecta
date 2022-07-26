@@ -10,7 +10,7 @@
     <div class="col-6">
       <div class="input-style-1">
         <label>Fecha</label>
-        <input type="text" name="date" id="date" placeholder="DD/MM/YYYY" value="{{ $notification->date ?? old('date') }}" class="bg-transparent">
+        <input type="date" name="date" id="date" placeholder="DD/MM/YYYY" value="{{ $notification->date ?? old('date') }}" class="bg-transparent">
       </div>
     </div>
     <!-- end col -->
@@ -24,7 +24,7 @@
     <div class="col-12">
       <div class="button-group d-flex justify-content-center flex-wrap">
         <button type="submit" class="main-btn primary-btn btn-hover m-2">Guardar</button>
-        <a class="main-btn danger-btn-outline m-2" href="{{ route('notifications.index') }}">Cancelar</a>
+        <a class="main-btn danger-btn-outline m-2" href="{{ route('notifications.index') }}">Atrás</a>
       </div>
     </div>
 </div>

@@ -41,7 +41,7 @@
               <div class="card-style mb-30">
                 <div class="d-flex flex-wrap justify-content-between align-items-center py-3">
               <div class="left">
-                <div class="dataTable-dropdown">
+                {{-- <div class="dataTable-dropdown">
                   <label>
                       <select class="dataTable-selector">
                           <option value="5">5</option>
@@ -51,7 +51,7 @@
                           <option value="25">25</option>
                       </select> entries per page
                   </label>
-              </div>
+                </div> --}}
               </div>
               <div class="right">
                 <div class="table-search d-flex">

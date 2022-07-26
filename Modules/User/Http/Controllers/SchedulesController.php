@@ -23,7 +23,6 @@ class SchedulesController extends Controller
 
     public function index()
     {
-
         $schedules = DB::table('schedules')
         ->join('users', 'schedules.user_id', '=', 'users.id')
         ->select('users.*','schedules.*')
@@ -56,8 +55,6 @@ class SchedulesController extends Controller
 
     public function show($id)
     {
-        $users = DB::table('users')->get();
-
         $schedule = DB::table('schedules')
         ->leftjoin('users', 'schedules.user_id', '=', 'users.id')
         ->select('users.name AS user_name', 'schedules.id','schedules.user_id', 'schedules.date', 'schedules.check_in_time', 'schedules.check_out_time')
@@ -69,14 +66,17 @@ class SchedulesController extends Controller
 
     public function edit($id)
     {
+        //if create new schedule, send all user list
         $users = DB::table('users')->get();
 
+        //dd($id);
         $schedule = DB::table('schedules')
-        ->leftjoin('users', 'schedule.user_id', '=', 'users.id')
+        ->leftjoin('users', 'schedules.user_id', '=', 'users.id')
         ->select('users.name AS user_name', 'schedules.id','schedules.user_id', 'schedules.date', 'schedules.check_in_time', 'schedules.check_out_time')
         ->where('schedules.id', '=', $id)
         ->first();
 
+        //dd($schedule);
         return view('user::schedules.edit', compact('schedule','users'));
     }
 

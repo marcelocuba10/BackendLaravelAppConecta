@@ -88,8 +88,16 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.min.js" integrity="sha384-kjU+l4N0Yf4ZOJErLsIcvOU2qSb74wXpOhqTvwVx3OElZRweTnQ6d31fXEoRD1Jy" crossorigin="anonymous"></script>
 
   <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-
+    
   <script>
+
+    // const navLinks = document.querySelectorAll('.nav-item')
+    // const menuToggle = document.getElementById('aaaaa')
+    // const bsCollapse = new bootstrap.Collapse(menuToggle, {toggle:false})
+    // navLinks.forEach((l) => {
+    //     l.addEventListener('click', () => { bsCollapse.toggle() })
+    // })
+
     // ======== InputMask in all forms only inputs Date & Phone
     document.addEventListener("DOMContentLoaded", readyInputMask);
 

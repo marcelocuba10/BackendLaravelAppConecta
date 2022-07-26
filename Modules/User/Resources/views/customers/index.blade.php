@@ -6,7 +6,7 @@
       <!-- ========== title-wrapper start ========== -->
       <div class="title-wrapper pt-30">
         <div class="row align-items-center">
-          <div class="col-md-6">
+          <div class="col-md-8">
             <div class="title d-flex align-items-center flex-wrap mb-30">
               <h2 class="mr-40">Listado de Clientes</h2>
               @can('customer-create')
@@ -15,16 +15,14 @@
             </div>
           </div>
           <!-- end col -->
-          <div class="col-md-6">
-            <div class="breadcrumb-wrapper mb-30">
-              <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                  <li class="breadcrumb-item">
-                    <a href="{{ route('user.dashboard') }}">Dashboard</a>
-                  </li>
-                  <li class="breadcrumb-item active" aria-current="page">Listado</li>
-                </ol>
-              </nav>
+          <div class="col-md-4">
+            <div class="right">
+              <div class="table-search d-flex" style="margin-top: -35px;float: right;">
+                <form action="#">
+                  <input style="background-color: #fff;" type="text" placeholder="Search...">
+                  <button><i class="lni lni-search-alt"></i></button>
+                </form>
+              </div>
             </div>
           </div>
           <!-- end col -->
@@ -54,12 +52,6 @@
                 </div> --}}
               </div>
               <div class="right">
-                <div class="table-search d-flex">
-                  <form action="#">
-                    <input type="text" placeholder="Search...">
-                    <button><i class="lni lni-search-alt"></i></button>
-                  </form>
-                </div>
               </div>
             </div>
                 <div class="table-wrapper table-responsive">

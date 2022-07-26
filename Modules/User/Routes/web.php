@@ -45,9 +45,6 @@ Route::prefix('user')->group(function () {
             Route::put('/update/profile/{id}', 'UserController@updateProfile')->name('users_.update.profile');
         });
 
-        /*** Reports Routes ***/
-        //Route::resource('/reports', 'ReportsController');
-
         /*** Notifications Routes ***/
         Route::resource('/notifications', 'NotificationsController');
 
@@ -97,6 +94,17 @@ Route::prefix('user')->group(function () {
             Route::get('/edit/{id}', 'SchedulesController@edit')->name('schedules.edit');
             Route::put('/update/{id}', 'SchedulesController@update')->name('schedules.update');
             Route::delete('/{id}/delete', 'SchedulesController@destroy')->name('schedules.destroy');
+        });
+
+        /*** Reports Routes ***/
+        Route::group(['prefix' => 'reports'], function () {
+            Route::get('/', 'ReportsController@index')->name('reports.index');
+            Route::get('/create', 'ReportsController@create')->name('reports.create');
+            Route::post('/create', 'ReportsController@store')->name('reports.store');
+            Route::get('/{id}/show', 'ReportsController@show')->name('reports.show');
+            Route::get('/edit/{id}', 'ReportsController@edit')->name('reports.edit');
+            Route::put('/update/{id}', 'ReportsController@update')->name('reports.update');
+            Route::delete('/{id}/delete', 'ReportsController@destroy')->name('reports.destroy');
         });
 
         /** Posts */

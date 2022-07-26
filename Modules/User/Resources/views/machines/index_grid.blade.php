@@ -13,7 +13,7 @@
             @endcan
             <a href="/user/machines/grid_view"><i class="hthtg lni lni-grid-alt"></i></a>
             <a href="/user/machines"><i style="margin-left: 23px;" class="hthtg lni lni-list"></i></a>
-            <a href="{{route('machines.createPDF',['download'=>'pdf'])}}"><i style="margin-left: 23px;"class="hthtg lni lni-printer"></i></a>
+            <a href="{{route('machines.createPDF',['download'=>'pdf'])}}" target="_blank"><i style="margin-left: 23px;"class="hthtg lni lni-printer"></i></a>
           </div>
         </div>
         <!-- end col -->

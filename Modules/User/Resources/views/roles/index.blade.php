@@ -6,25 +6,23 @@
       <!-- ========== title-wrapper start ========== -->
       <div class="title-wrapper pt-30">
         <div class="row align-items-center">
-          <div class="col-md-6">
+          <div class="col-md-8">
             <div class="title d-flex align-items-center flex-wrap mb-30">
               <h2 class="mr-40">Roles</h2>
               @can('role-create')
-                <a href="{{ route('roles.create') }}" class="main-btn info-btn btn-hover btn-sm"><i class="lni lni-plus mr-5"></i> Nuevo</a>
+                <a href="/user/roles/create" class="main-btn info-btn btn-hover btn-sm"><i class="lni lni-plus mr-5"></i> Nuevo</a>
               @endcan  
             </div>
           </div>
           <!-- end col -->
-          <div class="col-md-6">
-            <div class="breadcrumb-wrapper mb-30">
-              <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                  <li class="breadcrumb-item">
-                    <a href="{{ route('user.dashboard') }}">Dashboard</a>
-                  </li>
-                  <li class="breadcrumb-item active" aria-current="page">Listado</li>
-                </ol>
-              </nav>
+          <div class="col-md-4">
+            <div class="right">
+              <div class="table-search d-flex" style="margin-top: -35px;float: right;">
+                <form action="#">
+                  <input style="background-color: #fff;" type="text" placeholder="Search...">
+                  <button><i class="lni lni-search-alt"></i></button>
+                </form>
+              </div>
             </div>
           </div>
           <!-- end col -->
@@ -41,7 +39,7 @@
               <div class="card-style mb-30">
                 <div class="d-flex flex-wrap justify-content-between align-items-center py-3">
               <div class="left">
-                <div class="dataTable-dropdown">
+                {{-- <div class="dataTable-dropdown">
                   <label>
                       <select class="dataTable-selector">
                           <option value="5">5</option>
@@ -51,15 +49,9 @@
                           <option value="25">25</option>
                       </select> entries per page
                   </label>
-              </div>
+                </div> --}}
               </div>
               <div class="right">
-                <div class="table-search d-flex">
-                  <form action="#">
-                    <input type="text" placeholder="Search...">
-                    <button><i class="lni lni-search-alt"></i></button>
-                  </form>
-                </div>
               </div>
             </div>
                 <div class="table-wrapper table-responsive">

@@ -8,7 +8,7 @@
                 <div class="row align-items-center">
                     <div class="col-md-6">
                     <div class="titlemb-30">
-                        <h2>Edit Profile</h2>
+                        <h2>Editar Perfil</h2>
                     </div>
                     </div>
                     <!-- end col -->
@@ -16,15 +16,9 @@
                     <div class="breadcrumb-wrapper mb-30">
                         <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item">
-                            <a href="/user/dashboard">Dashboard</a>
-                            </li>
-                            <li class="breadcrumb-item" aria-current="page">
-                            <a href="{{ route('users_.show.profile',$user->id) }}">Profile</a>
-                            </li>
-                            <li class="breadcrumb-item active" aria-current="page">
-                            Edit Profile
-                            </li>
+                            <li class="breadcrumb-item"><a href="/user/dashboard">Dashboard</a></li>
+                            <li class="breadcrumb-item" aria-current="page"><a href="{{ route('users_.show.profile',$user->id) }}">Perfil</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Editar Perfil</li>
                         </ol>
                         </nav>
                     </div>

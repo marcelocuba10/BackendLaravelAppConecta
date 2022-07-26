@@ -21,6 +21,11 @@ class UserController extends Controller
     public function __construct()
     {
         $this->middleware('auth:web', ['except' => ['logout']]);
+
+        $this->middleware('permission:user-list|user-create|user-edit|user-delete', ['only' => ['index']]);
+        $this->middleware('permission:user-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:user-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:user-delete', ['only' => ['destroy']]);
     }
 
     public function index()
@@ -42,11 +47,11 @@ class UserController extends Controller
         $this->validate($request, [
             'name' => 'required|max:20|min:5',
             'last_name' => 'required|max:20|min:5',
-            'email' => 'nullable|email',
+            'email' => 'required|email',
             'phone' => 'nullable|max:20|min:5',
-            'ci' => 'nullable|max:8|min:5',
-            'password' => 'nullable|max:20|min:5',
-            'confirm_password' => 'nullable|max:20|min:5|same:password',
+            'ci' => 'required|max:8|min:5',
+            'password' => 'required|max:20|min:5',
+            'confirm_password' => 'required|max:20|min:5|same:password',
         ]);
 
         $input = $request->all();
@@ -108,9 +113,9 @@ class UserController extends Controller
         $this->validate($request, [
             'name' => 'required|max:20|min:5',
             'last_name' => 'required|max:20|min:5',
-            'email' => 'nullable|email',
+            'email' => 'required|email',
             'phone' => 'nullable|max:20|min:5',
-            'ci' => 'nullable|max:8|min:5',
+            'ci' => 'required|max:8|min:5',
             'password' => 'nullable|max:20|min:5',
             'confirm_password' => 'nullable|max:20|min:5|same:password',
         ]);
@@ -137,9 +142,9 @@ class UserController extends Controller
         $this->validate($request, [
             'name' => 'required|max:20|min:5',
             'last_name' => 'required|max:20|min:5',
-            'email' => 'nullable|email',
+            'email' => 'required|email',
             'phone' => 'nullable|max:20|min:5',
-            'ci' => 'nullable|max:8|min:5',
+            'ci' => 'required|max:8|min:5',
             'password' => 'nullable|max:20|min:5',
             'confirm_password' => 'nullable|max:20|min:5|same:password',
         ]);

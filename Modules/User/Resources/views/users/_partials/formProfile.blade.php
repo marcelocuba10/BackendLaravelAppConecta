@@ -2,14 +2,14 @@
 <div class="row">
     <div class="col-6">
       <div class="input-style-1">
-        <label>(*) First Name</label>
+        <label>(*) Nombre</label>
         <input type="text" class="bg-transparent" value="{{ $user->name ?? old('name') }}" name="name">
       </div>
     </div>
     <!-- end col -->
     <div class="col-6">
       <div class="input-style-1">
-        <label>(*) Last Name</label>
+        <label>(*) Apellidos</label>
         <input type="text" class="bg-transparent" value="{{ $user->last_name ?? old('last_name') }}" name="last_name">
       </div>
     </div>
@@ -23,51 +23,49 @@
     <!-- end col -->
     <div class="col-6">
         <div class="input-style-1">
-            <label>Password</label>
+            <label>Contraseña</label>
             <input type="password" name="password" class="bg-transparent">
-            <span class="form-text m-b-none">Leave blank if you don't want to change the password</span>
+            @if ($user)
+              <span class="form-text m-b-none">Déjelo en blanco si no desea cambiar la contraseña</span>
+            @endif
         </div>
     </div>
     <!-- end col -->
     <div class="col-6">
         <div class="input-style-1">
-            <label>Confirm Password</label>
+            <label>Confirmar Contraseña</label>
             <input type="password" name="confirm_password" class="bg-transparent">
-            <span class="form-text m-b-none">Leave blank if you don't want to change the password</span>
+            @if ($user)
+              <span class="form-text m-b-none">Déjelo en blanco si no desea cambiar la contraseña</span>
+            @endif
         </div>
     </div>
     <!-- end col -->
     <div class="col-6">
       <div class="input-style-1">
-        <label>Phone Number</label>
+        <label>Teléfono</label>
         <input type="text" name="phone" id="phone" value="{{ $user->phone ?? old('phone') }}" class="bg-transparent">
       </div>
     </div>
     <!-- end col -->
     <div class="col-12">
       <div class="input-style-1">
-        <label>Address</label>
+        <label>Dirección</label>
         <input type="text" name="address" value="{{ $user->address ?? old('address') }}" class="bg-transparent">
       </div>
     </div>
     <!-- end col -->
     <div class="col-6">
       <div class="input-style-1">
-        <label>Cedula Identidad</label>
+        <label>Doc Identidad</label>
         <input type="text" name="ci" value="{{ $user->ci ?? old('ci') }}" class="bg-transparent">
-      </div>
-    </div>
-    <div class="col-sm-6">
-      <div class="input-style-1">
-        <label>Birthday</label>
-        <input type="text" id="date" name="birthday" value="{{ $user->birthday ?? old('birthday') }}" placeholder="DD/MM/YYYY" class="bg-transparent">
       </div>
     </div>
     <!-- end col -->
     <div class="col-12">
       <div class="button-group d-flex justify-content-center flex-wrap">
-        <button type="submit" class="main-btn primary-btn btn-hover m-2">Save</button>
-        <a class="main-btn danger-btn-outline m-2" href="{{ route('users_.show.profile',$user->id) }}">Cancel</a>
+        <button type="submit" class="main-btn primary-btn btn-hover m-2">Guardar</button>
+        <a class="main-btn danger-btn-outline m-2" href="{{ route('users_.show.profile',$user->id) }}">Atrás</a>
       </div>
     </div>
 </div>

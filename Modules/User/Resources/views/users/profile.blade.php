@@ -8,7 +8,7 @@
               <div class="row align-items-center">
                 <div class="col-md-6">
                   <div class="titlemb-30">
-                    <h2>Profile</h2>
+                    <h2>Perfil</h2>
                   </div>
                 </div>
                 <!-- end col -->
@@ -16,12 +16,8 @@
                   <div class="breadcrumb-wrapper mb-30">
                     <nav aria-label="breadcrumb">
                       <ol class="breadcrumb">
-                        <li class="breadcrumb-item">
-                          <a href="/user/dashboard">Dashboard</a>
-                        </li>
-                        <li class="breadcrumb-item active" aria-current="page">
-                          Profile
-                        </li>
+                        <li class="breadcrumb-item"><a href="/user/dashboard">Dashboard</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Perfil</li>
                       </ol>
                     </nav>
                   </div>
@@ -38,7 +34,7 @@
                       <img src="/assets/images/profile/profile-cover-2.png" alt="cover-image">
                       <div class="update-image">
                         <input>
-                        <label for=""><i class="lni lni-camera"></i> Edit Cover Photo</label>
+                        <label for=""><i class="lni lni-camera"></i> Cambiar imagen de fondo</label>
                       </div>
                     </div>
                     <div class="d-md-flex">
@@ -52,24 +48,21 @@
                         </div>
                         <div class="profile-meta pt-25">
                           <h5 class="text-bold mb-10">{{ $user->name }}</h5>
-                          <p class="text-sm">Founder, Abc Company</p>
+                          <p class="text-sm">Rol - Funcionario</p>
                         </div>
                       </div>
                       <div class="profiles-activities w-100 pt-30">
                         <ul class="d-flex align-items-center">
                           <li class="mr-30">
-                            <p><strong>234</strong> Posts</p>
                           </li>
                           <li class="mr-30">
-                            <p><strong>34K</strong> Followers</p>
                           </li>
                           <li class="mr-30">
-                            <p><strong>4K</strong> Following</p>
                           </li>
                           <li class="ms-auto">
                             <a href="{{ route('users_.edit.profile', $user->id) }}" class="main-btn btn-sm primary-btn btn-hover mb-20">
                               <i class="lni lni-plus mr-10"></i>
-                              Update Information
+                              Actualizar Perfil
                             </a>
                           </li>
                         </ul>
@@ -78,52 +71,38 @@
                     <div class="profile-info">
                       <form action="#">
                         <div class="row">
-                          <div class="col-12">
+                          <div class="col-6">
                             <div class="input-style-1">
-                              <label>First Name</label>
+                              <label>Nombre</label>
                               <input type="text" placeholder="{{ $user->name }}" readonly>
                             </div>
                           </div>
                           <!-- end col -->
-                          <div class="col-12">
+                          <div class="col-6">
                             <div class="input-style-1">
-                              <label>Last Name</label>
+                              <label>Apellidos</label>
                               <input type="text" placeholder="{{ $user->last_name }}" readonly>
                             </div>
                           </div>
                           <!-- end col -->
                           <div class="col-12">
                             <div class="input-style-1">
-                              <label>Address</label>
+                              <label>Dirección</label>
                               <input type="text" placeholder="{{ $user->address }}" readonly>
                             </div>
                           </div>
                           <!-- end col -->
                           <div class="col-6">
                             <div class="input-style-1">
-                              <label>Phone Number</label>
+                              <label>Teléfono</label>
                               <input type="text" placeholder="{{ $user->phone }}" readonly>
                             </div>
                           </div>
                           <!-- end col -->
                           <div class="col-6">
                             <div class="input-style-1">
-                              <label>Cedula Identidad</label>
+                              <label>Doc Identidad</label>
                               <input type="text" placeholder="{{ $user->ci }}" readonly>
-                            </div>
-                          </div>
-                          <!-- end col -->
-                          <div class="col-6">
-                            <div class="input-style-1">
-                              <label>Country</label>
-                              <input type="text" placeholder="{{ $user->country }}" readonly>
-                            </div>
-                          </div>
-                          <!-- end col -->
-                          <div class="col-6">
-                            <div class="input-style-1">
-                              <label>Zip Code</label>
-                              <input type="text" placeholder="{{ $user->zip_code }}" readonly>
                             </div>
                           </div>
                           <!-- end col -->

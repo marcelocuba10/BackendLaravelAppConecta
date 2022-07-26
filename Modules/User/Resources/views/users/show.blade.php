@@ -8,7 +8,7 @@
                 <div class="row align-items-center">
                     <div class="col-md-6">
                         <div class="titlemb-30">
-                            <h2>Detail Funcionario</h2>
+                            <h2>Detalle Funcionario</h2>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -22,7 +22,7 @@
                                 <a href="{{ route('users.index') }}">Funcionarios</a>
                                 </li>
                                 <li class="breadcrumb-item active" aria-current="page">
-                                    Detail Funcionario
+                                    Detalle Funcionario
                                 </li>
                             </ol>
                             </nav>
@@ -40,14 +40,14 @@
                         <div class="row">
                             <div class="col-6">
                               <div class="input-style-1">
-                                <label>(*) First Name</label>
+                                <label>(*) Nombre</label>
                                 <input type="text" value="{{ $user->name ?? old('name') }}" name="name" readonly>
                               </div>
                             </div>
                             <!-- end col -->
                             <div class="col-6">
                               <div class="input-style-1">
-                                <label>(*) Last Name</label>
+                                <label>(*) Apellidos</label>
                                 <input type="text" value="{{ $user->last_name ?? old('last_name') }}" name="last_name" readonly>
                               </div>
                             </div>
@@ -61,45 +61,30 @@
                             <!-- end col -->
                             <div class="col-6">
                               <div class="input-style-1">
-                                <label>Phone Number</label>
+                                <label>Teléfono</label>
                                 <input type="text" name="phone" id="phone" value="{{ $user->phone ?? old('phone') }}" readonly>
                               </div>
                             </div>
                             <!-- end col -->
                             <div class="col-12">
                               <div class="input-style-1">
-                                <label>Address</label>
+                                <label>Dirección</label>
                                 <input type="text" name="address" value="{{ $user->address ?? old('address') }}" readonly>
                               </div>
                             </div>
                             <!-- end col -->
                             <div class="col-6">
                               <div class="input-style-1">
-                                <label>Cedula Identidad</label>
+                                <label>Doc Identidad</label>
                                 <input type="text" name="ci" value="{{ $user->ci ?? old('ci') }}"readonly>
-                              </div>
-                            </div>
-                            <div class="col-sm-6">
-                              <div class="input-style-1">
-                                <label>Birthday</label>
-                                <input type="text" id="date" name="birthday" value="{{ $user->birthday ?? old('birthday') }}" placeholder="DD/MM/YYYY" readonly>
                               </div>
                             </div>
                             <!-- end col -->
                             <div class="col-12">
                                 <div class="button-groupd-flexjustify-content-centerflex-wrap">
-                                    @can('user-delete') 
-                                    <form method="POST" action="{{ route('users.destroy', $user->id) }}">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="main-btn primary-btn btn-hover m-2">
-                                          Delete user
-                                        </button>
-                                    </form>
-                                    @endcan
-                                    <a class="main-btn danger-btn-outline m-2" href="{{ route('users.index') }}" >Back</a>
+                                    <a class="main-btn danger-btn-outline m-2" href="{{ route('users.index') }}">Atrás</a>
                                 </div>
-                              </div>
+                            </div>
                         </div>
                       </form>
                     </div>

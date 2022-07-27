@@ -21,8 +21,8 @@ class NotificationsController extends Controller
 
     public function index()
     {
-        $notifications = Notifications::latest()->paginate(5);
-        return view('user::notifications.index', compact('notifications'))->with('i', (request()->input('page', 1) - 1) * 5);
+        $notifications = Notifications::latest()->paginate(10);
+        return view('user::notifications.index', compact('notifications'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
     public function create()

@@ -24,7 +24,7 @@ class PermissionsController extends Controller
     {
         $permissions = Permission::paginate(10);
 
-        return view('user::permissions.index', compact('permissions'))->with('i', (request()->input('page', 1) - 1) * 5);
+        return view('user::permissions.index', compact('permissions'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
     public function create()

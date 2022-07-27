@@ -26,9 +26,10 @@ class SchedulesController extends Controller
         $schedules = DB::table('schedules')
             ->join('users', 'schedules.user_id', '=', 'users.id')
             ->select('users.*', 'schedules.*')
+            ->orderBy('schedules.created_at','DESC')
             ->Paginate(10);
 
-        return view('user::schedules.index', compact('schedules'))->with('i', (request()->input('page', 1) - 1) * 5);
+        return view('user::schedules.index', compact('schedules'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
     public function create()

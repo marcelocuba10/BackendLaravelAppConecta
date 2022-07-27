@@ -24,7 +24,7 @@ class CustomersController extends Controller
     public function index()
     {
         $customers = DB::table('customers')->paginate(10);
-        return view('user::customers.index', compact('customers'))->with('i', (request()->input('page', 1) - 1) * 5);
+        return view('user::customers.index', compact('customers'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
     public function create()

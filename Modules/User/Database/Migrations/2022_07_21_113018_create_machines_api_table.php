@@ -27,9 +27,9 @@ class CreateMachinesApiTable extends Migration
             $table->string('miner_agent');
             $table->string('shares_unit');
             $table->string('status');
-            $table->string('shares_1m_pure');
-            $table->string('shares_5m_pure');
-            $table->string('shares_15m_pure');
+            $table->string('shares_1m_pure')->nullable();
+            $table->string('shares_5m_pure')->nullable();
+            $table->string('shares_15m_pure')->nullable();
             $table->string('shares_1d');
             $table->string('shares_1d_unit');
             $table->string('reject_percent_1d');

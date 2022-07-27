@@ -20,7 +20,7 @@
                                     <a href="/user/dashboard">Dashboard</a>
                                     </li>
                                     <li class="breadcrumb-item" aria-current="page">
-                                    <a href="{{ route('machines.index') }}">Máquinas</a>
+                                    <a href="{{ route('machines.index_list') }}">Máquinas</a>
                                     </li>
                                     <li class="breadcrumb-item active" aria-current="page">Nueva Máquina</li>
                                 </ol>

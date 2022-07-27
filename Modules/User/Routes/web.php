@@ -54,20 +54,26 @@ Route::prefix('user')->group(function () {
 
         /** Machines Routes*/
         Route::group(['prefix' => 'machines'], function () {
-            Route::get('/createPDF', 'MachinesController@createPDF')->name('machines.createPDF');
-            Route::any('/', 'MachinesController@index')->name('machines.index');
+            Route::any('/list', 'MachinesController@index_list')->name('machines.index_list');
+            Route::any('/list_api', 'MachinesController@index_list_api')->name('machines.index_list_api');
+            
             Route::get('/grid_view', 'MachinesController@grid_view')->name('machines.grid_view');
-
             Route::get('/grid_view_api', 'MachinesController@grid_view_api')->name('machines.grid_view_api');
 
             Route::get('/create', 'MachinesController@create')->name('machines.create');
             Route::post('/create', 'MachinesController@store')->name('machines.store');
-            Route::get('/{user}/show', 'MachinesController@show')->name('machines.show');
+
+            Route::get('/{id}/show', 'MachinesController@show')->name('machines.show');
+            Route::get('/{id}/show_api', 'MachinesController@show_api')->name('machines.show_api');
+
             Route::get('/edit/{id}', 'MachinesController@edit')->name('machines.edit');
             Route::put('/update/{id}', 'MachinesController@update')->name('machines.update');
             Route::delete('/{user}/delete', 'MachinesController@destroy')->name('machines.destroy');
+            Route::get('/createPDF', 'MachinesController@createPDF')->name('machines.createPDF');
 
             Route::any('/search_list', 'MachinesController@search_list')->name('machines.search_list');
+            Route::any('/search_list_api', 'MachinesController@search_list_api')->name('machines.search_list_api');
+
             Route::any('/search_gridview', 'MachinesController@search_gridview')->name('machines.search_gridview');
             Route::any('/search_gridview_api', 'MachinesController@search_gridview_api')->name('machines.search_gridview_api');
             Route::any('/filter_gridview', 'MachinesController@filter_gridview')->name('machines.filter_gridview');

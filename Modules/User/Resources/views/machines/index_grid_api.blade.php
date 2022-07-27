@@ -7,13 +7,10 @@
       <div class="row align-items-center">
         <div class="col-md-8">
           <div class="title d-flex align-items-center flex-wrap mb-30">
-            <h2 class="mr-40">Listado de máquinas</h2>
-            @can('machine-create')
-            <a href="{{ route('machines.create') }}" class="main-btn info-btn btn-hover btn-sm"><i class="lni lni-plus mr-5"></i> Nuevo</a>
-            @endcan
-            <a href="/user/machines/grid_view"><i class="hthtg lni lni-grid-alt"></i></a>
-            <a href="/user/machines"><i style="margin-left: 23px;" class="hthtg lni lni-list"></i></a>
-            <a href="{{route('machines.createPDF',['download'=>'pdf'])}}" target="_blank"><i style="margin-left: 23px;"class="hthtg lni lni-printer"></i></a>
+            <h2 class="mr-40">Listado Máquinas de btc.com</h2>
+            <a href="/user/machines/grid_view_api"><i class="hthtg lni lni-grid-alt"></i></a>
+            <a href="/user/machines/list_api"><i style="margin-left: 23px;" class="hthtg lni lni-list"></i></a>
+            {{-- <a href="{{route('machines.createPDF',['download'=>'pdf'])}}" target="_blank"><i style="margin-left: 23px;"class="hthtg lni lni-printer"></i></a> --}}
           </div>
         </div>
         <!-- end col -->

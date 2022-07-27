@@ -57,7 +57,7 @@
           <hr />
         </span>
         @can('machine-list')
-        <li class="nav-item {{ (request()->is('user/machines/grid_view')) ? 'active' : '' }}">
+        <li class="nav-item {{ (request()->is('user/machines/grid_view')) ? 'active' : '' || (request()->is('user/machines/list')) ? 'active' : ''}}">
           <a href="/user/machines/grid_view">
             <span class="icon">
               <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -67,7 +67,7 @@
             <span class="text">Máquinas</span>
           </a>
         </li>
-        <li class="nav-item {{ (request()->is('user/machines/grid_view_api')) ? 'active' : '' }}">
+        <li class="nav-item {{ (request()->is('user/machines/grid_view_api')) ? 'active' : '' || (request()->is('user/machines/list_api')) ? 'active' : '' }}">
           <a href="/user/machines/grid_view_api">
             <span class="icon">
               <svg style="width:24px;height:24px" viewBox="0 0 24 24">

@@ -25,6 +25,74 @@ class MachinesController extends Controller
         $this->middleware('permission:machine-delete', ['only' => ['destroy']]);
     }
 
+    public function index_list()
+    {
+        $filter = null;
+        $machines = DB::table('machines')
+            ->leftjoin('users', 'machines.user_id', '=', 'users.id')
+            ->leftjoin('customers', 'machines.customer_id', '=', 'customers.id')
+            ->select('users.name AS user_name', 'machines.id', 'machines.name', 'machines.codeQR', 'machines.status', 'machines.observation', 'customers.name AS customer_name')
+            ->orderBy('id', 'DESC')
+            ->paginate(15);
+
+        return view('user::machines.index_list', compact('machines', 'filter'))->with('i', (request()->input('page', 1) - 1) * 15);
+    }
+
+    public function index_list_api()
+    {
+        $filter = null;
+        $machines = DB::table('machines_api')
+            ->leftjoin('customers', 'machines_api.customer_id', '=', 'customers.id')
+            ->select('machines_api.id', 'machines_api.worker_name', 'machines_api.status', 'machines_api.shares_1m', 'machines_api.shares_5m', 'machines_api.shares_15m', 'customers.name AS customer_name')
+            ->orderBy('id', 'DESC')
+            ->paginate(20);
+
+        return view('user::machines.index_list_api', compact('machines', 'filter'))->with('i', (request()->input('page', 1) - 1) * 20);
+    }
+
+    public function grid_view()
+    {
+        $filter = null;
+        $customers = DB::table('customers')->get();
+        $machines = DB::table('machines')
+            ->leftjoin('users', 'machines.user_id', '=', 'users.id')
+            ->leftjoin('customers', 'machines.customer_id', '=', 'customers.id')
+            ->select('users.name AS user_name', 'machines.id', 'machines.name', 'machines.codeQR', 'machines.customer_id', 'machines.status', 'machines.observation', 'customers.name AS customer_name')
+            ->get();
+
+        return view('user::machines.index_grid', compact('machines', 'customers', 'filter'));
+    }
+
+    public function grid_view_api(Request $request)
+    {
+        $filter = null;
+        $status = $request->input('status');
+
+        if ($status == "active" || $status == "inactive") {
+            $customers = DB::table('customers')->paginate(1);
+        } else {
+            $customers = DB::table('customers')->paginate(1);
+        }
+
+        if (!$customers[0] || $customers == null) {
+            $machines = null;
+        } else {
+            $machines = DB::table('machines_api')
+                ->select('machines_api.id', 'machines_api.worker_name', 'machines_api.status')
+                ->where('machines_api.customer_id', '=', $customers[0]->id)
+                ->orderBy('created_at', 'DESC')
+                ->take($customers[0]->total_machines)
+                ->get();
+        }
+
+        if ($request->ajax()) {
+            $view = view('user::machines._partials.data', compact('machines', 'customers', 'status'))->render();
+            return response()->json(['html' => $view]);
+        }
+
+        return view('user::machines.index_grid_api', compact('filter'));
+    }
+
     public function search_list(Request $request)
     {
         $filter = $request->input('filter');
@@ -45,7 +113,7 @@ class MachinesController extends Controller
                 ->paginate(15);
         }
 
-        return view('user::machines.index', compact('machines', 'filter'))->with('i', (request()->input('page', 1) - 1) * 15);
+        return view('user::machines.index_list', compact('machines', 'filter'))->with('i', (request()->input('page', 1) - 1) * 15);
     }
 
     public function search_gridview(Request $request)
@@ -95,7 +163,7 @@ class MachinesController extends Controller
     public function search_gridview_api(Request $request)
     {
         $filter = null;
-        $status="all";
+        $status = "all";
         $search = $request->input('search');
 
         $customers = DB::table('customers')
@@ -109,7 +177,7 @@ class MachinesController extends Controller
             return response()->json(['html' => $view]);
         }
 
-        return view('user::machines.index_grid_api', compact('search', 'customers','filter','status'));
+        return view('user::machines.index_grid_api', compact('search', 'customers', 'filter', 'status'));
     }
 
     public function filter_gridview_api(Request $request)
@@ -137,78 +205,38 @@ class MachinesController extends Controller
         return view('user::machines.index_grid_api', compact('filter', 'customers', 'status'));
     }
 
-    public function grid_view_api(Request $request)
+    public function show($id)
     {
-        $filter = null;
-        $status = $request->input('status');
-
-        //dd($request);
-
-        if ($status == "active" || $status == "inactive") {
-            $customers = DB::table('customers')->paginate(1);
-        } else {
-            $customers = DB::table('customers')->paginate(1);
-        }
-        
-        //dd($customers);
-        if (!$customers[0] || $customers == null ) {
-            $machines = null;
-        }else{
-            $machines = DB::table('machines_api')
-            ->select('machines_api.id', 'machines_api.worker_name', 'machines_api.status')
-            ->where('machines_api.customer_id', '=', $customers[0]->id)
-            ->orderBy('created_at','DESC')
-            ->take($customers[0]->total_machines)
-            ->get();
-        }
-
-        if ($request->ajax()) {
-            $view = view('user::machines._partials.data', compact('machines','customers', 'status'))->render();
-            return response()->json(['html' => $view]);
-        }
-
-        return view('user::machines.index_grid_api', compact('filter'));
-    }
-
-    public function grid_view()
-    {
-        $filter = null;
-        $customers = DB::table('customers')->get();
-        $machines = DB::table('machines')
-            ->leftjoin('users', 'machines.user_id', '=', 'users.id')
+        $machine = DB::table('machines')
             ->leftjoin('customers', 'machines.customer_id', '=', 'customers.id')
-            ->select('users.name AS user_name', 'machines.id', 'machines.name', 'machines.codeQR', 'machines.customer_id', 'machines.status', 'machines.observation', 'customers.name AS customer_name')
+            ->select('customers.name AS customer_name', 'machines.id', 'machines.name', 'machines.codeQR', 'machines.customer_id', 'machines.status', 'machines.observation')
+            ->where('machines.id', '=', $id)
+            ->first();
+
+        $machine_changes = DB::table('machines_history')
+            ->leftjoin('machines', 'machines_history.machine_id', '=', 'machines.id')
+            ->leftjoin('users', 'machines_history.user_id', '=', 'users.id')
+            ->leftjoin('customers', 'machines_history.customer_id', '=', 'customers.id')
+            ->select('users.name AS user_name', 'machines_history.created_at', 'machines_history.name', 'machines_history.created_at', 'machines_history.status', 'machines_history.observation', 'customers.name AS customer_name')
+            ->where('machines_history.machine_id', '=', $id)
+            ->orderBy('created_at', 'desc')
             ->get();
 
-        return view('user::machines.index_grid', compact('machines', 'customers', 'filter'));
+        //to generate the qr code in the view from the obtained data
+        $codeQR = $machine->codeQR;
+
+        return view('user::machines.show', compact('machine', 'codeQR', 'machine_changes'))->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
-    // public function grid_view_api()
-    // {
-    //     $filter = null;
-    //     $customers = DB::table('customers')->get();
-    //     $machines = DB::table('machines_api')
-    //         // ->leftjoin('users', 'machines.user_id', '=', 'users.id')
-    //         ->leftjoin('customers', 'machines_api.customer_id', '=', 'customers.id')
-    //         ->select('machines_api.id', 'machines_api.worker_name','machines_api.customer_id', 'machines_api.status', 'customers.name AS customer_name')
-    //         ->get();
-        
-    //         dd($machines);
-
-    //     return view('user::machines.index_grid_api', compact('machines', 'customers', 'filter'));
-    // }
-
-    public function index()
+    public function show_api($id)
     {
-        $filter = null;
-        $machines = DB::table('machines')
-            ->leftjoin('users', 'machines.user_id', '=', 'users.id')
-            ->leftjoin('customers', 'machines.customer_id', '=', 'customers.id')
-            ->select('users.name AS user_name', 'machines.id', 'machines.name', 'machines.codeQR', 'machines.status', 'machines.observation', 'customers.name AS customer_name')
-            ->orderBy('id', 'DESC')
-            ->paginate(15);
+        $machine = DB::table('machines_api')
+            ->leftjoin('customers', 'machines_api.customer_id', '=', 'customers.id')
+            ->select('customers.name AS customer_name', 'machines_api.id', 'machines_api.worker_name', 'machines_api.shares_1m', 'machines_api.shares_5m', 'machines_api.shares_15m', 'machines_api.status','machines_api.last_share_time', 'machines_api.first_share_time', 'machines_api.miner_agent')
+            ->where('machines_api.id', '=', $id)
+            ->first();
 
-        return view('user::machines.index', compact('machines', 'filter'))->with('i', (request()->input('page', 1) - 1) * 15);
+        return view('user::machines.show_api', compact('machine'));
     }
 
     public function create()
@@ -238,29 +266,6 @@ class MachinesController extends Controller
         Machines::create($input);
 
         return redirect()->route('machines.grid_view')->with('message', 'Machine created successfully.');
-    }
-
-    public function show($id)
-    {
-        $machine = DB::table('machines')
-            ->leftjoin('customers', 'machines.customer_id', '=', 'customers.id')
-            ->select('customers.name AS customer_name', 'machines.id', 'machines.name', 'machines.codeQR', 'machines.customer_id', 'machines.status', 'machines.observation')
-            ->where('machines.id', '=', $id)
-            ->first();
-
-        $machine_changes = DB::table('machines_history')
-            ->leftjoin('machines', 'machines_history.machine_id', '=', 'machines.id')
-            ->leftjoin('users', 'machines_history.user_id', '=', 'users.id')
-            ->leftjoin('customers', 'machines_history.customer_id', '=', 'customers.id')
-            ->select('users.name AS user_name', 'machines_history.created_at', 'machines_history.name', 'machines_history.created_at', 'machines_history.status', 'machines_history.observation', 'customers.name AS customer_name')
-            ->where('machines_history.machine_id', '=', $id)
-            ->orderBy('created_at', 'desc')
-            ->get();
-
-        //to generate the qr code in the view from the obtained data
-        $codeQR = $machine->codeQR;
-
-        return view('user::machines.show', compact('machine', 'codeQR', 'machine_changes'))->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
     public function edit($id)
@@ -337,13 +342,13 @@ class MachinesController extends Controller
             return $pdf->stream('pdfview.pdf');
         }
 
-        return view('user::machines.index', compact('machines'));
+        return view('user::machines.grid_view', compact('machines'));
     }
 
     public function destroy($id)
     {
         Machines::find($id)->delete();
 
-        return redirect()->route('machines.index')->with('message', 'Machine deleted successfully');
+        return redirect()->route('machines.grid_view')->with('message', 'Machine deleted successfully');
     }
 }

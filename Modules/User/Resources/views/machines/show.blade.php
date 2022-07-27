@@ -8,7 +8,7 @@
       <div class="row align-items-center">
         <div class="col-md-6">
           <div class="titlemb-30">
-            <h2>Detalle de la Máquina</h2>
+            <h2>Detalle de Máquina Local</h2>
           </div>
         </div>
         <div class="col-md-6">
@@ -16,7 +16,7 @@
             <nav aria-label="breadcrumb">
               <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="/user/dashboard">Dashboard</a></li>
-                <li class="breadcrumb-item" aria-current="page"><a href="{{ route('machines.index') }}">Máquinas</a></li>
+                <li class="breadcrumb-item" aria-current="page"><a href="{{ route('machines.index_list') }}">Máquinas</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Detalle</li>
               </ol>
             </nav>
@@ -63,7 +63,7 @@
                 <!-- end col -->
                 <div class="col-12">
                   <div class="button-groupd-flexjustify-content-centerflex-wrap">
-                    <a class="main-btn danger-btn-outline m-2" href="{{ route('machines.index') }}">Back</a>
+                    <a class="main-btn danger-btn-outline m-2" href="{{ route('machines.index_list') }}">Atrás</a>
                   </div>
                 </div>
               </div>

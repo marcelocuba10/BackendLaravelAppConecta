@@ -23,8 +23,8 @@
     <!-- end col -->
     <div class="col-6">
       <div class="input-style-1">
-        <label>Cantidad Máquinas</label>
-        <input type="number" name="total_machines" value="{{ $customer->total_machines ?? old('total_machines') }}" class="bg-transparent">
+        <label>(*) Cantidad Máquinas</label>
+        <input type="number" min="0" name="total_machines" value="{{ $customer->total_machines ?? old('total_machines') }}" class="bg-transparent">
       </div>
     </div>
     <!-- end col -->

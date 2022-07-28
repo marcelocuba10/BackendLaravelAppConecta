@@ -171,6 +171,7 @@
         }
       })
       .done(function(data){
+        //alert(data.html);
         if(data.html == ""){
           $('.ajax-load').html("No se encontraron más registros");
           return;

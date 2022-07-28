@@ -68,7 +68,7 @@ Route::prefix('user')->group(function () {
 
             Route::get('/edit/{id}', 'MachinesController@edit')->name('machines.edit');
             Route::put('/update/{id}', 'MachinesController@update')->name('machines.update');
-            Route::delete('/{user}/delete', 'MachinesController@destroy')->name('machines.destroy');
+            Route::delete('/{id}/delete', 'MachinesController@destroy')->name('machines.destroy');
             Route::get('/createPDF', 'MachinesController@createPDF')->name('machines.createPDF');
 
             Route::any('/search_list', 'MachinesController@search_list')->name('machines.search_list');

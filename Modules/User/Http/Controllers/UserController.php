@@ -47,7 +47,7 @@ class UserController extends Controller
         $this->validate($request, [
             'name' => 'required|max:20|min:5',
             'last_name' => 'required|max:20|min:5',
-            'email' => 'required|email',
+            'email' => 'required|email|unique:users,email',
             'phone' => 'nullable|max:20|min:5',
             'ci' => 'required|max:8|min:5',
             'password' => 'required|max:20|min:5',
@@ -113,7 +113,7 @@ class UserController extends Controller
         $this->validate($request, [
             'name' => 'required|max:20|min:5',
             'last_name' => 'required|max:20|min:5',
-            'email' => 'required|email',
+            'email' => 'required|email|unique:users,email,' . $id,
             'phone' => 'nullable|max:20|min:5',
             'ci' => 'required|max:8|min:5',
             'password' => 'nullable|max:20|min:5',
@@ -142,7 +142,7 @@ class UserController extends Controller
         $this->validate($request, [
             'name' => 'required|max:20|min:5',
             'last_name' => 'required|max:20|min:5',
-            'email' => 'required|email',
+            'email' => 'required|email|unique:users,email,' . $id,
             'phone' => 'nullable|max:20|min:5',
             'ci' => 'required|max:8|min:5',
             'password' => 'nullable|max:20|min:5',

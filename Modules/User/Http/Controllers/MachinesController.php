@@ -74,15 +74,22 @@ class MachinesController extends Controller
             $customers = DB::table('customers')->paginate(1);
         }
 
-        if (!$customers[0] || $customers == null) {
-            $machines = null;
+        /** if the pagination does not have more users */
+        if ($customers->count() == 0) {
+            $machines = null; //return null for break ajax scroll
         } else {
+
             $machines = DB::table('machines_api')
                 ->select('machines_api.id', 'machines_api.worker_name', 'machines_api.status')
                 ->where('machines_api.customer_id', '=', $customers[0]->id)
                 ->orderBy('created_at', 'DESC')
                 ->take($customers[0]->total_machines)
                 ->get();
+
+            /** if the user does not have any machine */
+            if ($machines->count() == 0) {
+                $machines = null; //return null for break ajax scroll
+            }
         }
 
         if ($request->ajax()) {
@@ -232,7 +239,7 @@ class MachinesController extends Controller
     {
         $machine = DB::table('machines_api')
             ->leftjoin('customers', 'machines_api.customer_id', '=', 'customers.id')
-            ->select('customers.name AS customer_name', 'machines_api.id', 'machines_api.worker_name', 'machines_api.shares_1m', 'machines_api.shares_5m', 'machines_api.shares_15m', 'machines_api.status','machines_api.last_share_time', 'machines_api.first_share_time', 'machines_api.miner_agent')
+            ->select('customers.name AS customer_name', 'machines_api.id', 'machines_api.worker_name', 'machines_api.shares_1m', 'machines_api.shares_5m', 'machines_api.shares_15m', 'machines_api.status', 'machines_api.last_share_time', 'machines_api.first_share_time', 'machines_api.miner_agent')
             ->where('machines_api.id', '=', $id)
             ->first();
 

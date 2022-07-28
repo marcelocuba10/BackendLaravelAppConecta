@@ -20,7 +20,7 @@ class CreateCustomersTable extends Migration
             $table->string('address')->nullable();
             $table->string('access_key')->nullable();
             $table->string('puid')->nullable();
-            $table->integer('total_machines')->nullable();
+            $table->integer('total_machines');
             $table->timestamps();
         });
     }

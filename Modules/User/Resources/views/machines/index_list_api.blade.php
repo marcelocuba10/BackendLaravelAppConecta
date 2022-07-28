@@ -9,15 +9,15 @@
           <div class="col-md-8">
             <div class="title d-flex align-items-center flex-wrap mb-30">
               <h2 class="mr-40">Listado Máquinas de btc.com</h2>
-              <a href="/user/machines/grid_view_api"><i class="hthtg lni lni-grid-alt"></i></a>
-              <a href="/user/machines/list_api"><i style="margin-left: 23px;" class="hthtg lni lni-list"></i></a>
+              <a style="margin-left: 17px;" href="/user/machines/grid_view_api"><i class="hthtg lni lni-grid-alt"></i></a>
+              <a style="margin-left: 17px;" href="/user/machines/list_api"><i class="hthtg lni lni-list"></i></a>
             </div>
           </div>
           <!-- end col -->
           <div class="col-md-4">
             <div class="right">
               <div class="table-search d-flex" style="margin-top: -35px;float: right;">
-                <form action="{{ route('machines.search_list_api') }}" method="POST">
+                <form action="{{ route('machines.search_filter_list_api') }}" method="POST">
                   @csrf
                   <input style="background-color: #fff;" type="text" name="filter" value="{{ $filter ?? '' }}" placeholder="Buscar..">
                   <button type="submit"><i class="lni lni-search-alt"></i></button>
@@ -45,7 +45,7 @@
                           <div class="d-flex">
                             <span class="bg-color bg-card-enabled"></span>
                             <div class="text">
-                              <form action="{{ route('machines.filter_gridview_api') }}" method="POST">
+                              <form action="{{ route('machines.search_filter_list_api') }}" method="POST">
                                 @csrf
                                 <button class="btn-group-status" id="filter" name="filter" value="active" type="submit"><p class="text-sm text-dark">Activo</p></button>
                               </form> 
@@ -56,7 +56,7 @@
                           <div class="d-flex">
                             <span class="bg-color bg-card-offline"></span>
                             <div class="text">
-                              <form action="{{ route('machines.filter_gridview_api') }}" method="POST">
+                              <form action="{{ route('machines.search_filter_list_api') }}" method="POST">
                                 @csrf
                                 <button class="btn-group-status" id="filter" name="filter" value="inactive" type="submit"><p class="text-sm text-dark">Inactivo</p></button>
                               </form> 
@@ -67,14 +67,14 @@
                     </div>
                   </div>
                   <div class="right">
-                    @if ($filter != 'Todos' && $filter != null)
+                    @if (isset($filter))
                     <ul class="legend3 d-flex align-items-center mb-30">
                       <li>
                         <div class="d-flex">
                           <div class="text">
-                            <form action="{{ route('machines.search_list') }}" method="POST">
+                            <form action="{{ route('machines.search_filter_list_api') }}" method="POST">
                               @csrf
-                              <button class="btn-group-status" name="filter" value="Todos" type="submit"><p class="text-sm text-dark"><i class="lni lni-close"></i>&nbsp; Quitar Filtros</p></button>
+                              <button class="btn-group-status" name="filter" value="" type="submit"><p class="text-sm text-dark"><i class="lni lni-close"></i>&nbsp; Quitar Filtros</p></button>
                             </form> 
                           </div>
                         </div>

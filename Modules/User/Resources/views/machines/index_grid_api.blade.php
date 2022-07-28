@@ -8,20 +8,19 @@
         <div class="col-md-8">
           <div class="title d-flex align-items-center flex-wrap mb-30">
             <h2 class="mr-40">Listado Máquinas de btc.com</h2>
-            <a href="/user/machines/grid_view_api"><i class="hthtg lni lni-grid-alt"></i></a>
-            <a href="/user/machines/list_api"><i style="margin-left: 23px;" class="hthtg lni lni-list"></i></a>
-            {{-- <a href="{{route('machines.createPDF',['download'=>'pdf'])}}" target="_blank"><i style="margin-left: 23px;"class="hthtg lni lni-printer"></i></a> --}}
+            <a style="margin-left: 17px;" href="/user/machines/grid_view_api"><i class="hthtg lni lni-grid-alt"></i></a>
+            <a style="margin-left: 17px;" href="/user/machines/list_api"><i class="hthtg lni lni-list"></i></a>
           </div>
         </div>
         <!-- end col -->
         <div class="col-md-4">
           <div class="right">
             <div class="table-search d-flex" style="margin-top: -35px;float: right;">
-              <form action="{{ route('machines.search_gridview_api') }}" method="POST">
+              <form action="/user/machines/search_gridview_api" method="POST">
                 @csrf
-                <input style="background-color: #fff;" id="search" type="text" name="search" value="{{ $search ?? '' }}" placeholder="Buscar..">
+                <input style="background-color: #fff;" id="search" type="text" name="search" value="{{ $search ?? '' }}" placeholder="Buscar cliente..">
                 <button type="submit"><i class="lni lni-search-alt"></i></button>
-              </form>    
+              </form>   
             </div>
           </div>
         </div>
@@ -41,19 +40,20 @@
                   <li>
                     <div class="d-flex">
                       <span class="bg-color bg-card-enabled"></span>
-                      <div class="text">
-                        <form action="{{ route('machines.filter_gridview_api') }}" method="POST">
+                      <button class="btn-group-status" id="filter" name="filter" value="active" type="submit"><p class="text-sm text-dark">Activo only btn</p></button>
+                      {{-- <div class="text">
+                        <form action="/user/machines/filter_gridview_api" method="POST">
                           @csrf
                           <button class="btn-group-status" id="filter" name="filter" value="active" type="submit"><p class="text-sm text-dark">Activo</p></button>
                         </form> 
-                      </div>
+                      </div> --}}
                     </div>
                   </li>
                   <li>
                     <div class="d-flex">
                       <span class="bg-color bg-card-offline"></span>
                       <div class="text">
-                        <form action="{{ route('machines.filter_gridview_api') }}" method="POST">
+                        <form action="/user/machines/filter_gridview_api" method="POST">
                           @csrf
                           <button class="btn-group-status" id="filter" name="filter" value="inactive" type="submit"><p class="text-sm text-dark">Inactivo</p></button>
                         </form> 
@@ -64,14 +64,14 @@
               </div>
             </div>
             <div class="right">
-              @if ($filter != 'Todos' && $filter != null)
+              @if (isset($filter))
               <ul class="legend3 d-flex align-items-center mb-30">
                 <li>
                   <div class="d-flex">
                     <div class="text">
-                      <form action="{{ route('machines.search_gridview_api') }}" method="POST">
+                      <form action="/user/machines/search_gridview_api" method="POST">
                         @csrf
-                        <button class="btn-group-status" name="search" id="search" value="Todos" type="submit"><p class="text-sm text-dark"><i class="lni lni-close"></i>&nbsp; Quitar Filtros</p></button>
+                        <button class="btn-group-status" name="search" id="search" value="" type="submit"><p class="text-sm text-dark"><i class="lni lni-close"></i>&nbsp; Quitar Filtros</p></button>
                       </form> 
                     </div>
                   </div>
@@ -127,8 +127,15 @@
     // capture characters from input
     search = document.getElementById("search").value;
 
-    // show scroll only if not set filter
-    if(search.length == 0 || filter == "active" || filter == "inactive"){
+    //teste search
+    $('#search').on('keyup', function(){
+      var keyword = $('#search').val();
+      alert(keyword);
+      //search();
+    });
+
+    // disable scroll if set filter or search not marked
+    if(search.length == 0 || filter == ""){
       $(window).scroll(function() {
         if($(window).scrollTop() + $(window).height() >= $(document).height()) {
             page++;
@@ -141,11 +148,13 @@
     $(document).ready(function(){  
 
       $(document).on("click", "#filter", function(){
-        status = $(this).val();
-        loadMoreData(page,status)
+        filter = $(this).val();
+        alert('init loadFilter');
+        loadFilter();
+        //loadMoreData(page,status)
       });
 
-      if(search.length == 0 ){
+      if(search.length == 0  && filter == null){
         //loadMoreData(page);
         checkPage(page,status);
       }
@@ -184,13 +193,18 @@
       });
     }
 
-    function loadFilter(page,status){
+    function loadFilter(page,filter){
       $.ajax({
-        url: "{{ url('/machines/search_gridview_api') }}",
-        method: "POST",
+        //url: "{{ route('machines.search_gridview_api') }}" + "?page=" + page,
+        url: '?page=' + page,
+        // type: "get",
+        type: "POST",
+        dataType: 'html',
+        contentType:'application/x-www-form-urlencoded',
+        //headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
         data: {
-            status: status,
-            example: "example"
+          status: status,
+          "_token": "{{ csrf_token() }}",
         },
         beforeSend: function()
         {
@@ -209,7 +223,6 @@
         alert('server not responding...');
       });
     }
-
   </script>
 </section>
 @endsection

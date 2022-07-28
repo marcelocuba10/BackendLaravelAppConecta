@@ -101,7 +101,7 @@
                     </div>
                 @else
                     @foreach($machines as $machine)
-                        <a href="#">
+                        <a href="/user/machines/{{ $machine->id }}/show_api">
                             <div id="item" data-toggle="tooltip" data-placement="bottom" title="{{ $machine->worker_name }}" 
                                 class="
                                 @if($machine->status == 'ACTIVE') bg-card-enabled 

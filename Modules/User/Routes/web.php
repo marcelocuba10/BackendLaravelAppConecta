@@ -58,7 +58,7 @@ Route::prefix('user')->group(function () {
             Route::any('/list_api', 'MachinesController@index_list_api')->name('machines.index_list_api');
             
             Route::get('/grid_view', 'MachinesController@grid_view')->name('machines.grid_view');
-            Route::get('/grid_view_api', 'MachinesController@grid_view_api')->name('machines.grid_view_api');
+            Route::any('/grid_view_api', 'MachinesController@grid_view_api')->name('machines.grid_view_api');
 
             Route::get('/create', 'MachinesController@create')->name('machines.create');
             Route::post('/create', 'MachinesController@store')->name('machines.store');
@@ -71,8 +71,8 @@ Route::prefix('user')->group(function () {
             Route::delete('/{id}/delete', 'MachinesController@destroy')->name('machines.destroy');
             Route::get('/createPDF', 'MachinesController@createPDF')->name('machines.createPDF');
 
-            Route::any('/search_list', 'MachinesController@search_list')->name('machines.search_list');
-            Route::any('/search_list_api', 'MachinesController@search_list_api')->name('machines.search_list_api');
+            Route::any('/search_filter_list', 'MachinesController@search_filter_list')->name('machines.search_filter_list');
+            Route::any('/search_filter_list_api', 'MachinesController@search_filter_list_api')->name('machines.search_filter_list_api');
 
             Route::any('/search_gridview', 'MachinesController@search_gridview')->name('machines.search_gridview');
             Route::any('/search_gridview_api', 'MachinesController@search_gridview_api')->name('machines.search_gridview_api');

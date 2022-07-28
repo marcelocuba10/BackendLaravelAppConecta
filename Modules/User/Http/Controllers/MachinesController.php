@@ -65,20 +65,12 @@ class MachinesController extends Controller
 
     public function grid_view_api(Request $request)
     {
-        $filter = null;
-        $status = $request->input('status');
-
-        if ($status == "active" || $status == "inactive") {
-            $customers = DB::table('customers')->paginate(1);
-        } else {
-            $customers = DB::table('customers')->paginate(1);
-        }
+        $customers = DB::table('customers')->paginate(1);
 
         /** if the pagination does not have more users */
         if ($customers->count() == 0) {
             $machines = null; //return null for break ajax scroll
         } else {
-
             $machines = DB::table('machines_api')
                 ->select('machines_api.id', 'machines_api.worker_name', 'machines_api.status')
                 ->where('machines_api.customer_id', '=', $customers[0]->id)
@@ -93,34 +85,57 @@ class MachinesController extends Controller
         }
 
         if ($request->ajax()) {
-            $view = view('user::machines._partials.data', compact('machines', 'customers', 'status'))->render();
+            $view = view('user::machines._partials.data', compact('machines', 'customers'))->render();
             return response()->json(['html' => $view]);
         }
 
-        return view('user::machines.index_grid_api', compact('filter'));
+        return view('user::machines.index_grid_api');
     }
 
-    public function search_list(Request $request)
+    public function search_filter_list(Request $request)
     {
         $filter = $request->input('filter');
 
-        if ($filter == 'Todos' || $filter == null) {
+        if ($filter == '') {
             $machines = DB::table('machines')
                 ->leftjoin('users', 'machines.user_id', '=', 'users.id')
                 ->leftjoin('customers', 'machines.customer_id', '=', 'customers.id')
                 ->select('users.name AS user_name', 'machines.id', 'machines.name', 'machines.codeQR', 'machines.status', 'machines.observation', 'customers.name AS customer_name')
-                ->paginate(15);
+                ->paginate(30);
         } else {
             $machines = DB::table('machines')
                 ->leftjoin('users', 'machines.user_id', '=', 'users.id')
                 ->leftjoin('customers', 'machines.customer_id', '=', 'customers.id')
                 ->select('users.name AS user_name', 'machines.id', 'machines.name', 'machines.codeQR', 'machines.status', 'machines.observation', 'customers.name AS customer_name')
                 ->where('customers.name', 'LIKE', "%{$filter}%")
+                ->orWhere('machines.name', 'LIKE', "%{$filter}%")
                 ->orWhere('machines.status', 'LIKE', "{$filter}")
-                ->paginate(15);
+                ->paginate(30);
         }
 
-        return view('user::machines.index_list', compact('machines', 'filter'))->with('i', (request()->input('page', 1) - 1) * 15);
+        return view('user::machines.index_list', compact('machines', 'filter'))->with('i', (request()->input('page', 1) - 1) * 30);
+    }
+
+    public function search_filter_list_api(Request $request)
+    {
+        $filter = $request->input('filter');
+
+        if ($filter == '') {
+            $machines = DB::table('machines_api')
+                ->leftjoin('customers', 'machines_api.customer_id', '=', 'customers.id')
+                ->select('machines_api.id', 'machines_api.worker_name', 'machines_api.status', 'machines_api.shares_1m', 'machines_api.shares_5m', 'machines_api.shares_15m', 'customers.name AS customer_name')
+                ->paginate(30);
+        } else {
+            $machines = DB::table('machines_api')
+                ->leftjoin('customers', 'machines_api.customer_id', '=', 'customers.id')
+                ->select('machines_api.id', 'machines_api.worker_name', 'machines_api.status', 'machines_api.shares_1m', 'machines_api.shares_5m', 'machines_api.shares_15m', 'customers.name AS customer_name')
+                ->where('customers.name', 'LIKE', "%{$filter}%")
+                ->orWhere('machines_api.worker_name', 'LIKE', "%{$filter}%")
+                ->orWhere('machines_api.status', 'LIKE', "{$filter}")
+                ->paginate(30);
+        }
+
+        return view('user::machines.index_list_api', compact('machines', 'filter'))->with('i', (request()->input('page', 1) - 1) * 30);
     }
 
     public function search_gridview(Request $request)
@@ -131,7 +146,6 @@ class MachinesController extends Controller
         $customers = DB::table('customers')
             ->select('customers.id', 'customers.name', 'customers.access_key', 'customers.puid')
             ->where('customers.name', 'LIKE', "%{$search}%")
-            ->orWhere('customers.puid', 'LIKE', "%{$search}%")
             ->get();
 
         $machines = DB::table('machines')
@@ -143,13 +157,33 @@ class MachinesController extends Controller
         return view('user::machines.index_grid', compact('search', 'customers', 'machines', 'filter'));
     }
 
+    public function search_gridview_api(Request $request)
+    {
+        $filter = null;
+        $status = "all";
+        $search = $request->input('search');
+
+        $customers = DB::table('customers')
+            ->select('customers.id', 'customers.name', 'customers.access_key', 'customers.puid')
+            ->where('customers.name', 'LIKE', "%{$search}%")
+            ->get();
+
+        return view('user::machines.results', compact('customers'))->with(['search' => $request->search])->render();    
+
+        // if ($request->ajax()) {
+        //     $view = view('user::machines._partials.data', compact('customers', 'status'))->render();
+        //     return response()->json(['html' => $view]);
+        // }
+
+        // return view('user::machines.index_grid_api', compact('search', 'customers', 'filter', 'status'));
+    }
+
     public function filter_gridview(Request $request)
     {
         $filter = $request->input('filter');
         $customers = DB::table('customers')->get();
 
-        if ($filter == "Todos") {
-            $filter = null;
+        if ($filter == "") {
             $machines = DB::table('machines')
                 ->leftjoin('users', 'machines.user_id', '=', 'users.id')
                 ->leftjoin('customers', 'machines.customer_id', '=', 'customers.id')
@@ -167,49 +201,45 @@ class MachinesController extends Controller
         return view('user::machines.index_grid', compact('filter', 'customers', 'machines'));
     }
 
-    public function search_gridview_api(Request $request)
-    {
-        $filter = null;
-        $status = "all";
-        $search = $request->input('search');
-
-        $customers = DB::table('customers')
-            ->select('customers.id', 'customers.name', 'customers.access_key', 'customers.puid')
-            ->where('customers.name', 'LIKE', "%{$search}%")
-            ->orWhere('customers.puid', 'LIKE', "%{$search}%")
-            ->get();
-
-        if ($request->ajax()) {
-            $view = view('user::machines._partials.data', compact('customers', 'status'))->render();
-            return response()->json(['html' => $view]);
-        }
-
-        return view('user::machines.index_grid_api', compact('search', 'customers', 'filter', 'status'));
-    }
-
     public function filter_gridview_api(Request $request)
     {
         $filter = $request->input('filter');
+        $customers = DB::table('customers')->paginate(1);
 
-        if (!$filter || $filter == 'Todos') {
-            $customers = DB::table('customers')->paginate(1);
-            return redirect()->route('machines.grid_view', compact('customers', 'status'));
-        }
+        /** if the pagination does not have more users */
+        if ($customers->count() == 0) {
+            $machines = null; //return null for break ajax scroll
+        } else {
 
-        if ($filter == "active") {
-            $status = "active";
-            $customers = DB::table('customers')->paginate(1);
-        } elseif ($filter == "inactive") {
-            $status = "inactive";
-            $customers = DB::table('customers')->paginate(1);
+            if ($filter == "active" || $filter == "inactive") {
+                $machines = DB::table('machines_api')
+                    ->select('machines_api.id', 'machines_api.worker_name', 'machines_api.status')
+                    ->where('machines_api.customer_id', '=', $customers[0]->id)
+                    ->where('machines_api.status', 'LIKE', "{$filter}")
+                    ->orderBy('created_at', 'DESC')
+                    ->take($customers[0]->total_machines)
+                    ->get();
+            } else {
+                $machines = DB::table('machines_api')
+                    ->select('machines_api.id', 'machines_api.worker_name', 'machines_api.status')
+                    ->where('machines_api.customer_id', '=', $customers[0]->id)
+                    ->orderBy('created_at', 'DESC')
+                    ->take($customers[0]->total_machines)
+                    ->get();
+            }
+
+            /** if the user does not have any machine */
+            if ($machines->count() == 0) {
+                $machines = null; //return null for break ajax scroll
+            }
         }
 
         if ($request->ajax()) {
-            $view = view('user::machines._partials.data', compact('customers', 'status'))->render();
+            $view = view('user::machines._partials.data', compact('machines', 'customers'))->render();
             return response()->json(['html' => $view]);
         }
 
-        return view('user::machines.index_grid_api', compact('filter', 'customers', 'status'));
+        return view('user::machines.index_grid_api', compact('filter'));
     }
 
     public function show($id)

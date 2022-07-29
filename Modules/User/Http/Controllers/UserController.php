@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 //use Illuminate\Routing\Controller;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Modules\User\Entities\User;
 use Modules\User\Http\Requests\UpdateRequest;
@@ -163,6 +164,20 @@ class UserController extends Controller
         $user->update($input);
 
         return redirect()->route('users_.show.profile',compact('user'))->with('message', 'User Profile updated successfully');
+    }
+
+    public function search(Request $request)
+    {
+        $search = $request->input('search');
+
+        if ($search == '') {
+            $users = DB::table('users')->paginate(30);
+
+        } else {
+            $users = DB::table('users')->where('users.name', 'LIKE', "%{$search}%")->paginate(30);
+        }
+
+        return view('user::users.index', compact('users', 'search'))->with('i', (request()->input('page', 1) - 1) * 30);
     }
 
     public function destroy($id)

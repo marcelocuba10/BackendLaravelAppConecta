@@ -25,8 +25,8 @@ class SchedulesController extends Controller
     {
         $schedules = DB::table('schedules')
             ->join('users', 'schedules.user_id', '=', 'users.id')
-            ->select('users.*', 'schedules.*')
-            ->orderBy('schedules.created_at','DESC')
+            ->select('users.name', 'users.last_name', 'schedules.id', 'schedules.date', 'schedules.check_in_time', 'schedules.check_out_time', 'schedules.address_latitude_in', 'schedules.address_longitude_in', 'schedules.address_latitude_out', 'schedules.address_longitude_out')
+            ->orderBy('schedules.created_at', 'DESC')
             ->Paginate(10);
 
         return view('user::schedules.index', compact('schedules'))->with('i', (request()->input('page', 1) - 1) * 10);
@@ -101,6 +101,26 @@ class SchedulesController extends Controller
         $schedule->update($input);
 
         return redirect()->route('schedules.index')->with('message', 'Schedule updated successfully.');
+    }
+
+    public function search(Request $request)
+    {
+        $search = $request->input('search');
+
+        if ($search == '') {
+            $schedules = DB::table('schedules')
+                ->leftjoin('users', 'schedules.user_id', '=', 'users.id')
+                ->select('users.name', 'users.last_name', 'schedules.id', 'schedules.date', 'schedules.check_in_time', 'schedules.check_out_time', 'schedules.address_latitude_in', 'schedules.address_longitude_in', 'schedules.address_latitude_out', 'schedules.address_longitude_out')
+                ->paginate(30);
+        } else {
+            $schedules = DB::table('schedules')
+            ->leftjoin('users', 'schedules.user_id', '=', 'users.id')
+            ->select('users.name', 'users.last_name', 'schedules.id', 'schedules.date', 'schedules.check_in_time', 'schedules.check_out_time', 'schedules.address_latitude_in', 'schedules.address_longitude_in', 'schedules.address_latitude_out', 'schedules.address_longitude_out')
+            ->where('users.name', 'LIKE', "%{$search}%")
+            ->paginate(30);
+        }
+
+        return view('user::schedules.index', compact('schedules', 'search'))->with('i', (request()->input('page', 1) - 1) * 30);
     }
 
     public function destroy($id)

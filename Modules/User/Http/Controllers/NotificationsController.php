@@ -5,6 +5,7 @@ namespace Modules\User\Http\Controllers;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\DB;
 use Modules\User\Entities\Notifications;
 
 class NotificationsController extends Controller
@@ -21,7 +22,9 @@ class NotificationsController extends Controller
 
     public function index()
     {
-        $notifications = Notifications::latest()->paginate(10);
+        $notifications = DB::table('notifications')
+            ->orderBy('date','DESC')
+            ->paginate(10);
         return view('user::notifications.index', compact('notifications'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
@@ -34,11 +37,11 @@ class NotificationsController extends Controller
     {
         //date validation, not less than 1980 and not greater than the current year
         $initialDate = '1980-01-01';
-        $currentDate = (date('Y')+1).'-01-01'; //2023-01-01
+        $currentDate = (date('Y') + 1) . '-01-01'; //2023-01-01
 
         $request->validate([
             'title' => 'required|max:50|min:5',
-            'date' => 'required|date_format:Y-m-d|after_or_equal:'.$initialDate.'|before:'.$currentDate,
+            'date' => 'required|date_format:Y-m-d|after_or_equal:today|before:' . $currentDate,
             'subject' => 'required|max:150|min:5',
         ]);
 
@@ -49,13 +52,19 @@ class NotificationsController extends Controller
 
     public function show($id)
     {
-        $notification = Notifications::find($id);
+        $notification = DB::table('notifications')
+            ->where('notifications.id', '=', $id)
+            ->first();
+
         return view('user::notifications.show', compact('notification'));
     }
 
     public function edit($id)
     {
-        $notification = Notifications::find($id);
+        $notification = DB::table('notifications')
+            ->where('notifications.id', '=', $id)
+            ->first();
+            
         return view('user::notifications.edit', compact('notification'));
     }
 
@@ -63,11 +72,11 @@ class NotificationsController extends Controller
     {
         //date validation, not less than 1980 and not greater than the current year
         $initialDate = '1980-01-01';
-        $currentDate = (date('Y')+1).'-01-01'; //2023-01-01
+        $currentDate = (date('Y') + 1) . '-01-01'; //2023-01-01
 
         $request->validate([
             'title' => 'required|max:50|min:5',
-            'date' => 'required|date_format:Y-m-d|after_or_equal:'.$initialDate.'|before:'.$currentDate,
+            'date' => 'required|date_format:Y-m-d|after_or_equal:today|before:' . $currentDate,
             'subject' => 'required|max:150|min:5',
         ]);
 
@@ -75,6 +84,22 @@ class NotificationsController extends Controller
         $notification->update($request->all());
 
         return redirect()->route('notifications.index')->with('message', 'Notification updated successfully.');
+    }
+
+    public function search(Request $request)
+    {
+        $search = $request->input('search');
+
+        if ($search == '') {
+            $notifications = DB::table('notifications')->paginate(30);
+        } else {
+            $notifications = DB::table('notifications')
+                ->where('notifications.title', 'LIKE', "%{$search}%")
+                ->orWhere('notifications.subject', 'LIKE', "%{$search}%")
+                ->paginate(30);
+        }
+
+        return view('user::notifications.index', compact('notifications', 'search'))->with('i', (request()->input('page', 1) - 1) * 30);
     }
 
     public function destroy($id)

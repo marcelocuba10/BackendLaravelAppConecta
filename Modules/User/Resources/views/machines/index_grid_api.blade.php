@@ -16,10 +16,10 @@
         <div class="col-md-4">
           <div class="right">
             <div class="table-search d-flex" style="margin-top: -35px;float: right;">
-              <form action="/user/machines/search_gridview_api" method="POST">
+              <form action="/#" method="POST">
                 @csrf
                 <input style="background-color: #fff;" id="search" type="text" name="search" value="{{ $search ?? '' }}" placeholder="Buscar cliente..">
-                <button type="submit"><i class="lni lni-search-alt"></i></button>
+                <button type="text"><i class="lni lni-search-alt"></i></button>
               </form>   
             </div>
           </div>
@@ -40,23 +40,22 @@
                   <li>
                     <div class="d-flex">
                       <span class="bg-color bg-card-enabled"></span>
-                      <button class="btn-group-status" id="filter" name="filter" value="active" type="submit"><p class="text-sm text-dark">Activo only btn</p></button>
-                      {{-- <div class="text">
-                        <form action="/user/machines/filter_gridview_api" method="POST">
+                      <div class="text">
+                        {{-- <form action="/user/machines/filter_gridview_api" method="POST"> --}}
                           @csrf
                           <button class="btn-group-status" id="filter" name="filter" value="active" type="submit"><p class="text-sm text-dark">Activo</p></button>
-                        </form> 
-                      </div> --}}
+                        {{-- </form>  --}}
+                      </div>
                     </div>
                   </li>
                   <li>
                     <div class="d-flex">
                       <span class="bg-color bg-card-offline"></span>
                       <div class="text">
-                        <form action="/user/machines/filter_gridview_api" method="POST">
+                        {{-- <form action="/user/machines/filter_gridview_api" method="POST"> --}}
                           @csrf
                           <button class="btn-group-status" id="filter" name="filter" value="inactive" type="submit"><p class="text-sm text-dark">Inactivo</p></button>
-                        </form> 
+                        {{-- </form>  --}}
                       </div>
                     </div>
                   </li>
@@ -130,7 +129,7 @@
     //teste search
     $('#search').on('keyup', function(){
       var keyword = $('#search').val();
-      alert(keyword);
+      //alert(keyword);
       //search();
     });
 
@@ -149,8 +148,8 @@
 
       $(document).on("click", "#filter", function(){
         filter = $(this).val();
-        alert('init loadFilter');
-        loadFilter();
+        //alert('init loadFilter');
+        //loadFilter();
         //loadMoreData(page,status)
       });
 

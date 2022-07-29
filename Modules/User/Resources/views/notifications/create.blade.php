@@ -16,12 +16,8 @@
                         <div class="breadcrumb-wrapper mb-30">
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
-                                    <li class="breadcrumb-item">
-                                    <a href="/user/dashboard">Dashboard</a>
-                                    </li>
-                                    <li class="breadcrumb-item" aria-current="page">
-                                    <a href="{{ route('notifications.index') }}">Notificaciones</a>
-                                    </li>
+                                    <li class="breadcrumb-item"><a href="/user/dashboard">Dashboard</a></li>
+                                    <li class="breadcrumb-item" aria-current="page"><a href="/user/notifications/">Notificaciones</a></li>
                                     <li class="breadcrumb-item active" aria-current="page">Nuevo Aviso</li>
                                 </ol>
                             </nav>
@@ -38,7 +34,7 @@
                     <div class="card-style mb-30">
                         <form method="POST" action="{{ route('notifications.store') }}">
                             @include('user::notifications._partials.form')
-                      </form>
+                        </form>
                     </div>
                 </div>
             </div>

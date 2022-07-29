@@ -30,6 +30,10 @@ Route::prefix('user')->group(function () {
         Route::get('/dashboard', 'HomeController@index')->name('user.dashboard');
         Route::get('/logout', 'Auth\LogoutController@perform')->name('logout.perform');
 
+        /*** ACL Routes ***/
+        Route::resource('roles', 'ACL\RolesController');
+        Route::resource('permissions', 'ACL\PermissionsController');
+
         /*** User Routes ***/
         Route::group(['prefix' => 'users'], function () {
             Route::get('/', 'UserController@index')->name('users.index');
@@ -39,24 +43,29 @@ Route::prefix('user')->group(function () {
             Route::get('/edit/{id}', 'UserController@edit')->name('users.edit');
             Route::put('/update/{id}', 'UserController@update')->name('users.update');
             Route::delete('/{user}/delete', 'UserController@destroy')->name('users.destroy');
-
             Route::get('/profile/{user}', 'UserController@showProfile')->name('users_.show.profile');
             Route::get('/edit/profile/{id}', 'UserController@editProfile')->name('users_.edit.profile');
             Route::put('/update/profile/{id}', 'UserController@updateProfile')->name('users_.update.profile');
+            Route::get('/search', 'UserController@search')->name('users.search');
         });
 
         /*** Notifications Routes ***/
-        Route::resource('/notifications', 'NotificationsController');
-
-        /*** ACL Routes ***/
-        Route::resource('roles', 'ACL\RolesController');
-        Route::resource('permissions', 'ACL\PermissionsController');
+        Route::group(['prefix' => 'notifications'], function () {
+            Route::get('/', 'NotificationsController@index')->name('notifications.index');
+            Route::get('/create', 'NotificationsController@create')->name('notifications.create');
+            Route::post('/create', 'NotificationsController@store')->name('notifications.store');
+            Route::get('/{id}/show', 'NotificationsController@show')->name('notifications.show');
+            Route::get('/edit/{id}', 'NotificationsController@edit')->name('notifications.edit');
+            Route::put('/update/{id}', 'NotificationsController@update')->name('notifications.update');
+            Route::delete('/{id}/delete', 'NotificationsController@destroy')->name('notifications.destroy');
+            Route::get('/search', 'NotificationsController@search')->name('notifications.search');
+        });
 
         /** Machines Routes*/
         Route::group(['prefix' => 'machines'], function () {
             Route::any('/list', 'MachinesController@index_list')->name('machines.index_list');
             Route::any('/list_api', 'MachinesController@index_list_api')->name('machines.index_list_api');
-            
+
             Route::get('/grid_view', 'MachinesController@grid_view')->name('machines.grid_view');
             Route::any('/grid_view_api', 'MachinesController@grid_view_api')->name('machines.grid_view_api');
 
@@ -89,7 +98,7 @@ Route::prefix('user')->group(function () {
             Route::get('/edit/{id}', 'CustomersController@edit')->name('customers.edit');
             Route::put('/update/{id}', 'CustomersController@update')->name('customers.update');
             Route::delete('/{id}/delete', 'CustomersController@destroy')->name('customers.destroy');
-            Route::get('/show-search','CustomersController@show')->name('customers.show');
+            Route::get('/show-search', 'CustomersController@show')->name('customers.show');
             Route::get('/search', 'CustomersController@search')->name('customers.search');
         });
 
@@ -102,6 +111,7 @@ Route::prefix('user')->group(function () {
             Route::get('/edit/{id}', 'SchedulesController@edit')->name('schedules.edit');
             Route::put('/update/{id}', 'SchedulesController@update')->name('schedules.update');
             Route::delete('/{id}/delete', 'SchedulesController@destroy')->name('schedules.destroy');
+            Route::get('/search', 'SchedulesController@search')->name('schedules.search');
         });
 
         /*** Reports Routes ***/
@@ -115,9 +125,9 @@ Route::prefix('user')->group(function () {
             Route::delete('/{id}/delete', 'ReportsController@destroy')->name('reports.destroy');
         });
 
-        /** Posts */
+        /** Posts only teste*/
         Route::any('posts', 'PostController@index')->name('posts.index');
-        Route::get('posts/show','PostController@show')->name('posts.show');
+        Route::get('posts/show', 'PostController@show')->name('posts.show');
         Route::any('posts/search', 'PostController@search')->name('posts.search');
     });
 });

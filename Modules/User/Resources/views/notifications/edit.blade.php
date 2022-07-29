@@ -16,12 +16,8 @@
                     <div class="breadcrumb-wrapper mb-30">
                         <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item">
-                            <a href="/user/dashboard">Dashboard</a>
-                            </li>
-                            <li class="breadcrumb-item" aria-current="page">
-                            <a href="{{ route('notifications.index') }}">Notificaciones</a>
-                            </li>
+                            <li class="breadcrumb-item"><a href="/user/dashboard">Dashboard</a></li>
+                            <li class="breadcrumb-item" aria-current="page"><a href="/user/notifications/">Notificaciones</a></li>
                             <li class="breadcrumb-item active" aria-current="page">Editar Aviso</li>
                         </ol>
                         </nav>
@@ -40,7 +36,7 @@
                             @csrf
                             @method('PUT') <!-- menciono el metodo PUT, ya que en mi route utilzo Route::put(); -->
                             @include('user::notifications._partials.form')
-                      </form>
+                        </form>
                     </div>
                 </div>
             </div>

@@ -58,25 +58,23 @@
                   <table class="table">
                     <thead>
                       <tr>
-                        <th><h6>#</h6></th>
-                        <th><h6>Nombre</h6></th>
-                        <th><h6>Apellidos</h6></th>
-                        <th><h6>Doc Identidad</h6></th>
-                        <th><h6>Teléfono</h6></th>
-                        <th><h6>Email</h6></th>
-                        <th><h6>Acciones</h6></th>
+                        <th class="sm"><h6 class="text-sm text-medium"></h6></th>
+                        <th class="md"><h6>Nombre</h6></th>
+                        <th class="md"><h6>Apellidos</h6></th>
+                        <th class="md"><h6>Teléfono</h6></th>
+                        <th class="md"><h6>Email</h6></th>
+                        <th class="md"><h6>Acciones</h6></th>
                       </tr>
                       <!-- end table row-->
                     </thead>
                     <tbody>
                         @foreach ($users as $user)
                         <tr>
-                            <td class="min-width"><p>{{ ++$i }}</p></td>
+                            <td class="min-width"><h6 class="text-sm">#{{ ++$i }}</h6></td>
                             <td class="min-width"><p>{{ $user->name }}</p></td>
                             <td class="min-width"><p>{{ $user->last_name }}</p></td>
-                            <td class="min-width"><p>{{ $user->ci }}</p></td>
-                            <td class="min-width"><p>{{ $user->phone }}</p></td>
-                            <td class="min-width"><span class="status-btn success-btn">{{ $user->email }}</span></td>
+                            <td class="min-width"><p><i class="lni lni-phone mr-10"></i>{{ $user->phone }}</p></td>
+                            <td class="min-width"><p><i class="lni lni-envelope mr-10"></i>{{ $user->email }}</p></td>
                             <td class="text-right">
                                 <div class="btn-group">
                                     <div class="action">

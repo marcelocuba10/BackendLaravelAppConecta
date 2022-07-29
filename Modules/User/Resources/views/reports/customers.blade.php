@@ -63,19 +63,19 @@
                 <table class="invoice-table table">
                   <thead>
                     <tr>
-                      <th class="number">
+                      <th class="sm">
                         <h6 class="text-sm text-medium"></h6>
                       </th>
-                      <th class="name">
+                      <th class="lg">
                         <h6 class="text-sm text-medium">Nombre</h6>
                       </th>
-                      <th class="phone">
+                      <th class="md">
                         <h6 class="text-sm text-medium">Teléfono</h6>
                       </th>
-                      <th class="machines">
+                      <th class="md">
                         <h6 class="text-sm text-medium">Máquinas</h6>
                       </th>
-                      <th class="large">
+                      <th class="lg">
                         <h6 class="text-sm text-medium">Dirección</h6>
                       </th>
                     </tr>

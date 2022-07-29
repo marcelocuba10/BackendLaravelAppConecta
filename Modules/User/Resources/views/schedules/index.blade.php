@@ -58,23 +58,21 @@
                   <table class="table">
                     <thead>
                       <tr>
-                        <th><h6>#</h6></th>
-                        <th><h6>Nombre</h6></th>
-                        <th><h6>Apellidos</h6></th>
-                        <th><h6>Fecha</h6></th>
-                        <th><h6>Horario Entrada</h6></th>
-                        <th><h6>Horario Salida</h6></th>
-                        <th><h6>Acciones</h6></th>
+                        <th class="sm"><h6></h6></th>
+                        <th class="lg"><h6>Nombre</h6></th>
+                        <th class="md"><h6>Fecha</h6></th>
+                        <th class="md"><h6>Horario Entrada</h6></th>
+                        <th class="md"><h6>Horario Salida</h6></th>
+                        <th class="md"><h6>Acciones</h6></th>
                       </tr>
                       <!-- end table row-->
                     </thead>
                     <tbody>
                         @foreach ($schedules as $schedule)
                         <tr>
-                            <td class="min-width"><p>{{ ++$i }}</p></td>
+                            <td class="min-width"><h6 class="text-sm">#{{ ++$i }}</h6></td>
                             <td class="min-width"><p>{{ $schedule->name }}</p></td>
-                            <td class="min-width"><p>{{ $schedule->last_name }}</p></td>
-                            <td class="min-width"><p>{{ $schedule->date }}</p></td>
+                            <td class="min-width"><p><i class="lni lni-calendar mr-10"></i>{{ $schedule->date }}</p></td>
                             <td class="min-width">
                               <a target="_blank" href="https://maps.google.com/?q={{ $schedule->address_latitude_in }},{{ $schedule->address_longitude_in }}&ll={{ $schedule->address_latitude_in }},{{ $schedule->address_longitude_in }}&z=17">
                                 <span class="status-btn success-btn">

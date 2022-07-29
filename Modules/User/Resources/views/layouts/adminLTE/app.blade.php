@@ -11,14 +11,14 @@
   <!-- ========== All CSS files linkup ========= -->
   <link rel="stylesheet" href="/assets/css/bootstrap.min.css" />
   <link rel="stylesheet" href="/assets/css/lineicons.css" />
-  <link rel="stylesheet" href="/assets/css/materialdesignicons.min.css" />
-  <link rel="stylesheet" href="/assets/css/fullcalendar.css" />
-  <link rel="stylesheet" href="/assets/css/fullcalendar.css" />
-  <link rel="stylesheet" href="/assets/css/main.css" />
-
+  <link rel="stylesheet" href="/assets/css/LineIcons.css" />
   <link rel="stylesheet" href="/assets/css/quill/bubble.css" />
   <link rel="stylesheet" href="/assets/css/quill/snow.css" />
+  <link rel="stylesheet" href="/assets/css/materialdesignicons.min.css" />
+  <link rel="stylesheet" href="/assets/css/fullcalendar.css" />
+  <link rel="stylesheet" href="/assets/css/main.css" />
   <link rel="stylesheet" href="/assets/css/morris.css" />
+  <link rel="stylesheet" href="/assets/css/datatable.css" />
   <link rel="stylesheet" href="/assets/css/vanilla-dataTables.min.css" />
 
   <link href="/css/custom-style.css" rel="stylesheet">
@@ -29,13 +29,6 @@
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.min.js" integrity="sha384-kjU+l4N0Yf4ZOJErLsIcvOU2qSb74wXpOhqTvwVx3OElZRweTnQ6d31fXEoRD1Jy" crossorigin="anonymous"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-
-  {{-- <style>
-      .ajax-load{
-		    padding: 10px 0px;
-		    width: 100%;
-  		}
-  </style> --}}
 
 </head>
 
@@ -75,10 +68,12 @@
   <script src="/assets/js/polyfill.js"></script>
   <script src="/assets/js/main.js"></script>
   <script src="/js/custom.js"></script>
-
   <script src="/js/vanilla-masker.min.js"></script>
-  {{-- <script src="cdn.jsdelivr.net/npm/vanilla-masker@1.1.1/lib/vanilla-masker.js"></script>
-  <script src="cdn.jsdelivr.net/npm/vanilla-masker@1.1.1/build/vanilla-masker.min.js"></script> --}}
+  <script src="/assets/js/apexcharts.min.js"></script>
+  <script src="/assets/js/quill.min.js"></script>
+  <script src="/assets/js/datatable.js"></script>
+  <script src="/assets/js/Sortable.min.js"></script>
+
   <!--jQuery-->
   <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script> 
 

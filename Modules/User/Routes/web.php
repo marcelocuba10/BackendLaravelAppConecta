@@ -116,13 +116,10 @@ Route::prefix('user')->group(function () {
 
         /*** Reports Routes ***/
         Route::group(['prefix' => 'reports'], function () {
-            Route::get('/', 'ReportsController@index')->name('reports.index');
-            Route::get('/create', 'ReportsController@create')->name('reports.create');
-            Route::post('/create', 'ReportsController@store')->name('reports.store');
-            Route::get('/{id}/show', 'ReportsController@show')->name('reports.show');
-            Route::get('/edit/{id}', 'ReportsController@edit')->name('reports.edit');
-            Route::put('/update/{id}', 'ReportsController@update')->name('reports.update');
-            Route::delete('/{id}/delete', 'ReportsController@destroy')->name('reports.destroy');
+            Route::get('/customers', 'ReportsController@customers')->name('reports.customers');
+            Route::get('/machines', 'ReportsController@machines')->name('reports.machines');
+            Route::get('/users', 'ReportsController@users')->name('reports.users');
+            Route::get('/schedules', 'ReportsController@schedules')->name('reports.schedules');
         });
 
         /** Posts only teste*/

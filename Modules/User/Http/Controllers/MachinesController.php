@@ -379,7 +379,7 @@ class MachinesController extends Controller
             return $pdf->stream('pdfview.pdf');
         }
 
-        return view('user::machines.grid_view', compact('machines'));
+        return view('user::machines.createPDF', compact('machines'));
     }
 
     public function destroy($id)

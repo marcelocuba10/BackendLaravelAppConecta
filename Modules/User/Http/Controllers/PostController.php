@@ -15,6 +15,22 @@ class PostController extends Controller
      * Display a listing of the resource.
      * @return Renderable
      */
+
+    public function search(Request $request)
+    {
+        $search = $request->input('search');
+        $results = Post::where('title', 'LIKE', "%{$search}%")->get();
+        return view('user::posts.results', compact('results', 'search'))->render();
+    }
+
+    public function show(Request $request)
+    {
+        //dd($request->all());
+        $post = Post::findOrFail($request->id);
+        //dd($post);
+        return view('user::posts.post', compact('post'))->render();
+    }
+
     public function index(Request $request)
     {
         $status = $request->input('status');
@@ -27,11 +43,8 @@ class PostController extends Controller
         return view('user::posts.index', compact('posts','status'));
     }
 
-    public function filter(Request $request){
-        dd($request->all());
-    }
 
-    public function search(Request $request)
+    public function search_old(Request $request)
     {
         $status = $request->input('status');
 

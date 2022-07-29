@@ -89,6 +89,8 @@ Route::prefix('user')->group(function () {
             Route::get('/edit/{id}', 'CustomersController@edit')->name('customers.edit');
             Route::put('/update/{id}', 'CustomersController@update')->name('customers.update');
             Route::delete('/{id}/delete', 'CustomersController@destroy')->name('customers.destroy');
+            Route::get('/show-search','CustomersController@show')->name('customers.show');
+            Route::get('/search', 'CustomersController@search')->name('customers.search');
         });
 
         /*** Schedules Routes ***/
@@ -115,7 +117,7 @@ Route::prefix('user')->group(function () {
 
         /** Posts */
         Route::any('posts', 'PostController@index')->name('posts.index');
-        //Route::post('posts','PostController@filter')->name('posts.filter');
+        Route::get('posts/show','PostController@show')->name('posts.show');
         Route::any('posts/search', 'PostController@search')->name('posts.search');
     });
 });

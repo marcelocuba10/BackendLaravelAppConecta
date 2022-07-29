@@ -10,34 +10,18 @@
                     <h2 class="mr-40">Listado de Posts</h2>
                     </div>
                 </div>
-                <div class="col-md-8">
-                  <div id="legend3">
-                    <ul class="legend3 d-flex align-items-center mb-30">
-                      <li>
-                        <div class="d-flex">
-                          <span class="bg-color bg-card-enabled"></span>
-                          <div class="text">
-                              <button class="btn-group-status" id="filter" name="filter" value="active" type="submit"><p class="text-sm text-dark">Activo</p></button>
-                          </div>
-                        </div>
-                      </li>
-                      <li>
-                        <div class="d-flex">
-                          <span class="bg-color bg-card-offline"></span>
-                          <div class="text">
-                              <button class="btn-group-status" id="filter" name="filter" value="inactive" type="submit"><p class="text-sm text-dark">Inactivo</p></button>
-                          </div>
-                        </div>
-                      </li>
-                    </ul>
-                  </div>
+                <div class="col-md-4">
+                  <div class="right">
                     <div class="table-search d-flex" style="margin-top: -35px;float: right;">
-                        <form action="{{ route('posts.search') }}" method="POST">
-                          @csrf
-                          <input style="background-color: #fff;" id="search" type="text" name="filter" value="{{ $filter ?? '' }}" placeholder="Buscar...">
-                          <button type="submit"><i class="lni lni-search-alt"></i></button>
-                        </form>    
-                      </div>
+                      <form action="#" id="search-form">
+                        @csrf
+                        <input style="background-color: #fff;" class="search" id="search" type="text" name="search" value="{{ $search ?? '' }}" placeholder="Buscar cliente..">
+                        <div id="results" style="z-index: 2;position: absolute;background-color: #fff;height: 300px;overflow: auto;">
+    
+                        </div>
+                      </form>   
+                    </div>
+                  </div>
                 </div>
             </div>
         </div>
@@ -48,7 +32,9 @@
                         <div class="col-md-12" id="post-data">
                             {{-- @include('user::posts.data') --}}
                         </div>
-                        <p id="msg"></p>
+                        <div id="post" class="mt-5">
+
+                        </div>
                     </div>
                 </div>
                 <div class="ajax-load" style="display:none">
@@ -78,6 +64,37 @@
     </div>
 </section>
 
+<script>
+  $(function ()
+  {
+      'use strict';
+      $(document).on('keyup', '#search-form .search', function ()
+      {
+          if($(this).val().length > 0)
+          {
+              var search = $(this).val();
+              $.get("{{ route('posts.search') }}", {search: search}, function (data)
+              {
+                  $('#results').html(data);
+              });
+              return;
+          }
+          $('#results').empty();
+      });
+
+      $(document).on('click', '.post-link', function ()
+      {
+          var postId = $(this).data('id');
+          //alert(postId);
+          $.get("{{ url('user/posts/show') }}", {id: postId}, function (res)
+          {
+              $('#results').empty();
+              $('.search').val('');
+              $('#post').html(res);
+          });
+      });
+  });
+</script>
 
 <script type="text/javascript">
 
@@ -105,51 +122,51 @@
 
 </script>
 
-<script type="text/javascript">
+{{-- <script type="text/javascript">
     $.ajaxSetup({ headers: { 'csrftoken' : '{{ csrf_token() }}' } });
-</script>
+</script> --}}
 
 <script type="text/javascript">
 	var page = 1;
-  var filter;
-  var status="all";
 
-    $(document).on('click','#search',function(){
-        filter = $(this).val();
-    });
+    // $(document).on('click','#search',function(){
+    //     filter = $(this).val();
+    // });
 
-    if(document.getElementById("search").value.length == 0)
-    {
-        filter = "";
-    }
+    // if(document.getElementById("search").value.length == 0)
+    // {
+    //     filter = "";
+    // }
 
-    var input = document.getElementById("search");
-    input.addEventListener("keypress", function(event) {
+    // var input = document.getElementById("search");
+    // input.addEventListener("keypress", function(event) {
 
-      if (event.key === "Enter" && filter == "") {
-            alert('esta vacio');
-            exit();
-        }else{
-          search(filter);
-        }
+    //   if (event.key === "Enter" && filter == "") {
+    //         alert('esta vacio');
+    //         exit();
+    //     }else{
+    //       search(filter);
+    //     }
 
-    });
+    // });
 
     $(document).ready(function()
     {  
-      if(document.getElementById("search").value.length == 0){
-        filter = "";
-      }
+      // if(document.getElementById("search").value.length == 0){
+      //   filter = "";
+      // }
 
-      $(document).on("click", "#filter", function(){
-        status=$(this).val();
-        loadMoreData(page,status)
-      });
+      // $(document).on("click", "#filter", function(){
+      //   status=$(this).val();
+      //   loadMoreData(page,status)
+      // });
 
-      if (filter == "") {
-        loadMoreData(page);
-        //checkPage(page);
-      }
+      // if (filter == "") {
+      //   loadMoreData(page);
+      //   //checkPage(page);
+      // }
+
+      loadMoreData(page,status);
     });
 
 
@@ -165,7 +182,10 @@
 	        {
 	            url: '?page=' + page,
 	            type: "post",
-              data: {status: status,"_token": "{{ csrf_token() }}",},
+              data: {
+                status: status,
+                "_token": "{{ csrf_token() }}",
+              },
 	            beforeSend: function()
 	            {
 	                $('.ajax-load').show();
@@ -186,39 +206,38 @@
 	        });
 	}
 
-  function loadFilter(page,status){
-      // alert(status);
-      // exit();
+  // function loadFilter(page,status){
+  //     // alert(status);
+  //     // exit();
 
+  //     $.ajax({
+  //       url:"{{ route('posts.search') }}",
+  //       type: 'POST',
+  //       datatype: 'html',
+  //       data: {status: status,"_token": "{{ csrf_token() }}",},
+  //       // beforeSend: function()
+	//       //       {
+	//       //           $('.ajax-load').show();
+	//       //       },
+  //       success: function(data){
+  //         $('.ajax-load').hide();
+  //         $('.msg').html("teste no muestra datos pero funciona");
+  //         alert(data.success);
+  //     }})
 
-      $.ajax({
-        url:"{{ route('posts.search') }}",
-        type: 'POST',
-        datatype: 'html',
-        data: {status: status,"_token": "{{ csrf_token() }}",},
-        // beforeSend: function()
-	      //       {
-	      //           $('.ajax-load').show();
-	      //       },
-        success: function(data){
-          $('.ajax-load').hide();
-          $('.msg').html("teste no muestra datos pero funciona");
-          alert(data.success);
-      }})
-
-      .done(function(data){
-        if(data.html == ""){
-          $('.ajax-load').html("No se encontraron más registros");
-          return;
-        }
-        $('.ajax-load').hide();
-        $('.msg').html("teste no muestra datos pero funciona");
-        $("#post-data").append(data.html);
-      })
-      .fail(function(jqXHR, ajaxOptions, thrownError){
-        alert('server not responding...');
-      });
-    }
+  //     .done(function(data){
+  //       if(data.html == ""){
+  //         $('.ajax-load').html("No se encontraron más registros");
+  //         return;
+  //       }
+  //       $('.ajax-load').hide();
+  //       $('.msg').html("teste no muestra datos pero funciona");
+  //       $("#post-data").append(data.html);
+  //     })
+  //     .fail(function(jqXHR, ajaxOptions, thrownError){
+  //       alert('server not responding...');
+  //     });
+  //   }
 
 </script>
 

@@ -18,10 +18,14 @@
           <div class="col-md-4">
             <div class="right">
               <div class="table-search d-flex" style="margin-top: -35px;float: right;">
-                <form action="#">
-                  <input style="background-color: #fff;" type="text" placeholder="Search...">
-                  <button><i class="lni lni-search-alt"></i></button>
-                </form>
+                <form action="#" id="search-form">
+                  @csrf
+                  <input style="background-color: #fff;" class="search" id="search" type="text" name="search" value="{{ $search ?? '' }}" placeholder="Buscar cliente..">
+
+                  <div id="results" style="z-index: 2;position: absolute;background-color: #fff;height: 300px;overflow: auto;">
+                  </div>
+
+                </form>  
               </div>
             </div>
           </div>
@@ -125,5 +129,37 @@
     </div>
     <!-- end container -->
   </section>
+
+  <script>
+    $(function ()
+    {
+        'use strict';
+        $(document).on('keyup', '#search-form .search', function ()
+        {
+            if($(this).val().length > 0)
+            {
+                var search = $(this).val();
+                $.get("{{ route('posts.search') }}", {search: search}, function (data)
+                {
+                    $('#results').html(data);
+                });
+                return;
+            }
+            $('#results').empty();
+        });
+  
+        $(document).on('click', '.post-link', function ()
+        {
+            var postId = $(this).data('id');
+            //alert(postId);
+            $.get("{{ url('user/posts/show') }}", {id: postId}, function (res)
+            {
+                $('#results').empty();
+                $('.search').val('');
+                $('#post').html(res);
+            });
+        });
+    });
+  </script>
 
 @endsection

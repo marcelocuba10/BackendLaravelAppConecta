@@ -2,11 +2,13 @@
 
 namespace Modules\User\Http\Controllers;
 
+use PDF;
 use Modules\User\Entities\User;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
+use Modules\User\Entities\Customers;
 use Modules\User\Entities\Reports;
 
 class ReportsController extends Controller
@@ -23,55 +25,57 @@ class ReportsController extends Controller
 
     public function users(Request $request)
     {
-        $machines = DB::table('machines')->get();
-        //dd($machines);
-        $machinesCount = count($machines);
-        //$machinesCount = 10;
+        $users = DB::table('users')->paginate(30);
 
         if ($request->has('download')) {
-            $pdf = PDF::loadView('user::machines.createPDF', compact('machines', 'machinesCount'))->setPaper('a4', 'portrait')->setOptions(['dpi' => 150, 'defaultFont' => 'sans-serif']);
+            $pdf = PDF::loadView('user::reports.createUsersPDF', compact('users'));
+            return $pdf->stream();
             // return $pdf->download('pdfview.pdf');
-            return $pdf->stream('pdfview.pdf');
         }
 
-        return view('user::machines.createPDF', compact('machines'));
+        return view('user::reports.users', compact('users'))->with('i', (request()->input('page', 1) - 1) * 30);
     }
 
     public function customers(Request $request)
     {
-        $customers = DB::table('customers')->paginate(10);
-        return view('user::reports.customers', compact('customers'))->with('i', (request()->input('page', 1) - 1) * 10);
+        $customers = DB::table('customers')->paginate(30);
+
+        if ($request->has('download')) {
+            $pdf = PDF::loadView('user::reports.createCustomersPDF', compact('customers'));
+            return $pdf->stream();
+            // return $pdf->download('pdfview.pdf');
+        }
+
+        return view('user::reports.customers', compact('customers'))->with('i', (request()->input('page', 1) - 1) * 30);
     }
 
     public function machines(Request $request)
     {
-        $machines = DB::table('machines')->get();
-        //dd($machines);
-        $machinesCount = count($machines);
-        //$machinesCount = 10;
+        $customers = DB::table('machines')->paginate(30);
 
         if ($request->has('download')) {
-            $pdf = PDF::loadView('user::machines.createPDF', compact('machines', 'machinesCount'))->setPaper('a4', 'portrait')->setOptions(['dpi' => 150, 'defaultFont' => 'sans-serif']);
+            $pdf = PDF::loadView('user::reports.createCustomersPDF', compact('customers'));
+            return $pdf->stream();
             // return $pdf->download('pdfview.pdf');
-            return $pdf->stream('pdfview.pdf');
         }
 
-        return view('user::machines.createPDF', compact('machines'));
+        return view('user::reports.customers', compact('customers'))->with('i', (request()->input('page', 1) - 1) * 30);
     }
 
     public function schedules(Request $request)
     {
-        $machines = DB::table('machines')->get();
-        //dd($machines);
-        $machinesCount = count($machines);
-        //$machinesCount = 10;
+        $schedules = DB::table('schedules')
+            ->join('users', 'schedules.user_id', '=', 'users.id')
+            ->select('users.name', 'schedules.id', 'schedules.date', 'schedules.check_in_time', 'schedules.check_out_time', 'schedules.address_latitude_in', 'schedules.address_longitude_in', 'schedules.address_latitude_out', 'schedules.address_longitude_out')
+            ->orderBy('schedules.created_at', 'DESC')
+            ->Paginate(30);
 
         if ($request->has('download')) {
-            $pdf = PDF::loadView('user::machines.createPDF', compact('machines', 'machinesCount'))->setPaper('a4', 'portrait')->setOptions(['dpi' => 150, 'defaultFont' => 'sans-serif']);
+            $pdf = PDF::loadView('user::reports.createSchedulesPDF', compact('schedules'));
+            return $pdf->stream();
             // return $pdf->download('pdfview.pdf');
-            return $pdf->stream('pdfview.pdf');
         }
 
-        return view('user::machines.createPDF', compact('machines'));
+        return view('user::reports.schedules', compact('schedules'))->with('i', (request()->input('page', 1) - 1) * 30);
     }
 }

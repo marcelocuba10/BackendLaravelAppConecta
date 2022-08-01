@@ -8,7 +8,7 @@
         <div class="row align-items-center">
           <div class="col-md-8">
             <div class="title d-flex align-items-center flex-wrap mb-30">
-              <h2 class="mr-40">Relatorio de Clientes</h2>
+              <h2 class="mr-40">Relatorio de Funcionarios</h2>
             </div>
           </div>
           <!-- end col -->
@@ -29,56 +29,35 @@
                 <div class="invoice-for">
                   <form action="#">
                     <div class="row">
-                      <div class="col-xxl-3">
+                      <div class="col-md-3">
                         <div class="input-style-1">
-                          <label>City</label>
-                          <input type="text" placeholder="City">
+                          <label>Funcionario</label>
+                          <form action="/user/reports/customers/search">
+                            <input disabled class="bg-gray" style="background-color: #fff;" id="search" type="text" name="search" value="{{ $search ?? '' }}" placeholder="Buscar funcionario..">
+                          </form>
                         </div>
                       </div>
-                      <div class="col-xxl-3">
+                      <div class="col-md-3">
                         <div class="input-style-1">
-                          <label>Zip Code</label>
-                          <input type="text" placeholder="Zip Code">
+                          <label>Desde</label>
+                            <input type="date" name="date" id="date" value="{{ $schedule->date ?? old('date') }}" readonly class="bg-gray">  
                         </div>
                       </div>
-                      <div class="col-xxl-3">
-                        <div class="select-style-1">
-                          <label>Country</label>
-                          <div class="select-position">
-                            <select class="light-bg">
-                              <option value="">Select category</option>
-                              <option value="">USA</option>
-                              <option value="">UK</option>
-                              <option value="">Canada</option>
-                              <option value="">India</option>
-                              <option value="">Bangladesh</option>
-                            </select>
-                          </div>
+                      <div class="col-md-3">
+                        <div class="input-style-1">
+                          <label>Hasta</label>
+                            <input type="date" name="date" id="date" value="{{ $schedule->date ?? old('date') }}" readonly class="bg-gray">  
                         </div>
                       </div>
-                      <div class="col-xxl-3">
-                        <div class="invoice-action">
-                          <ul class="d-flex flex-wrap align-items-center justify-content-center">
-                            <li class="m-2">
-                              <a href="#0" class="main-btn primary-btn-outline btn-hover">
-                                Download Invoice
-                              </a>
-                            </li>
-                            <li class="m-2">
-                              <a href="#0" class="main-btn primary-btn btn-hover">
-                                <i class="lni lni-search"></i>
-                              </a>
-                            </li>
-                          </ul>
+                      <div class="col-md-3">
+                        <div class="input-style-1">
+                          <label>Acciones</label>
+                          <a href="#" class="btn btn-lg warning-btn rounded-md btn-hover disabled" role="button" aria-disabled="true"><i class="lni lni-search"></i></a>
+                          <a href="{{route('reports.users',['download'=>'pdf'])}}" class="btn btn-lg success-btn rounded-md btn-hover" target="_blank"><i class="lni lni-printer"></i></a>
                         </div>
                       </div>
                     </div>
                   </form>
-                </div>
-                <div class="invoice-date">
-                  <p><span>Date Issued:</span> 20/02/2024</p>
-                  <p><span>Date Due:</span> 20/02/2028</p>
-                  <p><span>Order ID:</span> #5467</p>
                 </div>
               </div>
 
@@ -86,31 +65,35 @@
                 <table class="invoice-table table">
                   <thead>
                     <tr>
-                      <th class="service">
-                        <h6 class="text-sm text-medium">#</h6>
+                      <th class="sm">
+                        <h6 class="text-sm text-medium"></h6>
                       </th>
-                      <th class="desc">
+                      <th class="lg">
                         <h6 class="text-sm text-medium">Nombre</h6>
                       </th>
-                      <th class="qty">
+                      <th class="lg">
+                        <h6 class="text-sm text-medium">Apellidos</h6>
+                      </th>
+                      <th class="md">
                         <h6 class="text-sm text-medium">Teléfono</h6>
                       </th>
-                      <th class="amount">
-                        <h6 class="text-sm text-medium">Máquinas</h6>
+                      <th class="md">
+                        <h6 class="text-sm text-medium">Email</h6>
                       </th>
-                      <th class="amount">
-                        <h6 class="text-sm text-medium">Dirección</h6>
+                      <th class="lg">
+                        <h6 class="text-sm text-medium">Doc Identidad</h6>
                       </th>
                     </tr>
                   </thead>
                   <tbody>
-                    @foreach ($customers as $customer)
+                    @foreach ($users as $user)
                     <tr>
-                        <td class="text-sm"><p>{{ ++$i }}</p></td>
-                        <td class="text-sm"><p>{{ $customer->name }}</p></td>
-                        <td class="text-sm"><p>{{ $customer->phone }}</p></td>
-                        <td class="text-sm"><p>{{ $customer->total_machines }}</p></td>
-                        <td class="text-sm"><p>{{ $customer->address }}</p></td>
+                        <td class="text-sm"><h6 class="text-sm">#{{ ++$i }}</h6></td>
+                        <td class="text-sm"><p>{{ $user->name }}</p></td>
+                        <td class="text-sm"><p>{{ $user->last_name }}</p></td>
+                        <td class="text-sm"><p><i class="lni lni-phone mr-10"></i>{{ $user->phone }}</p></td>
+                        <td class="text-sm"><p>{{ $user->email }}</p></td>
+                        <td class="text-sm"><p>{{ $user->ci }}</p></td>
                     </tr>
                     @endforeach
                   <!-- end table row -->

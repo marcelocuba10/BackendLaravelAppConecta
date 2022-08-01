@@ -77,7 +77,7 @@
             <span class="text">Máquinas via API</span>
           </a>
         </li>
-        <li class="nav-item {{ (request()->is('user/posts/grid_view')) ? 'active' : '' }}">
+        {{-- <li class="nav-item {{ (request()->is('user/posts/grid_view')) ? 'active' : '' }}">
           <a href="/user/posts">
             <span class="icon">
               <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -86,7 +86,7 @@
             </span>
             <span class="text">teste</span>
           </a>
-        </li>
+        </li> --}}
         @endcan
         @can('customer-list')
         <li class="nav-item {{ (request()->is('user/customers')) ? 'active' : '' }}">
@@ -118,13 +118,13 @@
               <a href="/user/reports/customers" class="{{ (request()->is('user/reports/customers')) ? 'active' : '' }}">Clientes</a>
             </li>
             <li >
-              <a href="#" class="{{ (request()->is('user/machines-report')) ? 'active' : '' }}">Maquinas</a>
+              <a href="/user/reports/machines" class="{{ (request()->is('user/reports/machines')) ? 'active' : '' }}">Maquinas</a>
             </li>
             <li >
-              <a href="#" class="{{ (request()->is('user/users-report')) ? 'active' : '' }}">Funcionarios</a>
+              <a href="/user/reports/users" class="{{ (request()->is('user/reports/users')) ? 'active' : '' }}">Funcionarios</a>
             </li>
             <li >
-              <a href="#" class="{{ (request()->is('user/schedules-report')) ? 'active' : '' }}">Horarios</a>
+              <a href="/user/reports/schedules" class="{{ (request()->is('user/reports/schedules')) ? 'active' : '' }}">Horarios</a>
             </li>
           </ul>
         </li>

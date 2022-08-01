@@ -32,26 +32,28 @@
                       <div class="col-md-3">
                         <div class="input-style-1">
                           <label>Cliente</label>
-                          <input type="text" placeholder="Escriba nombre del cliente..">
+                          <form action="/user/reports/customers/search">
+                            <input disabled class="bg-gray" style="background-color: #fff;" id="search" type="text" name="search" value="{{ $search ?? '' }}" placeholder="Buscar cliente..">
+                          </form>
                         </div>
                       </div>
                       <div class="col-md-3">
                         <div class="input-style-1">
                           <label>Desde</label>
-                            <input type="date" name="date" id="date" value="{{ $schedule->date ?? old('date') }}" class="bg-transparent">  
+                            <input type="date" name="date" id="date" value="{{ $schedule->date ?? old('date') }}" readonly class="bg-gray">  
                         </div>
                       </div>
                       <div class="col-md-3">
                         <div class="input-style-1">
                           <label>Hasta</label>
-                            <input type="date" name="date" id="date" value="{{ $schedule->date ?? old('date') }}" class="bg-transparent">  
+                            <input type="date" name="date" id="date" value="{{ $schedule->date ?? old('date') }}" readonly class="bg-gray">  
                         </div>
                       </div>
                       <div class="col-md-3">
                         <div class="input-style-1">
                           <label>Acciones</label>
-                          <a href="#" class="btn btn-lg warning-btn rounded-md btn-hover" role="button" aria-disabled="true"><i class="lni lni-search"></i></a>
-                          <a href="#" class="btn btn-lg success-btn rounded-md btn-hover" role="button" aria-disabled="true"><i class="lni lni-printer"></i></a>
+                          <a href="#" class="btn btn-lg warning-btn rounded-md btn-hover disabled" role="button" aria-disabled="true"><i class="lni lni-search"></i></a>
+                          <a href="{{route('reports.customers',['download'=>'pdf'])}}" class="btn btn-lg success-btn rounded-md btn-hover" target="_blank"><i class="lni lni-printer"></i></a>
                         </div>
                       </div>
                     </div>

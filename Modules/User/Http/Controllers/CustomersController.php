@@ -76,6 +76,20 @@ class CustomersController extends Controller
         return redirect()->route('customers.index')->with('message', 'Customer updated successfully.');
     }
 
+    public function search(Request $request)
+    {
+        $search = $request->input('search');
+
+        if ($search == '') {
+            $customers = DB::table('customers')->paginate(30);
+
+        } else {
+            $users = DB::table('customers')->where('customers.name', 'LIKE', "%{$search}%")->paginate(30);
+        }
+
+        return view('user::customers.index', compact('customers', 'search'))->with('i', (request()->input('page', 1) - 1) * 30);
+    }
+
     public function destroy($id)
     {
         Customers::find($id)->delete();

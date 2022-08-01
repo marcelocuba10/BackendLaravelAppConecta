@@ -117,6 +117,7 @@ Route::prefix('user')->group(function () {
         /*** Reports Routes ***/
         Route::group(['prefix' => 'reports'], function () {
             Route::get('/customers', 'ReportsController@customers')->name('reports.customers');
+            Route::get('/customers/search', 'ReportsController@customers')->name('reports.customers');
             Route::get('/machines', 'ReportsController@machines')->name('reports.machines');
             Route::get('/users', 'ReportsController@users')->name('reports.users');
             Route::get('/schedules', 'ReportsController@schedules')->name('reports.schedules');

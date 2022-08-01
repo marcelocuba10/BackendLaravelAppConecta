@@ -18,14 +18,10 @@
           <div class="col-md-4">
             <div class="right">
               <div class="table-search d-flex" style="margin-top: -35px;float: right;">
-                <form action="#" id="search-form">
-                  @csrf
-                  <input style="background-color: #fff;" class="search" id="search" type="text" name="search" value="{{ $search ?? '' }}" placeholder="Buscar cliente..">
-
-                  <div id="results" style="z-index: 2;position: absolute;background-color: #fff;height: 300px;overflow: auto;">
-                  </div>
-
-                </form>  
+                <form action="/user/users/search">
+                  <input style="background-color: #fff;" type="text" name="search" value="{{ $search ?? '' }}" placeholder="Buscar cliente..">
+                  {{-- <button type="submit"><i class="lni lni-search-alt"></i></button> --}}
+                </form> 
               </div>
             </div>
           </div>

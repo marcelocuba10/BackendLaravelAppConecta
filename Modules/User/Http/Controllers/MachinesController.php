@@ -369,9 +369,7 @@ class MachinesController extends Controller
     public function createPDF(Request $request)
     {
         $machines = DB::table('machines')->get();
-        //dd($machines);
         $machinesCount = count($machines);
-        //$machinesCount = 10;
 
         if ($request->has('download')) {
             $pdf = PDF::loadView('user::machines.createPDF', compact('machines', 'machinesCount'))->setPaper('a4', 'portrait')->setOptions(['dpi' => 150, 'defaultFont' => 'sans-serif']);

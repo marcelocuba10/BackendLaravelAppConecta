@@ -51,15 +51,25 @@ class ReportsController extends Controller
 
     public function machines(Request $request)
     {
-        $customers = DB::table('machines')->paginate(30);
-
+        $machines = DB::table('machines_api')
+            ->leftjoin('customers', 'machines_api.customer_id', '=', 'customers.id')
+            ->select('machines_api.id', 'machines_api.worker_name', 'machines_api.status', 'machines_api.shares_1m', 'machines_api.shares_5m', 'machines_api.shares_15m', 'customers.name AS customer_name')
+            ->orderBy('id', 'DESC')
+            ->paginate(30);
+    
         if ($request->has('download')) {
-            $pdf = PDF::loadView('user::reports.createCustomersPDF', compact('customers'));
+            $machines = DB::table('machines_api')
+                ->leftjoin('customers', 'machines_api.customer_id', '=', 'customers.id')
+                ->select('machines_api.id', 'machines_api.worker_name', 'machines_api.status', 'machines_api.shares_1m', 'machines_api.shares_5m', 'machines_api.shares_15m', 'customers.name AS customer_name')
+                ->orderBy('id', 'DESC')
+                ->get();
+    
+            $pdf = PDF::loadView('user::reports.createMachinesPDF', compact('machines'));
             return $pdf->stream();
             // return $pdf->download('pdfview.pdf');
         }
-
-        return view('user::reports.customers', compact('customers'))->with('i', (request()->input('page', 1) - 1) * 30);
+    
+        return view('user::reports.machines', compact('machines'))->with('i', (request()->input('page', 1) - 1) * 30);
     }
 
     public function schedules(Request $request)

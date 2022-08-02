@@ -99,6 +99,13 @@
                   <!-- end table row -->
                 </tbody>
                 </table>
+                @if (isset($filter))
+                {{-- {{ $machines->appends(['sort' =>$filter])->links() }}  --}}
+                {{-- {!! $machines->appends(Request::except('page'))->render() !!} --}}
+                  {!! $users-> appends($filter)->links() !!} <!-- appends envia variable en la paginacion-->
+                @else
+                  {!! $users-> links() !!}    
+                @endif
               </div>
             </div>
             <!-- End Card -->

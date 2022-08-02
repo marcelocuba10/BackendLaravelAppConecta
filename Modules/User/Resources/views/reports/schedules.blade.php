@@ -87,7 +87,7 @@
                     <tr>
                         <td class="text-sm"><h6 class="text-sm">#{{ ++$i }}</h6></td>
                         <td class="text-sm"><p>{{ $schedule->name }}</p></td>
-                        <td class="text-sm"><p>{{ $schedule->date }}</p></td>
+                        <td class="text-sm"><p><i class="lni lni-calendar mr-10"></i>{{ $schedule->date }}</p></td>
                         <td class="text-sm"><p>{{ $schedule->check_in_time }}</p></td>
                         <td class="text-sm"><p>{{ $schedule->check_out_time }}</p></td>
                     </tr>
@@ -95,6 +95,13 @@
                   <!-- end table row -->
                 </tbody>
                 </table>
+                @if (isset($filter))
+                {{-- {{ $machines->appends(['sort' =>$filter])->links() }}  --}}
+                {{-- {!! $machines->appends(Request::except('page'))->render() !!} --}}
+                  {!! $schedules-> appends($filter)->links() !!} <!-- appends envia variable en la paginacion-->
+                @else
+                  {!! $schedules-> links() !!}    
+                @endif
               </div>
             </div>
             <!-- End Card -->

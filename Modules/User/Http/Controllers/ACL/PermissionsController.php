@@ -2,10 +2,10 @@
 
 namespace Modules\User\Http\Controllers\ACL;
 
-use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
+
 //spatie
 use Spatie\Permission\Models\Permission;
 
@@ -22,7 +22,9 @@ class PermissionsController extends Controller
 
     public function index()
     {
-        $permissions = Permission::paginate(10);
+        $permissions = DB::table('permissions')
+            ->orderBy('created_at', 'DESC')
+            ->paginate(10);
 
         return view('user::permissions.index', compact('permissions'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
@@ -40,8 +42,7 @@ class PermissionsController extends Controller
 
         // Define a `publish articles` permission for the user users belonging to the user guard
         Permission::create(['name' => $request->input('name'), 'guard_name' => 'web']);
-
-        return redirect()->route('permissions.index')->with('message', 'Permission created successfully!');
+        return redirect()->route('permissions.user.index')->with('message', 'Permission created successfully!');
     }
 
     public function show($id)
@@ -62,21 +63,37 @@ class PermissionsController extends Controller
         return view('user::permissions.edit', compact('permission', 'title'));
     }
 
-    public function update(Request $request, Permission $permission)
+    public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => 'required|unique:permissions,name,' . $permission->id,
+            'name' => 'required|unique:permissions,name,' . $id,
         ]);
 
-        $permission->update($request->only('name'));
+        $input = $request->all();
+        $permission = Permission::find($id);
+        $permission->update($input);
 
-        return redirect()->route('permissions.index')->with('message', 'Permission updated successfully.');
+        return redirect()->route('permissions.user.index')->with('message', 'Permission updated successfully.');
     }
 
-    public function destroy(Permission $permission)
+    public function search(Request $request)
     {
-        $permission->delete();
+        $search = $request->input('search');
 
-        return redirect()->route('permissions.index')->with('message', 'Permission deleted successfully');
+        if ($search == '') {
+            $permissions = DB::table('permissions')->paginate(30);
+        } else {
+            $permissions = DB::table('permissions')
+                ->where('permissions.name', 'LIKE', "%{$search}%")
+                ->paginate(30);
+        }
+
+        return view('user::permissions.index', compact('permissions', 'search'))->with('i', (request()->input('page', 1) - 1) * 30);
+    }
+
+    public function destroy($id)
+    {
+        Permission::find($id)->delete();
+        return redirect()->route('permissions.user.index')->with('message', 'Permission deleted successfully');
     }
 }

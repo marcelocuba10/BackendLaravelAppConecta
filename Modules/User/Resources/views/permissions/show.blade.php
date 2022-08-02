@@ -16,7 +16,7 @@
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="/user/dashboard">Dashboard</a></li>
-                                <li class="breadcrumb-item" aria-current="page"><a href="{{ route('permissions.index') }}">Permisos</a></li>
+                                <li class="breadcrumb-item" aria-current="page"><a href="/user/ACL/permissions/">Permisos</a></li>
                                 <li class="breadcrumb-item active" aria-current="page">Detalle del Permiso</li>
                             </ol>
                         </nav>
@@ -48,7 +48,7 @@
                                 <!-- end col -->
                                 <div class="col-12">
                                     <div class="button-groupd-flexjustify-content-centerflex-wrap">
-                                        <a class="main-btn danger-btn-outline m-2" href="{{ route('permissions.index') }}">Atrás</a>
+                                        <a class="main-btn danger-btn-outline m-2" href="/user/ACL/permissions/">Atrás</a>
                                     </div>
                                 </div>
                             </div>

@@ -10,7 +10,7 @@
             <div class="title d-flex align-items-center flex-wrap mb-30">
               <h2 class="mr-40">Roles</h2>
               @can('role-create')
-                <a href="/user/roles/create" class="main-btn info-btn btn-hover btn-sm"><i class="lni lni-plus mr-5"></i> Nuevo</a>
+                <a href="/user/ACL/roles/create" class="main-btn info-btn btn-hover btn-sm"><i class="lni lni-plus mr-5"></i> Nuevo</a>
               @endcan  
             </div>
           </div>
@@ -18,9 +18,9 @@
           <div class="col-md-4">
             <div class="right">
               <div class="table-search d-flex" style="margin-top: -35px;float: right;">
-                <form action="#">
-                  <input style="background-color: #fff;" type="text" placeholder="Search...">
-                  <button><i class="lni lni-search-alt"></i></button>
+                <form action="/user/ACL/roles/search">
+                  <input style="background-color: #fff;" id="search" type="text" name="search" value="{{ $search ?? '' }}" placeholder="Buscar Rol..">
+                  <button type="submit"><i class="lni lni-search-alt"></i></button>
                 </form>
               </div>
             </div>
@@ -67,14 +67,14 @@
                     <tbody>
                         @foreach ($roles as $role)
                         <tr>
-                            <td class="min-width"><p>{{ ++$i }}</p></td>
+                            <td class="min-width"><h6 class="text-sm">#{{ ++$i }}</h6></td>
                             <td class="min-width"><p>{{ $role->name }}</p></td>
                             <td class="min-width"><p>{{ $role->guard_name }}</p></td>
 
                             <td class="text-right">
                                 <div class="btn-group">
                                     <div class="action">
-                                      <a href="{{ route('roles.show', $role->id) }}">
+                                      <a href="{{ route('roles.user.show', $role->id) }}">
                                           <button class="text-active">
                                               <i class="lni lni-eye"></i>
                                           </button>
@@ -82,7 +82,7 @@
                                     </div>
                                     @can('role-edit')
                                     <div class="action">
-                                        <a href="{{ route('roles.edit', $role->id) }}">
+                                        <a href="{{ route('roles.user.edit', $role->id) }}">
                                             <button class="text-info">
                                                 <i class="lni lni-pencil"></i>
                                             </button>
@@ -90,7 +90,7 @@
                                     </div>
                                     @endcan
                                     @can('role-delete')
-                                    <form method="POST" action="{{ route('roles.destroy', $role->id) }}">
+                                    <form method="POST" action="{{ route('roles.user.destroy', $role->id) }}">
                                         @csrf
                                         <div class="action">
                                             <input name="_method" type="hidden" value="DELETE">
@@ -107,7 +107,11 @@
                     </tbody>
                   </table>
                   <!-- end table -->
-                  {{ $roles->links() }} <!-- paginacion default -->
+                  @if (isset($filter))
+                    {!! $roles-> appends($filter)->links() !!} <!-- appends envia variable en la paginacion-->
+                  @else
+                    {!! $roles-> links() !!}    
+                  @endif
                 </div>
               </div>
               <!-- end card -->

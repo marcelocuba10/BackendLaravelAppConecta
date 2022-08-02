@@ -10,7 +10,7 @@
             <div class="title d-flex align-items-center flex-wrap mb-30">
               <h2 class="mr-40">Permisos</h2>
               @can('permission-create')
-                <a href="/user/permissions/create" class="main-btn info-btn btn-hover btn-sm"><i class="lni lni-plus mr-5"></i> Nuevo Permiso</a>
+                <a href="/user/ACL/permissions/create" class="main-btn info-btn btn-hover btn-sm"><i class="lni lni-plus mr-5"></i> Nuevo Permiso</a>
               @endcan  
             </div>
           </div>
@@ -18,9 +18,9 @@
           <div class="col-md-4">
             <div class="right">
               <div class="table-search d-flex" style="margin-top: -35px;float: right;">
-                <form action="#">
-                  <input style="background-color: #fff;" type="text" placeholder="Search...">
-                  <button><i class="lni lni-search-alt"></i></button>
+                <form action="/user/ACL/permissions/search">
+                  <input style="background-color: #fff;" id="search" type="text" name="search" value="{{ $search ?? '' }}" placeholder="Buscar Permiso..">
+                  <button type="submit"><i class="lni lni-search-alt"></i></button>
                 </form>
               </div>
             </div>
@@ -68,13 +68,13 @@
                     <tbody>
                         @foreach ($permissions as $permission)
                         <tr>
-                            <td class="min-width"><p>{{ ++$i }}</p></td>
+                            <td class="text-sm"><h6 class="text-sm">#{{ ++$i }}</h6></td>
                             <td class="min-width"><p>{{ $permission->name }}</p></td>
                             <td class="min-width"><p>{{ $permission->guard_name }}</p></td>
                             <td class="text-right">
                                 <div class="btn-group">
                                     <div class="action">
-                                        <a href="{{ route('permissions.show', $permission->id) }}">
+                                        <a href="{{ route('permissions.user.show', $permission->id) }}">
                                             <button class="text-active">
                                                 <i class="lni lni-eye"></i>
                                             </button>
@@ -82,13 +82,13 @@
                                     </div>
                                     @can('permission-edit')
                                     <div class="action">
-                                        <a href="{{ route('permissions.edit', $permission->id) }}">
+                                        <a href="{{ route('permissions.user.edit', $permission->id) }}">
                                             <button class="text-info"><i class="lni lni-pencil"></i></button>
                                         </a>
                                     </div>
                                     @endcan
                                     @can('permission-delete')
-                                    <form method="POST" action="{{ route('permissions.destroy', $permission->id) }}">
+                                    <form method="POST" action="{{ route('permissions.user.destroy', $permission->id) }}">
                                         @csrf
                                         <div class="action">
                                             <input name="_method" type="hidden" value="DELETE">
@@ -104,7 +104,11 @@
                     </tbody>
                   </table>
                   <!-- end table -->
-                  {{ $permissions->links() }} <!-- paginacion default -->
+                  @if (isset($filter))
+                    {!! $permissions-> appends($filter)->links() !!} <!-- appends envia variable en la paginacion-->
+                  @else
+                    {!! $permissions-> links() !!}    
+                  @endif
                 </div>
               </div>
               <!-- end card -->

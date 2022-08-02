@@ -17,7 +17,7 @@
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="/user/dashboard">Dashboard</a></li>
-                                <li class="breadcrumb-item" aria-current="page"><a href="{{ route('permissions.index') }}">Permisos</a></li>
+                                <li class="breadcrumb-item" aria-current="page"><a href="/user/ACL/permissions/">Permisos</a></li>
                                 <li class="breadcrumb-item active" aria-current="page">Nuevo Permiso</li>
                             </ol>
                         </nav>
@@ -32,7 +32,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card-style mb-30">
-                        <form method="POST" action="{{ route('permissions.store') }}">
+                        <form method="POST" action="/user/ACL/permissions/create">
                             @include('user::permissions._partials.form')
                         </form>
                     </div>

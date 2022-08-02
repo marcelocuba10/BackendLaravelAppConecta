@@ -4,7 +4,6 @@ namespace Modules\User\Http\Controllers\ACL;
 
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
-//use Illuminate\Routing\Controller;
 
 //spatie
 use App\Http\Controllers\Controller;
@@ -46,7 +45,7 @@ class RolesController extends Controller
         $role = Role::create(['name' => $request->input('name'),'guard_name' => 'web']);
         $role->syncPermissions($request->input('permission'));
 
-        return redirect()->route('roles.index')->with('message', 'Role created successfully');
+        return redirect()->route('roles.user.index')->with('message', 'Role created successfully');
     }
 
     public function show($id)
@@ -84,13 +83,28 @@ class RolesController extends Controller
 
         $role->syncPermissions($request->input('permission'));
 
-        return redirect()->route('roles.index')->with('message', 'Role updated successfully');
+        return redirect()->route('roles.user.index')->with('message', 'Role updated successfully');
+    }
+
+    public function search(Request $request)
+    {
+        $search = $request->input('search');
+
+        if ($search == '') {
+            $roles = DB::table('roles')->paginate(30);
+        } else {
+            $roles = DB::table('roles')
+                ->where('roles.name', 'LIKE', "%{$search}%")
+                ->paginate(30);
+        }
+
+        return view('user::roles.index', compact('roles', 'search'))->with('i', (request()->input('page', 1) - 1) * 30);
     }
 
     public function destroy($id)
     {
         DB::table('roles')->where('id', $id)->delete();
 
-        return redirect()->route('roles.index')->with('message', 'Role deleted successfully');
+        return redirect()->route('roles.user.index')->with('message', 'Role deleted successfully');
     }
 }

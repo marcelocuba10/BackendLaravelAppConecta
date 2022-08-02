@@ -57,7 +57,7 @@
           <hr />
         </span>
         @can('machine-list')
-        <li class="nav-item {{ (request()->is('user/machines/grid_view')) ? 'active' : '' || (request()->is('user/machines/list')) ? 'active' : ''}}">
+        <li class="nav-item {{ (request()->is('user/machines/grid_view')) || (request()->is('user/machines/list')) ? 'active' : '' }}">
           <a href="/user/machines/grid_view">
             <span class="icon">
               <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -67,7 +67,7 @@
             <span class="text">Máquinas</span>
           </a>
         </li>
-        <li class="nav-item {{ (request()->is('user/machines/grid_view_api')) ? 'active' : '' || (request()->is('user/machines/list_api')) ? 'active' : '' }}">
+        <li class="nav-item {{ (request()->is('user/machines/grid_view_api')) || (request()->is('user/machines/list_api')) ? 'active' : '' }}">
           <a href="/user/machines/grid_view_api">
             <span class="icon">
               <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -143,7 +143,7 @@
             </span>
             <span class="text">Ajustes</span>
           </a>
-          <ul id="ddmenu_2" class="dropdown-nav" style="{{ (request()->is('user/users')) ? '' : 'display:none' }}">
+          <ul id="ddmenu_2" class="dropdown-nav" style="{{ (request()->is('user/users')) || (request()->is('user/ACL/*')) ? '' : 'display:none'}}">
             @can('user-list')
             <li>
               <a href="/user/users" class="{{ (request()->is('user/users')) ? 'active' : '' }}">
@@ -155,15 +155,15 @@
               <a aria-expanded="false" class="collapsed" id="ddlink_3" href="#" onclick="toggle('ddmenu_3', 'ddlink_3')">
                 <span class="text">ACL</span>
               </a>
-              <ul id="ddmenu_3" class="dropdown-nav" style="{{ (request()->is('user/roles')) ? '' : 'display:none' }}">
+              <ul id="ddmenu_3" class="dropdown-nav" style="{{ (request()->is('user/ACL/*')) ? '' : 'display:none' }}">
                 @can('role-list')
                 <li>
-                  <a href="/user/roles" class="{{ (request()->is('user/roles')) ? 'active' : '' }}"><span class="text">Roles</span></a>
+                  <a href="/user/ACL/roles" class="{{ (request()->is('user/ACL/roles')) ? 'active' : '' }}"><span class="text">Roles</span></a>
                 </li>
                 @endcan
                 @can('permission-list')
                 <li>
-                  <a href="/user/permissions" class="{{ (request()->is('user/permissions')) ? 'active' : '' }}"><span class="text">Permisos</span></a>
+                  <a href="/user/ACL/permissions" class="{{ (request()->is('user/ACL/permissions')) ? 'active' : '' }}"><span class="text">Permisos</span></a>
                 </li>
                 @endcan
               </ul>

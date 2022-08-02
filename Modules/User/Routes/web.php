@@ -32,8 +32,27 @@ Route::prefix('user')->group(function () {
 
         /*** ACL Routes ***/
         Route::group(['prefix'=>'ACL'],function(){
-            Route::resource('/roles', 'ACL\RolesController');
-            Route::resource('/permissions', 'ACL\PermissionsController');
+            Route::group(['prefix' => 'roles'], function () {
+                Route::get('/', 'ACL\RolesController@index')->name('roles.user.index');
+                Route::get('/create', 'ACL\RolesController@create')->name('roles.user.create');
+                Route::post('/create', 'ACL\RolesController@store')->name('roles.user.store');
+                Route::get('/{id}/show', 'ACL\RolesController@show')->name('roles.user.show');
+                Route::get('/edit/{id}', 'ACL\RolesController@edit')->name('roles.user.edit');
+                Route::put('/update/{id}', 'ACL\RolesController@update')->name('roles.user.update');
+                Route::delete('/{id}/delete', 'ACL\RolesController@destroy')->name('roles.user.destroy');
+                Route::get('/search', 'ACL\RolesController@search')->name('roles.user.search');
+            });
+
+            Route::group(['prefix' => 'permissions'], function () {
+                Route::get('/', 'ACL\PermissionsController@index')->name('permissions.user.index');
+                Route::get('/create', 'ACL\PermissionsController@create')->name('permissions.user.create');
+                Route::post('/create', 'ACL\PermissionsController@store')->name('permissions.user.store');
+                Route::get('/{id}/show', 'ACL\PermissionsController@show')->name('permissions.user.show');
+                Route::get('/edit/{id}', 'ACL\PermissionsController@edit')->name('permissions.user.edit');
+                Route::put('/update/{id}', 'ACL\PermissionsController@update')->name('permissions.user.update');
+                Route::delete('/{id}/delete', 'ACL\PermissionsController@destroy')->name('permissions.user.destroy');
+                Route::get('/search', 'ACL\PermissionsController@search')->name('permissions.user.search');
+            });
         });
 
         /*** User Routes ***/

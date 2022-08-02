@@ -123,7 +123,11 @@
                     </tbody>
                   </table>
                   <!-- end table -->
-                  {{ $schedules->links() }} <!-- paginacion default -->
+                  @if (isset($filter))
+                    {!! $schedules-> appends($filter)->links() !!} <!-- appends envia variable en la paginacion-->
+                  @else
+                    {!! $schedules-> links() !!}    
+                  @endif
                 </div>
               </div>
               <!-- end card -->

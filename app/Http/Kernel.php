@@ -15,13 +15,13 @@ class Kernel extends HttpKernel
      */
     protected $middleware = [
         \App\Http\Middleware\TrustProxies::class,
-        //Fruitcake laravel-cors
+        //Fruitcake laravel-cors --- Add This Line In Your Kernel.php after the "Trust Proxies::Class" Line.
         \Fruitcake\Cors\HandleCors::class,
+        \App\Http\Middleware\Cors::class,
         \App\Http\Middleware\PreventRequestsDuringMaintenance::class,
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
-        \App\Http\Middleware\Cors::class,
 
     ];
 
@@ -77,5 +77,6 @@ class Kernel extends HttpKernel
         'role_or_permission' => \Spatie\Permission\Middlewares\RoleOrPermissionMiddleware::class,
         //CORS
         'cors' => \Fruitcake\Cors\HandleCors::class,
+        //'cors' => \App\Http\Middleware\Cors::class,
     ];
 }

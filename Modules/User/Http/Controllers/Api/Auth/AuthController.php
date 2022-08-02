@@ -38,6 +38,7 @@ class AuthController extends Controller
         $token->save();
 
         return response()->json([
+            'message' => 'Successfully logged',
             'access_token' => $tokenResult->accessToken,
             'token_type' => 'Bearer',
             'expires_at' => Carbon::parse(
@@ -49,9 +50,9 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $request->validate([
-            'first_name' => 'required|string|max:20|min:5',
+            'name' => 'required|string|max:20|min:5',
             'last_name' => 'nullable|string|max:20|min:5',
-            'phone' => 'required|string|max:20|min:5',
+            'phone' => 'nullable|string|max:20|min:5',
             'address' => 'nullable|string|max:100|min:5',
             'email' => 'required|string|email|unique:users',
             'password' => 'required|string',
@@ -62,19 +63,18 @@ class AuthController extends Controller
         // User::create($input);
 
         $user = new User;
-        $user->name = $request->first_name;
+        $user->name = $request->name;
         $user->last_name = $request->last_name;
         $user->phone = $request->phone;
         $user->address = $request->address;
         $user->status = 1;
-        $user->terms = 1;
         $user->email = $request->email;
         $user->password = $request->password;
         $user->save();
 
         return response()->json([
             'message' => 'Successfully created user!'
-        ], 201);
+        ]);
     }
 
     public function logout(Request $request)

@@ -10,7 +10,7 @@ Route::group(['prefix' => 'auth'], function () {
 
     Route::group(['middleware' => ['guest']], function () {
         Route::post('login', 'Api\Auth\AuthController@login')->name('login');
-        //Route::post('register', 'Api\Auth\AuthController@register');
+        Route::post('register', 'Api\Auth\AuthController@register')->name('register');
     });
 
     Route::group(['middleware' => 'auth:api'], function () {

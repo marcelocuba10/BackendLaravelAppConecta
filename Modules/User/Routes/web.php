@@ -31,8 +31,10 @@ Route::prefix('user')->group(function () {
         Route::get('/logout', 'Auth\LogoutController@perform')->name('logout.perform');
 
         /*** ACL Routes ***/
-        Route::resource('roles', 'ACL\RolesController');
-        Route::resource('permissions', 'ACL\PermissionsController');
+        Route::group(['prefix'=>'ACL'],function(){
+            Route::resource('/roles', 'ACL\RolesController');
+            Route::resource('/permissions', 'ACL\PermissionsController');
+        });
 
         /*** User Routes ***/
         Route::group(['prefix' => 'users'], function () {

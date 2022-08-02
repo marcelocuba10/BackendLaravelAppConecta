@@ -70,7 +70,7 @@
                     <tbody>
                         @foreach ($customers as $customer)
                         <tr>
-                            <td class="min-width"><p>{{ ++$i }}</p></td>
+                            <td class="text-sm"><h6 class="text-sm">#{{ ++$i }}</h6></td>
                             <td class="min-width"><p>{{ $customer->name }}</p></td>
                             <td class="min-width"><p>{{ $customer->phone }}</p></td>
                             <td class="min-width"><p>{{ $customer->total_machines }}</p></td>
@@ -125,37 +125,5 @@
     </div>
     <!-- end container -->
   </section>
-
-  <script>
-    $(function ()
-    {
-        'use strict';
-        $(document).on('keyup', '#search-form .search', function ()
-        {
-            if($(this).val().length > 0)
-            {
-                var search = $(this).val();
-                $.get("{{ route('posts.search') }}", {search: search}, function (data)
-                {
-                    $('#results').html(data);
-                });
-                return;
-            }
-            $('#results').empty();
-        });
-  
-        $(document).on('click', '.post-link', function ()
-        {
-            var postId = $(this).data('id');
-            //alert(postId);
-            $.get("{{ url('user/posts/show') }}", {id: postId}, function (res)
-            {
-                $('#results').empty();
-                $('.search').val('');
-                $('#post').html(res);
-            });
-        });
-    });
-  </script>
 
 @endsection

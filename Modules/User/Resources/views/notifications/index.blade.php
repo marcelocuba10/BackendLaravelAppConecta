@@ -69,7 +69,7 @@
                     <tbody>
                         @foreach ($notifications as $notification)
                         <tr>
-                            <td class="min-width"><p>{{ ++$i }}</p></td>
+                            <td class="text-sm"><h6 class="text-sm">#{{ ++$i }}</h6></td>
                             <td class="min-width"><p>{{ $notification->title }}</p></td>
                             <td class="min-width"><p>{{ $notification->subject }}</p></td>
                             <td class="min-width"><p>{{ $notification->date }}</p></td>

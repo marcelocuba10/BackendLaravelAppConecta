@@ -101,7 +101,7 @@
                     <tbody>
                         @foreach ($machines as $machine)
                         <tr>
-                            <td class="min-width"><p>{{ ++$i }}</p></td>
+                            <td class="text-sm"><h6 class="text-sm">#{{ ++$i }}</h6></td>
                             <td class="min-width"><h5 class="text-bold text-dark"><a href="/user/machines/{{ $machine->id }}/show_api">{{ $machine->worker_name }}</a></h5></td>
                             <td class="min-width">
                               <span class="status-btn 

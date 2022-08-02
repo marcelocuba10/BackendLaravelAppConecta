@@ -119,7 +119,6 @@ Route::prefix('user')->group(function () {
             Route::get('/edit/{id}', 'CustomersController@edit')->name('customers.edit');
             Route::put('/update/{id}', 'CustomersController@update')->name('customers.update');
             Route::delete('/{id}/delete', 'CustomersController@destroy')->name('customers.destroy');
-            Route::get('/show-search', 'CustomersController@show')->name('customers.show');
             Route::get('/search', 'CustomersController@search')->name('customers.search');
         });
 

@@ -23,7 +23,7 @@ class NotificationsController extends Controller
     public function index()
     {
         $notifications = DB::table('notifications')
-            ->orderBy('date','DESC')
+            ->orderBy('date', 'DESC')
             ->paginate(10);
         return view('user::notifications.index', compact('notifications'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
@@ -64,7 +64,7 @@ class NotificationsController extends Controller
         $notification = DB::table('notifications')
             ->where('notifications.id', '=', $id)
             ->first();
-            
+
         return view('user::notifications.edit', compact('notification'));
     }
 
@@ -91,15 +91,15 @@ class NotificationsController extends Controller
         $search = $request->input('search');
 
         if ($search == '') {
-            $notifications = DB::table('notifications')->paginate(30);
+            $notifications = DB::table('notifications')->paginate(10);
         } else {
             $notifications = DB::table('notifications')
                 ->where('notifications.title', 'LIKE', "%{$search}%")
                 ->orWhere('notifications.subject', 'LIKE', "%{$search}%")
-                ->paginate(30);
+                ->paginate();
         }
 
-        return view('user::notifications.index', compact('notifications', 'search'))->with('i', (request()->input('page', 1) - 1) * 30);
+        return view('user::notifications.index', compact('notifications', 'search'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
     public function destroy($id)

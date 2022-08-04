@@ -112,7 +112,11 @@
                     </tbody>
                   </table>
                   <!-- end table -->
-                  {{ $customers->links() }} <!-- paginacion default -->
+                  @if (isset($search))
+                      {!! $customers-> appends($search)->links() !!} <!-- appends envia variable en la paginacion-->
+                  @else
+                      {!! $customers-> links() !!}    
+                  @endif
                 </div>
               </div>
               <!-- end card -->

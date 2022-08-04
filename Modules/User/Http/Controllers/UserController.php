@@ -34,13 +34,12 @@ class UserController extends Controller
         $users = User::latest()->paginate(10);
 
         return view('user::users.index', compact('users'))->with('i', (request()->input('page', 1) - 1) * 10);
-
     }
 
     public function create()
     {
         $user = null;
-        return view('user::users.create',compact('user'));
+        return view('user::users.create', compact('user'));
     }
 
     public function store(Request $request)
@@ -128,7 +127,7 @@ class UserController extends Controller
             $input = Arr::except($input, array('password'));
         } else {
             if (empty($input['confirm_password'])) {
-                return redirect()->route('users_.edit.profile',$id)->withErrors('Confirm password')->withInput();
+                return redirect()->route('users_.edit.profile', $id)->withErrors('Confirm password')->withInput();
             }
         }
 
@@ -157,13 +156,13 @@ class UserController extends Controller
             $input = Arr::except($input, array('password'));
         } else {
             if (empty($input['confirm_password'])) {
-                return redirect()->route('users_.edit.profile',$id)->withErrors('Confirm password')->withInput();
+                return redirect()->route('users_.edit.profile', $id)->withErrors('Confirm password')->withInput();
             }
         }
 
         $user->update($input);
 
-        return redirect()->route('users_.show.profile',compact('user'))->with('message', 'User Profile updated successfully');
+        return redirect()->route('users_.show.profile', compact('user'))->with('message', 'User Profile updated successfully');
     }
 
     public function search(Request $request)
@@ -171,19 +170,19 @@ class UserController extends Controller
         $search = $request->input('search');
 
         if ($search == '') {
-            $users = DB::table('users')->paginate(30);
-
+            $users = DB::table('users')->paginate(10);
         } else {
-            $users = DB::table('users')->where('users.name', 'LIKE', "%{$search}%")->paginate(30);
+            $users = DB::table('users')
+                ->where('users.name', 'LIKE', "%{$search}%")
+                ->paginate();
         }
 
-        return view('user::users.index', compact('users', 'search'))->with('i', (request()->input('page', 1) - 1) * 30);
+        return view('user::users.index', compact('users', 'search'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
     public function destroy($id)
     {
         User::find($id)->delete();
-        return redirect()->route('users.index')->with('message','User deleted successfully');
-
+        return redirect()->route('users.index')->with('message', 'User deleted successfully');
     }
 }

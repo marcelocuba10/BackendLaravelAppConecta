@@ -110,7 +110,11 @@
                     </tbody>
                   </table>
                   <!-- end table -->
-                  {{ $notifications->links() }} <!-- paginacion default -->
+                  @if (isset($search))
+                    {!! $notifications-> appends($search)->links() !!} <!-- appends envia variable en la paginacion-->
+                  @else
+                    {!! $notifications-> links() !!}    
+                  @endif
                 </div>
               </div>
               <!-- end card -->

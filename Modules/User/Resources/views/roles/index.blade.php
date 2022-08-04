@@ -107,8 +107,8 @@
                     </tbody>
                   </table>
                   <!-- end table -->
-                  @if (isset($filter))
-                    {!! $roles-> appends($filter)->links() !!} <!-- appends envia variable en la paginacion-->
+                  @if (isset($search))
+                    {!! $roles-> appends($search)->links() !!} <!-- appends envia variable en la paginacion-->
                   @else
                     {!! $roles-> links() !!}    
                   @endif

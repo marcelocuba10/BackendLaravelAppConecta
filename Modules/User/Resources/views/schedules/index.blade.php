@@ -123,8 +123,8 @@
                     </tbody>
                   </table>
                   <!-- end table -->
-                  @if (isset($filter))
-                    {!! $schedules-> appends($filter)->links() !!} <!-- appends envia variable en la paginacion-->
+                  @if (isset($search))
+                    {!! $schedules-> appends($search)->links() !!} <!-- appends envia variable en la paginacion-->
                   @else
                     {!! $schedules-> links() !!}    
                   @endif

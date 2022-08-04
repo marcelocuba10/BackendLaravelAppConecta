@@ -81,14 +81,14 @@ class PermissionsController extends Controller
         $search = $request->input('search');
 
         if ($search == '') {
-            $permissions = DB::table('permissions')->paginate(30);
+            $permissions = DB::table('permissions')->paginate(10);
         } else {
             $permissions = DB::table('permissions')
                 ->where('permissions.name', 'LIKE', "%{$search}%")
-                ->paginate(30);
+                ->paginate();
         }
 
-        return view('user::permissions.index', compact('permissions', 'search'))->with('i', (request()->input('page', 1) - 1) * 30);
+        return view('user::permissions.index', compact('permissions', 'search'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
     public function destroy($id)

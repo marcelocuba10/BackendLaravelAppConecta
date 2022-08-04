@@ -104,8 +104,8 @@
                     </tbody>
                   </table>
                   <!-- end table -->
-                  @if (isset($filter))
-                    {!! $permissions-> appends($filter)->links() !!} <!-- appends envia variable en la paginacion-->
+                  @if (isset($search))
+                    {!! $permissions-> appends($search)->links() !!} <!-- appends envia variable en la paginacion-->
                   @else
                     {!! $permissions-> links() !!}    
                   @endif

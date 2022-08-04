@@ -111,16 +111,16 @@ class SchedulesController extends Controller
             $schedules = DB::table('schedules')
                 ->leftjoin('users', 'schedules.user_id', '=', 'users.id')
                 ->select('users.name', 'users.last_name', 'schedules.id', 'schedules.date', 'schedules.check_in_time', 'schedules.check_out_time', 'schedules.address_latitude_in', 'schedules.address_longitude_in', 'schedules.address_latitude_out', 'schedules.address_longitude_out')
-                ->paginate(30);
+                ->paginate(10);
         } else {
             $schedules = DB::table('schedules')
-            ->leftjoin('users', 'schedules.user_id', '=', 'users.id')
-            ->select('users.name', 'users.last_name', 'schedules.id', 'schedules.date', 'schedules.check_in_time', 'schedules.check_out_time', 'schedules.address_latitude_in', 'schedules.address_longitude_in', 'schedules.address_latitude_out', 'schedules.address_longitude_out')
-            ->where('users.name', 'LIKE', "%{$search}%")
-            ->paginate(30);
+                ->leftjoin('users', 'schedules.user_id', '=', 'users.id')
+                ->select('users.name', 'users.last_name', 'schedules.id', 'schedules.date', 'schedules.check_in_time', 'schedules.check_out_time', 'schedules.address_latitude_in', 'schedules.address_longitude_in', 'schedules.address_latitude_out', 'schedules.address_longitude_out')
+                ->where('users.name', 'LIKE', "%{$search}%")
+                ->paginate();
         }
 
-        return view('user::schedules.index', compact('schedules', 'search'))->with('i', (request()->input('page', 1) - 1) * 30);
+        return view('user::schedules.index', compact('schedules', 'search'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
     public function destroy($id)

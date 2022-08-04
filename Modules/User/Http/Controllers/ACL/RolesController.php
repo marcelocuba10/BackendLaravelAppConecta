@@ -42,7 +42,7 @@ class RolesController extends Controller
             'permission' => 'required'
         ]);
 
-        $role = Role::create(['name' => $request->input('name'),'guard_name' => 'web']);
+        $role = Role::create(['name' => $request->input('name'), 'guard_name' => 'web']);
         $role->syncPermissions($request->input('permission'));
 
         return redirect()->route('roles.user.index')->with('message', 'Role created successfully');
@@ -51,9 +51,9 @@ class RolesController extends Controller
     public function show($id)
     {
         $role = DB::table('roles')
-                ->select('roles.name','roles.guard_name')
-                ->where('roles.id','=',$id)
-                ->first();
+            ->select('roles.name', 'roles.guard_name')
+            ->where('roles.id', '=', $id)
+            ->first();
 
         return view('user::roles.show', compact('role'));
     }
@@ -91,14 +91,14 @@ class RolesController extends Controller
         $search = $request->input('search');
 
         if ($search == '') {
-            $roles = DB::table('roles')->paginate(30);
+            $roles = DB::table('roles')->paginate(10);
         } else {
             $roles = DB::table('roles')
                 ->where('roles.name', 'LIKE', "%{$search}%")
-                ->paginate(30);
+                ->paginate();
         }
 
-        return view('user::roles.index', compact('roles', 'search'))->with('i', (request()->input('page', 1) - 1) * 30);
+        return view('user::roles.index', compact('roles', 'search'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
     public function destroy($id)

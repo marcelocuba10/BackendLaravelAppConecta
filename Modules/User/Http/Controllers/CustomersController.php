@@ -82,12 +82,11 @@ class CustomersController extends Controller
 
         if ($search == '') {
             $customers = DB::table('customers')->paginate(30);
-
         } else {
-            $customers = DB::table('customers')->where('customers.name', 'LIKE', "%{$search}%")->paginate(30);
+            $customers = DB::table('customers')->where('customers.name', 'LIKE', "%{$search}%")->paginate();
         }
 
-        return view('user::customers.index', compact('customers', 'search'))->with('i', (request()->input('page', 1) - 1) * 30);
+        return view('user::customers.index', compact('customers', 'search'))->with('i', (request()->input('page', 1) - 1) * 2);
     }
 
     public function destroy($id)

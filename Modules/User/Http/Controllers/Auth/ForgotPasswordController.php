@@ -19,11 +19,6 @@ use Modules\User\Entities\User;
 
 class ForgotPasswordController extends Controller
 {
-    /**
-     * Write code on Method
-     *
-     * @return response()
-     */
     public function showForgetPasswordForm()
     {
         return view('user::auth.forgetPassword');
@@ -34,11 +29,6 @@ class ForgotPasswordController extends Controller
         return view('user::auth.recoveryOptions');
     }
 
-    /**
-     * Write code on Method
-     *
-     * @return response()
-     */
     public function submitForgetPasswordForm(Request $request)
     {
         $request->validate([
@@ -60,23 +50,15 @@ class ForgotPasswordController extends Controller
 
         return back()->with('message', 'We have e-mailed your password reset link!');
     }
-    /**
-     * Write code on Method
-     *
-     * @return response()
-     */
+
     public function showResetPasswordForm($token)
     {
         return view('user::auth.forgetPasswordLink', ['token' => $token]);
     }
 
-    /**
-     * Write code on Method
-     *
-     * @return response()
-     */
     public function submitResetPasswordForm(Request $request)
     {
+
         $request->validate([
             'email' => 'required|exists:users',
             'password' => 'required|string|min:6|confirmed',
@@ -99,6 +81,6 @@ class ForgotPasswordController extends Controller
 
         DB::table('reset_password_users')->where(['email' => $request->email])->delete();
 
-        return redirect('/user/login')->with('message', 'Your password has been changed!');
+        return redirect()->to('/user/login')->with('message', 'Your password has been changed!');
     }
 }

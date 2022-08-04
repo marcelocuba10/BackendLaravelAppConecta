@@ -19,10 +19,9 @@
     
     <form method="post" action="/user/login">
 
-        <div class="form-icon">
-            <img class="img-logo" src="/img/conectacode.png">
-        </div>
+        <div class="form-icon"><img class="img-logo" src="/img/conectacode.png"></div>
         <p class="login-message2">Iniciar sesión en ConectaCode</p>
+        
         <input type="hidden" name="_token" value="{{ csrf_token() }}" />
         @if ($errors->any())
             @foreach ($errors->all() as $error)
@@ -44,7 +43,7 @@
             <button type="submit" class="btn btn-block create-account">Entrar</button>
         </div>
 
-        <a class="pokioj" href="#"><small>¿Necesita ayuda?</small></a>
+        <a class="pokioj" href="/user/forget-password"><small>¿Has olvidado tu contraseña?</small></a>
         <p class="text-muted text-center" style="margin-bottom: 0px;margin-top: 15px;"><small>¿No tienes una cuenta?</small></p>
         <a class="btn btn-sm btn-white btn-block" style="text-decoration: underline;" href="#">Crea una cuenta</a>
     </form>

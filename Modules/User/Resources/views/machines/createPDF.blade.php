@@ -17,14 +17,15 @@
               display:table-header-group 
           }
           th, td {
-              border: black 1px solid;
-              padding-left: 5px;
-              padding-right: 5px;
+              border: rgb(172, 172, 172) 1px dashed;
+              padding-left: 6px;
+              padding-right: 6px;
               min-width: 150px;
+              padding-bottom: 8px;
           }
           @page {
               size: legal landscape;
-              margin: 1cm;
+              margin: 0.5cm;
           }
       </style>
   </head>
@@ -58,7 +59,7 @@
                     }
 
                     echo '<td style="text-align:center">';
-                    echo  $name . ' <img src="data:image/png;base64,' . base64_encode(QrCode::size(80)->generate($codeQR)) . '" />' ;
+                    echo  '<small style="margin-bottom: 2px;">'.$name.'</small>' . ' <img src="data:image/png;base64,' . base64_encode(QrCode::size(80)->generate($codeQR)) . '" />' ;
                     echo ' </td>';
 
                     $lastCount++; //9

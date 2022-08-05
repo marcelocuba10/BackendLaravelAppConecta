@@ -22,8 +22,7 @@
         <input type="hidden" name="token" value="{{ $token }}">
 
         <div class="form-icon"><img class="img-logo" src="/img/conectacode.png"></div>
-        <p class="login-message2">Restablecer la contraseña</p>
-        <p style="text-align: center;font-size: 13px;color: #3f3f3f;line-height: 20px;">Ingrese su correo electrónico para recuperar su contraseña. Recibirás un correo electrónico con instrucciones.</p>
+        <p class="login-message2">Restablecer la Contraseña</p>
         
         <div class="form-group">
             <input name="email" type="email" value="{{ old('email') }}" class="form-control item" placeholder="Email" required>
@@ -47,7 +46,7 @@
         </div>
 
         <div class="form-group">
-            <button type="submit" class="btn btn-block create-account">Continuar</button>
+            <button type="submit" class="btn btn-block create-account">Restablecer Contraseña</button>
         </div>
 
         <p class="text-muted text-center" style="margin-bottom: 0px;margin-top: 15px;"><small>¿Ya tienes una cuenta?</small></p>

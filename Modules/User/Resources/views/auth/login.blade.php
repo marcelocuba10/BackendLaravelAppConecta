@@ -23,20 +23,24 @@
         <p class="login-message2">Iniciar sesión en ConectaCode</p>
         
         <input type="hidden" name="_token" value="{{ csrf_token() }}" />
-        @if ($errors->any())
-            @foreach ($errors->all() as $error)
-                <div class="alert alert-danger alert-dismissable">
-                    {{ $error }}
-                </div>
-            @endforeach
+        @if (Session::has('message'))
+            <div class="alert alert-success" role="alert">
+                {{ Session::get('message') }}
+            </div>
         @endif
 
         <div class="form-group">
             <input name="email" value="{{ old('email') }}" type="text" class="form-control item" placeholder="Email" required>
+            @if ($errors->has('email'))
+                <span class="text-danger text-left">{{ $errors->first('email') }}</span>
+            @endif
         </div>
 
         <div class="form-group">
             <input name="password" value="{{ old('password') }}" type="password" class="form-control item" placeholder="Password" required>
+            @if ($errors->has('password'))
+                <span class="text-danger text-left">{{ $errors->first('password') }}</span>
+            @endif
         </div>
 
         <div class="form-group">

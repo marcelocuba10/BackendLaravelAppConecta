@@ -29,6 +29,10 @@ class ForgotPasswordController extends Controller
         return view('user::auth.recoveryOptions');
     }
 
+    public function templateEmail(){
+        return view('user::layouts.email.forgetPassword');
+    }
+
     public function submitForgetPasswordForm(Request $request)
     {
         $request->validate([
@@ -43,12 +47,12 @@ class ForgotPasswordController extends Controller
             'created_at' => Carbon::now()
         ]);
 
-        Mail::send('user::email.forgetPassword', ['token' => $token], function ($message) use ($request) {
+        Mail::send('user::layouts.email.forgetPassword', ['token' => $token], function ($message) use ($request) {
             $message->to($request->email);
-            $message->subject('Reset Password');
+            $message->subject('Restablecer la contraseña en Conectacode');
         });
 
-        return back()->with('message', 'We have e-mailed your password reset link!');
+        return back()->with('message', '¡Le hemos enviado por correo electrónico un enlace para restablecimiento de contraseña!');
     }
 
     public function showResetPasswordForm($token)
@@ -81,6 +85,6 @@ class ForgotPasswordController extends Controller
 
         DB::table('reset_password_users')->where(['email' => $request->email])->delete();
 
-        return redirect()->to('/user/login')->with('message', 'Your password has been changed!');
+        return redirect()->to('/user/login')->with('message', '¡Tu contraseña ha sido cambiada!');
     }
 }

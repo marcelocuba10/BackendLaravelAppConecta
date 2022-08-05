@@ -19,10 +19,10 @@
     
     <form method="post" action="/user/forget-password">
         @csrf
-        <input type="hidden" name="token" value="{{ $token }}">
+        {{-- <input type="hidden" name="token" value="{{ $token }}"> --}}
 
         <div class="form-icon"><img class="img-logo" src="/img/conectacode.png"></div>
-        <p class="login-message2">Restablecer la contraseña</p>
+        <p class="login-message2">Recuperar Contraseña</p>
         <p style="text-align: center;font-size: 13px;color: #3f3f3f;line-height: 20px;">Ingrese su correo electrónico para recuperar su contraseña. Recibirás un correo electrónico con instrucciones.</p>
 
         @if (Session::has('message'))

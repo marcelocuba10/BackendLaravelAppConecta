@@ -21,12 +21,30 @@
         </div>
     </div>
     <!-- end col -->
+    @role('Admin')
+    <div class="col-6">
+      <div class="select-style-1">
+        <label>(*) *Rol</label>
+        <div class="select-position">
+          <select name="roles">
+            @foreach ($roles as $role)
+              <option value="{{ $role }}" {{ ( $role == $userRole) ? 'selected' : '' }}> {{ $role}} </option>
+            @endforeach 
+          </select>
+        </div>
+      </div>
+      <!-- end select -->
+    </div>
+    @endrole
+    <!-- end col -->
+    @role('Funcionario')
     <div class="col-6">
       <div class="input-style-1">
-        <label>Teléfono</label>
-        <input type="text" name="phone" id="phone" value="{{ $user->phone ?? old('phone') }}" class="bg-transparent">
+        <label>*Rol</label>
+        <input type="text" value="{{ $user->userRole ?? old('userRole') }}" name="roles" readonly >
       </div>
     </div>
+    @endrole
     <!-- end col -->
     <div class="col-6">
         <div class="input-style-1">
@@ -48,17 +66,24 @@
         </div>
     </div>
     <!-- end col -->
-    <div class="col-8">
+    <div class="col-6">
       <div class="input-style-1">
-        <label>Dirección</label>
-        <input type="text" name="address" value="{{ $user->address ?? old('address') }}" class="bg-transparent">
+        <label>Teléfono</label>
+        <input type="text" name="phone" id="phone" value="{{ $user->phone ?? old('phone') }}" class="bg-transparent">
       </div>
     </div>
     <!-- end col -->
-    <div class="col-4">
+    <div class="col-6">
       <div class="input-style-1">
         <label>(*) Doc Identidad</label>
         <input type="text" name="ci" value="{{ $user->ci ?? old('ci') }}" class="bg-transparent">
+      </div>
+    </div>
+    <!-- end col -->
+    <div class="col-12">
+      <div class="input-style-1">
+        <label>Dirección</label>
+        <input type="text" name="address" value="{{ $user->address ?? old('address') }}" class="bg-transparent">
       </div>
     </div>
     <!-- end col -->

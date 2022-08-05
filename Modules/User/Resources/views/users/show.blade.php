@@ -40,21 +40,21 @@
                         <div class="row">
                             <div class="col-6">
                               <div class="input-style-1">
-                                <label>(*) Nombre</label>
+                                <label>Nombre</label>
                                 <input type="text" value="{{ $user->name ?? old('name') }}" name="name" readonly>
                               </div>
                             </div>
                             <!-- end col -->
                             <div class="col-6">
                               <div class="input-style-1">
-                                <label>(*) Apellidos</label>
+                                <label>Apellidos</label>
                                 <input type="text" value="{{ $user->last_name ?? old('last_name') }}" name="last_name" readonly>
                               </div>
                             </div>
                             <!-- end col -->
                             <div class="col-6">
                                 <div class="input-style-1">
-                                    <label>(*) Email</label>
+                                    <label>Email</label>
                                     <input type="email" readonly value="{{ $user->email ?? old('email') }}" name="email">
                                 </div>
                             </div>
@@ -66,10 +66,10 @@
                               </div>
                             </div>
                             <!-- end col -->
-                            <div class="col-12">
+                            <div class="col-6">
                               <div class="input-style-1">
-                                <label>Dirección</label>
-                                <input type="text" name="address" value="{{ $user->address ?? old('address') }}" readonly>
+                                <label>Rol Asignado</label>
+                                <input type="text" name="userRole" value="{{ $userRole ?? old('userRole') }}" readonly>
                               </div>
                             </div>
                             <!-- end col -->
@@ -77,6 +77,13 @@
                               <div class="input-style-1">
                                 <label>Doc Identidad</label>
                                 <input type="text" name="ci" value="{{ $user->ci ?? old('ci') }}"readonly>
+                              </div>
+                            </div>
+                            <!-- end col -->
+                            <div class="col-12">
+                              <div class="input-style-1">
+                                <label>Dirección</label>
+                                <input type="text" name="address" value="{{ $user->address ?? old('address') }}" readonly>
                               </div>
                             </div>
                             <!-- end col -->

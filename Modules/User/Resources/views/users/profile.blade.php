@@ -48,7 +48,7 @@
                         </div>
                         <div class="profile-meta pt-25">
                           <h5 class="text-bold mb-10">{{ $user->name }}</h5>
-                          <p class="text-sm">Rol - Funcionario</p>
+                          <p class="text-sm">Rol - {{$userRole}}</p>
                         </div>
                       </div>
                       <div class="profiles-activities w-100 pt-30">

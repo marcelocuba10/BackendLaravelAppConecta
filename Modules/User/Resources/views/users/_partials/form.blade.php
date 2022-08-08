@@ -41,7 +41,7 @@
     <div class="col-6">
       <div class="input-style-1">
         <label>*Rol</label>
-        <input type="text" value="{{ $user->userRole ?? old('userRole') }}" name="roles" readonly >
+        <input type="text" value="{{ $userRole ?? old('userRole') }}" name="roles" readonly >
       </div>
     </div>
     @endrole

@@ -8,7 +8,7 @@
                 <div class="row align-items-center">
                     <div class="col-md-6">
                         <div class="titlemb-30">
-                            <h2>Detalle Funcionario</h2>
+                            <h2>Detalle Usuario</h2>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -19,10 +19,10 @@
                                 <a href="/user/dashboard">Dashboard</a>
                                 </li>
                                 <li class="breadcrumb-item" aria-current="page">
-                                <a href="{{ route('users.index') }}">Funcionarios</a>
+                                <a href="{{ route('users.index') }}">Usuarios</a>
                                 </li>
                                 <li class="breadcrumb-item active" aria-current="page">
-                                    Detalle Funcionario
+                                    Detalle Usuario
                                 </li>
                             </ol>
                             </nav>

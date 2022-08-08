@@ -8,7 +8,7 @@
         <div class="row align-items-center">
           <div class="col-md-8">
             <div class="title d-flex align-items-center flex-wrap mb-30">
-              <h2 class="mr-40">Funcionarios</h2>
+              <h2 class="mr-40">Usuarios</h2>
               @can('user-create')
                 <a href="{{ route('users.create') }}" class="main-btn info-btn btn-hover btn-sm"><i class="lni lni-plus mr-5"></i> Nuevo</a>
               @endcan  

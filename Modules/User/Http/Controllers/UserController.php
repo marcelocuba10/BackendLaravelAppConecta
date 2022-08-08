@@ -41,7 +41,7 @@ class UserController extends Controller
         $user = null;
         $roles = Role::pluck('name', 'name')->all(); //get all roles to send only names to form
         $userRole = null; //set null for select form not compare with others roles
-        return view('user::users.create', compact('user','roles', 'userRole'));
+        return view('user::users.create', compact('user', 'roles', 'userRole'));
     }
 
     public function store(Request $request)
@@ -77,15 +77,24 @@ class UserController extends Controller
         } else {
             $userRole = $userRoleArray[0]; //name rol in position [0] of the array
         }
-        
-        return view('user::users.show', compact('user','userRole'));
+
+        return view('user::users.show', compact('user', 'userRole'));
     }
 
     public function showProfile($id)
     {
         $user = User::find($id);
+        $roles = Role::pluck('name', 'name')->all(); //get all roles to send only names to form
+        $userRoleArray = $user->roles->pluck('name')->toArray(); //get user assigned role
 
-        return view('user::users.profile', compact('user'));
+        //I use this if to capture only the name of the role, otherwise it would bring me the entire array
+        if (empty($userRoleArray)) {
+            $userRole = null;
+        } else {
+            $userRole = $userRoleArray[0]; //name rol in position [0] of the array
+        }
+
+        return view('user::users.profile', compact('user', 'userRole'));
     }
 
     public function edit($id)
@@ -131,10 +140,10 @@ class UserController extends Controller
             'ci' => 'required|max:8|min:5',
             'password' => 'nullable|max:20|min:5',
             'confirm_password' => 'nullable|max:20|min:5|same:password',
+            'roles' => 'required'
         ]);
 
         $input = $request->all();
-        $user = User::find($id);
 
         if (empty($input['password'])) {
             $input = Arr::except($input, array('password'));
@@ -144,7 +153,12 @@ class UserController extends Controller
             }
         }
 
+        $user = User::find($id);
         $user->update($input);
+        DB::table('model_has_roles')->where('model_id', $id)->delete();
+
+        $user->syncRoles($request->input('roles'));
+        $user->assignRole($request->input('roles'));
 
         return redirect()->route('users.index')->with('message', 'Registro actualizado correctamente');
     }
@@ -160,10 +174,10 @@ class UserController extends Controller
             'ci' => 'required|max:8|min:5',
             'password' => 'nullable|max:20|min:5',
             'confirm_password' => 'nullable|max:20|min:5|same:password',
+            'roles' => 'required'
         ]);
 
         $input = $request->all();
-        $user = User::find($id);
 
         if (empty($input['password'])) {
             $input = Arr::except($input, array('password'));
@@ -173,7 +187,12 @@ class UserController extends Controller
             }
         }
 
+        $user = User::find($id);
         $user->update($input);
+        DB::table('model_has_roles')->where('model_id', $id)->delete();
+
+        $user->syncRoles($request->input('roles'));
+        $user->assignRole($request->input('roles'));
 
         return redirect()->route('users_.show.profile', compact('user'))->with('message', 'User Profile updated successfully');
     }

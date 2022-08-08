@@ -84,16 +84,16 @@
                     <a href="{{ route('users_.show.profile', Auth::user()->id) }}"><i class="lni lni-user"></i> Mi Perfil</a>
                   </li>
                   <li>
-                    <a href="/user/notifications"><i class="lni lni-alarm"></i> Avisos</a>
+                    <a href="/admin/notifications"><i class="lni lni-alarm"></i> Avisos</a>
                   </li>
                   <li>
-                    <a href="/user/schedules"> <i class="lni lni-calendar"></i> Horarios </a>
+                    <a href="/admin/schedules"> <i class="lni lni-calendar"></i> Horarios </a>
                   </li>
                   <li>
                     <a href="#0"> <i class="lni lni-cog"></i> Configuraciones </a>
                   </li>
                   <li>
-                    <a href="/user/logout/"> <i class="lni lni-exit"></i> Cerrar Sesión </a>
+                    <a href="/admin/logout/"> <i class="lni lni-exit"></i> Cerrar Sesión </a>
                   </li>
                 </ul>
               </div>

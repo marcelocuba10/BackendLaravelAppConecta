@@ -35,16 +35,16 @@
 <body>
 
   <!-- ======== sidebar-nav start =========== -->
-  @include('user::layouts.adminLTE.sidebar')
+  @include('admin::layouts.adminLTE.sidebar')
   <!-- ======== sidebar-nav end =========== -->
 
-  @include('user::layouts.includes.alerts')
+  @include('admin::layouts.includes.alerts')
 
   <!-- ======== main-wrapper start =========== -->
   <main class="main-wrapper">
 
     <!-- ========== header start ========== -->
-    @include('user::layouts.adminLTE.navbar')
+    @include('admin::layouts.adminLTE.navbar')
     <!-- ========== header end ========== -->
 
     <!-- ========== section start ========== -->
@@ -52,7 +52,7 @@
     <!-- ========== section end ========== -->
 
     <!-- ========== footer start =========== -->
-    @include('user::layouts.adminLTE.footer')
+    @include('admin::layouts.adminLTE.footer')
     <!-- ========== footer end =========== -->
   </main>
   <!-- ======== main-wrapper end =========== -->

@@ -5,6 +5,8 @@ namespace Modules\User\Http\Controllers\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Modules\User\Entities\User;
 use Modules\User\Http\Requests\LoginRequest;
 
 class LoginController extends Controller
@@ -25,12 +27,25 @@ class LoginController extends Controller
         //$credentials = $request->getCredentials();
 
         $credentials = $request->validate([
-            'email' => 'required',
-            'password' => 'required'
+            'email' => 'required|email|min:6|max:30',
+            'password' => 'required|min:6|max:30'
         ]);
 
+        $email = $request->input('email');
+        $password = $request->input('password');
+
+        $user = User::where('email', '=', $email)->first();
+
+        if (!$user) {
+            return redirect()->to('/user/login')->with('error','Correo electrónico no encontrado.');
+        }
+
+        if (!Hash::check($password, $user->password)) {
+            return redirect()->to('/user/login')->with('error','Contraseña incorrecta.');
+        }
+
         if (!Auth::validate($credentials)) {
-            return redirect()->to('/user/login')->withErrors('Wrong Credentials');
+            return redirect()->to('/user/login')->with('error','Credenciales incorrectas');
         }
 
         $user = Auth::getProvider()->retrieveByCredentials($credentials);

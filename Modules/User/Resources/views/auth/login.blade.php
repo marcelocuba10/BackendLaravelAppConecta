@@ -28,6 +28,11 @@
                 {{ Session::get('message') }}
             </div>
         @endif
+        @if (Session::has('error'))
+            <div class="alert alert-warning" role="alert">
+                {{ Session::get('error') }}
+            </div>
+        @endif
 
         <div class="form-group">
             <input name="email" value="{{ old('email') }}" type="text" class="form-control item" placeholder="Email" required>
@@ -48,8 +53,6 @@
         </div>
 
         <a class="pokioj" href="/user/forget-password"><small>¿Has olvidado tu contraseña?</small></a>
-        <p class="text-muted text-center" style="margin-bottom: 0px;margin-top: 15px;"><small>¿No tienes una cuenta?</small></p>
-        <a class="btn btn-sm btn-white btn-block" style="text-decoration: underline;" href="#">Crea una cuenta</a>
     </form>
 </div>
 

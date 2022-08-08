@@ -31,10 +31,12 @@ class RoleTableSeeder extends Seeder
         ]);
 
         //Assign permissions
-        $role->givePermissionTo('user-list');
-        $role->givePermissionTo('user-create');
-        $role->givePermissionTo('user-edit');
-        $role->givePermissionTo('user-delete');
+        $role->givePermissionTo('user-sa-list');
+        $role->givePermissionTo('user-sa-edit');
+        $role->givePermissionTo('machine-sa-list');
+        $role->givePermissionTo('customer-sa-list');
+        $role->givePermissionTo('notification-sa-list');
+        $role->givePermissionTo('schedule-sa-list');
         
     }
 }

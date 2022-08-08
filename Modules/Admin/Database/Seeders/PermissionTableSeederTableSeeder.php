@@ -17,35 +17,50 @@ class PermissionTableSeederTableSeeder extends Seeder
     {
         Model::unguard();
         $permissions = [
-            'role-list',
-            'role-create',
-            'role-edit',
-            'role-delete',
+            'role-sa-list',
+            'role-sa-create',
+            'role-sa-edit',
+            'role-sa-delete',
 
-            'permission-list',
-            'permission-create',
-            'permission-edit',
-            'permission-delete',
+            'permission-sa-list',
+            'permission-sa-create',
+            'permission-sa-edit',
+            'permission-sa-delete',
 
-            'user-list',
-            'user-create',
-            'user-edit',
-            'user-delete',
+            'user-sa-list',
+            'user-sa-create',
+            'user-sa-edit',
+            'user-sa-delete',
 
-            'super_user-list',
-            'super_user-create',
-            'super_user-edit',
-            'super_user-delete',
+            'movement-sa-list',
+            'movement-sa-create',
+            'movement-sa-edit',
+            'movement-sa-delete',
 
-            'movement-list',
-            'movement-create',
-            'movement-edit',
-            'movement-delete',
+            'schedule-sa-list',
+            'schedule-sa-create',
+            'schedule-sa-edit',
+            'schedule-sa-delete',
 
-            'report-list',
-            'report-create',
-            'report-edit',
-            'report-delete',
+            'report-sa-list',
+            'report-sa-create',
+            'report-sa-edit',
+            'report-sa-delete',
+
+            'machine-sa-list',
+            'machine-sa-create',
+            'machine-sa-edit',
+            'machine-sa-delete',
+
+            'customer-sa-list',
+            'customer-sa-create',
+            'customer-sa-edit',
+            'customer-sa-delete',
+
+            'notification-sa-list',
+            'notification-sa-create',
+            'notification-sa-edit',
+            'notification-sa-delete',
          ];
       
          foreach ($permissions as $permission) {

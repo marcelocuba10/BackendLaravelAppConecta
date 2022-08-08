@@ -18,18 +18,18 @@ class UserDatabaseSeeder extends Seeder
     public function run()
     {
 
-        $faker = Faker::create();
-        foreach(range(1,100) as $index){
-            DB::table('posts')->insert([
-                'title' => $faker->text(40),
-                'body' => $faker->text(299),
-            ]);
-        }
+        // $faker = Faker::create();
+        // foreach(range(1,100) as $index){
+        //     DB::table('posts')->insert([
+        //         'title' => $faker->text(40),
+        //         'body' => $faker->text(299),
+        //     ]);
+        // }
 
-        //Model::unguard();
+        Model::unguard();
 
-        //$this->call(PermissionTableSeederTableSeeder::class);
-        //$this->call(RoleTableSeeder::class);
-        //$this->call(UserTableSeeder::class);
+        $this->call(PermissionTableSeederTableSeeder::class);
+        $this->call(RoleTableSeeder::class);
+        $this->call(CreateUserAdminTableSeeder::class);
     }
 }

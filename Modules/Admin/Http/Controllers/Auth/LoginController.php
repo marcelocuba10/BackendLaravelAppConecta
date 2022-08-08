@@ -30,8 +30,8 @@ class LoginController extends Controller
     {
 
         $this->validate($request, [
-            'email'   => 'required|email|min:6|max:50',
-            'password' => 'required|min:6|max:50'
+            'email'   => 'required|email|min:6|max:30',
+            'password' => 'required|min:6|max:30'
         ]);
 
         $email = $request->input('email');
@@ -40,14 +40,14 @@ class LoginController extends Controller
         $user = SuperUser::where('email', '=', $email)->first();
 
         if (!$user) {
-            return redirect()->to('/admin/login')->withErrors('Login Fail, please check email');
+            return redirect()->to('/admin/login')->with('error','Correo electrónico no encontrado.');
         }
 
         if (!Hash::check($password, $user->password)) {
-            return redirect()->to('/admin/login')->withErrors('Login Fail, please check password');
+            return redirect()->to('/admin/login')->with('error','Contraseña incorrecta.');
         }
 
         Auth::guard('admin')->login($user);
-        return redirect()->to('/admin/dashboard')->withSuccess('Logged in, Welcome!');
+        return redirect()->to('/admin/dashboard');
     }
 }

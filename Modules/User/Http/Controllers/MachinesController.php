@@ -334,7 +334,7 @@ class MachinesController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => 'required|max:10|min:8|unique:machines,name',
+            'name' => 'required|unique:machines,name,' . $id,
             'status' => 'required|max:30|min:5',
             'customer_id' => 'required',
             'codeQR' => 'required|max:20|min:5|unique:machines,codeQR,' . $id,

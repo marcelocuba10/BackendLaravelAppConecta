@@ -24,8 +24,6 @@ Route::prefix('admin')->group(function () {
         Route::post('reset-password', 'Auth\ForgotPasswordController@submitResetPasswordForm')->name('reset.password.post');
     });
 
-    Route::group(['middleware' => ['auth:admin', 'role:financiero']], function () { });
-
     Route::group(['middleware' => ['auth:admin']], function () {
 
         Route::get('/logout', 'Auth\LogoutController@perform')->name('admin.logout.perform');
@@ -36,28 +34,90 @@ Route::prefix('admin')->group(function () {
             Route::get('/', 'UsersController@index')->name('users.index');
             Route::get('/create', 'UsersController@create')->name('users.create');
             Route::post('/create', 'UsersController@store')->name('users.store');
-            Route::get('/{user}/show', 'UsersController@show')->name('users.show');
+            Route::get('/{id}/show', 'UsersController@show')->name('users.show');
             Route::get('/edit/{id}', 'UsersController@edit')->name('users.edit');
             Route::put('/update/{id}', 'UsersController@update')->name('users.update');
-            Route::delete('/{user}/delete', 'UsersController@destroy')->name('users.destroy');
+            Route::delete('/{id}/delete', 'UsersController@destroy')->name('users.destroy');
 
-            Route::get('/profile/{user}', 'UsersController@showProfile')->name('users.show.profile');
+            Route::get('/profile/{id}', 'UsersController@showProfile')->name('users.show.profile');
             Route::get('/edit/profile/{id}', 'UsersController@editProfile')->name('users.edit.profile');
             Route::put('/update/profile/{id}', 'UsersController@updateProfile')->name('users.update.profile');
         });
 
-        /*** Partners Routes ***/
-        Route::group(['prefix' => 'partners'], function () {
-            Route::get('/', 'PartnersController@index')->name('partners.index');
-            Route::get('/create', 'PartnersController@create')->name('partners.create');
-            Route::post('/create', 'PartnersController@store')->name('partners.store');
-            Route::get('/{id}/show', 'PartnersController@show')->name('partners.show');
-            Route::get('/edit/{id}', 'PartnersController@edit')->name('partners.edit');
-            Route::put('/update/{id}', 'PartnersController@update')->name('partners.update');
-            Route::delete('/{id}/delete', 'PartnersController@destroy')->name('partners.destroy');
+        /*** Customers Routes ***/
+        Route::group(['prefix' => 'customers'], function () {
+            Route::get('/', 'CustomersController@index')->name('customers.index');
+            Route::get('/create', 'CustomersController@create')->name('customers.create');
+            Route::post('/create', 'CustomersController@store')->name('customers.store');
+            Route::get('/{id}/show', 'CustomersController@show')->name('customers.show');
+            Route::get('/edit/{id}', 'CustomersController@edit')->name('customers.edit');
+            Route::put('/update/{id}', 'CustomersController@update')->name('customers.update');
+            Route::delete('/{id}/delete', 'CustomersController@destroy')->name('customers.destroy');
+            Route::get('/search', 'CustomersController@search')->name('customers.search');
         });
 
-        Route::resource('roles', 'ACL\RolesController');
-        Route::resource('permissions', 'ACL\PermissionsController');
+        /*** Notifications Routes ***/
+        Route::group(['prefix' => 'notifications'], function () {
+            Route::get('/', 'NotificationsController@index')->name('notifications.index');
+            Route::get('/create', 'NotificationsController@create')->name('notifications.create');
+            Route::post('/create', 'NotificationsController@store')->name('notifications.store');
+            Route::get('/show/{id}', 'NotificationsController@show')->name('notifications.show');
+            Route::get('/edit/{id}', 'NotificationsController@edit')->name('notifications.edit');
+            Route::put('/update/{id}', 'NotificationsController@update')->name('notifications.update');
+            Route::delete('/delete/{id}', 'NotificationsController@destroy')->name('notifications.destroy');
+            Route::get('/search', 'NotificationsController@search')->name('notifications.search');
+        });
+
+        Route::group(['prefix' => 'machines'], function () {
+            Route::any('/list', 'MachinesController@index_list')->name('machines.index_list');
+            Route::any('/list_api', 'MachinesController@index_list_api')->name('machines.index_list_api');
+
+            Route::get('/grid_view', 'MachinesController@grid_view')->name('machines.grid_view');
+            Route::any('/grid_view_api', 'MachinesController@grid_view_api')->name('machines.grid_view_api');
+
+            Route::get('/create', 'MachinesController@create')->name('machines.create');
+            Route::post('/create', 'MachinesController@store')->name('machines.store');
+
+            Route::get('/show/{id}', 'MachinesController@show')->name('machines.show');
+            Route::get('/show_api/{id}', 'MachinesController@show_api')->name('machines.show_api');
+
+            Route::get('/edit/{id}', 'MachinesController@edit')->name('machines.edit');
+            Route::put('/update/{id}', 'MachinesController@update')->name('machines.update');
+            Route::delete('/delete/{id}', 'MachinesController@destroy')->name('machines.destroy');
+            Route::get('/createPDF', 'MachinesController@createPDF')->name('machines.admin.createPDF');
+
+            Route::any('/search_filter_list', 'MachinesController@search_filter_list')->name('machines.search_filter_list');
+            Route::any('/search_filter_list_api', 'MachinesController@search_filter_list_api')->name('machines.search_filter_list_api');
+
+            Route::any('/search_gridview', 'MachinesController@search_gridview')->name('machines.search_gridview');
+            Route::any('/search_gridview_api', 'MachinesController@search_gridview_api')->name('machines.search_gridview_api');
+            Route::any('/filter_gridview', 'MachinesController@filter_gridview')->name('machines.filter_gridview');
+            Route::any('/filter_gridview_api', 'MachinesController@filter_gridview_api')->name('machines.filter_gridview_api');
+        });
+
+        /*** ACL Routes ***/
+        Route::group(['prefix' => 'ACL'], function () {
+            Route::group(['prefix' => 'roles'], function () {
+                Route::get('/', 'ACL\RolesController@index')->name('roles.admin.index');
+                Route::get('/create', 'ACL\RolesController@create')->name('roles.admin.create');
+                Route::post('/create', 'ACL\RolesController@store')->name('roles.admin.store');
+                Route::get('/show/{id}', 'ACL\RolesController@show')->name('roles.admin.show');
+                Route::get('/edit/{id}', 'ACL\RolesController@edit')->name('roles.admin.edit');
+                Route::put('/update/{id}', 'ACL\RolesController@update')->name('roles.admin.update');
+                Route::delete('/delete/{id}', 'ACL\RolesController@destroy')->name('roles.admin.destroy');
+                Route::get('/search', 'ACL\RolesController@search')->name('roles.admin.search');
+            });
+
+            Route::group(['prefix' => 'permissions'], function () {
+                Route::get('/', 'ACL\PermissionsController@index')->name('permissions.admin.index');
+                Route::get('/create', 'ACL\PermissionsController@create')->name('permissions.admin.create');
+                Route::post('/create', 'ACL\PermissionsController@store')->name('permissions.admin.store');
+                Route::get('/show/{id}', 'ACL\PermissionsController@show')->name('permissions.admin.show');
+                Route::get('/edit/{id}', 'ACL\PermissionsController@edit')->name('permissions.admin.edit');
+                Route::put('/update/{id}', 'ACL\PermissionsController@update')->name('permissions.admin.update');
+                Route::delete('/delete/{id}', 'ACL\PermissionsController@destroy')->name('permissions.admin.destroy');
+                Route::get('/search', 'ACL\PermissionsController@search')->name('permissions.admin.search');
+            });
+        });
     });
 });

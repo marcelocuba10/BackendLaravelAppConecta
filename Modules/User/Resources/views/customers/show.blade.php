@@ -19,7 +19,7 @@
                                 <a href="/user/dashboard">Dashboard</a>
                                 </li>
                                 <li class="breadcrumb-item" aria-current="page">
-                                <a href="{{ route('customers.index') }}">Clientes</a>
+                                <a href="/user/customers">Clientes</a>
                                 </li>
                                 <li class="breadcrumb-item active" aria-current="page">Detalle Cliente</li>
                             </ol>
@@ -73,7 +73,7 @@
                             <!-- end col -->
                             <div class="col-12">
                                 <div class="button-groupd-flexjustify-content-centerflex-wrap">
-                                    <a class="main-btn danger-btn-outline m-2" href="{{ route('customers.index') }}">Back</a>
+                                    <a class="main-btn danger-btn-outline m-2" href="/user/customers">Back</a>
                                 </div>
                               </div>
                         </div>

@@ -14,14 +14,22 @@ class Users extends Authenticatable
 {
     use HasFactory, Notifiable, HasRoles;  //importante adicionar HasRoles
 
-    protected $guard_name = 'web';
+    protected $guard_name = 'admin';
     
     protected $fillable = [
-        'name', 
-        'email', 
-        'username', 
+        'name',
+        'last_name',
+        'phone',
+        'address',
+        'email',
+        'ci',
         'password',
-        'terms'
+        'terms',
+
+        'company_name',
+        'manager',
+        'ruc',
+        'location_iframe',
     ];
 
     protected $hidden = [
@@ -29,13 +37,13 @@ class Users extends Authenticatable
         'remember_token',
     ];
 
-    protected static function newFactory()
-    {
-        //return \Modules\Admin\Database\factories\UsersFactory::new();
-    }
-
     public function setPasswordAttribute($password)
     {
         $this->attributes['password'] = bcrypt($password);
+    }
+
+    protected static function newFactory()
+    {
+        return '\Modules\Admin\Database\factories\UserFactory'::new();
     }
 }

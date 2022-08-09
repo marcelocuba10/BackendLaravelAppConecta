@@ -19,28 +19,13 @@
         </li>
         @can('notification-sa-list')
         <li class="nav-item {{ (request()->is('admin/notifications')) ? 'active' : '' }}">
-          <a href="#">
+          <a href="/admin/notifications">
             <span class="icon">
               <svg style="width:24px;height:24px" viewBox="0 0 24 24">
                 <path fill="currentColor" d="M12,23A1,1 0 0,1 11,22V19H7A2,2 0 0,1 5,17V7C5,5.89 5.9,5 7,5H21A2,2 0 0,1 23,7V17A2,2 0 0,1 21,19H16.9L13.2,22.71C13,22.9 12.75,23 12.5,23V23H12M13,17V20.08L16.08,17H21V7H7V17H13M3,15H1V3A2,2 0 0,1 3,1H19V3H3V15Z" />
               </svg>
             </span>
             <span class="text">Avisos</span>
-          </a>
-        </li>
-        @endcan
-        <span class="divider">
-          <hr />
-        </span>
-        @can('machine-sa-list')
-        <li class="nav-item {{ (request()->is('admin/machines/grid_view')) || (request()->is('admin/machines/list')) ? 'active' : '' }}">
-          <a href="/admin/machines/grid_view">
-            <span class="icon">
-              <svg style="width:24px;height:24px" viewBox="0 0 24 24">
-                <path fill="currentColor" d="M8,2H16A2,2 0 0,1 18,4V20A2,2 0 0,1 16,22H8A2,2 0 0,1 6,20V4A2,2 0 0,1 8,2M8,4V6H16V4H8M16,8H8V10H16V8M16,18H14V20H16V18Z" />
-              </svg>
-            </span>
-            <span class="text">Máquinas</span>
           </a>
         </li>
         @endcan
@@ -56,36 +41,7 @@
           </a>
         </li>
         @endcan
-        <span class="divider">
-          <hr />
-        </span>
-        @can('report-sa-list')
-        <li class="nav-item nav-item-has-children">
-          <a aria-expanded="false" class="collapsed" id="ddlink_1" href="#" onclick="toggle('ddmenu_1', 'ddlink_1')">
-            <span class="icon">
-              <svg style="width:24px;height:24px" viewBox="0 0 24 24">
-                <path fill="currentColor" d="M19,3H14.82C14.25,1.44 12.53,0.64 11,1.2C10.14,1.5 9.5,2.16 9.18,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3M12,3A1,1 0 0,1 13,4A1,1 0 0,1 12,5A1,1 0 0,1 11,4A1,1 0 0,1 12,3M7,7H17V5H19V19H5V5H7V7M17,11H7V9H17V11M15,15H7V13H15V15Z" />
-              </svg>
-            </span>
-            <span class="text">Relatorios</span>
-          </a>
-          <ul id="ddmenu_1" class="dropdown-nav" style="{{ (request()->is('admin/reports/*')) ? '' : 'display:none' }}">
-            <li >
-              <a href="#" class="{{ (request()->is('admin/reports/customers')) ? 'active' : '' }}">Clientes</a>
-            </li>
-            <li >
-              <a href="#" class="{{ (request()->is('admin/reports/machines')) ? 'active' : '' }}">Maquinas</a>
-            </li>
-            <li >
-              <a href="#" class="{{ (request()->is('admin/reports/users')) ? 'active' : '' }}">Funcionarios</a>
-            </li>
-            <li >
-              <a href="#" class="{{ (request()->is('admin/reports/schedules')) ? 'active' : '' }}">Horarios</a>
-            </li>
-          </ul>
-        </li>
-        @endcan
-
+        
         <span class="divider">
           <hr />
         </span>

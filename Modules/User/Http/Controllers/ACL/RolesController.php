@@ -38,7 +38,7 @@ class RolesController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required',
+            'name' => 'required|unique:roles,name',
             'permission' => 'required'
         ]);
 
@@ -50,12 +50,11 @@ class RolesController extends Controller
 
     public function show($id)
     {
-        $role = DB::table('roles')
-            ->select('roles.name', 'roles.guard_name')
-            ->where('roles.id', '=', $id)
-            ->first();
+        $role = Role::find($id);
+        $permissions = Permission::get();
+        $rolePermission = $role->permissions->pluck('name')->toArray();
 
-        return view('user::roles.show', compact('role'));
+        return view('user::roles.show', compact('role','rolePermission'));
     }
 
     public function edit($id)
@@ -73,7 +72,7 @@ class RolesController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'name' => 'required',
+            'name' => 'required|unique:roles,name,' . $id,
             'permission' => 'required'
         ]);
 

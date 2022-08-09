@@ -27,7 +27,8 @@ class RoleTableSeeder extends Seeder
         //Create role
         $role = Role::create([
             'name' => 'Guest',
-            'guard_name' => 'admin'
+            'guard_name' => 'admin',
+            'system_role' => '1'
         ]);
 
         //Assign permissions

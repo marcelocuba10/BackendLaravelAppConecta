@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 //spatie
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\DB;
@@ -23,16 +24,25 @@ class RolesController extends Controller
 
     public function index()
     {
-        $roles = Role::paginate(10);
+        $roles = DB::table('roles')
+            ->where('guard_name', '=', 'web')
+            ->select('guard_name', 'id', 'name', 'system_role')
+            ->orderBy('created_at', 'DESC')
+            ->paginate(10);
 
         return view('user::roles.index', compact('roles'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
     public function create()
     {
-        $permissions = Permission::get();
+        $guard_name = Auth::getDefaultDriver();
+        $permissions = DB::table('permissions')
+            ->where('guard_name', '=', 'web')
+            ->select('guard_name', 'id', 'name', 'system_permission')
+            ->orderBy('created_at', 'DESC')
+            ->get();
 
-        return view('user::roles.create', compact('permissions'));
+        return view('user::roles.create', compact('permissions','guard_name'));
     }
 
     public function store(Request $request)
@@ -54,19 +64,26 @@ class RolesController extends Controller
         $permissions = Permission::get();
         $rolePermission = $role->permissions->pluck('name')->toArray();
 
-        return view('user::roles.show', compact('role','rolePermission'));
+        return view('user::roles.show', compact('role', 'rolePermission'));
     }
 
     public function edit($id)
     {
+        $guard_name = null;
         $role = Role::find($id);
-        $permissions = Permission::get();
+
+        $permissions = DB::table('permissions')
+            ->where('guard_name', '=', 'web')
+            ->select('guard_name', 'id', 'name', 'system_permission')
+            ->orderBy('created_at', 'DESC')
+            ->get();
+
         $rolePermission = $role->permissions->pluck('name')->toArray();
         //$rolePermission = DB::table('role_has_permissions')->where('role_has_permissions.role_id', $id)
         //->pluck('role_has_permissions.permission_id', 'role_has_permissions.permission_id')
         //->all();  
 
-        return view('user::roles.edit', compact('role', 'permissions', 'rolePermission'));
+        return view('user::roles.edit', compact('role', 'permissions', 'rolePermission','guard_name'));
     }
 
     public function update(Request $request, $id)

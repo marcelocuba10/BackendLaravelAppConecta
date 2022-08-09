@@ -9,9 +9,6 @@
           <div class="col-md-8">
             <div class="title d-flex align-items-center flex-wrap mb-30">
               <h2 class="mr-40">Permisos</h2>
-              @can('permission-sa-create')
-                <a href="/admin/ACL/permissions/create" class="main-btn info-btn btn-hover btn-sm"><i class="lni lni-plus mr-5"></i> Nuevo Permiso</a>
-              @endcan  
             </div>
           </div>
           <!-- end col -->
@@ -72,32 +69,16 @@
                             <td class="min-width"><p>{{ $permission->name }}</p></td>
                             <td class="min-width"><p>{{ $permission->guard_name }}</p></td>
                             <td class="text-right">
-                                <div class="btn-group">
-                                    <div class="action">
-                                        <a href="/admin/ACL/permissions/show/{{$permission->id}}">
-                                            <button class="text-active">
-                                                <i class="lni lni-eye"></i>
-                                            </button>
-                                        </a>
-                                    </div>
-                                    @can('permission-sa-edit')
-                                    <div class="action">
-                                        <a href="/admin/ACL/permissions/edit/{{$permission->id}}">
-                                            <button class="text-info"><i class="lni lni-pencil"></i></button>
-                                        </a>
-                                    </div>
-                                    @endcan
-                                    @can('permission-sa-delete')
-                                    <form method="POST" action="/admin/ACL/permissions/delete/{{$permission->id}}">
-                                        @csrf
-                                        <div class="action">
-                                            <input name="_method" type="hidden" value="DELETE">
-                                            <button type="submit" class="text-danger"><i class="lni lni-trash-can"></i></button>
-                                        </div>
-                                    </form>
-                                    @endcan
-                                </div>
-                            </td>
+                              <div class="btn-group">
+                                  <div class="action">
+                                      <a href="#">
+                                          <button class="more-btn ml-10 dropdown-toggle">
+                                              <i class="lni lni-more-alt"></i>
+                                          </button>
+                                      </a>
+                                  </div>
+                              </div>
+                          </td>
                         </tr>
                         @endforeach
                       <!-- end table row -->

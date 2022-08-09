@@ -23,6 +23,8 @@ class PermissionsController extends Controller
     public function index()
     {
         $permissions = DB::table('permissions')
+            ->where('guard_name', '=', 'web')
+            ->select('guard_name', 'id', 'name', 'system_permission')
             ->orderBy('created_at', 'DESC')
             ->paginate(10);
 

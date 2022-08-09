@@ -83,9 +83,11 @@
                                     @can('role-sa-edit')
                                     <div class="action">
                                         <a href="/admin/ACL/roles/edit/{{$role->id}}">
-                                            <button class="text-info">
-                                                <i class="lni lni-pencil"></i>
-                                            </button>
+                                            @if (!$role->system_role)
+                                              <button class="text-info">
+                                                  <i class="lni lni-pencil"></i>
+                                              </button>
+                                            @endif  
                                         </a>
                                     </div>
                                     @endcan
@@ -94,9 +96,11 @@
                                         @csrf
                                         <div class="action">
                                             <input name="_method" type="hidden" value="DELETE">
-                                            <button type="submit" class="text-danger">
-                                              <i class="lni lni-trash-can"></i>
-                                            </button>
+                                            @if (!$role->system_role)
+                                              <button type="submit" class="text-danger">
+                                                <i class="lni lni-trash-can"></i>
+                                              </button>
+                                            @endif
                                         </div>
                                     </form>
                                     @endcan

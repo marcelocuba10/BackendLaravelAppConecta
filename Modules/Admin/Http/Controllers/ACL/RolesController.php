@@ -25,6 +25,8 @@ class RolesController extends Controller
     public function index()
     {
         $roles = DB::table('roles')
+            ->where('guard_name', '=', 'admin')
+            ->select('guard_name', 'id', 'name', 'system_role')
             ->orderBy('created_at', 'DESC')
             ->paginate(10);
 
@@ -34,7 +36,11 @@ class RolesController extends Controller
     public function create()
     {
         $guard_name = Auth::getDefaultDriver();
-        $permissions = Permission::get();
+        $permissions = DB::table('permissions')
+            ->where('guard_name', '=', 'admin')
+            ->select('guard_name', 'id', 'name', 'system_permission')
+            ->orderBy('created_at', 'DESC')
+            ->get();
 
         return view('admin::roles.create', compact('permissions', 'guard_name'));
     }
@@ -59,14 +65,20 @@ class RolesController extends Controller
         $rolePermission = $role->permissions->pluck('name')->toArray();
 
         //dd($rolePermission);
-        return view('admin::roles.show', compact('role','rolePermission'));
+        return view('admin::roles.show', compact('role', 'rolePermission'));
     }
 
     public function edit($id)
     {
         $guard_name = null;
         $role = Role::find($id);
-        $permissions = Permission::get();
+
+        $permissions = DB::table('permissions')
+            ->where('guard_name', '=', 'admin')
+            ->select('guard_name', 'id', 'name', 'system_permission')
+            ->orderBy('created_at', 'DESC')
+            ->get();
+
         $rolePermission = $role->permissions->pluck('name')->toArray();
         //$rolePermission = DB::table('role_has_permissions')->where('role_has_permissions.role_id', $id)
         //->pluck('role_has_permissions.permission_id', 'role_has_permissions.permission_id')

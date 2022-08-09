@@ -7,12 +7,21 @@
       </div>
     </div>
     <!-- end col -->
-    <div class="col-6">
+    @if ($guard_name)
+      <div class="col-6">
         <div class="input-style-1">
-          <label>Guard</label>
-          <input type="text" name="guard_name" value="{{ $role->guard_name ?? old('guard_name') }}" readonly>
+            <label>Guard</label>
+            <input type="text" value="{{ $guard_name ?? old('guard_name')}}" readonly>
         </div>
-    </div>
+      </div>
+    @else
+      <div class="col-6">
+        <div class="input-style-1">
+            <label>Guard</label>
+            <input type="text" value="{{ $role->guard_name ?? old('guard_name')}}" readonly>
+        </div>
+      </div> 
+    @endif
     <!-- end col -->
     <div class="col-12">
         <div class="input-style-1">

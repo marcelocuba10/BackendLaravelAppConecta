@@ -31,7 +31,12 @@ class CreateUserSuperAdminSeederTableSeeder extends Seeder
             'email_verified_at' => now(),
         ]);
     
-        $role = Role::create(['name' => 'SuperAdmin','guard_name' => 'admin'],);
+        $role = Role::create([
+            'name' => 'SuperAdmin',
+            'guard_name' => 'admin',
+            'system_role' => '1'
+        ],);
+        
         $permissions = Permission::where('guard_name', '=', 'admin')->pluck('id', 'id')->all();
         $role->syncPermissions($permissions);
         $user->syncRoles(['SuperAdmin']);

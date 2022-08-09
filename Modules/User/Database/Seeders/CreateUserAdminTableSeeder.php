@@ -33,7 +33,12 @@ class CreateUserAdminTableSeeder extends Seeder
             'status' => '1'
         ]);
 
-        $role = Role::create(['name' => 'Admin', 'guard_name' => 'web'],);
+        $role = Role::create([
+            'name' => 'Admin', 
+            'guard_name' => 'web',
+            'system_role' => '1'
+        ],);
+        
         $permissions = Permission::where('guard_name', '=', 'web')->pluck('id', 'id')->all();
         $role->syncPermissions($permissions);
         $user->syncRoles(['Admin']);

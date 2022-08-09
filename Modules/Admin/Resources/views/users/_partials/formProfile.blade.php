@@ -48,7 +48,7 @@
     <!-- end col -->
     <div class="col-6">
         <div class="input-style-1">
-            <label>(*) Contraseña</label>
+            <label>Contraseña</label>
             <input type="password" name="password" class="bg-transparent">
             @if ($user)
               <span class="form-text m-b-none">Déjelo en blanco si no desea cambiar la contraseña</span>
@@ -58,7 +58,7 @@
     <!-- end col -->
     <div class="col-6">
         <div class="input-style-1">
-            <label>(*) Confirmar Contraseña</label>
+            <label>Confirmar Contraseña</label>
             <input type="password" name="confirm_password" class="bg-transparent">
             @if ($user)
               <span class="form-text m-b-none">Déjelo en blanco si no desea cambiar la contraseña</span>
@@ -75,7 +75,7 @@
     <!-- end col -->
     <div class="col-6">
       <div class="input-style-1">
-        <label>(*) Doc Identidad</label>
+        <label>Doc Identidad</label>
         <input type="text" name="ci" value="{{ $user->ci ?? old('ci') }}" class="bg-transparent">
       </div>
     </div>
@@ -90,7 +90,7 @@
     <div class="col-12">
       <div class="button-group d-flex justify-content-center flex-wrap">
         <button type="submit" class="main-btn primary-btn btn-hover m-2">Guardar</button>
-        <a class="main-btn danger-btn-outline m-2" href="/admin/users">Atrás</a>
+        <a class="main-btn danger-btn-outline m-2" href="/admin/users/profile/{{$user->id}}">Atrás</a>
       </div>
     </div>
 </div>

@@ -2,74 +2,76 @@
 
 namespace Modules\Admin\Http\Controllers;
 
-use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\DB;
+//use Illuminate\Routing\Controller;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
+use Modules\Admin\Entities\SuperUser;
 
 //spatie
 use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
-
-/** add this Controller in replace of comment **/
-//use Illuminate\Routing\Controller;
-use App\Http\Controllers\Controller;
-use Modules\Admin\Entities\SuperUser;
 
 class UsersController extends Controller
 {
-    function __construct()
+
+    public function __construct()
     {
-        $this->middleware('permission:user-list|user-create|user-edit|user-delete', ['only' => ['index']]);
-        $this->middleware('permission:user-create', ['only' => ['create', 'store']]);
-        $this->middleware('permission:user-edit', ['only' => ['edit', 'update']]);
-        $this->middleware('permission:user-delete', ['only' => ['destroy']]);
+        $this->middleware('auth:admin', ['except' => ['logout']]);
+
+        $this->middleware('permission:user-sa-list|user-sa-create|user-sa-edit|user-sa-delete', ['only' => ['index']]);
+        $this->middleware('permission:user-sa-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:user-sa-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:user-sa-delete', ['only' => ['destroy']]);
     }
 
     public function index()
     {
         $users = SuperUser::latest()->paginate(10);
 
-        return view('admin::users.index', compact('users'));
+        return view('admin::users.index', compact('users'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
     public function create()
     {
-        $roles = Role::pluck('name', 'name')->all(); //get all roles to send only names to form
+        $user = null;
+        $roles = Role::where('guard_name', '=', 'admin')->pluck('name', 'name')->all(); //get all roles to send only names to form
         $userRole = null; //set null for select form not compare with others roles
-        return view('admin::users.create', compact('roles', 'userRole'));
+        return view('admin::users.create', compact('user', 'roles', 'userRole'));
     }
 
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name' => 'nullable|max:20',
-            'username' => 'required|max:20|min:5',
+            'name' => 'required|max:20|min:5',
+            'last_name' => 'required|max:20|min:5',
             'email' => 'required|email|unique:super_users,email',
-            'password' => 'required|max:20|min:5|same:confirm_password',
+            'phone' => 'nullable|max:20|min:5',
+            'ci' => 'required|max:8|min:5',
+            'password' => 'required|max:20|min:5',
+            'confirm_password' => 'required|max:20|min:5|same:password',
             'roles' => 'required'
         ]);
 
         $input = $request->all();
-        $input['terms'] = 1;
 
         $user = SuperUser::create($input);
         $user->assignRole($request->input('roles'));
 
-        return redirect()->route('users.index')->with('message', 'User created successfully.');
+        return redirect()->to('/admin/users')->with('message', 'User created successfully.');
     }
 
     public function show($id)
     {
         $user = SuperUser::find($id);
-        $roles = Role::pluck('name', 'name')->all(); //get all roles to send only names to form
+        $roles = Role::where('guard_name', '=', 'admin')->pluck('name', 'name')->all(); //get all roles to send only names to form
         $userRoleArray = $user->roles->pluck('name')->toArray(); //get user assigned role
 
+        //I use this if to capture only the name of the role, otherwise it would bring me the entire array
         if (empty($userRoleArray)) {
             $userRole = null;
         } else {
-            $userRole = $userRoleArray[0]; //get only name of the role
+            $userRole = $userRoleArray[0]; //name rol in position [0] of the array
         }
 
         return view('admin::users.show', compact('user', 'userRole'));
@@ -78,14 +80,23 @@ class UsersController extends Controller
     public function showProfile($id)
     {
         $user = SuperUser::find($id);
+        $roles = Role::where('guard_name', '=', 'admin')->pluck('name', 'name')->all(); //get all roles to send only names to form
+        $userRoleArray = $user->roles->pluck('name')->toArray(); //get user assigned role
 
-        return view('admin::users.profile', compact('user'));
+        //I use this if to capture only the name of the role, otherwise it would bring me the entire array
+        if (empty($userRoleArray)) {
+            $userRole = null;
+        } else {
+            $userRole = $userRoleArray[0]; //name rol in position [0] of the array
+        }
+
+        return view('admin::users.profile', compact('user', 'userRole'));
     }
 
     public function edit($id)
     {
         $user = SuperUser::find($id);
-        $roles = Role::pluck('name', 'name')->all(); #get all roles to send only names to form
+        $roles = Role::where('guard_name', '=', 'admin')->pluck('name', 'name')->all(); #get all roles to send only names to form
         //$roles = Role::all(); //get all roles to send array to form
         $userRoleArray = $user->roles->pluck('name')->toArray(); //get user assigned role
 
@@ -101,14 +112,15 @@ class UsersController extends Controller
     public function editProfile($id)
     {
         $user = SuperUser::find($id);
-        $roles = Role::pluck('name', 'name')->all(); #get all roles to send only names to form
+
+        $roles = Role::where('guard_name', '=', 'admin')->pluck('name', 'name')->all(); #get all roles to send only names to form
         //$roles = Role::all(); //get all roles to send array to form
-        $userRoleArray = $user->roles->pluck('name')->toArray();
+        $userRoleArray = $user->roles->pluck('name')->toArray(); //get user assigned role
 
         if (empty($userRoleArray)) {
             $userRole = null;
         } else {
-            $userRole = $userRoleArray[0];
+            $userRole = $userRoleArray[0]; //get only name of the role
         }
 
         return view('admin::users.editProfile', compact('user', 'roles', 'userRole'));
@@ -118,8 +130,10 @@ class UsersController extends Controller
     {
         $this->validate($request, [
             'name' => 'required|max:20|min:5',
-            'username' => 'required|max:20|min:5',
+            'last_name' => 'required|max:20|min:5',
             'email' => 'required|email|unique:super_users,email,' . $id,
+            'phone' => 'nullable|max:20|min:5',
+            'ci' => 'required|max:8|min:5',
             'password' => 'nullable|max:20|min:5',
             'confirm_password' => 'nullable|max:20|min:5|same:password',
             'roles' => 'required'
@@ -131,26 +145,28 @@ class UsersController extends Controller
             $input = Arr::except($input, array('password'));
         } else {
             if (empty($input['confirm_password'])) {
-                return redirect()->route('users.edit', $id)->withErrors('Confirm password')->withInput();
+                return redirect()->to('/admin/users/edit/profile/'.$id)->withErrors('Confirm password')->withInput();
             }
         }
 
         $user = SuperUser::find($id);
         $user->update($input);
-        DB::table('model_has_roles')->where('model_id', $id)->delete(); //si estamos actualizando el rol del user, eliminamos el id
+        DB::table('model_has_roles')->where('model_id', $id)->delete();
 
         $user->syncRoles($request->input('roles'));
         $user->assignRole($request->input('roles'));
 
-        return redirect()->route('users.index')->with('message', 'User updated successfully');
+        return redirect()->to('/admin/users')->with('message', 'Registro actualizado correctamente');
     }
 
-    public function updateProfile(Request $request, $id)
+    public function updateProfile($id, Request $request)
     {
         $this->validate($request, [
             'name' => 'required|max:20|min:5',
-            'username' => 'required|max:20|min:5',
+            'last_name' => 'required|max:20|min:5',
             'email' => 'required|email|unique:super_users,email,' . $id,
+            'phone' => 'nullable|max:20|min:5',
+            'ci' => 'required|max:8|min:5',
             'password' => 'nullable|max:20|min:5',
             'confirm_password' => 'nullable|max:20|min:5|same:password',
             'roles' => 'required'
@@ -162,25 +178,38 @@ class UsersController extends Controller
             $input = Arr::except($input, array('password'));
         } else {
             if (empty($input['confirm_password'])) {
-                return redirect()->route('users.edit.profile', $id)->withErrors('Confirm password')->withInput();
+                return redirect()->to('/admin/users/edit/profile/'.$id)->withErrors('Confirm password')->withInput();
             }
         }
 
         $user = SuperUser::find($id);
         $user->update($input);
-
-        DB::table('model_has_roles')->where('model_id', $id)->delete(); //si estamos actualizando el rol del user, eliminamos el id
+        DB::table('model_has_roles')->where('model_id', $id)->delete();
 
         $user->syncRoles($request->input('roles'));
         $user->assignRole($request->input('roles'));
 
-        return redirect()->route('users.show.profile', $user->id)->with('message', 'User updated successfully');
+        return redirect()->to('/admin/users/profile/'.$id)->with('message', 'User Profile updated successfully');
+    }
+
+    public function search(Request $request)
+    {
+        $search = $request->input('search');
+
+        if ($search == '') {
+            $users = DB::table('users')->paginate(10);
+        } else {
+            $users = DB::table('users')
+                ->where('users.name', 'LIKE', "%{$search}%")
+                ->paginate();
+        }
+
+        return view('admin::users.index', compact('users', 'search'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
     public function destroy($id)
     {
         SuperUser::find($id)->delete();
-
-        return redirect()->route('users.index')->with('message', 'User deleted successfully');
+        return redirect()->to('/admin/users')->with('message', 'User deleted successfully');
     }
 }

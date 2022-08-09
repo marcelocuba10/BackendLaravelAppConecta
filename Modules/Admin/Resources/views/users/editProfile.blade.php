@@ -1,39 +1,46 @@
-@extends('admin::tema.app')
+@extends('admin::layouts.adminLTE.app')
 @section('content')
 
-<div class="row wrapper border-bottom white-bg page-heading">
-    <div class="col-lg-10">
-        <h2>Edit User Profile</h2>
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item">
-                <a href="{{ route('users.index') }}">Users</a>
-            </li>
-            <li class="breadcrumb-item">
-                <a href="{{ route('users.show.profile', $user->id) }}">Profile</a>
-            </li>
-            <li class="breadcrumb-item active">
-                <a href="{{ route('users.edit.profile', $user->id) }}"><b>Edit User Profile</b></a>
-            </li>
-        </ol>
-    </div>
-</div>
-
-<div class="wrapper wrapper-content animated fadeInRight ecommerce">
-
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="ibox ">
-                <div class="ibox-content">
-                    <form method="POST" action="{{ route('users.update.profile', $user->id) }}">
+    <section class="section">
+        <div class="container-fluid">
+            <!-- ========== title-wrapper start ========== -->
+            <div class="title-wrapper pt-30">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                    <div class="titlemb-30">
+                        <h2>Editar Perfil</h2>
+                    </div>
+                    </div>
+                    <!-- end col -->
+                    <div class="col-md-6">
+                    <div class="breadcrumb-wrapper mb-30">
+                        <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/admin/dashboard">Dashboard</a></li>
+                            <li class="breadcrumb-item" aria-current="page"><a href="/admin/users/profile/{{$user->id}}">Perfil</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Editar Perfil</li>
+                        </ol>
+                        </nav>
+                    </div>
+                    </div>
+                    <!-- end col -->
+                </div>
+                <!-- end row -->
+            </div>
+            <!-- ========== title-wrapper end ========== -->
+            <div class="form-layout-wrapper">
+                <div class="row">
+                  <div class="col-lg-12">
+                    <div class="card-style mb-30">
+                      <form method="POST" action="/admin/users/update/profile/{{$user->id}}">
                         @csrf
                         @method('PUT') <!-- menciono el metodo PUT, ya que en mi route utilzo Route::put(); -->
-                        @include('admin::users._partials.form')
-                    </form>
+                        @include('admin::users._partials.formProfile')
+                      </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 
-</div>
-
-@endsection
+@endsection  

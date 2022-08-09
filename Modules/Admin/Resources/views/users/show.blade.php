@@ -1,64 +1,97 @@
-@extends('admin::tema.app')
+@extends('admin::layouts.adminLTE.app')
 @section('content')
 
-<div class="row wrapper border-bottom white-bg page-heading">
-    <div class="col-lg-10">
-        <h2>Detail User</h2>
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item">
-                <a href="{{ route('users.index') }}">Users</a>
-            </li>
-            <li class="breadcrumb-item active">
-                <a href="{{ route('users.show', $user->id) }}"><b>Detail User</b></a>
-            </li>
-        </ol>
-    </div>
-</div>
-
-<div class="wrapper wrapper-content animated fadeInRight ecommerce">
-
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="ibox ">
-                <div class="ibox-content">
-                    <div class="form-group  row"><label class="col-sm-2 col-form-label">*Name</label>
-                        <div class="col-sm-10">
-                            <input type="text" readonly name="name" class="form-control" autocomplete="off" value="{{ $user->name ?? old('name') }}">
+    <section class="section">
+        <div class="container-fluid">
+            <!-- ========== title-wrapper start ========== -->
+            <div class="title-wrapper pt-30">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <div class="titlemb-30">
+                            <h2>Detalle Usuario</h2>
                         </div>
                     </div>
-                    <div class="form-group  row"><label class="col-sm-2 col-form-label">*UserName</label>
-                        <div class="col-sm-10">
-                            <input type="text" readonly name="username" class="form-control" autocomplete="off" value="{{ $user->username ?? old('username') }}">
+                    <div class="col-md-6">
+                        <div class="breadcrumb-wrapper mb-30">
+                            <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="/admin/dashboard">Dashboard</a></li>
+                                <li class="breadcrumb-item" aria-current="page"><a href="/admin/users">Usuarios</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Detalle Usuario</li>
+                            </ol>
+                            </nav>
                         </div>
                     </div>
-                    <div class="form-group  row"><label class="col-sm-2 col-form-label">*Email</label>
-                        <div class="col-sm-10">
-                            <input type="text" readonly name="email" class="form-control" autocomplete="off" value="{{ $user->email ?? old('email') }}">
+                </div>
+            </div>
+            <!-- ========== title-wrapper end ========== -->
+            <div class="form-layout-wrapper">
+                <div class="row">
+                  <div class="col-lg-12">
+                    <div class="card-style mb-30">
+                      <form method="POST">
+                        @csrf
+                        <div class="row">
+                            <div class="col-6">
+                              <div class="input-style-1">
+                                <label>Nombre</label>
+                                <input type="text" value="{{ $user->name ?? old('name') }}" name="name" readonly>
+                              </div>
+                            </div>
+                            <!-- end col -->
+                            <div class="col-6">
+                              <div class="input-style-1">
+                                <label>Apellidos</label>
+                                <input type="text" value="{{ $user->last_name ?? old('last_name') }}" name="last_name" readonly>
+                              </div>
+                            </div>
+                            <!-- end col -->
+                            <div class="col-6">
+                                <div class="input-style-1">
+                                    <label>Email</label>
+                                    <input type="email" readonly value="{{ $user->email ?? old('email') }}" name="email">
+                                </div>
+                            </div>
+                            <!-- end col -->
+                            <div class="col-6">
+                              <div class="input-style-1">
+                                <label>Teléfono</label>
+                                <input type="text" name="phone" id="phone" value="{{ $user->phone ?? old('phone') }}" readonly>
+                              </div>
+                            </div>
+                            <!-- end col -->
+                            <div class="col-6">
+                              <div class="input-style-1">
+                                <label>Rol Asignado</label>
+                                <input type="text" name="userRole" value="{{ $userRole ?? old('userRole') }}" readonly>
+                              </div>
+                            </div>
+                            <!-- end col -->
+                            <div class="col-6">
+                              <div class="input-style-1">
+                                <label>Doc Identidad</label>
+                                <input type="text" name="ci" value="{{ $user->ci ?? old('ci') }}"readonly>
+                              </div>
+                            </div>
+                            <!-- end col -->
+                            <div class="col-12">
+                              <div class="input-style-1">
+                                <label>Dirección</label>
+                                <input type="text" name="address" value="{{ $user->address ?? old('address') }}" readonly>
+                              </div>
+                            </div>
+                            <!-- end col -->
+                            <div class="col-12">
+                                <div class="button-groupd-flexjustify-content-centerflex-wrap">
+                                    <a class="main-btn danger-btn-outline m-2" href="/admin/users">Atrás</a>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group  row"><label class="col-sm-2 col-form-label">*Role Assigned</label>
-                        <div class="col-sm-10">
-                            <input type="text" readonly name="role" class="form-control" autocomplete="off" value="{{ $userRole }}">
-                        </div>
-                    </div>
-
-                    <div class="hr-line-dashed"></div>
-                    <div class="form-group row">
-                        <div class="col-sm-4 col-sm-offset-2">
-                            <a class="btn btn-white btn-sm" href="{{ route('users.index') }}" >Back</a>  
-
-                            <form style="display: inline-table;" method="POST" action="{{ route('users.destroy', $user->id) }}">
-                                @csrf
-                                @method('DELETE')
-                                <button class="btn btn-danger btn-sm" type="submit">Delete</button>
-                            </form>
-                        </div> 
+                      </form>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 
-</div>
-
-@endsection
+@endsection  

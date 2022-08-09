@@ -39,7 +39,7 @@ class UserController extends Controller
     public function create()
     {
         $user = null;
-        $roles = Role::pluck('name', 'name')->all(); //get all roles to send only names to form
+        $roles = Role::where('guard_name', '=', 'web')->pluck('name', 'name')->all(); //get all roles to send only names to form
         $userRole = null; //set null for select form not compare with others roles
         return view('user::users.create', compact('user', 'roles', 'userRole'));
     }
@@ -68,7 +68,7 @@ class UserController extends Controller
     public function show($id)
     {
         $user = User::find($id);
-        $roles = Role::pluck('name', 'name')->all(); //get all roles to send only names to form
+        $roles = Role::where('guard_name', '=', 'web')->pluck('name', 'name')->all(); //get all roles to send only names to form
         $userRoleArray = $user->roles->pluck('name')->toArray(); //get user assigned role
 
         //I use this if to capture only the name of the role, otherwise it would bring me the entire array
@@ -84,7 +84,7 @@ class UserController extends Controller
     public function showProfile($id)
     {
         $user = User::find($id);
-        $roles = Role::pluck('name', 'name')->all(); //get all roles to send only names to form
+        $roles = Role::where('guard_name', '=', 'web')->pluck('name', 'name')->all(); //get all roles to send only names to form
         $userRoleArray = $user->roles->pluck('name')->toArray(); //get user assigned role
 
         //I use this if to capture only the name of the role, otherwise it would bring me the entire array
@@ -100,7 +100,7 @@ class UserController extends Controller
     public function edit($id)
     {
         $user = User::find($id);
-        $roles = Role::pluck('name', 'name')->all(); #get all roles to send only names to form
+        $roles = Role::where('guard_name', '=', 'web')->pluck('name', 'name')->all(); #get all roles to send only names to form
         //$roles = Role::all(); //get all roles to send array to form
         $userRoleArray = $user->roles->pluck('name')->toArray(); //get user assigned role
 
@@ -117,7 +117,7 @@ class UserController extends Controller
     {
         $user = User::find($id);
 
-        $roles = Role::pluck('name', 'name')->all(); #get all roles to send only names to form
+        $roles = Role::where('guard_name', '=', 'web')->pluck('name', 'name')->all(); #get all roles to send only names to form
         //$roles = Role::all(); //get all roles to send array to form
         $userRoleArray = $user->roles->pluck('name')->toArray(); //get user assigned role
 

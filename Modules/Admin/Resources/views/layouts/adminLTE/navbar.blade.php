@@ -81,13 +81,10 @@
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profile">
                   <li>
-                    <a href="{{ route('users_.show.profile', Auth::user()->id) }}"><i class="lni lni-user"></i> Mi Perfil</a>
+                    <a href="{{ route('users.show.profile', Auth::user()->id) }}"><i class="lni lni-user"></i> Mi Perfil</a>
                   </li>
                   <li>
                     <a href="/admin/notifications"><i class="lni lni-alarm"></i> Avisos</a>
-                  </li>
-                  <li>
-                    <a href="/admin/schedules"> <i class="lni lni-calendar"></i> Horarios </a>
                   </li>
                   <li>
                     <a href="#0"> <i class="lni lni-cog"></i> Configuraciones </a>

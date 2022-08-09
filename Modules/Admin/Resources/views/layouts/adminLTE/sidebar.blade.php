@@ -17,18 +17,6 @@
             <span class="text">Dashboard</span>
           </a>
         </li>
-        @can('notification-sa-list')
-        <li class="nav-item {{ (request()->is('admin/notifications')) ? 'active' : '' }}">
-          <a href="/admin/notifications">
-            <span class="icon">
-              <svg style="width:24px;height:24px" viewBox="0 0 24 24">
-                <path fill="currentColor" d="M12,23A1,1 0 0,1 11,22V19H7A2,2 0 0,1 5,17V7C5,5.89 5.9,5 7,5H21A2,2 0 0,1 23,7V17A2,2 0 0,1 21,19H16.9L13.2,22.71C13,22.9 12.75,23 12.5,23V23H12M13,17V20.08L16.08,17H21V7H7V17H13M3,15H1V3A2,2 0 0,1 3,1H19V3H3V15Z" />
-              </svg>
-            </span>
-            <span class="text">Avisos</span>
-          </a>
-        </li>
-        @endcan
         @can('customer-sa-list')
         <li class="nav-item {{ (request()->is('admin/customers')) ? 'active' : '' }}">
           <a href="/admin/customers">
@@ -41,11 +29,41 @@
           </a>
         </li>
         @endcan
-        
+        <li class="nav-item {{ (request()->is('admin/plans')) ? 'active' : '' }}">
+          <a href="#">
+            <span class="icon">
+              <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                <path fill="currentColor" d="M3,3H21V5H3V3M3,7H21V9H3V7M3,11H21V13H3V11M3,15H21V17H3V15M3,19H21V21H3V19Z" />
+              </svg>
+            </span>
+            <span class="text">Planes</span>
+          </a>
+        </li>
+        <li class="nav-item {{ (request()->is('admin/finance')) ? 'active' : '' }}">
+          <a href="#">
+            <span class="icon">
+              <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                <path fill="currentColor" d="M11.5,1L2,6V8H21V6M16,10V17H19V10M2,22H21V19H2M10,10V17H13V10M4,10V17H7V10H4Z" />
+              </svg>
+            </span>
+            <span class="text">Financiero</span>
+          </a>
+        </li>
         <span class="divider">
           <hr />
         </span>
-
+        @can('notification-sa-list')
+        <li class="nav-item {{ (request()->is('admin/notifications')) ? 'active' : '' }}">
+          <a href="/admin/notifications">
+            <span class="icon">
+              <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                <path fill="currentColor" d="M12,23A1,1 0 0,1 11,22V19H7A2,2 0 0,1 5,17V7C5,5.89 5.9,5 7,5H21A2,2 0 0,1 23,7V17A2,2 0 0,1 21,19H16.9L13.2,22.71C13,22.9 12.75,23 12.5,23V23H12M13,17V20.08L16.08,17H21V7H7V17H13M3,15H1V3A2,2 0 0,1 3,1H19V3H3V15Z" />
+              </svg>
+            </span>
+            <span class="text">Avisos</span>
+          </a>
+        </li>
+        @endcan
         <li class="nav-item nav-item-has-children">
           <a aria-expanded="false" class="collapsed" id="ddlink_2" href="#" onclick="toggle('ddmenu_2', 'ddlink_2')">
             <span class="icon">

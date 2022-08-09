@@ -7,6 +7,7 @@
     <div class="right">
         <div class="ergts">
             <a href="/"><button class="ththhf" type="button" class="btn btn-block create-account">Página Web</button></a>
+            <a href="/admin/login"><button class="ththhf" type="button" class="btn btn-block create-account">Gestión</button></a>
         </div>    
         <div class="login-texto">
             <p class="login-title">Bienvenido a ConectaCode</p>

@@ -34,10 +34,10 @@ Route::prefix('admin')->group(function () {
             Route::get('/', 'UsersController@index')->name('users.index');
             Route::get('/create', 'UsersController@create')->name('users.create');
             Route::post('/create', 'UsersController@store')->name('users.store');
-            Route::get('/{id}/show', 'UsersController@show')->name('users.show');
+            Route::get('/show/{id}', 'UsersController@show')->name('users.show');
             Route::get('/edit/{id}', 'UsersController@edit')->name('users.edit');
             Route::put('/update/{id}', 'UsersController@update')->name('users.update');
-            Route::delete('/{id}/delete', 'UsersController@destroy')->name('users.destroy');
+            Route::delete('/delete/{id}', 'UsersController@destroy')->name('users.destroy');
 
             Route::get('/profile/{id}', 'UsersController@showProfile')->name('users.show.profile');
             Route::get('/edit/profile/{id}', 'UsersController@editProfile')->name('users.edit.profile');

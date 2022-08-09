@@ -21,10 +21,17 @@ class SuperUser extends Authenticatable
 
     protected $fillable = [
         'name',
+        'last_name',
+        'phone',
+        'address',
         'email',
-        'username',
+        'ci',
         'password',
-        'terms',
+
+        'company_name',
+        'manager',
+        'ruc',
+        'location_iframe',
     ];
 
     protected $hidden = [

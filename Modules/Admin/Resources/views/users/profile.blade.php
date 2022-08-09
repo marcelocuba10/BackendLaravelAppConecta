@@ -1,84 +1,118 @@
-@extends('admin::tema.app')
+@extends('admin::layouts.adminLTE.app')
 @section('content')
 
-<div class="row wrapper border-bottom white-bg page-heading">
-    <div class="col-lg-10">
-        <h2>My Account</h2>
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item">
-                <a href="{{ route('admin.dashboard') }}">Dashboard</a>
-            </li>
-            <li class="breadcrumb-item active">
-                <a href="{{ route('users.show.profile', $user->id) }}">Profile</a>
-            </li>
-        </ol>
-    </div>
-</div>
-
-<div class="wrapper wrapper-content animated fadeInRight">
-    <div class="row">
-        <div class="col-lg-6">
-            <div class="widget-head-color-box navy-bg p-lg text-center">
-                <div class="m-b-md">
-                    <h2 class="font-bold no-margins">
-                        {{ $user->name }}
-                    </h2>
-                    <small>User ID: {{ $user->id}}</small>
+    <section class="section">
+        <div class="container-fluid">
+            <!-- ========== title-wrapper start ========== -->
+            <div class="title-wrapper pt-30">
+              <div class="row align-items-center">
+                <div class="col-md-6">
+                  <div class="titlemb-30">
+                    <h2>Perfil</h2>
+                  </div>
                 </div>
-                <img src="http://webapplayers.com/inspinia_admin-v2.9.4/img/a4.jpg" class="rounded-circle circle-border m-b-md" alt="profile">
-                <div>
-                    <span>100 Tweets</span> |
-                    <span>350 Following</span> |
-                    <span>610 Followers</span>
+                <!-- end col -->
+                <div class="col-md-6">
+                  <div class="breadcrumb-wrapper mb-30">
+                    <nav aria-label="breadcrumb">
+                      <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/admin/dashboard">Dashboard</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Perfil</li>
+                      </ol>
+                    </nav>
+                  </div>
                 </div>
+                <!-- end col -->
+              </div>
+              <!-- end row -->
             </div>
-            <div class="widget-text-box">
-                <h4 class="media-heading">Alex Smith</h4>
-                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-                <div class="text-right">
-                    <a href="" class="btn btn-xs btn-white"><i class="fa fa-thumbs-up"></i> Like </a>
-                    <a href="" class="btn btn-xs btn-primary"><i class="fa fa-heart"></i> Love</a>
+            <!-- ========== title-wrapper end ========== -->
+            <div class="row">
+                <div class="col-xxl-9 col-lg-8">
+                  <div class="profile-wrapper mb-30">
+                    <div class="profile-cover">
+                      <img src="/assets/images/profile/profile-cover-2.png" alt="cover-image">
+                    </div>
+                    <div class="d-md-flex">
+                      <div class="profile-photo">
+                        <div class="image">
+                          <img src="/assets/images/profile/profile-2.png" alt="profile">
+                        </div>
+                        <div class="profile-meta pt-25">
+                          <h5 class="text-bold mb-10">{{ $user->name }}</h5>
+                          <p class="text-sm">Rol - {{$userRole}}</p>
+                        </div>
+                      </div>
+                      <div class="profiles-activities w-100 pt-30">
+                        <ul class="d-flex align-items-center">
+                          <li class="mr-30"></li>
+                          <li class="mr-30"></li>
+                          <li class="mr-30"></li>
+                          <li class="ms-auto">
+                            <a href="/admin/users/edit/profile/{{$user->id}}" class="main-btn btn-sm primary-btn btn-hover mb-20">
+                              <i class="lni lni-plus mr-10"></i>Actualizar Perfil
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div class="profile-info">
+                      <form action="#">
+                        <div class="row">
+                          <div class="col-6">
+                            <div class="input-style-1">
+                              <label>Nombre</label>
+                              <input type="text" placeholder="{{ $user->name }}" readonly>
+                            </div>
+                          </div>
+                          <!-- end col -->
+                          <div class="col-6">
+                            <div class="input-style-1">
+                              <label>Apellidos</label>
+                              <input type="text" placeholder="{{ $user->last_name }}" readonly>
+                            </div>
+                          </div>
+                          <!-- end col -->
+                          <div class="col-12">
+                            <div class="input-style-1">
+                              <label>Dirección</label>
+                              <input type="text" placeholder="{{ $user->address }}" readonly>
+                            </div>
+                          </div>
+                          <!-- end col -->
+                          <div class="col-6">
+                            <div class="input-style-1">
+                              <label>Teléfono</label>
+                              <input type="text" placeholder="{{ $user->phone }}" readonly>
+                            </div>
+                          </div>
+                          <!-- end col -->
+                          <div class="col-6">
+                            <div class="input-style-1">
+                              <label>Doc Identidad</label>
+                              <input type="text" placeholder="{{ $user->ci }}" readonly>
+                            </div>
+                          </div>
+                          <!-- end col -->
+                        </div>
+                        <!-- end row -->
+                      </form>
+                    </div>
+                  </div>
                 </div>
+                <!-- end col -->
+                <div class="col-xxl-3 col-lg-4">
+                  <div class="card-style chat-list-card">
+                    <div class="title mb-20 d-flex justify-content-between align-items-center">
+                      <h6>Two-Step Authentication</h6>
+                    </div>
+                    <div class="chat-list-wrapper">
+                    </div>
+                  </div>
+                </div>
+                <!-- end col -->
             </div>
         </div>
-        <div class="col-lg-6">
-            <div class="col-lg-12">
-                <div class="ibox ">
-                    <div class="ibox-title">
-                        <h5>Personal Information</h5>
-                    </div>
-                    <div class="ibox-content">
-                        <form method="get">
-                            <div class="form-group row"><label class="col-lg-2 col-form-label">Name</label>
-                                <div class="col-lg-10"><p class="form-control-static">{{ $user->name }}</p></div>
-                            </div>
-                            <div class="form-group row"><label class="col-lg-2 col-form-label">Username</label>
-                                <div class="col-lg-10"><p class="form-control-static">{{ $user->username }}</p></div>
-                            </div>
-                            <div class="form-group row"><label class="col-lg-2 col-form-label">Phone</label>
-                                <div class="col-lg-10"><p class="form-control-static">+595 099494944</p></div>
-                            </div>
-                            <div class="form-group row"><label class="col-lg-2 col-form-label">Email</label>
-                                <div class="col-lg-10"><p class="form-control-static">{{ $user->email }}</p></div>
-                            </div>
-                            <div class="form-group row"><label class="col-lg-2 col-form-label">Address</label>
-                                <div class="col-lg-10"><p class="form-control-static">Av mensu 2342</p></div>
-                            </div>
-                            <div class="form-group row"><label class="col-lg-2 col-form-label">Gender</label>
-                                <div class="col-lg-10"><p class="form-control-static">male</p></div>
-                            </div>
-                            <div class="hr-line-dashed"></div>
-                            <div class="form-group row">
-                                <div class="col-sm-4 col-sm-offset-2">
-                                    <a href="{{ route('users.edit.profile', $user->id) }}"><button class="btn btn-primary btn-sm" type="button"><i class="fa fa-pencil" aria-hidden="true"></i> Update Information</button></a>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+    </section>
 
 @endsection

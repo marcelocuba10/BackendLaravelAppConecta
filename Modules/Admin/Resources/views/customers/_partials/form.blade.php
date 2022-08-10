@@ -24,7 +24,7 @@
     @if ($currentUserRole == 'SuperAdmin')
       <div class="col-6">
         <div class="select-style-1">
-          <label>(*) *Rol</label>
+          <label>(*) Rol</label>
           <div class="select-position">
             <select name="roles">
               @foreach ($roles as $role)
@@ -37,8 +37,30 @@
     @else
       <div class="col-6">
         <div class="input-style-1">
-          <label>*Rol</label>
+          <label>(*) Rol</label>
           <input type="text" value="{{ $userRole ?? old('userRole') }}" name="roles" readonly >
+        </div>
+      </div>
+    @endif
+    <!-- end col -->
+    @if ($currentUserRole == 'SuperAdmin')
+      <div class="col-6">
+        <div class="select-style-1">
+          <label>(*) Status</label>
+          <div class="select-position">
+            <select name="idMaster">
+              @foreach ($status as $item)
+                <option value="{{ $item }}" {{ ( $item == $idMaster) ? 'selected' : '' }}> {{ $item}} </option>
+              @endforeach 
+            </select>
+          </div>
+        </div>
+      </div>
+    @else
+      <div class="col-6">
+        <div class="input-style-1">
+          <label>(*) Status</label>
+          <input type="text" value="{{ $user->idMaster ?? old('idMaster') }} }}" name="idMaster" readonly >
         </div>
       </div>
     @endif

@@ -9,8 +9,8 @@ Route::prefix('admin')->group(function () {
     Route::group(['middleware' => ['guest']], function () {
 
         /*** Register Routes ***/
-        Route::get('/register', 'Auth\RegisterController@show')->name('admin.register.show');
-        Route::post('/register', 'Auth\RegisterController@register')->name('admin.register.perform');
+        // Route::get('/register', 'Auth\RegisterController@show')->name('admin.register.show');
+        // Route::post('/register', 'Auth\RegisterController@register')->name('admin.register.perform');
 
         /*** Login Routes ***/
         Route::get('/login', 'Auth\LoginController@show')->name('admin.login.show');
@@ -66,6 +66,18 @@ Route::prefix('admin')->group(function () {
             Route::put('/update/{id}', 'NotificationsController@update')->name('notifications.update');
             Route::delete('/delete/{id}', 'NotificationsController@destroy')->name('notifications.destroy');
             Route::get('/search', 'NotificationsController@search')->name('notifications.search');
+        });
+
+        /*** Plans Routes ***/
+        Route::group(['prefix' => 'plans'], function () {
+            Route::get('/', 'PlansController@index')->name('plans.index');
+            Route::get('/create', 'PlansController@create')->name('plans.create');
+            Route::post('/create', 'PlansController@store')->name('plans.store');
+            Route::get('/show/{id}', 'PlansController@show')->name('plans.show');
+            Route::get('/edit/{id}', 'PlansController@edit')->name('plans.edit');
+            Route::put('/update/{id}', 'PlansController@update')->name('plans.update');
+            Route::delete('/delete/{id}', 'PlansController@destroy')->name('plans.destroy');
+            Route::get('/search', 'PlansController@search')->name('plans.search');
         });
 
         Route::group(['prefix' => 'machines'], function () {

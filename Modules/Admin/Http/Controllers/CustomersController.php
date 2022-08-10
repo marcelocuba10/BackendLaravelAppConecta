@@ -39,15 +39,20 @@ class CustomersController extends Controller
         $arrayCurrentUserRole = Auth::user()->roles->pluck('name');
         $currentUserRole = $arrayCurrentUserRole[0];
 
+        $status = [0, 1];
+
         $user = null;
+        $idMaster = null;
+
         $roles = Role::where('guard_name', '=', 'web')->pluck('name', 'name')->all(); //get all roles to send only names to form
         $userRole = null; //set null for select form not compare with others roles
-        return view('admin::customers.create', compact('user', 'roles', 'userRole', 'currentUserRole'));
+        return view('admin::customers.create', compact('user', 'roles', 'userRole', 'currentUserRole', 'status', 'idMaster'));
     }
 
     public function store(Request $request)
     {
         $this->validate($request, [
+            'idMaster' => 'required|int',
             'name' => 'required|max:20|min:5',
             'last_name' => 'required|max:20|min:5',
             'email' => 'required|email|unique:users,email',
@@ -88,7 +93,11 @@ class CustomersController extends Controller
         $arrayCurrentUserRole = Auth::user()->roles->pluck('name');
         $currentUserRole = $arrayCurrentUserRole[0];
 
+        $status = [0, 1];
+
         $user = User::find($id);
+        $idMaster = $user->idMaster;
+
         $roles = Role::where('guard_name', '=', 'web')->pluck('name', 'name')->all(); #get all roles to send only names to form
         $userRoleArray = $user->roles->pluck('name')->toArray(); //get user assigned role
 
@@ -98,12 +107,13 @@ class CustomersController extends Controller
             $userRole = $userRoleArray[0]; //get only name of the role
         }
 
-        return view('admin::customers.edit', compact('user', 'roles', 'userRole', 'currentUserRole'));
+        return view('admin::customers.edit', compact('user', 'roles', 'userRole', 'currentUserRole', 'status', 'idMaster'));
     }
 
     public function update(Request $request, $id)
     {
         $this->validate($request, [
+            'idMaster' => 'required|int',
             'name' => 'required|max:20|min:5',
             'last_name' => 'required|max:20|min:5',
             'email' => 'required|email|unique:users,email,' . $id,

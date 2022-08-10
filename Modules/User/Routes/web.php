@@ -10,8 +10,8 @@ Route::prefix('user')->group(function () {
     Route::group(['middleware' => ['guest']], function () {
 
         /*** Register Routes ***/
-        Route::get('/register', 'Auth\RegisterController@show')->name('register.show');
-        Route::post('/register', 'Auth\RegisterController@register')->name('register.perform');
+        // Route::get('/register', 'Auth\RegisterController@show')->name('register.show');
+        // Route::post('/register', 'Auth\RegisterController@register')->name('register.perform');
 
         /*** Login Routes ***/
         Route::get('/login', 'Auth\LoginController@show')->name('login.show');

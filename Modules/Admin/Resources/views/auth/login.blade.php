@@ -53,7 +53,7 @@
             <button type="submit" class="btn btn-block create-account">Entrar</button>
         </div>
 
-        <a class="pokioj" href="/admin/forget-password"><small>¿Has olvidado tu contraseña?</small></a>
+        {{-- <a class="pokioj" href="/admin/forget-password"><small>¿Has olvidado tu contraseña?</small></a> --}}
     </form>
 </div>
 

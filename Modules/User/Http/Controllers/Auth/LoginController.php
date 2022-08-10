@@ -37,22 +37,24 @@ class LoginController extends Controller
         $user = User::where('email', '=', $email)->first();
 
         if (!$user) {
-            return redirect()->to('/user/login')->with('error','Correo electrónico no encontrado.');
+            return redirect()->to('/user/login')->with('error', 'Correo electrónico no encontrado.');
         }
 
         if (!Hash::check($password, $user->password)) {
-            return redirect()->to('/user/login')->with('error','Contraseña incorrecta.');
+            return redirect()->to('/user/login')->with('error', 'Contraseña incorrecta.');
         }
 
         if (!Auth::validate($credentials)) {
-            return redirect()->to('/user/login')->with('error','Credenciales incorrectas');
+            return redirect()->to('/user/login')->with('error', 'Credenciales incorrectas');
         }
 
-        $user = Auth::getProvider()->retrieveByCredentials($credentials);
-
-        Auth::login($user);
-
-        return $this->authenticated($request, $user);
+        if ($user->idMaster == 0) {
+            return redirect()->to('/user/login')->with('error', 'Usuario inhabilitado');
+        } else {
+            $user = Auth::getProvider()->retrieveByCredentials($credentials);
+            Auth::login($user);
+            return $this->authenticated($request, $user);
+        }
     }
 
     protected function authenticated(Request $request, $user)

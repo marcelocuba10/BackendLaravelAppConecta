@@ -61,7 +61,7 @@
                         <th class="sm"><h6 class="text-sm text-medium"></h6></th>
                         <th class="md"><h6>Nombre</h6></th>
                         <th class="md"><h6>Apellidos</h6></th>
-                        <th class="md"><h6>Teléfono</h6></th>
+                        <th class="md"><h6>Status</h6></th>
                         <th class="md"><h6>Email</h6></th>
                         <th class="md"><h6>Acciones</h6></th>
                       </tr>
@@ -73,7 +73,13 @@
                             <td class="min-width"><h6 class="text-sm">#{{ ++$i }}</h6></td>
                             <td class="min-width"><p>{{ $user->name }}</p></td>
                             <td class="min-width"><p>{{ $user->last_name }}</p></td>
-                            <td class="min-width"><p><i class="lni lni-phone mr-10"></i>{{ $user->phone }}</p></td>
+                            <td class="min-width">
+                              @if ($user->idMaster == 1)
+                                <p><span class="status-btn success-btn">Activado</span></p>
+                              @else
+                                <p><span class="status-btn active-btn">Desactivado</span></p>
+                              @endif
+                            </td>
                             <td class="min-width"><p><i class="lni lni-envelope mr-10"></i>{{ $user->email }}</p></td>
                             <td class="text-right">
                                 <div class="btn-group">

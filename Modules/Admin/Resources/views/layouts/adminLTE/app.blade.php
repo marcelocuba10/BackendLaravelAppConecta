@@ -101,23 +101,22 @@
       VMasker(document.getElementById("phone")).maskPattern('(999) 999 999');
       VMasker(document.getElementById("date")).maskPattern('99/99/9999');
 
-      // Masking input element to money with options.
-      VMasker(document.querySelector("data-js-input")).maskMoney({
-        // Decimal precision -> "90"
-        precision: 2,
-        // Decimal separator -> ",90"
-        separator: ',',
-        // Number delimiter -> "12.345.678"
-        delimiter: '.',
-        // Money unit -> "R$ 12.345.678,90"
-        unit: 'R$',
-        // Money unit -> "12.345.678,90 R$"
-        suffixUnit: 'R$',
-        // Force type only number instead decimal,
-        // masking decimals with ",00"
-        // Zero cents -> "R$ 1.234.567.890,00"
-        zeroCents: true
-      });
+      VMasker(document.getElementById("currency")).maskMoney({
+            // Decimal precision -> "90"
+            precision: 3,
+            // Decimal separator -> ",90"
+            separator: '.',
+            // Number delimiter -> "12.345.678"
+            delimiter: '.',
+            // Money unit -> "R$ 12.345.678,90"
+            //unit: 'G$',
+            // Money unit -> "12.345.678,90 R$"
+            //suffixUnit: 'GS',
+            // Force type only number instead decimal,
+            //masking decimals with ",00"
+            // Zero cents -> "R$ 1.234.567.890,00"
+            //zeroCents: true
+          });
     }
   </script>
 

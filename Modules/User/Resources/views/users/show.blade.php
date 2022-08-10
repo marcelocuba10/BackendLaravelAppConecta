@@ -15,15 +15,9 @@
                         <div class="breadcrumb-wrapper mb-30">
                             <nav aria-label="breadcrumb">
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item">
-                                <a href="/user/dashboard">Dashboard</a>
-                                </li>
-                                <li class="breadcrumb-item" aria-current="page">
-                                <a href="{{ route('users.index') }}">Usuarios</a>
-                                </li>
-                                <li class="breadcrumb-item active" aria-current="page">
-                                    Detalle Usuario
-                                </li>
+                                <li class="breadcrumb-item"><a href="/user/dashboard">Dashboard</a></li>
+                                <li class="breadcrumb-item" aria-current="page"><a href="{{ route('users.index') }}">Usuarios</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Detalle Usuario</li>
                             </ol>
                             </nav>
                         </div>

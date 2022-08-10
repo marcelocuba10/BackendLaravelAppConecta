@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 //use Illuminate\Routing\Controller;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Modules\Admin\Entities\SuperUser;
 
@@ -34,10 +35,14 @@ class UsersController extends Controller
 
     public function create()
     {
+        /** get current user role */
+        $arrayCurrentUserRole = Auth::user()->roles->pluck('name');
+        $currentUserRole = $arrayCurrentUserRole[0];
+
         $user = null;
         $roles = Role::where('guard_name', '=', 'admin')->pluck('name', 'name')->all(); //get all roles to send only names to form
         $userRole = null; //set null for select form not compare with others roles
-        return view('admin::users.create', compact('user', 'roles', 'userRole'));
+        return view('admin::users.create', compact('user', 'roles', 'userRole', 'currentUserRole'));
     }
 
     public function store(Request $request)
@@ -95,6 +100,10 @@ class UsersController extends Controller
 
     public function edit($id)
     {
+        /** get current user role */
+        $arrayCurrentUserRole = Auth::user()->roles->pluck('name');
+        $currentUserRole = $arrayCurrentUserRole[0];
+
         $user = SuperUser::find($id);
         $roles = Role::where('guard_name', '=', 'admin')->pluck('name', 'name')->all(); #get all roles to send only names to form
         //$roles = Role::all(); //get all roles to send array to form
@@ -106,13 +115,16 @@ class UsersController extends Controller
             $userRole = $userRoleArray[0]; //get only name of the role
         }
 
-        return view('admin::users.edit', compact('user', 'roles', 'userRole'));
+        return view('admin::users.edit', compact('user', 'roles', 'userRole', 'currentUserRole'));
     }
 
     public function editProfile($id)
     {
-        $user = SuperUser::find($id);
+        /** get current user role */
+        $arrayCurrentUserRole = Auth::user()->roles->pluck('name');
+        $currentUserRole = $arrayCurrentUserRole[0];
 
+        $user = SuperUser::find($id);
         $roles = Role::where('guard_name', '=', 'admin')->pluck('name', 'name')->all(); #get all roles to send only names to form
         //$roles = Role::all(); //get all roles to send array to form
         $userRoleArray = $user->roles->pluck('name')->toArray(); //get user assigned role
@@ -123,7 +135,7 @@ class UsersController extends Controller
             $userRole = $userRoleArray[0]; //get only name of the role
         }
 
-        return view('admin::users.editProfile', compact('user', 'roles', 'userRole'));
+        return view('admin::users.editProfile', compact('user', 'roles', 'userRole', 'currentUserRole'));
     }
 
     public function update(Request $request, $id)
@@ -145,7 +157,7 @@ class UsersController extends Controller
             $input = Arr::except($input, array('password'));
         } else {
             if (empty($input['confirm_password'])) {
-                return redirect()->to('/admin/users/edit/profile/'.$id)->withErrors('Confirm password')->withInput();
+                return redirect()->to('/admin/users/edit/profile/' . $id)->withErrors('Confirm password')->withInput();
             }
         }
 
@@ -178,7 +190,7 @@ class UsersController extends Controller
             $input = Arr::except($input, array('password'));
         } else {
             if (empty($input['confirm_password'])) {
-                return redirect()->to('/admin/users/edit/profile/'.$id)->withErrors('Confirm password')->withInput();
+                return redirect()->to('/admin/users/edit/profile/' . $id)->withErrors('Confirm password')->withInput();
             }
         }
 
@@ -189,7 +201,7 @@ class UsersController extends Controller
         $user->syncRoles($request->input('roles'));
         $user->assignRole($request->input('roles'));
 
-        return redirect()->to('/admin/users/profile/'.$id)->with('message', 'User Profile updated successfully');
+        return redirect()->to('/admin/users/profile/' . $id)->with('message', 'User Profile updated successfully');
     }
 
     public function search(Request $request)

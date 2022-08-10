@@ -4,13 +4,18 @@ namespace Modules\Admin\Http\Controllers;
 
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
+//use Illuminate\Routing\Controller;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Modules\Admin\Entities\Customers;
+use Modules\User\Entities\User;
+//spatie
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 class CustomersController extends Controller
 {
-
     public function __construct()
     {
         $this->middleware('auth:admin', ['except' => ['logout']]);
@@ -23,57 +28,110 @@ class CustomersController extends Controller
 
     public function index()
     {
-        $customers = DB::table('customers')->paginate(10);
-        return view('admin::customers.index', compact('customers'))->with('i', (request()->input('page', 1) - 1) * 10);
+        $users = User::latest()->paginate(10);
+
+        return view('admin::customers.index', compact('users'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
     public function create()
     {
-        return view('admin::customers.create');
+        /** get current user role */
+        $arrayCurrentUserRole = Auth::user()->roles->pluck('name');
+        $currentUserRole = $arrayCurrentUserRole[0];
+
+        $user = null;
+        $roles = Role::where('guard_name', '=', 'web')->pluck('name', 'name')->all(); //get all roles to send only names to form
+        $userRole = null; //set null for select form not compare with others roles
+        return view('admin::customers.create', compact('user', 'roles', 'userRole', 'currentUserRole'));
     }
 
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required|max:50|min:5',
-            'phone' => 'nullable|max:25|min:5',
-            'address' => 'nullable|max:255|min:5',
-            'access_key' => 'nullable|max:15|min:15',
-            'puid' => 'nullable|max:6|min:6',
-            'total_machines' => 'required|integer|between:0,9999|min:0',
+        $this->validate($request, [
+            'name' => 'required|max:20|min:5',
+            'last_name' => 'required|max:20|min:5',
+            'email' => 'required|email|unique:users,email',
+            'phone' => 'nullable|max:20|min:5',
+            'ci' => 'required|max:8|min:5',
+            'password' => 'required|max:20|min:5',
+            'confirm_password' => 'required|max:20|min:5|same:password',
+            'roles' => 'required'
         ]);
 
-        Customers::create($request->all());
-        return redirect()->to('/admin/customers')->with('message', 'Customer created successfully.');
+        $input = $request->all();
+
+        $user = User::create($input);
+        $user->assignRole($request->input('roles'));
+
+        return redirect()->to('/admin/customers')->with('message', 'User created successfully.');
     }
 
     public function show($id)
     {
-        $customer = Customers::find($id);
-        return view('admin::customers.show', compact('customer'));
+        $user = User::find($id);
+        $roles = Role::where('guard_name', '=', 'web')->pluck('name', 'name')->all(); //get all roles to send only names to form
+        $userRoleArray = $user->roles->pluck('name')->toArray(); //get user assigned role
+
+        //I use this if to capture only the name of the role, otherwise it would bring me the entire array
+        if (empty($userRoleArray)) {
+            $userRole = null;
+        } else {
+            $userRole = $userRoleArray[0]; //name rol in position [0] of the array
+        }
+
+        return view('admin::customers.show', compact('user', 'userRole'));
     }
 
     public function edit($id)
     {
-        $customer = Customers::find($id);
-        return view('admin::customers.edit', compact('customer'));
+        /** get current user role */
+        $arrayCurrentUserRole = Auth::user()->roles->pluck('name');
+        $currentUserRole = $arrayCurrentUserRole[0];
+
+        $user = User::find($id);
+        $roles = Role::where('guard_name', '=', 'web')->pluck('name', 'name')->all(); #get all roles to send only names to form
+        $userRoleArray = $user->roles->pluck('name')->toArray(); //get user assigned role
+
+        if (empty($userRoleArray)) {
+            $userRole = null;
+        } else {
+            $userRole = $userRoleArray[0]; //get only name of the role
+        }
+
+        return view('admin::customers.edit', compact('user', 'roles', 'userRole', 'currentUserRole'));
     }
 
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'name' => 'required|max:50|min:5',
-            'phone' => 'nullable|max:25|min:5',
-            'address' => 'nullable|max:255|min:5',
-            'access_key' => 'nullable|max:15|min:15',
-            'puid' => 'nullable|max:6|min:6',
-            'total_machines' => 'required|integer|between:0,9999|min:0',
+        $this->validate($request, [
+            'name' => 'required|max:20|min:5',
+            'last_name' => 'required|max:20|min:5',
+            'email' => 'required|email|unique:users,email,' . $id,
+            'phone' => 'nullable|max:20|min:5',
+            'ci' => 'required|max:8|min:5',
+            'password' => 'nullable|max:20|min:5',
+            'confirm_password' => 'nullable|max:20|min:5|same:password',
+            'roles' => 'required'
         ]);
 
-        $customer = Customers::find($id);
-        $customer->update($request->all());
+        $input = $request->all();
 
-        return redirect()->to('/admin/customers')->with('message', 'Customer updated successfully.');
+        if (empty($input['password'])) {
+            $input = Arr::except($input, array('password'));
+        } else {
+            if (empty($input['confirm_password'])) {
+                return redirect()->route('users_.edit.profile', $id)->withErrors('Confirm password')->withInput();
+            }
+        }
+
+        $user = User::find($id);
+        $user->update($input);
+        DB::table('model_has_roles')->where('model_id', $id)->delete();
+
+        $user->syncRoles($request->input('roles'));
+        $user->assignRole($request->input('roles'));
+
+        return redirect()->to('/admin/customers')->with('message', 'Registro actualizado correctamente');
     }
 
     public function search(Request $request)
@@ -81,17 +139,19 @@ class CustomersController extends Controller
         $search = $request->input('search');
 
         if ($search == '') {
-            $customers = DB::table('customers')->paginate(30);
+            $users = DB::table('users')->paginate(10);
         } else {
-            $customers = DB::table('customers')->where('customers.name', 'LIKE', "%{$search}%")->paginate();
+            $users = DB::table('users')
+                ->where('users.name', 'LIKE', "%{$search}%")
+                ->paginate();
         }
 
-        return view('admin::customers.index', compact('customers', 'search'))->with('i', (request()->input('page', 1) - 1) * 2);
+        return view('admin::customers.index', compact('users', 'search'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
     public function destroy($id)
     {
-        Customers::find($id)->delete();
-        return redirect()->to('/admin/customers')->with('message', 'Customer deleted successfully');
+        User::find($id)->delete();
+        return redirect()->to('/admin/customers')->with('message', 'User deleted successfully');
     }
 }

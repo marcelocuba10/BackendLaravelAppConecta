@@ -8,7 +8,7 @@
         <div class="row align-items-center">
           <div class="col-md-8">
             <div class="title d-flex align-items-center flex-wrap mb-30">
-              <h2 class="mr-40">Listado de Clientes</h2>
+              <h2 class="mr-40">Clientes</h2>
               @can('customer-sa-create')
                 <a href="/admin/customers/create" class="main-btn info-btn btn-hover btn-sm"><i class="lni lni-plus mr-5"></i> Nuevo</a>
               @endcan  
@@ -20,7 +20,7 @@
               <div class="table-search d-flex" style="margin-top: -35px;float: right;">
                 <form action="/admin/customers/search">
                   <input style="background-color: #fff;" id="search" type="text" name="search" value="{{ $search ?? '' }}" placeholder="Buscar cliente..">
-                  <button type="submit"><i class="lni lni-search-alt"></i></button>
+                  {{-- <button type="submit"><i class="lni lni-search-alt"></i></button> --}}
                 </form>
               </div>
             </div>
@@ -47,7 +47,7 @@
                           <option value="15">15</option>
                           <option value="20">20</option>
                           <option value="25">25</option>
-                      </select> entries per page
+                      </select> items por pgina
                   </label>
                 </div> --}}
               </div>
@@ -58,35 +58,35 @@
                   <table class="table">
                     <thead>
                       <tr>
-                        <th><h6>#</h6></th>
-                        <th><h6>Nombre</h6></th>
-                        <th><h6>Teléfono</h6></th>
-                        <th><h6>Máquinas</h6></th>
-                        <th><h6>Dirección</h6></th>
-                        <th><h6>Acciones</h6></th>
+                        <th class="sm"><h6 class="text-sm text-medium"></h6></th>
+                        <th class="md"><h6>Nombre</h6></th>
+                        <th class="md"><h6>Apellidos</h6></th>
+                        <th class="md"><h6>Teléfono</h6></th>
+                        <th class="md"><h6>Email</h6></th>
+                        <th class="md"><h6>Acciones</h6></th>
                       </tr>
                       <!-- end table row-->
                     </thead>
                     <tbody>
-                        @foreach ($customers as $customer)
+                        @foreach ($users as $user)
                         <tr>
-                            <td class="text-sm"><h6 class="text-sm">#{{ ++$i }}</h6></td>
-                            <td class="min-width"><p>{{ $customer->name }}</p></td>
-                            <td class="min-width"><p>{{ $customer->phone }}</p></td>
-                            <td class="min-width"><p>{{ $customer->total_machines }}</p></td>
-                            <td class="min-width"><p>{{ $customer->address }}</p></td>
+                            <td class="min-width"><h6 class="text-sm">#{{ ++$i }}</h6></td>
+                            <td class="min-width"><p>{{ $user->name }}</p></td>
+                            <td class="min-width"><p>{{ $user->last_name }}</p></td>
+                            <td class="min-width"><p><i class="lni lni-phone mr-10"></i>{{ $user->phone }}</p></td>
+                            <td class="min-width"><p><i class="lni lni-envelope mr-10"></i>{{ $user->email }}</p></td>
                             <td class="text-right">
                                 <div class="btn-group">
                                     <div class="action">
-                                      <a href="/admin/customers/{{$customer->id}}/show">
-                                          <button class="text-active">
-                                              <i class="lni lni-eye"></i>
-                                          </button>
-                                      </a>
+                                        <a href="/admin/customers/show/{{$user->id}}">
+                                            <button class="text-active">
+                                                <i class="lni lni-eye"></i>
+                                            </button>
+                                        </a>
                                     </div>
                                     @can('customer-sa-edit')
                                     <div class="action">
-                                        <a href="/admin/customers/edit/{{$customer->id}}">
+                                        <a href="/admin/customers/edit/{{$user->id}}">
                                             <button class="text-info">
                                                 <i class="lni lni-pencil"></i>
                                             </button>
@@ -94,7 +94,7 @@
                                     </div>
                                     @endcan
                                     @can('customer-sa-delete')
-                                    <form method="POST" action="/admin/customers/{{$customer->id}}/delete">
+                                    <form method="POST" action="/admin/customers/delete/{{$user->id}}">
                                         @csrf
                                         <div class="action">
                                             <input name="_method" type="hidden" value="DELETE">
@@ -113,9 +113,9 @@
                   </table>
                   <!-- end table -->
                   @if (isset($search))
-                      {!! $customers-> appends($search)->links() !!} <!-- appends envia variable en la paginacion-->
+                    {!! $users-> appends($search)->links() !!} <!-- appends envia variable en la paginacion-->
                   @else
-                      {!! $customers-> links() !!}    
+                    {!! $users-> links() !!}    
                   @endif
                 </div>
               </div>

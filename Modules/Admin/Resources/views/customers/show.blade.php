@@ -15,12 +15,8 @@
                         <div class="breadcrumb-wrapper mb-30">
                             <nav aria-label="breadcrumb">
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item">
-                                <a href="/admin/dashboard">Dashboard</a>
-                                </li>
-                                <li class="breadcrumb-item" aria-current="page">
-                                <a href="/admin/customers">Clientes</a>
-                                </li>
+                                <li class="breadcrumb-item"><a href="/admin/dashboard">Dashboard</a></li>
+                                <li class="breadcrumb-item" aria-current="page"><a href="/admin/customers">Clientes</a></li>
                                 <li class="breadcrumb-item active" aria-current="page">Detalle Cliente</li>
                             </ol>
                             </nav>
@@ -39,43 +35,57 @@
                             <div class="col-6">
                               <div class="input-style-1">
                                 <label>Nombre</label>
-                                <input type="text" value="{{ $customer->name ?? old('name') }}" name="name" readonly>
+                                <input type="text" value="{{ $user->name ?? old('name') }}" name="name" readonly>
                               </div>
                             </div>
                             <!-- end col -->
                             <div class="col-6">
                               <div class="input-style-1">
+                                <label>Apellidos</label>
+                                <input type="text" value="{{ $user->last_name ?? old('last_name') }}" name="last_name" readonly>
+                              </div>
+                            </div>
+                            <!-- end col -->
+                            <div class="col-6">
+                                <div class="input-style-1">
+                                    <label>Email</label>
+                                    <input type="email" readonly value="{{ $user->email ?? old('email') }}" name="email">
+                                </div>
+                            </div>
+                            <!-- end col -->
+                            <div class="col-6">
+                              <div class="input-style-1">
                                 <label>Teléfono</label>
-                                <input type="text" value="{{ $customer->phone ?? old('phone') }}" name="phone" readonly>
+                                <input type="text" name="phone" id="phone" value="{{ $user->phone ?? old('phone') }}" readonly>
+                              </div>
+                            </div>
+                            <!-- end col -->
+                            <div class="col-6">
+                              <div class="input-style-1">
+                                <label>Rol Asignado</label>
+                                <input type="text" name="userRole" value="{{ $userRole ?? old('userRole') }}" readonly>
+                              </div>
+                            </div>
+                            <!-- end col -->
+                            <div class="col-6">
+                              <div class="input-style-1">
+                                <label>Doc Identidad</label>
+                                <input type="text" name="ci" value="{{ $user->ci ?? old('ci') }}"readonly>
                               </div>
                             </div>
                             <!-- end col -->
                             <div class="col-12">
-                                <div class="input-style-1">
-                                    <label>Dirección</label>
-                                    <input type="text" value="{{ $customer->address ?? old('address') }}" name="address" readonly>
-                                </div>
-                            </div>
-                            <!-- end col -->
-                            <div class="col-6">
-                                <div class="input-style-1">
-                                  <label>Access Key</label>
-                                  <input type="text" name="access_key" value="{{ $customer->access_key ?? old('access_key') }}" readonly>
-                                </div>
-                             </div>
-                            <!-- end col -->
-                            <div class="col-6">
-                                <div class="input-style-1">
-                                  <label>Puid</label>
-                                  <input type="text" name="puid" value="{{ $customer->puid ?? old('puid') }}" readonly>
-                                </div>
+                              <div class="input-style-1">
+                                <label>Dirección</label>
+                                <input type="text" name="address" value="{{ $user->address ?? old('address') }}" readonly>
+                              </div>
                             </div>
                             <!-- end col -->
                             <div class="col-12">
                                 <div class="button-groupd-flexjustify-content-centerflex-wrap">
-                                    <a class="main-btn danger-btn-outline m-2" href="/admin/customers">Back</a>
+                                    <a class="main-btn danger-btn-outline m-2" href="/admin/customers">Atrás</a>
                                 </div>
-                              </div>
+                            </div>
                         </div>
                       </form>
                     </div>

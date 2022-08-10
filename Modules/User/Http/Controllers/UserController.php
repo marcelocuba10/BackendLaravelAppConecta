@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 //use Illuminate\Routing\Controller;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Modules\User\Entities\User;
@@ -38,10 +39,14 @@ class UserController extends Controller
 
     public function create()
     {
+        /** get current user role */
+        $arrayCurrentUserRole = Auth::user()->roles->pluck('name');
+        $currentUserRole = $arrayCurrentUserRole[0];
+
         $user = null;
         $roles = Role::where('guard_name', '=', 'web')->pluck('name', 'name')->all(); //get all roles to send only names to form
         $userRole = null; //set null for select form not compare with others roles
-        return view('user::users.create', compact('user', 'roles', 'userRole'));
+        return view('user::users.create', compact('user', 'roles', 'userRole', 'currentUserRole'));
     }
 
     public function store(Request $request)
@@ -99,6 +104,10 @@ class UserController extends Controller
 
     public function edit($id)
     {
+        /** get current user role */
+        $arrayCurrentUserRole = Auth::user()->roles->pluck('name');
+        $currentUserRole = $arrayCurrentUserRole[0];
+
         $user = User::find($id);
         $roles = Role::where('guard_name', '=', 'web')->pluck('name', 'name')->all(); #get all roles to send only names to form
         //$roles = Role::all(); //get all roles to send array to form
@@ -110,13 +119,16 @@ class UserController extends Controller
             $userRole = $userRoleArray[0]; //get only name of the role
         }
 
-        return view('user::users.edit', compact('user', 'roles', 'userRole'));
+        return view('user::users.edit', compact('user', 'roles', 'userRole', 'currentUserRole'));
     }
 
     public function editProfile($id)
     {
-        $user = User::find($id);
+        /** get current user role */
+        $arrayCurrentUserRole = Auth::user()->roles->pluck('name');
+        $currentUserRole = $arrayCurrentUserRole[0];
 
+        $user = User::find($id);
         $roles = Role::where('guard_name', '=', 'web')->pluck('name', 'name')->all(); #get all roles to send only names to form
         //$roles = Role::all(); //get all roles to send array to form
         $userRoleArray = $user->roles->pluck('name')->toArray(); //get user assigned role
@@ -127,7 +139,7 @@ class UserController extends Controller
             $userRole = $userRoleArray[0]; //get only name of the role
         }
 
-        return view('user::users.editProfile', compact('user', 'roles', 'userRole'));
+        return view('user::users.editProfile', compact('user', 'roles', 'userRole','currentUserRole'));
     }
 
     public function update(Request $request, $id)

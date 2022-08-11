@@ -35,12 +35,3 @@
         </div>
     </div>      
 @endif
-
-<script>
-$(document).ready(function() {
-    // show the alert
-    setTimeout(function() {
-        $(".alert-success").alert('close');
-    }, 2500);
-});
-</script>

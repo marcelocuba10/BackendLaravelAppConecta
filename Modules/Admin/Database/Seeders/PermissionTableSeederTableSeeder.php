@@ -22,6 +22,11 @@ class PermissionTableSeederTableSeeder extends Seeder
             'role-sa-edit',
             'role-sa-delete',
 
+            'plan-sa-list',
+            'plan-sa-create',
+            'plan-sa-edit',
+            'plan-sa-delete',
+
             'permission-sa-list',
             'permission-sa-create',
             'permission-sa-edit',

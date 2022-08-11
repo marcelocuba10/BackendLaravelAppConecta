@@ -83,7 +83,10 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.min.js" integrity="sha384-kjU+l4N0Yf4ZOJErLsIcvOU2qSb74wXpOhqTvwVx3OElZRweTnQ6d31fXEoRD1Jy" crossorigin="anonymous"></script>
 
   <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-    
+
+  <!--jquery-maskmoney-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-maskmoney/3.0.2/jquery.maskMoney.min.js" type="text/javascript"></script>
+  
   <script>
 
     // const navLinks = document.querySelectorAll('.nav-item')
@@ -109,7 +112,7 @@
             // Number delimiter -> "12.345.678"
             delimiter: '.',
             // Money unit -> "R$ 12.345.678,90"
-            //unit: 'G$',
+            unit: 'G$',
             // Money unit -> "12.345.678,90 R$"
             //suffixUnit: 'GS',
             // Force type only number instead decimal,

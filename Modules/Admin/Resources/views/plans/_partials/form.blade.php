@@ -10,7 +10,7 @@
     <div class="col-6">
       <div class="input-style-1">
         <label>Precio</label>
-        <input type="text" id="currency" name="price" class="bg-transparent" value="{{ $plan->price ?? old('price') }}">
+        <input type="text" id="currency" name="price" class="custom4 bg-transparent" value="{{ $plan->price ?? old('price') }}">
       </div>
     </div>
     <!-- end col -->
@@ -21,3 +21,13 @@
       </div>
     </div>
 </div>
+
+<script>
+$(function() {
+    $('#currency').maskMoney({
+      precision: 3,
+      thousands: '.',
+      decimal: '.'
+    });
+  })
+</script>

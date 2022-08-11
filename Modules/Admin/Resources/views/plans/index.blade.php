@@ -70,7 +70,7 @@
                         <tr>
                             <td class="text-sm"><h6 class="text-sm">#{{ ++$i }}</h6></td>
                             <td class="min-width"><p>{{ $plan->name }}</p></td>
-                            <td class="min-width"><p>{{ $plan->price }}</p></td>
+                            <td class="min-width"><p>G$ {{number_format($plan->price, 3)}}</p></td>
                             <td class="text-right">
                                 <div class="btn-group">
                                     <div class="action">

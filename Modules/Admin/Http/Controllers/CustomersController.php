@@ -136,7 +136,10 @@ class CustomersController extends Controller
 
         $user = User::find($id);
         $user->update($input);
-        DB::table('model_has_roles')->where('model_id', $id)->delete();
+
+        DB::table('model_has_roles')
+            ->where('model_id', $id)
+            ->delete();
 
         $user->syncRoles($request->input('roles'));
         $user->assignRole($request->input('roles'));

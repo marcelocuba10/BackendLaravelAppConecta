@@ -13,6 +13,8 @@ class Plans extends Model
         'name',
         'price',
     ];
+
+    protected $casts = ['price' => 'float'];
     
     protected static function newFactory()
     {

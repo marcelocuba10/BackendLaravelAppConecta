@@ -69,7 +69,18 @@
                             <!-- end col -->
                             <div class="col-6">
                               <div class="input-style-1">
-                                <label>(*) Plan Asignado</label>
+                                <label>Status</label>
+                                @foreach ($status as $value)
+                                  @if ($value[0] == $user->idMaster)
+                                    <input type="text" value="{{ $value[1] ?? old('idMaster') }}" name="idMaster" readonly >
+                                  @endif
+                                @endforeach 
+                              </div>
+                            </div>
+                            <!-- end col -->
+                            <div class="col-4">
+                              <div class="input-style-1">
+                                <label>Plan Asignado</label>
                                 @foreach ($plans as $plan)
                                   @if( $plan->id == $user->plan_id)
                                     <input type="text" value="{{ $plan->name }}" name="plan_id" readonly>   
@@ -78,14 +89,14 @@
                               </div>
                             </div>
                             <!-- end col -->
-                            <div class="col-6">
+                            <div class="col-4">
                               <div class="input-style-1">
                                 <label>Fecha de Facturación</label>
                                 <input type="text" value="{{ $user->exp_date_plan }}" name="exp_date_plan" readonly>   
                               </div>
                             </div>
                             <!-- end col -->
-                            <div class="col-6">
+                            <div class="col-4">
                               <div class="input-style-1">
                                 <label>Doc Identidad</label>
                                 <input type="text" name="ci" value="{{ $user->ci ?? old('ci') }}"readonly>

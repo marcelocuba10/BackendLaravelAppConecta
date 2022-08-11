@@ -40,7 +40,13 @@ class CustomersController extends Controller
         $arrayCurrentUserRole = Auth::user()->roles->pluck('name');
         $currentUserRole = $arrayCurrentUserRole[0];
 
-        $status = [0, 1];
+        //$status = [0, 1];
+
+        $status = array(
+            array('0','Inhabilitado'),
+            array('1','Habilitado')
+        );
+
         $days = [1, 5, 10, 15, 20, 25, 30];
 
         $user = null;
@@ -87,6 +93,11 @@ class CustomersController extends Controller
         $userRoleArray = $user->roles->pluck('name')->toArray(); //get user assigned role
         $plans = DB::table('plans')->get();
 
+        $status = array(
+            array('0','Inhabilitado'),
+            array('1','Habilitado')
+        );
+
         //I use this if to capture only the name of the role, otherwise it would bring me the entire array
         if (empty($userRoleArray)) {
             $userRole = null;
@@ -94,7 +105,7 @@ class CustomersController extends Controller
             $userRole = $userRoleArray[0]; //name rol in position [0] of the array
         }
 
-        return view('admin::customers.show', compact('user', 'userRole','plans'));
+        return view('admin::customers.show', compact('user', 'userRole','plans','status'));
     }
 
     public function edit($id)
@@ -103,7 +114,10 @@ class CustomersController extends Controller
         $arrayCurrentUserRole = Auth::user()->roles->pluck('name');
         $currentUserRole = $arrayCurrentUserRole[0];
 
-        $status = [0, 1];
+        $status = array(
+            array('0','Inhabilitado'),
+            array('1','Habilitado')
+        );
         $days = [1, 5, 10, 15, 20, 25, 30];
 
         $user = User::find($id);

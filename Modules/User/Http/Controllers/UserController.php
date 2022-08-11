@@ -10,6 +10,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Modules\User\Entities\Customers;
 use Modules\User\Entities\User;
 use Modules\User\Http\Requests\UpdateRequest;
 
@@ -84,7 +85,7 @@ class UserController extends Controller
             $userRole = $userRoleArray[0]; //name rol in position [0] of the array
         }
 
-        return view('user::users.show', compact('user', 'userRole','plans'));
+        return view('user::users.show', compact('user', 'userRole', 'plans'));
     }
 
     public function showProfile($id)
@@ -93,6 +94,12 @@ class UserController extends Controller
         $roles = Role::where('guard_name', '=', 'web')->pluck('name', 'name')->all(); //get all roles to send only names to form
         $userRoleArray = $user->roles->pluck('name')->toArray(); //get user assigned role
 
+        /** get current user role */
+        $arrayCurrentUserRole = Auth::user()->roles->pluck('name');
+        $currentUserRole = $arrayCurrentUserRole[0];
+
+        $cant_customers = Customers::count();
+
         //I use this if to capture only the name of the role, otherwise it would bring me the entire array
         if (empty($userRoleArray)) {
             $userRole = null;
@@ -100,7 +107,7 @@ class UserController extends Controller
             $userRole = $userRoleArray[0]; //name rol in position [0] of the array
         }
 
-        return view('user::users.profile', compact('user', 'userRole'));
+        return view('user::users.profile', compact('user', 'userRole', 'cant_customers','currentUserRole'));
     }
 
     public function edit($id)
@@ -134,13 +141,15 @@ class UserController extends Controller
         //$roles = Role::all(); //get all roles to send array to form
         $userRoleArray = $user->roles->pluck('name')->toArray(); //get user assigned role
 
+        $plans = DB::table('plans')->get();
+
         if (empty($userRoleArray)) {
             $userRole = null;
         } else {
             $userRole = $userRoleArray[0]; //get only name of the role
         }
 
-        return view('user::users.editProfile', compact('user', 'roles', 'userRole','currentUserRole'));
+        return view('user::users.editProfile', compact('user', 'roles', 'userRole', 'currentUserRole', 'plans'));
     }
 
     public function update(Request $request, $id)
@@ -178,7 +187,6 @@ class UserController extends Controller
 
     public function updateProfile($id, Request $request)
     {
-
         $this->validate($request, [
             'name' => 'required|max:20|min:5',
             'last_name' => 'required|max:20|min:5',
@@ -201,6 +209,9 @@ class UserController extends Controller
         }
 
         $user = User::find($id);
+        /** keep the plan_id assigned */
+        $input['plan_id'] = $user->plan_id;
+
         $user->update($input);
         DB::table('model_has_roles')->where('model_id', $id)->delete();
 

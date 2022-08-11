@@ -69,6 +69,24 @@
                             <!-- end col -->
                             <div class="col-6">
                               <div class="input-style-1">
+                                <label>(*) Plan Asignado</label>
+                                @foreach ($plans as $plan)
+                                  @if( $plan->id == $user->plan_id)
+                                    <input type="text" value="{{ $plan->name }}" name="plan_id" readonly>   
+                                  @endif   
+                                @endforeach 
+                              </div>
+                            </div>
+                            <!-- end col -->
+                            <div class="col-6">
+                              <div class="input-style-1">
+                                <label>Fecha de Facturación</label>
+                                <input type="text" value="{{ $user->exp_date_plan }}" name="exp_date_plan" readonly>   
+                              </div>
+                            </div>
+                            <!-- end col -->
+                            <div class="col-6">
+                              <div class="input-style-1">
                                 <label>Doc Identidad</label>
                                 <input type="text" name="ci" value="{{ $user->ci ?? old('ci') }}"readonly>
                               </div>

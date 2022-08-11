@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Modules\Admin\Entities\Plans;
 use Modules\User\Entities\User;
 //spatie
 use Spatie\Permission\Models\Role;
@@ -40,19 +41,25 @@ class CustomersController extends Controller
         $currentUserRole = $arrayCurrentUserRole[0];
 
         $status = [0, 1];
+        $days = [1, 5, 10, 15, 20, 25, 30];
 
         $user = null;
         $idMaster = null;
 
+        $plans = DB::table('plans')->get();
+
         $roles = Role::where('guard_name', '=', 'web')->pluck('name', 'name')->all(); //get all roles to send only names to form
         $userRole = null; //set null for select form not compare with others roles
-        return view('admin::customers.create', compact('user', 'roles', 'userRole', 'currentUserRole', 'status', 'idMaster'));
+        $userPlan = null; //set null for select form not compare with others plans
+        $user_exp_date_plan = null; //set null for select form not compare with others days
+
+        return view('admin::customers.create', compact('user', 'roles', 'plans', 'userRole', 'userPlan', 'currentUserRole', 'status', 'idMaster', 'days', 'user_exp_date_plan'));
     }
 
     public function store(Request $request)
     {
         $this->validate($request, [
-            'idMaster' => 'required|int',
+            'idMaster' => 'required|integer|between:0,1',
             'name' => 'required|max:20|min:5',
             'last_name' => 'required|max:20|min:5',
             'email' => 'required|email|unique:users,email',
@@ -60,7 +67,9 @@ class CustomersController extends Controller
             'ci' => 'required|max:8|min:5',
             'password' => 'required|max:20|min:5',
             'confirm_password' => 'required|max:20|min:5|same:password',
-            'roles' => 'required'
+            'roles' => 'required',
+            'plan_id' => 'required|integer',
+            'exp_date_plan' => 'required|integer|between:1,30',
         ]);
 
         $input = $request->all();
@@ -76,6 +85,7 @@ class CustomersController extends Controller
         $user = User::find($id);
         $roles = Role::where('guard_name', '=', 'web')->pluck('name', 'name')->all(); //get all roles to send only names to form
         $userRoleArray = $user->roles->pluck('name')->toArray(); //get user assigned role
+        $plans = DB::table('plans')->get();
 
         //I use this if to capture only the name of the role, otherwise it would bring me the entire array
         if (empty($userRoleArray)) {
@@ -84,7 +94,7 @@ class CustomersController extends Controller
             $userRole = $userRoleArray[0]; //name rol in position [0] of the array
         }
 
-        return view('admin::customers.show', compact('user', 'userRole'));
+        return view('admin::customers.show', compact('user', 'userRole','plans'));
     }
 
     public function edit($id)
@@ -94,9 +104,15 @@ class CustomersController extends Controller
         $currentUserRole = $arrayCurrentUserRole[0];
 
         $status = [0, 1];
+        $days = [1, 5, 10, 15, 20, 25, 30];
 
         $user = User::find($id);
         $idMaster = $user->idMaster;
+
+        $plans = DB::table('plans')->get();
+
+        $userPlan = $user->plan_id; //set null for select form not compare with others plans
+        $user_exp_date_plan = $user->exp_date_plan; //set null for select form not compare with others days
 
         $roles = Role::where('guard_name', '=', 'web')->pluck('name', 'name')->all(); #get all roles to send only names to form
         $userRoleArray = $user->roles->pluck('name')->toArray(); //get user assigned role
@@ -107,13 +123,13 @@ class CustomersController extends Controller
             $userRole = $userRoleArray[0]; //get only name of the role
         }
 
-        return view('admin::customers.edit', compact('user', 'roles', 'userRole', 'currentUserRole', 'status', 'idMaster'));
+        return view('admin::customers.edit', compact('user', 'roles', 'plans', 'days', 'userRole', 'userPlan', 'currentUserRole', 'user_exp_date_plan', 'status', 'idMaster'));
     }
 
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'idMaster' => 'required|int',
+            'idMaster' => 'required|integer|between:0,1',
             'name' => 'required|max:20|min:5',
             'last_name' => 'required|max:20|min:5',
             'email' => 'required|email|unique:users,email,' . $id,
@@ -121,7 +137,9 @@ class CustomersController extends Controller
             'ci' => 'required|max:8|min:5',
             'password' => 'nullable|max:20|min:5',
             'confirm_password' => 'nullable|max:20|min:5|same:password',
-            'roles' => 'required'
+            'roles' => 'required',
+            'plan_id' => 'required|integer',
+            'exp_date_plan' => 'required|integer|between:1,30',
         ]);
 
         $input = $request->all();

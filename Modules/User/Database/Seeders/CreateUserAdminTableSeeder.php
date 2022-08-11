@@ -22,6 +22,7 @@ class CreateUserAdminTableSeeder extends Seeder
         Model::unguard();
 
         $user =  User::create([
+            'idMaster' => 1,
             'name' => 'User teste',
             'last_name' => 'teste',
             'phone' => '168451212',

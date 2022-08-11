@@ -75,6 +75,7 @@ class UserController extends Controller
         $user = User::find($id);
         $roles = Role::where('guard_name', '=', 'web')->pluck('name', 'name')->all(); //get all roles to send only names to form
         $userRoleArray = $user->roles->pluck('name')->toArray(); //get user assigned role
+        $plans = DB::table('plans')->get();
 
         //I use this if to capture only the name of the role, otherwise it would bring me the entire array
         if (empty($userRoleArray)) {
@@ -83,7 +84,7 @@ class UserController extends Controller
             $userRole = $userRoleArray[0]; //name rol in position [0] of the array
         }
 
-        return view('user::users.show', compact('user', 'userRole'));
+        return view('user::users.show', compact('user', 'userRole','plans'));
     }
 
     public function showProfile($id)

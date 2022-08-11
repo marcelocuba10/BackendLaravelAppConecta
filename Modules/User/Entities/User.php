@@ -28,8 +28,9 @@ class User extends Authenticatable
         'email',
         'ci',
         'password',
+        'exp_date_plan',
+        'plan_id',
         'terms',
-
         'company_name',
         'manager',
         'ruc',

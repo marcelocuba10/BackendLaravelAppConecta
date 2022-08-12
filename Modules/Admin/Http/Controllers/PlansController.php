@@ -22,7 +22,10 @@ class PlansController extends Controller
 
     public function index()
     {
-        $plans = DB::table('plans')->paginate(10);
+        $plans = DB::table('plans')
+            ->orderBy('created_at', 'DESC')
+            ->paginate(10);
+
         return view('admin::plans.index', compact('plans'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
@@ -34,11 +37,15 @@ class PlansController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|max:20|min:5',
-            'price' => 'required',
+            'name' => 'required|regex:/^[\p{L}\s-]+$/u|max:20|min:5|unique:plans,name',
+            'price' => 'required|max:13|min:4',
         ]);
 
-        Plans::create($request->all());
+        //remove the separator thousands
+        $input = $request->all();
+        $input['price'] = str_replace('.', '', $input['price']);
+
+        Plans::create($input);
 
         return redirect()->to('/admin/plans')->with('message', 'Plan created successfully.');
     }
@@ -64,12 +71,16 @@ class PlansController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => 'required|max:20|min:5',
-            'price' => 'required',
+            'name' => 'required|regex:/^[\p{L}\s-]+$/u|max:20|min:5|unique:plans,name,'.$id,
+            'price' => 'required|max:13|min:4',
         ]);
 
+        //remove the separator thousands
+        $input = $request->all();
+        $input['price'] = str_replace('.', '', $input['price']);
+
         $plan = Plans::find($id);
-        $plan->update($request->all());
+        $plan->update($input);
 
         return redirect()->to('/admin/plans')->with('message', 'Plan updated successfully.');
     }

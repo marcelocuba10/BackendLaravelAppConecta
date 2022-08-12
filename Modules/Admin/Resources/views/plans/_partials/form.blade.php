@@ -21,13 +21,3 @@
       </div>
     </div>
 </div>
-
-<script>
-$(function() {
-    $('#currency').maskMoney({
-      precision: 3,
-      thousands: '.',
-      decimal: '.'
-    });
-  })
-</script>

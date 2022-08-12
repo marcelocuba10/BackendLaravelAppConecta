@@ -68,6 +68,15 @@
   <!-- ========= Scripts ======== -->
   <script>
 
+    /** ========= InputMask Currency ======== **/
+    $(function() {
+        $('#currency').maskMoney({
+          precision: 3,
+          thousands: '.',
+          decimal: '.'
+        });
+    })
+
     /** ========= Alert hide ======== **/
     $(document).ready(function() {
         setTimeout(function() {

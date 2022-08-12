@@ -33,9 +33,17 @@ class UserController extends Controller
 
     public function index()
     {
-        $users = User::latest()->paginate(10);
+        $currentUser = Auth::user();
+        $currentUserId = $currentUser->id;
+        $idReference = $currentUser->idReference;
 
-        return view('user::users.index', compact('users'))->with('i', (request()->input('page', 1) - 1) * 10);
+        $users = DB::table('users')
+            ->where('idReference', '=', $idReference)
+            ->select('id', 'name', 'idReference', 'idMaster', 'email')
+            ->orderBy('created_at', 'DESC')
+            ->paginate(10);
+
+        return view('user::users.index', compact('users', 'currentUserId'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
     public function create()
@@ -44,10 +52,21 @@ class UserController extends Controller
         $arrayCurrentUserRole = Auth::user()->roles->pluck('name');
         $currentUserRole = $arrayCurrentUserRole[0];
 
+        $status = array(
+            array('0', 'Inhabilitado'),
+            array('1', 'Habilitado')
+        );
+
         $user = null;
-        $roles = Role::where('guard_name', '=', 'web')->pluck('name', 'name')->all(); //get all roles to send only names to form
+        $idMaster = null;
+
+        $roles = Role::where('guard_name', '=', 'web')
+            ->where('name', '!=', 'Admin')
+            ->pluck('name', 'name')
+            ->all();
+
         $userRole = null; //set null for select form not compare with others roles
-        return view('user::users.create', compact('user', 'roles', 'userRole', 'currentUserRole'));
+        return view('user::users.create', compact('user', 'roles', 'userRole', 'currentUserRole', 'status', 'idMaster'));
     }
 
     public function store(Request $request)
@@ -57,13 +76,18 @@ class UserController extends Controller
             'last_name' => 'required|max:20|min:5',
             'email' => 'required|email|unique:users,email',
             'phone' => 'nullable|max:20|min:5',
-            'ci' => 'required|max:8|min:5',
+            'ci' => 'required|max:8|min:5|unique:users,ci',
             'password' => 'required|max:20|min:5',
             'confirm_password' => 'required|max:20|min:5|same:password',
             'roles' => 'required'
         ]);
 
         $input = $request->all();
+
+        $user = Auth::user();
+        $input['idMaster'] = 1; //enable login
+        $input['plan_id'] = $user->plan_id;
+        $input['idReference'] = $user->idReference;
 
         $user = User::create($input);
         $user->assignRole($request->input('roles'));
@@ -74,7 +98,11 @@ class UserController extends Controller
     public function show($id)
     {
         $user = User::find($id);
-        $roles = Role::where('guard_name', '=', 'web')->pluck('name', 'name')->all(); //get all roles to send only names to form
+        $roles = Role::where('guard_name', '=', 'web')
+            ->where('name', '!=', 'Admin')
+            ->pluck('name', 'name')
+            ->all();
+
         $userRoleArray = $user->roles->pluck('name')->toArray(); //get user assigned role
         $plans = DB::table('plans')->get();
 
@@ -91,7 +119,11 @@ class UserController extends Controller
     public function showProfile($id)
     {
         $user = User::find($id);
-        $roles = Role::where('guard_name', '=', 'web')->pluck('name', 'name')->all(); //get all roles to send only names to form
+        $roles = Role::where('guard_name', '=', 'web')
+            ->where('name', '!=', 'Admin')
+            ->pluck('name', 'name')
+            ->all();
+
         $userRoleArray = $user->roles->pluck('name')->toArray(); //get user assigned role
 
         /** get current user role */
@@ -107,7 +139,7 @@ class UserController extends Controller
             $userRole = $userRoleArray[0]; //name rol in position [0] of the array
         }
 
-        return view('user::users.profile', compact('user', 'userRole', 'cant_customers','currentUserRole'));
+        return view('user::users.profile', compact('user', 'userRole', 'cant_customers', 'currentUserRole'));
     }
 
     public function edit($id)
@@ -116,9 +148,18 @@ class UserController extends Controller
         $arrayCurrentUserRole = Auth::user()->roles->pluck('name');
         $currentUserRole = $arrayCurrentUserRole[0];
 
+        $status = array(
+            array('0', 'Inhabilitado'),
+            array('1', 'Habilitado')
+        );
+
         $user = User::find($id);
-        $roles = Role::where('guard_name', '=', 'web')->pluck('name', 'name')->all(); #get all roles to send only names to form
-        //$roles = Role::all(); //get all roles to send array to form
+        $idMaster = $user->idMaster;
+        $roles = Role::where('guard_name', '=', 'web')
+            ->where('name', '!=', 'Admin')
+            ->pluck('name', 'name')
+            ->all();
+
         $userRoleArray = $user->roles->pluck('name')->toArray(); //get user assigned role
 
         if (empty($userRoleArray)) {
@@ -127,7 +168,7 @@ class UserController extends Controller
             $userRole = $userRoleArray[0]; //get only name of the role
         }
 
-        return view('user::users.edit', compact('user', 'roles', 'userRole', 'currentUserRole'));
+        return view('user::users.edit', compact('user', 'roles', 'userRole', 'currentUserRole', 'status', 'idMaster'));
     }
 
     public function editProfile($id)
@@ -137,8 +178,11 @@ class UserController extends Controller
         $currentUserRole = $arrayCurrentUserRole[0];
 
         $user = User::find($id);
-        $roles = Role::where('guard_name', '=', 'web')->pluck('name', 'name')->all(); #get all roles to send only names to form
-        //$roles = Role::all(); //get all roles to send array to form
+        $roles = Role::where('guard_name', '=', 'web')
+            ->where('name', '!=', 'Admin')
+            ->pluck('name', 'name')
+            ->all();
+
         $userRoleArray = $user->roles->pluck('name')->toArray(); //get user assigned role
 
         $plans = DB::table('plans')->get();
@@ -154,12 +198,17 @@ class UserController extends Controller
 
     public function update(Request $request, $id)
     {
+        /** get current user role */
+        $arrayCurrentUserRole = Auth::user()->roles->pluck('name');
+        $currentUserRole = $arrayCurrentUserRole[0];
+
         $this->validate($request, [
+            'idMaster' => 'required|integer|between:0,1',
             'name' => 'required|max:20|min:5',
             'last_name' => 'required|max:20|min:5',
             'email' => 'required|email|unique:users,email,' . $id,
             'phone' => 'nullable|max:20|min:5',
-            'ci' => 'required|max:8|min:5',
+            'ci' => 'required|max:8|min:5|unique:users,ci,' . $id,
             'password' => 'nullable|max:20|min:5',
             'confirm_password' => 'nullable|max:20|min:5|same:password',
             'roles' => 'required'
@@ -176,6 +225,10 @@ class UserController extends Controller
         }
 
         $user = User::find($id);
+        if ($currentUserRole != "Admin") {
+            $input['idMaster'] = $user->idMaster;
+        }
+
         $user->update($input);
         DB::table('model_has_roles')->where('model_id', $id)->delete();
 
@@ -192,7 +245,7 @@ class UserController extends Controller
             'last_name' => 'required|max:20|min:5',
             'email' => 'required|email|unique:users,email,' . $id,
             'phone' => 'nullable|max:20|min:5',
-            'ci' => 'required|max:8|min:5',
+            'ci' => 'required|max:8|min:5|unique:users,ci,' . $id,
             'password' => 'nullable|max:20|min:5',
             'confirm_password' => 'nullable|max:20|min:5|same:password',
             'roles' => 'required'

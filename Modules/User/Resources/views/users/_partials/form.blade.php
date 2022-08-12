@@ -63,14 +63,41 @@
       </div>
     @endif
     <!-- end col -->
-    <div class="col-6">
+    @if ($currentUserRole == 'Admin')
+      <div class="col-4">
+        <div class="select-style-1">
+          <label>(*) Status</label>
+          <div class="select-position">
+            <select name="idMaster">
+              @foreach ($status as $value)
+                <option value="{{ $value[0] }}" {{ ( $value[0] == $idMaster) ? 'selected' : '' }}> {{ $value[1] }} </option>
+              @endforeach 
+            </select>
+          </div>
+        </div>
+      </div>
+    @else
+      <div class="col-4">
+        <div class="input-style-1">
+          <label>(*) Status</label>
+          @foreach ($status as $value)
+            @if ($value[0] == $idMaster)
+              <input type="text" placeholder="{{ $value[1] }}" readonly >
+              <input type="text" value="{{ $value[0] }}" name="idMaster" readonly style="display: none;">
+            @endif
+          @endforeach 
+        </div>
+      </div>
+    @endif
+    <!-- end col -->
+    <div class="col-4">
       <div class="input-style-1">
         <label>Teléfono</label>
         <input type="text" name="phone" id="phone" value="{{ $user->phone ?? old('phone') }}" class="bg-transparent">
       </div>
     </div>
     <!-- end col -->
-    <div class="col-6">
+    <div class="col-4">
       <div class="input-style-1">
         <label>(*) Doc Identidad</label>
         <input type="text" name="ci" value="{{ $user->ci ?? old('ci') }}" class="bg-transparent">

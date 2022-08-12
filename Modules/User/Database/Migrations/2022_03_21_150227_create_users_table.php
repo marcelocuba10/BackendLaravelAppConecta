@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\DB;
 
 class CreateUsersTable extends Migration
 {
@@ -16,6 +17,7 @@ class CreateUsersTable extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->integer('idMaster')->default(0);
+            $table->integer('idReference')->unique();
             $table->string('name');
             $table->string('last_name')->nullable();
             $table->string('phone')->nullable();
@@ -32,7 +34,7 @@ class CreateUsersTable extends Migration
             $table->timestamps();
         });
 
-        DB::statement("ALTER TABLE users AUTO_INCREMENT = 1;");
+        DB::statement("ALTER TABLE users AUTO_INCREMENT = 100;");
     }
 
     /**

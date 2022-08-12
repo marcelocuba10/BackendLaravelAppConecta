@@ -85,15 +85,17 @@
                                         </a>
                                     </div>
                                     @can('user-sa-edit')
-                                    <div class="action">
-                                        <a href="/admin/users/edit/{{$user->id}}">
-                                            <button class="text-info">
-                                                <i class="lni lni-pencil"></i>
-                                            </button>
-                                        </a>
-                                    </div>
+                                    @if ($currentUserId != $user->id)
+                                      <div class="action">
+                                          <a href="/admin/users/edit/{{$user->id}}">
+                                              <button class="text-info">
+                                                  <i class="lni lni-pencil"></i>
+                                              </button>
+                                          </a>
+                                      </div>
+                                    @endif  
                                     @endcan
-                                    @can('user-sa-delete')
+                                    {{-- @can('user-sa-delete')
                                     <form method="POST" action="/admin/users/delete/{{$user->id}}">
                                         @csrf
                                         <div class="action">
@@ -103,7 +105,7 @@
                                             </button>
                                         </div>
                                     </form>
-                                    @endcan
+                                    @endcan --}}
                                 </div>
                             </td>
                         </tr>

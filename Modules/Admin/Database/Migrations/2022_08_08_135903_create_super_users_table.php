@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\DB;
 
 class CreateSuperUsersTable extends Migration
 {
@@ -27,6 +28,8 @@ class CreateSuperUsersTable extends Migration
             $table->rememberToken();
             $table->timestamps();
         });
+
+        DB::statement("ALTER TABLE super_users AUTO_INCREMENT = 1000;");
     }
 
     /**

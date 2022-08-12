@@ -28,9 +28,10 @@ class UsersController extends Controller
 
     public function index()
     {
+        $currentUserId = Auth::id();
         $users = SuperUser::latest()->paginate(10);
 
-        return view('admin::users.index', compact('users'))->with('i', (request()->input('page', 1) - 1) * 10);
+        return view('admin::users.index', compact('users', 'currentUserId'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
     public function create()

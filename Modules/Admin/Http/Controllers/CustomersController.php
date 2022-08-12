@@ -29,7 +29,11 @@ class CustomersController extends Controller
 
     public function index()
     {
-        $users = User::latest()->paginate(10);
+        $users = DB::table('users')
+            ->where('exp_date_plan','!=','')
+            ->select('id', 'name', 'idReference', 'idMaster', 'email')
+            ->orderBy('created_at','DESC')
+            ->paginate(10);
 
         return view('admin::customers.index', compact('users'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
@@ -40,11 +44,9 @@ class CustomersController extends Controller
         $arrayCurrentUserRole = Auth::user()->roles->pluck('name');
         $currentUserRole = $arrayCurrentUserRole[0];
 
-        //$status = [0, 1];
-
         $status = array(
-            array('0','Inhabilitado'),
-            array('1','Habilitado')
+            array('0', 'Inhabilitado'),
+            array('1', 'Habilitado')
         );
 
         $days = [1, 5, 10, 15, 20, 25, 30];
@@ -70,7 +72,7 @@ class CustomersController extends Controller
             'last_name' => 'required|max:20|min:5',
             'email' => 'required|email|unique:users,email',
             'phone' => 'nullable|max:20|min:5',
-            'ci' => 'required|max:8|min:5',
+            'ci' => 'required|max:8|min:5|unique:users,ci',
             'password' => 'required|max:20|min:5',
             'confirm_password' => 'required|max:20|min:5|same:password',
             'roles' => 'required',
@@ -80,10 +82,22 @@ class CustomersController extends Controller
 
         $input = $request->all();
 
+        // generate idReference unique and random
+        $input['idReference'] = $this->generateUniqueCode();
+
         $user = User::create($input);
         $user->assignRole($request->input('roles'));
 
         return redirect()->to('/admin/customers')->with('message', 'User created successfully.');
+    }
+
+    public function generateUniqueCode()
+    {
+        do {
+            $idReference = random_int(100000, 999999);
+        } while (User::where("idReference", "=", $idReference)->first());
+
+        return $idReference;
     }
 
     public function show($id)
@@ -94,8 +108,8 @@ class CustomersController extends Controller
         $plans = DB::table('plans')->get();
 
         $status = array(
-            array('0','Inhabilitado'),
-            array('1','Habilitado')
+            array('0', 'Inhabilitado'),
+            array('1', 'Habilitado')
         );
 
         //I use this if to capture only the name of the role, otherwise it would bring me the entire array
@@ -105,7 +119,7 @@ class CustomersController extends Controller
             $userRole = $userRoleArray[0]; //name rol in position [0] of the array
         }
 
-        return view('admin::customers.show', compact('user', 'userRole','plans','status'));
+        return view('admin::customers.show', compact('user', 'userRole', 'plans', 'status'));
     }
 
     public function edit($id)
@@ -115,9 +129,10 @@ class CustomersController extends Controller
         $currentUserRole = $arrayCurrentUserRole[0];
 
         $status = array(
-            array('0','Inhabilitado'),
-            array('1','Habilitado')
+            array('0', 'Inhabilitado'),
+            array('1', 'Habilitado')
         );
+
         $days = [1, 5, 10, 15, 20, 25, 30];
 
         $user = User::find($id);
@@ -148,7 +163,7 @@ class CustomersController extends Controller
             'last_name' => 'required|max:20|min:5',
             'email' => 'required|email|unique:users,email,' . $id,
             'phone' => 'nullable|max:20|min:5',
-            'ci' => 'required|max:8|min:5',
+            'ci' => 'required|max:8|min:5|unique:users,ci,' . $id,
             'password' => 'nullable|max:20|min:5',
             'confirm_password' => 'nullable|max:20|min:5|same:password',
             'roles' => 'required',

@@ -60,7 +60,7 @@
                       <tr>
                         <th class="sm"><h6 class="text-sm text-medium"></h6></th>
                         <th class="md"><h6>Nombre</h6></th>
-                        <th class="md"><h6>Apellidos</h6></th>
+                        <th class="md"><h6>Cod Referencia</h6></th>
                         <th class="md"><h6>Status</h6></th>
                         <th class="md"><h6>Email</h6></th>
                         <th class="md"><h6>Acciones</h6></th>
@@ -72,7 +72,7 @@
                         <tr>
                             <td class="min-width"><h6 class="text-sm">#{{ ++$i }}</h6></td>
                             <td class="min-width"><p>{{ $user->name }}</p></td>
-                            <td class="min-width"><p>{{ $user->last_name }}</p></td>
+                            <td class="min-width"><p>{{ $user->idReference }}</p></td>
                             <td class="min-width">
                               @if ($user->idMaster == 1)
                                 <p><span class="status-btn success-btn">Activado</span></p>
@@ -92,24 +92,28 @@
                                     </div>
                                     @can('user-edit')
                                     <div class="action">
-                                        <a href="{{ route('users.edit', $user->id) }}">
-                                            <button class="text-info">
-                                                <i class="lni lni-pencil"></i>
-                                            </button>
-                                        </a>
+                                        @if ($currentUserId != $user->id)
+                                          <a href="{{ route('users.edit', $user->id) }}">
+                                              <button class="text-info">
+                                                  <i class="lni lni-pencil"></i>
+                                              </button>
+                                          </a>
+                                        @endif  
                                     </div>
                                     @endcan
-                                    @can('user-delete')
-                                    <form method="POST" action="{{ route('users.destroy', $user->id) }}">
-                                        @csrf
-                                        <div class="action">
-                                            <input name="_method" type="hidden" value="DELETE">
-                                            <button type="submit" class="text-danger">
-                                              <i class="lni lni-trash-can"></i>
-                                            </button>
-                                        </div>
-                                    </form>
-                                    @endcan
+                                    {{-- @can('user-delete')
+                                    @if ($currentUserId != $user->id)
+                                      <form method="POST" action="{{ route('users.destroy', $user->id) }}">
+                                          @csrf
+                                          <div class="action">
+                                              <input name="_method" type="hidden" value="DELETE">
+                                              <button type="submit" class="text-danger">
+                                                <i class="lni lni-trash-can"></i>
+                                              </button>
+                                          </div>
+                                      </form>
+                                    @endif  
+                                    @endcan --}}
                                 </div>
                             </td>
                         </tr>

@@ -23,6 +23,7 @@ class CreateUserAdminTableSeeder extends Seeder
 
         $user =  User::create([
             'idMaster' => 1,
+            'idReference' => 192004,
             'name' => 'User teste',
             'last_name' => 'teste',
             'phone' => '168451212',

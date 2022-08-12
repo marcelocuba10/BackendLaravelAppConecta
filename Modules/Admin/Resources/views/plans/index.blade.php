@@ -89,7 +89,7 @@
                                         </a>
                                     </div>
                                     @endcan
-                                    @can('plan-sa-delete')
+                                    {{-- @can('plan-sa-delete')
                                     <form method="POST" action="/admin/plans/delete/{{$plan->id}}">
                                         @csrf
                                         <div class="action">
@@ -99,7 +99,7 @@
                                             </button>
                                         </div>
                                     </form>
-                                    @endcan
+                                    @endcan --}}
                                 </div>
                             </td>
                         </tr>

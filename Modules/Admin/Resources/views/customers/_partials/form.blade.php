@@ -52,6 +52,7 @@
               @endforeach 
             </select>
           </div>
+          <span class="form-text m-b-none">Seleccione "Admin" si es cliente, otros roles solo acceso</span>
         </div>
       </div>
     @else

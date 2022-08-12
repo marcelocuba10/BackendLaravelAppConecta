@@ -29,6 +29,7 @@
           </a>
         </li>
         @endcan
+        @can('plan-sa-list')
         <li class="nav-item {{ (request()->is('admin/plans')) ? 'active' : '' }}">
           <a href="/admin/plans">
             <span class="icon">
@@ -39,8 +40,10 @@
             <span class="text">Planes</span>
           </a>
         </li>
-        <li class="nav-item {{ (request()->is('admin/finance')) ? 'active' : '' }}">
-          <a href="#">
+        @endcan
+        @can('movement-sa-list')
+        <li class="nav-item {{ (request()->is('admin/financial')) ? 'active' : '' }}">
+          <a href="/admin/financial">
             <span class="icon">
               <svg style="width:24px;height:24px" viewBox="0 0 24 24">
                 <path fill="currentColor" d="M11.5,1L2,6V8H21V6M16,10V17H19V10M2,22H21V19H2M10,10V17H13V10M4,10V17H7V10H4Z" />
@@ -49,6 +52,7 @@
             <span class="text">Financiero</span>
           </a>
         </li>
+        @endcan
         <span class="divider">
           <hr />
         </span>

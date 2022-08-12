@@ -27,8 +27,8 @@ class LoginController extends Controller
         //$credentials = $request->getCredentials();
 
         $credentials = $request->validate([
-            'email' => 'required|email|min:6|max:30',
-            'password' => 'required|min:6|max:30'
+            'email' => 'required|email|min:6|max:100',
+            'password' => 'required|min:6|max:50'
         ]);
 
         $email = $request->input('email');

@@ -85,6 +85,20 @@ class CustomersController extends Controller
         // generate idReference unique and random
         $input['idReference'] = $this->generateUniqueCode();
 
+        // if ($input['role'] == "Admin") {
+        //     DB::table('financials')->insert(
+        //         [
+        //             'machine_id' => $id,
+        //             'name' => $machine['name'],
+        //             'status' => $machine['status'],
+        //             'customer_id' => $machine['customer_id'],
+        //             'user_id' => $machine['user_id'],
+        //             'observation' => $machine['observation'],
+        //             'created_at' => Carbon::now(),
+        //         ]
+        //     );
+        // }
+
         $user = User::create($input);
         $user->assignRole($request->input('roles'));
 

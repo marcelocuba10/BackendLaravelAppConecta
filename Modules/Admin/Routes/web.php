@@ -80,6 +80,18 @@ Route::prefix('admin')->group(function () {
             Route::get('/search', 'PlansController@search')->name('plans.search');
         });
 
+        /*** Financial Routes ***/
+        Route::group(['prefix' => 'financial'], function () {
+            Route::get('/', 'FinancialController@index')->name('financial.index');
+            Route::get('/create', 'FinancialController@create')->name('financial.create');
+            Route::post('/create', 'FinancialController@store')->name('financial.store');
+            Route::get('/show/{id}', 'FinancialController@show')->name('financial.show');
+            Route::get('/edit/{id}', 'FinancialController@edit')->name('financial.edit');
+            Route::put('/update/{id}', 'FinancialController@update')->name('financial.update');
+            Route::delete('/delete/{id}', 'FinancialController@destroy')->name('financial.destroy');
+            Route::get('/search', 'FinancialController@search')->name('financial.search');
+        });
+
         Route::group(['prefix' => 'machines'], function () {
             Route::any('/list', 'MachinesController@index_list')->name('machines.index_list');
             Route::any('/list_api', 'MachinesController@index_list_api')->name('machines.index_list_api');

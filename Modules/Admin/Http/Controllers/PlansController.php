@@ -38,7 +38,7 @@ class PlansController extends Controller
     {
         $request->validate([
             'name' => 'required|regex:/^[\p{L}\s-]+$/u|max:20|min:5|unique:plans,name',
-            'price' => 'required|max:13|min:6',
+            'price' => 'required|max:12|min:6',
         ]);
 
         //remove the separator thousands

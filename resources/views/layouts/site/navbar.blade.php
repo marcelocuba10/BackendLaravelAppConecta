@@ -259,12 +259,15 @@
                         @endauth
                 
                         @guest
-                            <a href="/user/login" class="text-base font-medium text-white hover:opacity-70 py-3 px-7 loginBtn ">
+                            {{-- <a href="/user/login" class="text-base font-medium text-white hover:opacity-70 py-3 px-7 loginBtn ">
+                                Iniciar Sesion
+                            </a> --}}
+                            <a href="/user/login" class="text-base font-medium text-white bg-white bg-opacity-20 rounded-lg py-3 px-6 hover:bg-opacity-100 hover:text-dark signUpBtn duration-300 ease-in-out">
                                 Iniciar Sesion
                             </a>
-                            <a href="#" class="text-base font-medium text-white bg-white bg-opacity-20 rounded-lg py-3 px-6 hover:bg-opacity-100 hover:text-dark signUpBtn duration-300 ease-in-out">
+                            {{-- <a href="#" class="text-base font-medium text-white bg-white bg-opacity-20 rounded-lg py-3 px-6 hover:bg-opacity-100 hover:text-dark signUpBtn duration-300 ease-in-out">
                                 Registrar Cuenta
-                            </a>
+                            </a> --}}
                         @endguest
                     </div>
                 </div>

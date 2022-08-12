@@ -15,13 +15,12 @@
         <!-- end col -->
         <div class="col-md-4">
           <div class="right">
-            <div class="table-search d-flex" style="margin-top: -35px;float: right;">
+            {{-- <div class="table-search d-flex" style="margin-top: -35px;float: right;">
               <form action="/#" method="POST">
                 @csrf
                 <input style="background-color: #fff;" id="search" type="text" name="search" value="{{ $search ?? '' }}" placeholder="Buscar cliente..">
-                <button type="text"><i class="lni lni-search-alt"></i></button>
               </form>   
-            </div>
+            </div> --}}
           </div>
         </div>
         <!-- end col -->
@@ -124,39 +123,41 @@
     var status="all";
 
     // capture characters from input
-    search = document.getElementById("search").value;
+    //search = document.getElementById("search").value;
 
     //teste search
-    $('#search').on('keyup', function(){
-      var keyword = $('#search').val();
-      //alert(keyword);
-      //search();
-    });
+    // $('#search').on('keyup', function(){
+    //   var keyword = $('#search').val();
+    //   //alert(keyword);
+    //   //search();
+    // });
 
-    // disable scroll if set filter or search not marked
-    if(search.length == 0 || filter == ""){
-      $(window).scroll(function() {
+    //disable scroll if set filter or search not marked
+    // if(search.length == 0 || filter == ""){
+
+    // }
+
+    $(window).scroll(function() {
         if($(window).scrollTop() + $(window).height() >= $(document).height()) {
             page++;
             loadMoreData(page,status);
         }
-      });
-    }
+    });
     
     // on load page
     $(document).ready(function(){  
+      checkPage(page,status);
+      // $(document).on("click", "#filter", function(){
+      //   filter = $(this).val();
+      //   alert('init loadFilter');
+      //   loadFilter();
+      //   loadMoreData(page,status)
+      // });
 
-      $(document).on("click", "#filter", function(){
-        filter = $(this).val();
-        //alert('init loadFilter');
-        //loadFilter();
-        //loadMoreData(page,status)
-      });
-
-      if(search.length == 0  && filter == null){
-        //loadMoreData(page);
-        checkPage(page,status);
-      }
+      // if(search.length == 0  && filter == null){
+      //   //loadMoreData(page);
+      //   checkPage(page,status);
+      // }
     });
 
     async function checkPage(){

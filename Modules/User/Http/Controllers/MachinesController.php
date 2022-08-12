@@ -71,15 +71,35 @@ class MachinesController extends Controller
         if ($customers->count() == 0) {
             $machines = null; //return null for break ajax scroll
         } else {
-            $machines = DB::table('machines_api')
-                ->select('machines_api.id', 'machines_api.worker_name', 'machines_api.status')
-                ->where('machines_api.customer_id', '=', $customers[0]->id)
-                ->orderBy('created_at', 'DESC')
-                ->take($customers[0]->total_machines)
-                ->get();
+            if ($customers[0]->access_key && $customers[0]->puid) {
+                $worker_stats = json_decode(file_get_contents('https://pool.api.btc.com/v1/worker/stats?access_key=' . $customers[0]->access_key . '&puid=' . $customers[0]->puid), true);
+
+                if ($worker_stats['err_no'] != 10010) {
+                    $machines = DB::table('machines_api')
+                        ->select('machines_api.id', 'machines_api.worker_name', 'machines_api.status')
+                        ->where('machines_api.customer_id', '=', $customers[0]->id)
+                        ->orderBy('created_at', 'DESC')
+                        ->take($worker_stats['data']['workers_total'])
+                        ->get();
+                } else {
+                    $machines = DB::table('machines_api')
+                        ->select('machines_api.id', 'machines_api.worker_name', 'machines_api.status')
+                        ->where('machines_api.customer_id', '=', $customers[0]->id)
+                        ->orderBy('created_at', 'DESC')
+                        ->take($customers[0]->total_machines)
+                        ->get();
+                }
+            } else {
+                $machines = DB::table('machines_api')
+                    ->select('machines_api.id', 'machines_api.worker_name', 'machines_api.status')
+                    ->where('machines_api.customer_id', '=', $customers[0]->id)
+                    ->orderBy('created_at', 'DESC')
+                    ->take($customers[0]->total_machines)
+                    ->get();
+            }
 
             /** if the user does not have any machine */
-            if ($machines->count() == 0) {
+            if ($machines->count() == 0 || $machines == null) {
                 $machines = null; //return null for break ajax scroll
             }
         }
@@ -168,7 +188,7 @@ class MachinesController extends Controller
             ->where('customers.name', 'LIKE', "%{$search}%")
             ->get();
 
-        return view('user::machines.results', compact('customers'))->with(['search' => $request->search])->render();    
+        return view('user::machines.results', compact('customers'))->with(['search' => $request->search])->render();
 
         // if ($request->ajax()) {
         //     $view = view('user::machines._partials.data', compact('customers', 'status'))->render();

@@ -17,7 +17,7 @@
     <div class="col-6">
         <div class="input-style-1">
             <label>(*) Email</label>
-            <input type="email" {{ ( $user ) ? 'readonly' : '' }} class="{{ (!$user) ? 'bg-transparent' : ''}}" value="{{ $user->email ?? old('email') }}" name="email">
+            <input type="email" class="bg-transparent" value="{{ $user->email ?? old('email') }}" name="email">
         </div>
     </div>
     <!-- end col -->

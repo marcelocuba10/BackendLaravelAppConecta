@@ -41,28 +41,12 @@
       </div>
     </div>
     <!-- end col -->
-    @if ($currentUserRole == 'SuperAdmin')
-      <div class="col-6">
-        <div class="select-style-1">
-          <label>(*) Rol</label>
-          <div class="select-position">
-            <select name="roles">
-              @foreach ($roles as $role)
-                <option value="{{ $role }}" {{ ( $role == $userRole) ? 'selected' : '' }}> {{ $role}} </option>
-              @endforeach 
-            </select>
-          </div>
-          <span class="form-text m-b-none">Seleccione "Admin" si es cliente, otros roles solo acceso</span>
-        </div>
+    <div class="col-6">
+      <div class="input-style-1">
+        <label>(*) Rol</label>
+        <input type="text" value="Admin" name="roles" readonly >
       </div>
-    @else
-      <div class="col-6">
-        <div class="input-style-1">
-          <label>(*) Rol</label>
-          <input type="text" value="{{ $userRole ?? old('userRole') }}" name="roles" readonly >
-        </div>
-      </div>
-    @endif
+    </div>
     <!-- end col -->
     @if ($currentUserRole == 'SuperAdmin')
       <div class="col-6">

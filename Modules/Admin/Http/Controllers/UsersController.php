@@ -49,13 +49,13 @@ class UsersController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required|max:20|min:5',
-            'last_name' => 'required|max:20|min:5',
+            'name' => 'required|max:50|min:5',
+            'last_name' => 'required|max:50|min:5',
             'email' => 'required|email|unique:super_users,email',
             'phone' => 'nullable|max:20|min:5',
             'ci' => 'required|max:8|min:5',
-            'password' => 'required|max:20|min:5',
-            'confirm_password' => 'required|max:20|min:5|same:password',
+            'password' => 'required|max:50|min:5',
+            'confirm_password' => 'required|max:50|min:5|same:password',
             'roles' => 'required'
         ]);
 
@@ -142,13 +142,13 @@ class UsersController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'name' => 'required|max:20|min:5',
-            'last_name' => 'required|max:20|min:5',
+            'name' => 'required|max:50|min:5',
+            'last_name' => 'required|max:50|min:5',
             'email' => 'required|email|unique:super_users,email,' . $id,
             'phone' => 'nullable|max:20|min:5',
             'ci' => 'required|max:8|min:5',
-            'password' => 'nullable|max:20|min:5',
-            'confirm_password' => 'nullable|max:20|min:5|same:password',
+            'password' => 'nullable|max:50|min:5',
+            'confirm_password' => 'nullable|max:50|min:5|same:password',
             'roles' => 'required'
         ]);
 
@@ -158,7 +158,7 @@ class UsersController extends Controller
             $input = Arr::except($input, array('password'));
         } else {
             if (empty($input['confirm_password'])) {
-                return redirect()->to('/admin/users/edit/profile/' . $id)->withErrors('Confirm password')->withInput();
+                return redirect()->to('/admin/users/edit/' . $id)->withErrors('Confirm password')->withInput();
             }
         }
 
@@ -175,13 +175,13 @@ class UsersController extends Controller
     public function updateProfile($id, Request $request)
     {
         $this->validate($request, [
-            'name' => 'required|max:20|min:5',
-            'last_name' => 'required|max:20|min:5',
+            'name' => 'required|max:50|min:5',
+            'last_name' => 'required|max:50|min:5',
             'email' => 'required|email|unique:super_users,email,' . $id,
             'phone' => 'nullable|max:20|min:5',
             'ci' => 'required|max:8|min:5',
-            'password' => 'nullable|max:20|min:5',
-            'confirm_password' => 'nullable|max:20|min:5|same:password',
+            'password' => 'nullable|max:50|min:5',
+            'confirm_password' => 'nullable|max:50|min:5|same:password',
             'roles' => 'required'
         ]);
 

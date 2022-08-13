@@ -30,9 +30,9 @@ class CustomersController extends Controller
     public function index()
     {
         $users = DB::table('users')
-            ->where('exp_date_plan','!=','')
+            ->where('exp_date_plan', '!=', '')
             ->select('id', 'name', 'idReference', 'idMaster', 'email')
-            ->orderBy('created_at','DESC')
+            ->orderBy('created_at', 'DESC')
             ->paginate(10);
 
         return view('admin::customers.index', compact('users'))->with('i', (request()->input('page', 1) - 1) * 10);
@@ -68,13 +68,13 @@ class CustomersController extends Controller
     {
         $this->validate($request, [
             'idMaster' => 'required|integer|between:0,1',
-            'name' => 'required|max:20|min:5',
-            'last_name' => 'required|max:20|min:5',
+            'name' => 'required|max:50|min:5',
+            'last_name' => 'required|max:50|min:5',
             'email' => 'required|email|unique:users,email',
             'phone' => 'nullable|max:20|min:5',
             'ci' => 'required|max:8|min:5|unique:users,ci',
-            'password' => 'required|max:20|min:5',
-            'confirm_password' => 'required|max:20|min:5|same:password',
+            'password' => 'required|max:50|min:5',
+            'confirm_password' => 'required|max:50|min:5|same:password',
             'roles' => 'required',
             'plan_id' => 'required|integer',
             'exp_date_plan' => 'required|integer|between:1,30',
@@ -84,6 +84,7 @@ class CustomersController extends Controller
 
         // generate idReference unique and random
         $input['idReference'] = $this->generateUniqueCode();
+        $input['roles'] = 'Admin';
 
         // if ($input['role'] == "Admin") {
         //     DB::table('financials')->insert(
@@ -173,12 +174,12 @@ class CustomersController extends Controller
     {
         $this->validate($request, [
             'idMaster' => 'required|integer|between:0,1',
-            'name' => 'required|max:20|min:5',
-            'last_name' => 'required|max:20|min:5',
+            'name' => 'required|max:50|min:5',
+            'last_name' => 'required|max:50|min:5',
             'email' => 'required|email|unique:users,email,' . $id,
-            'phone' => 'nullable|max:20|min:5',
+            'phone' => 'nullable|max:50|min:5',
             'ci' => 'required|max:8|min:5|unique:users,ci,' . $id,
-            'password' => 'nullable|max:20|min:5',
+            'password' => 'nullable|max:50|min:5',
             'confirm_password' => 'nullable|max:20|min:5|same:password',
             'roles' => 'required',
             'plan_id' => 'required|integer',
@@ -186,24 +187,25 @@ class CustomersController extends Controller
         ]);
 
         $input = $request->all();
+        $input['roles'] = 'Admin';
 
         if (empty($input['password'])) {
             $input = Arr::except($input, array('password'));
         } else {
             if (empty($input['confirm_password'])) {
-                return redirect()->route('users_.edit.profile', $id)->withErrors('Confirm password')->withInput();
+                return redirect()->to('/admin/customers/edit/' . $id)->withErrors('Confirm password')->withInput();
             }
         }
 
         $user = User::find($id);
         $user->update($input);
 
-        DB::table('model_has_roles')
-            ->where('model_id', $id)
-            ->delete();
+        // DB::table('model_has_roles')
+        //     ->where('model_id', $id)
+        //     ->delete();
 
-        $user->syncRoles($request->input('roles'));
-        $user->assignRole($request->input('roles'));
+        // $user->syncRoles($request->input('roles'));
+        // $user->assignRole($request->input('roles'));
 
         return redirect()->to('/admin/customers')->with('message', 'Registro actualizado correctamente');
     }

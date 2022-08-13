@@ -9,6 +9,21 @@ body {
   /* margin-bottom: 120px; */
 }
 
+body .login-admin {
+  background: linear-gradient(44deg, #343333, #626262, #000000, #242421);
+  /* background:  linear-gradient(44deg, #663399, #663399, #6699ff, #6699ff); */
+  background-size: 400% 400%;
+  animation: Gradient 10s ease infinite;
+  height: 100vh;
+  margin: 0;
+  font-family: 'Roboto Condensed', sans-serif;
+  /* margin-bottom: 120px; */
+}
+
+.login-admin{
+  background: linear-gradient(44deg, #343333, #626262, #6e6e6e, #5a5a5a);
+}
+
 .rwedrt{
   text-align: center;
   position: relative;

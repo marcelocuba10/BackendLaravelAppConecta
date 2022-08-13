@@ -207,17 +207,19 @@ class UsersController extends Controller
 
     public function search(Request $request)
     {
+        $currentUser = Auth::user();
+        $currentUserId = $currentUser->id;
         $search = $request->input('search');
 
         if ($search == '') {
-            $users = DB::table('users')->paginate(10);
+            $users = DB::table('super_users')->paginate(10);
         } else {
-            $users = DB::table('users')
-                ->where('users.name', 'LIKE', "%{$search}%")
+            $users = DB::table('super_users')
+                ->where('super_users.name', 'LIKE', "%{$search}%")
                 ->paginate();
         }
 
-        return view('admin::users.index', compact('users', 'search'))->with('i', (request()->input('page', 1) - 1) * 10);
+        return view('admin::users.index', compact('users', 'search','currentUserId'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
     public function destroy($id)

@@ -20,7 +20,6 @@
               <div class="table-search d-flex" style="margin-top: -35px;float: right;">
                 <form action="/admin/users/search">
                   <input style="background-color: #fff;" id="search" type="text" name="search" value="{{ $search ?? '' }}" placeholder="Buscar usuario..">
-                  {{-- <button type="submit"><i class="lni lni-search-alt"></i></button> --}}
                 </form>
               </div>
             </div>

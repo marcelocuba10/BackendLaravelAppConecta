@@ -276,6 +276,8 @@ class UserController extends Controller
 
     public function search(Request $request)
     {
+        $currentUser = Auth::user();
+        $currentUserId = $currentUser->id;
         $search = $request->input('search');
 
         if ($search == '') {
@@ -286,7 +288,7 @@ class UserController extends Controller
                 ->paginate();
         }
 
-        return view('user::users.index', compact('users', 'search'))->with('i', (request()->input('page', 1) - 1) * 10);
+        return view('user::users.index', compact('users', 'search','currentUserId'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
     public function destroy($id)

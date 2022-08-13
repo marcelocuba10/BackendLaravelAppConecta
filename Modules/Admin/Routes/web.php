@@ -42,6 +42,7 @@ Route::prefix('admin')->group(function () {
             Route::get('/profile/{id}', 'UsersController@showProfile')->name('users.show.profile');
             Route::get('/edit/profile/{id}', 'UsersController@editProfile')->name('users.edit.profile');
             Route::put('/update/profile/{id}', 'UsersController@updateProfile')->name('users.update.profile');
+            Route::get('/search', 'UsersController@search')->name('users.search');
         });
 
         /*** Customers Routes ***/

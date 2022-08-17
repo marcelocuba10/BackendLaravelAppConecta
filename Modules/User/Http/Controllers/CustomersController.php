@@ -23,7 +23,10 @@ class CustomersController extends Controller
 
     public function index()
     {
-        $customers = DB::table('customers')->paginate(10);
+        $customers = DB::table('customers')
+            ->orderBy('created_at', 'DESC')
+            ->paginate(10);
+
         return view('user::customers.index', compact('customers'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
@@ -44,7 +47,7 @@ class CustomersController extends Controller
         ]);
 
         Customers::create($request->all());
-        return redirect()->route('customers.index')->with('message', 'Customer created successfully.');
+        return redirect()->to('/user/customers')->with('message', 'Customer created successfully.');
     }
 
     public function show($id)
@@ -73,7 +76,7 @@ class CustomersController extends Controller
         $customer = Customers::find($id);
         $customer->update($request->all());
 
-        return redirect()->route('customers.index')->with('message', 'Customer updated successfully.');
+        return redirect()->to('/user/customers')->with('message', 'Customer updated successfully.');
     }
 
     public function search(Request $request)
@@ -86,12 +89,12 @@ class CustomersController extends Controller
             $customers = DB::table('customers')->where('customers.name', 'LIKE', "%{$search}%")->paginate();
         }
 
-        return view('user::customers.index', compact('customers', 'search'))->with('i', (request()->input('page', 1) - 1) * 2);
+        return view('user::customers.index', compact('customers', 'search'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
     public function destroy($id)
     {
         Customers::find($id)->delete();
-        return redirect()->route('customers.index')->with('message', 'Customer deleted successfully');
+        return redirect()->to('/user/customers')->with('message', 'Customer deleted successfully');
     }
 }

@@ -97,7 +97,7 @@
                 <!-- end col -->
                 <div class="col-12">
                   <div class="button-groupd-flexjustify-content-centerflex-wrap">
-                    <a class="main-btn danger-btn-outline m-2" href="/user/machines/list_api">Atrás</a>
+                    <a class="main-btn danger-btn-outline m-2" href="/user/machines/grid_view_api">Atrás</a>
                   </div>
                 </div>
               </div>

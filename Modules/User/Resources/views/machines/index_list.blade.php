@@ -149,7 +149,7 @@
                         @foreach ($machines as $machine)
                         <tr>
                             <td class="text-sm"><h6 class="text-sm">#{{ ++$i }}</h6></td>
-                            <td class="min-width"><h5 class="text-bold text-dark"><a href="{{ route('machines.edit', $machine->id) }}">{{ $machine->name }}</a></h5></td>
+                            <td class="min-width"><h5 class="text-bold text-dark"><a href="/user/machines/{{ $machine->id }}/show">{{ $machine->name }}</a></h5></td>
                             <td class="min-width">
                               <span class="status-btn 
                               @if($machine->status == 'ACTIVE') btn-custom-enabled

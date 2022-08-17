@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\User\Console;
+namespace Modules\Admin\Console;
 
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputOption;
@@ -46,18 +46,13 @@ class ApiCron extends Command
 
         foreach ($customers as $customer) {
 
+            $created_at = \Carbon\Carbon::now();
+            $worker_stats = json_decode(file_get_contents('https://pool.api.btc.com/v1/worker/stats?access_key=' . $customer->access_key . '&puid=' . $customer->puid), true);
             $api_response  = json_decode(file_get_contents('https://pool.api.btc.com/v1/worker?access_key=' . $customer->access_key . '&puid=' . $customer->puid . '&status=all&page_size=1000'), true);
 
             foreach ($api_response['data']['data'] as $listApi) {
 
-                $created_at = \Carbon\Carbon::now();
-
-                // $input = $api_response['data']['data']->all();
-                // $input['customer_id'] = $customer['id'];
-                // $input['created_at'] = $created_at;
-                // Machines::create($input);
-
-                 \DB::table('machines_api')->insert(
+                \DB::table('machines_api')->insert(
                     [
                         'worker_id' => $listApi['worker_id'],
                         'worker_name' => $listApi['worker_name'],
@@ -66,7 +61,7 @@ class ApiCron extends Command
                         'shares_15m' => $listApi['shares_15m'],
                         'last_share_time' => $listApi['last_share_time'],
                         'last_share_ip' => $listApi['last_share_ip'],
-                        'reject_percent'=> $listApi['reject_percent'],
+                        'reject_percent' => $listApi['reject_percent'],
                         'first_share_time' => $listApi['first_share_time'],
                         'miner_agent' => $listApi['miner_agent'],
                         'shares_unit' => $listApi['shares_unit'],
@@ -82,9 +77,25 @@ class ApiCron extends Command
                     ]
                 );
 
-                \Log::info("Cron is working fine!");
-                
+                \Log::info("rows in machines_api is added!");
             }
+
+            \DB::table('customers')->where('id', $customer->id)->update(
+                [
+                    'workers_active' => $worker_stats['data']['workers_active'],
+                    'workers_inactive' => $worker_stats['data']['workers_inactive'],
+                    'workers_dead' => $worker_stats['data']['workers_dead'],
+                    'shares_1m' => $worker_stats['data']['shares_1m'],
+                    'shares_5m' => $worker_stats['data']['shares_5m'],
+                    'shares_15m' => $worker_stats['data']['shares_15m'],
+                    'workers_total' => $worker_stats['data']['workers_total'],
+                    'shares_unit' => $worker_stats['data']['shares_unit'],
+                    'shares_1d' => $worker_stats['data']['shares_1d'],
+                    'shares_1h' => $worker_stats['data']['shares_1h'],
+                    'updated_at' => $created_at
+                ]
+            );
+            \Log::info("rows in customers updated!");
         }
     }
 }

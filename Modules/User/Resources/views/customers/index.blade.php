@@ -10,7 +10,7 @@
             <div class="title d-flex align-items-center flex-wrap mb-30">
               <h2 class="mr-40">Listado de Clientes</h2>
               @can('customer-create')
-                <a href="{{ route('customers.create') }}" class="main-btn info-btn btn-hover btn-sm"><i class="lni lni-plus mr-5"></i> Nuevo</a>
+                <a href="/user/customers/create" class="main-btn info-btn btn-hover btn-sm"><i class="lni lni-plus mr-5"></i> Nuevo</a>
               @endcan  
             </div>
           </div>
@@ -78,29 +78,23 @@
                             <td class="text-right">
                                 <div class="btn-group">
                                     <div class="action">
-                                      <a href="{{ route('customers.show', $customer->id) }}">
-                                          <button class="text-active">
-                                              <i class="lni lni-eye"></i>
-                                          </button>
+                                      <a href="/user/customers/show/{{$customer->id}}">
+                                          <button class="text-active"><i class="lni lni-eye"></i></button>
                                       </a>
                                     </div>
                                     @can('customer-edit')
                                     <div class="action">
-                                        <a href="{{ route('customers.edit', $customer->id) }}">
-                                            <button class="text-info">
-                                                <i class="lni lni-pencil"></i>
-                                            </button>
+                                        <a href="/user/customers/edit/{{$customer->id}}">
+                                            <button class="text-info"><i class="lni lni-pencil"></i></button>
                                         </a>
                                     </div>
                                     @endcan
                                     @can('customer-delete')
-                                    <form method="POST" action="{{ route('customers.destroy', $customer->id) }}">
+                                    <form method="POST" action="/user/customers/delete/{{$customer->id}}">
                                         @csrf
                                         <div class="action">
                                             <input name="_method" type="hidden" value="DELETE">
-                                            <button type="submit" class="text-danger">
-                                              <i class="lni lni-trash-can"></i>
-                                            </button>
+                                            <button type="submit" class="text-danger"><i class="lni lni-trash-can"></i></button>
                                         </div>
                                     </form>
                                     @endcan

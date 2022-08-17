@@ -3,17 +3,13 @@
         <div class="card-content">
             <div class="title d-flex justify-content-between">
                 <div class="left">
-                  <h6 class="text-medium mb-2"><a href="/user/customers/edit/{{ $customer->id }}">Cliente: {{ $customer->name }}</a></h6>
+                  <h6 class="text-medium mb-2"><a href="/user/customers/show/{{ $customer->id }}">Cliente: {{ $customer->name }}</a></h6>
                 </div>
             </div>
 
             @if ($customer->access_key && $customer->puid)
 
-                @php
-                    $worker_stats = json_decode(file_get_contents('https://pool.api.btc.com/v1/worker/stats?access_key='.$customer->access_key.'&puid='.$customer->puid), true);    
-                @endphp
-
-                @if ($worker_stats['err_no'] != 10010)
+                @if ($worker_stats)
                     <div id="legend4">
                         <ul class="legend3 d-flex flex-wrap align-items-center mb-30">
                             <li>
@@ -120,4 +116,14 @@
             </div>
         </div>
     </div>
+
+  <!-- ========= Scripts ======== -->
+  <script>
+
+    /** ========= Tooltip ======== **/
+    $(document).ready(function() {
+      $('[data-toggle="tooltip"]').tooltip();
+    });
+
+  </script>
 @endforeach

@@ -129,32 +129,31 @@
           </div>
 
           @foreach($customers as $customer)
-              <div class="card-style-3 mb-30">
-                  <div class="card-content">
-                      <h4><a href="/user/customers/edit/{{ $customer->id }}">Cliente: {{ $customer->name }}</a></h4>
-                      <div id="grid">
-                          @foreach($machines as $machine)
-                              @if ( $machine->customer_id == $customer->id)
-                                  <a href="/user/machines/edit/{{$machine->id}}">
-                                      <div id="item" data-toggle="tooltip" data-placement="bottom" title="{{ $machine->name }}" 
-                                          class="
-                                          @if($machine->status == 'ACTIVE') bg-card-enabled 
-                                          @elseIf($machine->status == 'Apagado') bg-card-disabled
-                                          @elseIf($machine->status == 'Requiere Atención') bg-card-attention
-                                          @elseIf($machine->status == 'Mantenimiento') bg-card-maintenance
-                                          @elseIf($machine->status == 'Error') bg-card-error
-                                          @elseIf($machine->status == 'INACTIVE') bg-card-offline 
-                                          @endif">
-                                          <p class="text-sm  text-white" style="margin-top: 10px;">{{ Str::limit($machine->name, 3) }}</p>
-                                      </div>
-                                  </a> 
-                              @endif
-                          @endforeach
-                      </div>
+            <div class="card-style-3 mb-30">
+              <div class="card-content">
+                <h4><a href="/user/customers/show/{{ $customer->id }}">Cliente: {{ $customer->name }}</a></h4>
+                  <div id="grid">
+                    @foreach($machines as $machine)
+                      @if ( $machine->customer_id == $customer->id)
+                        <a href="/user/machines/{{$machine->id}}/show">
+                          <div id="item" data-toggle="tooltip" data-placement="bottom" title="{{ $machine->name }}" 
+                            class="
+                            @if($machine->status == 'ACTIVE') bg-card-enabled 
+                            @elseIf($machine->status == 'Apagado') bg-card-disabled
+                            @elseIf($machine->status == 'Requiere Atención') bg-card-attention
+                            @elseIf($machine->status == 'Mantenimiento') bg-card-maintenance
+                            @elseIf($machine->status == 'Error') bg-card-error
+                            @elseIf($machine->status == 'INACTIVE') bg-card-offline 
+                            @endif">
+                            <p class="text-sm  text-white" style="margin-top: 10px;">{{ Str::limit($machine->name, 3) }}</p>
+                          </div>
+                        </a> 
+                      @endif
+                    @endforeach
                   </div>
               </div>
+            </div>
           @endforeach
-
         </div>
       <!-- end row -->
     </div>

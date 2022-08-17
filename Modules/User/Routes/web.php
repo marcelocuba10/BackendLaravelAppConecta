@@ -115,10 +115,10 @@ Route::prefix('user')->group(function () {
             Route::get('/', 'CustomersController@index')->name('customers.index');
             Route::get('/create', 'CustomersController@create')->name('customers.create');
             Route::post('/create', 'CustomersController@store')->name('customers.store');
-            Route::get('/{id}/show', 'CustomersController@show')->name('customers.show');
+            Route::get('/show/{id}', 'CustomersController@show')->name('customers.show');
             Route::get('/edit/{id}', 'CustomersController@edit')->name('customers.edit');
             Route::put('/update/{id}', 'CustomersController@update')->name('customers.update');
-            Route::delete('/{id}/delete', 'CustomersController@destroy')->name('customers.destroy');
+            Route::delete('/delete/{id}', 'CustomersController@destroy')->name('customers.destroy');
             Route::get('/search', 'CustomersController@search')->name('customers.search');
         });
 

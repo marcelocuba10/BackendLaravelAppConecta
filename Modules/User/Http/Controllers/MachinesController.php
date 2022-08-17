@@ -58,6 +58,7 @@ class MachinesController extends Controller
             ->leftjoin('users', 'machines.user_id', '=', 'users.id')
             ->leftjoin('customers', 'machines.customer_id', '=', 'customers.id')
             ->select('users.name AS user_name', 'machines.id', 'machines.name', 'machines.codeQR', 'machines.customer_id', 'machines.status', 'machines.observation', 'customers.name AS customer_name')
+            ->orderBy('machines.created_at','DESC')
             ->get();
 
         return view('user::machines.index_grid', compact('machines', 'customers', 'filter'));
@@ -88,6 +89,8 @@ class MachinesController extends Controller
                         ->orderBy('created_at', 'DESC')
                         ->take($customers[0]->total_machines)
                         ->get();
+
+                    $worker_stats = null;
                 }
             } else {
                 $machines = DB::table('machines_api')
@@ -96,16 +99,24 @@ class MachinesController extends Controller
                     ->orderBy('created_at', 'DESC')
                     ->take($customers[0]->total_machines)
                     ->get();
+
+                $worker_stats = null;
             }
 
             /** if the user does not have any machine */
-            if ($machines->count() == 0 || $machines == null) {
+            if ($machines->count() == 0) {
                 $machines = null; //return null for break ajax scroll
             }
         }
 
         if ($request->ajax()) {
-            $view = view('user::machines._partials.data', compact('machines', 'customers'))->render();
+            if ($machines != null) {
+                $view = view('user::machines._partials.data', compact('machines', 'customers', 'worker_stats'))->render();
+            } else {
+                $worker_stats = null;
+                $view = view('user::machines._partials.data', compact('machines', 'customers', 'worker_stats'))->render();
+            }
+
             return response()->json(['html' => $view]);
         }
 

@@ -61,9 +61,17 @@
                   </div>
                 </div>
                 <!-- end col -->
-                <div class="col-12">
+                {{-- <div class="col-12">
                   <div class="button-groupd-flexjustify-content-centerflex-wrap">
-                    <a class="main-btn danger-btn-outline m-2" href="{{ route('machines.index_list') }}">Atrás</a>
+                    <a class="main-btn danger-btn-outline m-2" href="/user/machines/grid_view">Atrás</a>
+                  </div>
+                </div> --}}
+                <div class="col-12">
+                  <div class="button-group d-flex justify-content-center flex-wrap">
+                    @can('machine-edit')
+                      <a class="main-btn success-btn m-2" href="/user/machines/edit/{{ $machine->id }}">Editar</a>
+                    @endcan
+                    <a class="main-btn danger-btn-outline m-2" href="/user/machines/grid_view" >Atrás</a>
                   </div>
                 </div>
               </div>

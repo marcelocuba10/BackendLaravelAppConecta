@@ -13,7 +13,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        \Modules\User\Console\ApiCron::class,
+        \Modules\Admin\Console\ApiCron::class,
     ];
 
     /**

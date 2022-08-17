@@ -1,3 +1,55 @@
+/** start tabs style **/
+.tab-style-3 nav {
+    margin-bottom: 20px;
+}
+.tab-style-2 nav {
+    border-bottom: 1px solid #e5e5e5;
+    margin-bottom: 20px;
+}
+.tab-style-2 nav button:hover, .tab-style-2 nav button.active {
+    color: #4a6cf7;
+    background: rgba(74, 108, 247, 0.1);
+}
+.tab-style-2 nav button {
+    border: none;
+    background: transparent;
+    margin-right: 20px;
+    padding: 10px 14px;
+    position: relative;
+    font-weight: 500;
+    color: #5d657b;
+}
+.deactive-btn {
+    background: #cbe1ff;
+    color: #4a6cf7;
+}
+.tab-style-3 nav button:hover, .tab-style-3 nav button.active {
+    color: #fff;
+    background: #4a6cf7;
+}
+.tab-style-2 nav button:hover, .tab-style-2 nav button.active {
+    color: #4a6cf7;
+    background: rgba(74, 108, 247, 0.1);
+}
+.tab-style-3 nav button {
+    margin-right: 20px;
+    padding: 10px 16px;
+    position: relative;
+    font-weight: 500;
+    font-size: 16px;
+}
+.tab-style-3 .tab-content p {
+    font-size: 14px;
+}
+.tab-content>.active {
+    display: block;
+}
+.fade {
+    transition: opacity .15s linear;
+}
+
+/** end tabs style **/
+
 .single-pricing {
     background: #fff;
     -webkit-box-shadow: 0px 10px 35px rgb(210 210 210 / 17%);

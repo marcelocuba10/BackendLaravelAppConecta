@@ -31,10 +31,10 @@
           <div class="tab-style-2 card-style mb-30">
             <nav class="nav" id="nav-tab">
               <button id="tab-2-1" class="main-btn deactive-btn active" data-bs-toggle="tab" data-bs-target="#tabContent-2-1">
-                <i class="lni lni-home mr-10"></i>Información Básica
+                <i class="lni lni-user mr-10"></i>Información Básica
               </button>
               <button id="tab-2-2" class="main-btn deactive-btn" data-bs-toggle="tab" data-bs-target="#tabContent-2-2">
-                <i class="lni lni-layout mr-10"></i>Información de Máquinas de btc.com
+                <i class="lni lni-graph mr-10"></i>Información de Máquinas de btc.com
               </button>
             </nav>
             <div class="tab-content" id="nav-tabContent2">
@@ -84,73 +84,73 @@
               </div>
               <div class="tab-pane fade" id="tabContent-2-2">
                 <div class="row">
-                  <div class="col-4">
+                  <div class="col-3">
                     <div class="input-style-1">
                       <label>workers_active</label>
-                      <input type="text" value="{{ $customer->workers_active }}" >
+                      <input type="text" value="{{ $customer->workers_active }}" readonly>
                     </div>
                   </div>
                   <!-- end col -->
-                  <div class="col-4">
+                  <div class="col-3">
                     <div class="input-style-1">
                       <label>workers_inactive</label>
-                      <input type="text" value="{{ $customer->workers_inactive }}" >
+                      <input type="text" value="{{ $customer->workers_inactive }}" readonly>
                     </div>
                   </div>
                   <!-- end col -->
-                  <div class="col-4">
+                  <div class="col-3">
                     <div class="input-style-1">
                       <label>workers_dead</label>
-                      <input type="text" value="{{ $customer->workers_dead }}" >
+                      <input type="text" value="{{ $customer->workers_dead }}" readonly>
                     </div>
                   </div>
                   <!-- end col -->
-                  <div class="col-4">
+                  <div class="col-3">
                     <div class="input-style-1">
                       <label>shares_1m</label>
-                      <input type="text" value="{{ $customer->shares_1m }}" >
+                      <input type="text" value="{{ $customer->shares_1m }}" readonly>
                     </div>
                   </div>
                   <!-- end col -->
-                  <div class="col-4">
+                  <div class="col-3">
                     <div class="input-style-1">
                       <label>shares_5m</label>
-                      <input type="text" value="{{ $customer->shares_5m }}" >
+                      <input type="text" value="{{ $customer->shares_5m }}" readonly>
                     </div>
                   </div>
                   <!-- end col -->
-                  <div class="col-4">
+                  <div class="col-3">
                     <div class="input-style-1">
                       <label>shares_15m</label>
-                      <input type="text" value="{{ $customer->shares_15m }}" >
+                      <input type="text" value="{{ $customer->shares_15m }}" readonly>
                     </div>
                   </div>
                   <!-- end col -->
-                  <div class="col-4">
+                  <div class="col-3">
                     <div class="input-style-1">
                       <label>workers_total</label>
-                      <input type="text" value="{{ $customer->workers_total }}" >
+                      <input type="text" value="{{ $customer->workers_total }}" readonly>
                     </div>
                   </div>
                   <!-- end col -->
-                  <div class="col-4">
+                  <div class="col-3">
                     <div class="input-style-1">
                       <label>shares_unit</label>
-                      <input type="text" value="{{ $customer->shares_unit }}" >
+                      <input type="text" value="{{ $customer->shares_unit }}" readonly>
                     </div>
                   </div>
                   <!-- end col -->
-                  <div class="col-4">
+                  <div class="col-3">
                     <div class="input-style-1">
-                      <label>shares_1d_size</label>
-                      <input type="text" value="{{ $customer->shares_1d }}" >
+                      <label>shares_1d</label>
+                      <input type="text" value="{{ $customer->shares_1d }}" readonly>
                     </div>
                   </div>
                   <!-- end col -->
-                  <div class="col-4">
+                  <div class="col-3">
                     <div class="input-style-1">
-                      <label>shares_1d_unit</label>
-                      <input type="text" value="{{ $customer->shares_1h }}" >
+                      <label>shares_1h</label>
+                      <input type="text" value="{{ $customer->shares_1h }}" readonly>
                     </div>
                   </div>
                   <!-- end col -->

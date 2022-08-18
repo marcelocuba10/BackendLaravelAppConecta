@@ -41,7 +41,7 @@
           </a>
         </li>
         @endcan
-        @can('movement-sa-list')
+        @can('financial-sa-list')
         <li class="nav-item {{ (request()->is('admin/financial')) ? 'active' : '' }}">
           <a href="/admin/financial">
             <span class="icon">

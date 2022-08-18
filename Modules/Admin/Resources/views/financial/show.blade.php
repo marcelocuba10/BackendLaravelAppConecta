@@ -34,25 +34,32 @@
                         <div class="row">
                             <div class="col-6">
                               <div class="input-style-1">
-                                <label>Nombre</label>
-                                <input type="text" name="user_id" value="{{ $finance->user_id ?? old('user_id') }}" readonly>
+                                <label>Cliente</label>
+                                <input type="text" value="{{ $finance->customer_name }} {{ $finance->last_name }}" readonly>
                               </div>
                             </div>
                             <!-- end col -->
                             <div class="col-6">
                                 <div class="input-style-1">
-                                  <label>Nombre</label>
-                                  <input type="text" name="plan_id" value="{{ $finance->plan_id ?? old('plan_id') }}" readonly>
+                                  <label>Plan Contratado</label>
+                                  <input type="text" value="{{ $finance->plan_name }}" readonly>
                                 </div>
                               </div>
                             <!-- end col -->
                             <div class="col-6">
+                              <div class="input-style-1">
+                                <label>Precio</label>
+                                <input type="text" value="{{ number_format($finance->price, 0) }}" readonly>
+                              </div>
+                            </div>
+                            <!-- end col -->
+                            <div class="col-6">
                                 <div class="input-style-1">
                                   <label>Fecha de Facturación</label>
-                                  <input type="text" name="exp_date_plan" value="{{ $finance->exp_date_plan ?? old('exp_date_plan') }}" readonly>
+                                  <input type="text" value="{{ $finance->exp_date_plan }}" readonly>
                                 </div>
                               </div>
-                              <!-- end col -->
+                            <!-- end col -->
                             <div class="col-12">
                                 <div class="button-groupd-flexjustify-content-centerflex-wrap">
                                     <a class="main-btn danger-btn-outline m-2" href="/admin/financial">Atrás</a>

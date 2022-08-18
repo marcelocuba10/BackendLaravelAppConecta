@@ -15,9 +15,10 @@ class CreateFinancialsTable extends Migration
     {
         Schema::create('financials', function (Blueprint $table) {
             $table->id();
-            $table->integer('user_id');
+            $table->integer('customer_id');
             $table->integer('plan_id');
             $table->integer('exp_date_plan');
+            $table->string('status');
             $table->timestamps();
         });
     }

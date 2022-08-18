@@ -24,13 +24,14 @@ class RolesController extends Controller
 
     public function index()
     {
+        $guard_name = Auth::getDefaultDriver();
         $roles = DB::table('roles')
             ->where('guard_name', '=', 'admin')
             ->select('guard_name', 'id', 'name', 'system_role')
             ->orderBy('created_at', 'DESC')
             ->paginate(10);
 
-        return view('admin::roles.index', compact('roles'))->with('i', (request()->input('page', 1) - 1) * 10);
+        return view('admin::roles.index', compact('roles','guard_name'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
     public function create()

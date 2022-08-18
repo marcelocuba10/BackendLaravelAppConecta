@@ -83,7 +83,8 @@
                                     @can('role-sa-edit')
                                     <div class="action">
                                         <a href="/admin/ACL/roles/edit/{{$role->id}}">
-                                            @if (!$role->system_role)
+                                            <!--show icon edit only if not default role system and if not is a super user -->
+                                            @if ($guard_name == 'admin')
                                               <button class="text-info">
                                                   <i class="lni lni-pencil"></i>
                                               </button>

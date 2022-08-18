@@ -163,6 +163,11 @@ class UsersController extends Controller
         }
 
         $user = SuperUser::find($id);
+
+        //to reforce email validation. I place again the email that the user previously saved.
+        $input['email'] = $user->email;
+
+        //update data
         $user->update($input);
         DB::table('model_has_roles')->where('model_id', $id)->delete();
 
@@ -219,7 +224,7 @@ class UsersController extends Controller
                 ->paginate();
         }
 
-        return view('admin::users.index', compact('users', 'search','currentUserId'))->with('i', (request()->input('page', 1) - 1) * 10);
+        return view('admin::users.index', compact('users', 'search', 'currentUserId'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
     public function destroy($id)

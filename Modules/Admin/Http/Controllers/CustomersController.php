@@ -6,6 +6,7 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 //use Illuminate\Routing\Controller;
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -86,19 +87,17 @@ class CustomersController extends Controller
         $input['idReference'] = $this->generateUniqueCode();
         $input['roles'] = 'Admin';
 
-        // if ($input['role'] == "Admin") {
-        //     DB::table('financials')->insert(
-        //         [
-        //             'machine_id' => $id,
-        //             'name' => $machine['name'],
-        //             'status' => $machine['status'],
-        //             'customer_id' => $machine['customer_id'],
-        //             'user_id' => $machine['user_id'],
-        //             'observation' => $machine['observation'],
-        //             'created_at' => Carbon::now(),
-        //         ]
-        //     );
-        // }
+        //default role is admin, admin is a client in module user.
+
+        DB::table('financials')->insert(
+            [
+                'customer_id' => $input['idReference'],
+                'plan_id' => $input['plan_id'],
+                'exp_date_plan' => $input['exp_date_plan'],
+                'created_at' => Carbon::now(),
+            ]
+        );
+
 
         $user = User::create($input);
         $user->assignRole($request->input('roles'));
@@ -196,6 +195,13 @@ class CustomersController extends Controller
                 return redirect()->to('/admin/customers/edit/' . $id)->withErrors('Confirm password')->withInput();
             }
         }
+
+        DB::table('financials')->update(
+            [
+                'exp_date_plan' => $input['exp_date_plan'],
+                'updated_at' => Carbon::now(),
+            ]
+        );
 
         $user = User::find($id);
         $user->update($input);

@@ -9,7 +9,7 @@
           <div class="col-md-8">
             <div class="title d-flex align-items-center flex-wrap mb-30">
               <h2 class="mr-40">Financiero</h2>
-              {{-- @can('movement-sa-create')
+              {{-- @can('financial-sa-create')
                 <a href="/admin/financial/create" class="main-btn info-btn btn-hover btn-sm"><i class="lni lni-plus mr-5"></i> Nuevo</a>
               @endcan   --}}
             </div>
@@ -59,8 +59,9 @@
                     <thead>
                       <tr>
                         <th><h6>#</h6></th>
-                        <th><h6>Nombre</h6></th>
+                        <th><h6>Cliente</h6></th>
                         <th><h6>Plan</h6></th>
+                        <th><h6>Precio</h6></th>
                         <th><h6>Fecha de Facturación</h6></th>
                         <th><h6>Acciones</h6></th>
                       </tr>
@@ -70,9 +71,10 @@
                         @foreach ($finances as $finance)
                         <tr>
                             <td class="text-sm"><h6 class="text-sm">#{{ ++$i }}</h6></td>
-                            <td class="min-width"><p>{{ $finance->user_id }}</p></td>
-                            <td class="min-width"><p>{{ $finance->plan_id }}</p></td>
-                            <td class="min-width"><p>{{ $finance->exp_date_plan }}</p></td>
+                            <td class="min-width"><p>{{ $finance->customer_name }} {{ $finance->last_name }} </p></td>
+                            <td class="min-width"><p>{{ $finance->plan_name }}</p></td>
+                            <td class="min-width"><p>G$ {{number_format($finance->price, 0)}}</p></td>
+                            <td class="min-width"><p>{{ $finance->exp_date_plan }} / mes</p></td>
                             <td class="text-right">
                                 <div class="btn-group">
                                     <div class="action">
@@ -82,7 +84,7 @@
                                             </button>
                                         </a>
                                     </div>
-                                    @can('movement-sa-edit')
+                                    @can('financial-sa-edit')
                                     <div class="action">
                                         <a href="/admin/financial/edit/{{$finance->id}}">
                                             <button class="text-info">
@@ -91,7 +93,7 @@
                                         </a>
                                     </div>
                                     @endcan
-                                    {{-- @can('movement-sa-delete')
+                                    {{-- @can('financial-sa-delete')
                                     <form method="POST" action="/admin/financial/delete/{{$finance->id}}">
                                         @csrf
                                         <div class="action">

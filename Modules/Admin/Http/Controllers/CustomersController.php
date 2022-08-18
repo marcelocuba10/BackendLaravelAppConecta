@@ -196,15 +196,16 @@ class CustomersController extends Controller
             }
         }
 
-        DB::table('financials')->update(
+        $user = User::find($id);
+        $user->update($input);
+
+        DB::table('financials')->where('customer_id', '=', $user->idReference)->update(
             [
+                'plan_id' => $input['plan_id'],
                 'exp_date_plan' => $input['exp_date_plan'],
                 'updated_at' => Carbon::now(),
             ]
         );
-
-        $user = User::find($id);
-        $user->update($input);
 
         // DB::table('model_has_roles')
         //     ->where('model_id', $id)

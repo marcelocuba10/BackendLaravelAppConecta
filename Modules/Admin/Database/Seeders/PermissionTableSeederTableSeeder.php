@@ -42,20 +42,10 @@ class PermissionTableSeederTableSeeder extends Seeder
             'financial-sa-edit',
             'financial-sa-delete',
 
-            'schedule-sa-list',
-            'schedule-sa-create',
-            'schedule-sa-edit',
-            'schedule-sa-delete',
-
             'report-sa-list',
             'report-sa-create',
             'report-sa-edit',
             'report-sa-delete',
-
-            'machine-sa-list',
-            'machine-sa-create',
-            'machine-sa-edit',
-            'machine-sa-delete',
 
             'customer-sa-list',
             'customer-sa-create',

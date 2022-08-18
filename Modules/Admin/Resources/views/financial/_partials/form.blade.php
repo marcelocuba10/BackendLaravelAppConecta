@@ -7,12 +7,31 @@
       </div>
     </div>
     <!-- end col -->
-    <div class="col-6">
-      <div class="input-style-1">
-        <label>Plan Contratado</label>
-        <input type="text" value="{{ $finance->plan_name }}" readonly>
+    @if ($currentUserRole == 'SuperAdmin')
+      <div class="col-6">
+        <div class="select-style-1">
+          <label>(*) Planes</label>
+          <div class="select-position">
+            <select name="plan_id">
+              @foreach ($plans as $plan)
+                <option value="{{ $plan->id }}" {{ ( $plan->id == $customerPlan) ? 'selected' : '' }}> {{ $plan->name }} </option>
+              @endforeach 
+            </select>
+          </div>
+        </div>
       </div>
-    </div>
+    @else
+      <div class="col-6">
+        <div class="input-style-1">
+          <label>(*) Plan Asignado</label>
+          @foreach ($plans as $plan)
+            @if( $plan->id == $customerPlan)
+              <input type="text" value="{{ $plan->name }}" name="plan_id" readonly>   
+            @endif   
+          @endforeach 
+        </div>
+      </div>
+    @endif 
     <!-- end col -->
     <div class="col-6">
       <div class="input-style-1">

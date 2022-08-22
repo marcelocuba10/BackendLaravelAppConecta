@@ -32,14 +32,25 @@
                         <form method="POST">
                             @csrf
                             <div class="row">
-                                <div class="col-6">
+                                <div class="col-4">
                                     <div class="input-style-1">
                                         <label>Nombre</label>
                                         <input type="text" value="{{ $role->name }}" readonly>
                                     </div>
                                 </div>
                                 <!-- end col -->
-                                <div class="col-6">
+                                <div class="col-4">
+                                    <div class="input-style-1">
+                                      <label>Rol de Sistema</label>
+                                      @foreach ($keys as $key)
+                                        @if ($key[0] == $role->system_role)
+                                          <input type="text" value="{{ $key[1] ?? old('system_role') }}" readonly >
+                                        @endif
+                                      @endforeach 
+                                    </div>
+                                  </div>
+                                  <!-- end col -->
+                                <div class="col-4">
                                     <div class="input-style-1">
                                         <label>Guard</label>
                                         <input type="text" value="{{ $role->guard_name }}" readonly>

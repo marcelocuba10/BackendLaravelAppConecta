@@ -1,27 +1,37 @@
 @csrf
 <div class="row">
-    <div class="col-6">
+    <div class="col-4">
       <div class="input-style-1">
         <label>(*) Nombre</label>
         <input type="text" name="name" value="{{ $role->name ?? old('name') }}" class="bg-transparent" placeholder="Ingrese Nombre">
       </div>
     </div>
     <!-- end col -->
-    @if ($guard_name)
-      <div class="col-6">
-        <div class="input-style-1">
-            <label>Guard</label>
-            <input type="text" value="{{ $guard_name ?? old('guard_name')}}" readonly>
+    <div class="col-4">
+      <div class="select-style-1">
+        <label>(*) Rol de Sistema</label>
+        <div class="select-position">
+          <select name="system_role">
+            @foreach ($keys as $key)
+              <option value="{{ $key[0] }}" {{ ( $key[0] == $system_role) ? 'selected' : '' }}> {{ $key[1] }} </option>
+            @endforeach 
+          </select>
         </div>
       </div>
-    @else
-      <div class="col-6">
-        <div class="input-style-1">
-            <label>Guard</label>
-            <input type="text" value="{{ $role->guard_name ?? old('guard_name')}}" readonly>
+    </div>
+    <!-- end col -->
+    <div class="col-4">
+      <div class="select-style-1">
+        <label>(*) Guard</label>
+        <div class="select-position">
+          <select name="guard_name">
+            @foreach ($guard_names as $guard_name)
+              <option value="{{ $guard_name }}" {{ ( $guard_name == $roleGuard) ? 'selected' : '' }}> {{ $guard_name}} </option>
+            @endforeach 
+          </select>
         </div>
-      </div> 
-    @endif
+      </div>
+    </div>
     <!-- end col -->
     <div class="col-12">
         <div class="input-style-1">

@@ -26,7 +26,7 @@ class RolesController extends Controller
     {
         $guard_name = Auth::getDefaultDriver();
         $roles = DB::table('roles')
-            ->where('guard_name', '=', 'admin')
+            //->where('guard_name', '=', 'admin')
             ->select('guard_name', 'id', 'name', 'system_role')
             ->orderBy('created_at', 'DESC')
             ->paginate(10);
@@ -37,23 +37,40 @@ class RolesController extends Controller
     public function create()
     {
         $guard_name = Auth::getDefaultDriver();
+
+        $roleGuard = null;
+        $system_role = null;
+        $guard_names = Role::pluck('guard_name', 'guard_name')->all();
+
+        $keys = array(
+            array('0', 'No'),
+            array('1', 'Si')
+        );
+
         $permissions = DB::table('permissions')
-            ->where('guard_name', '=', 'admin')
+            //->where('guard_name', '=', 'admin')
             ->select('guard_name', 'id', 'name', 'system_permission')
             ->orderBy('created_at', 'DESC')
             ->get();
 
-        return view('admin::roles.create', compact('permissions', 'guard_name'));
+        return view('admin::roles.create', compact('permissions', 'keys', 'system_role', 'guard_names', 'roleGuard'));
     }
 
     public function store(Request $request)
     {
         $this->validate($request, [
             'name' => 'required|unique:roles,name',
-            'permission' => 'required'
+            'permission' => 'required',
+            'system_role' => 'required',
+            'guard_name' => 'required'
         ]);
 
-        $role = Role::create(['name' => $request->input('name'), 'guard_name' => 'admin']);
+        $role = Role::create([
+            'name' => $request->input('name'),
+            'guard_name' => $request->input('guard_name'),
+            'system_role' => $request->input('system_role')
+        ]);
+
         $role->syncPermissions($request->input('permission'));
 
         return redirect()->to('/admin/ACL/roles')->with('message', 'Role created successfully');
@@ -62,42 +79,54 @@ class RolesController extends Controller
     public function show($id)
     {
         $role = Role::find($id);
+
+        $keys = array(
+            array('0', 'No'),
+            array('1', 'Si')
+        );
+
         $permissions = Permission::get();
         $rolePermission = $role->permissions->pluck('name')->toArray();
 
         //dd($rolePermission);
-        return view('admin::roles.show', compact('role', 'rolePermission'));
+        return view('admin::roles.show', compact('role', 'rolePermission','keys'));
     }
 
     public function edit($id)
     {
-        $guard_name = null;
         $role = Role::find($id);
+        $roleGuard = $role->guard_name;
+        $system_role = $role->system_role;
+        $guard_names = Role::pluck('guard_name', 'guard_name')->all();
+
+        $keys = array(
+            array('0', 'No'),
+            array('1', 'Si')
+        );
 
         $permissions = DB::table('permissions')
-            ->where('guard_name', '=', 'admin')
+            //->where('guard_name', '=', $role->guard_name)
             ->select('guard_name', 'id', 'name', 'system_permission')
             ->orderBy('created_at', 'DESC')
             ->get();
 
         $rolePermission = $role->permissions->pluck('name')->toArray();
-        //$rolePermission = DB::table('role_has_permissions')->where('role_has_permissions.role_id', $id)
-        //->pluck('role_has_permissions.permission_id', 'role_has_permissions.permission_id')
-        //->all();  
 
-        return view('admin::roles.edit', compact('role', 'permissions', 'rolePermission', 'guard_name'));
+        return view('admin::roles.edit', compact('role', 'permissions', 'rolePermission', 'roleGuard', 'keys', 'system_role', 'guard_names'));
     }
 
     public function update(Request $request, $id)
     {
         $this->validate($request, [
             'name' => 'required|unique:roles,name,' . $id,
-            'permission' => 'required'
+            'permission' => 'required',
+            'system_role' => 'required',
+            'guard_name' => 'required'
         ]);
 
+        $input = $request->all();
         $role = Role::find($id);
-        $role->name = $request->input('name');
-        $role->save();
+        $role->update($input);
 
         $role->syncPermissions($request->input('permission'));
 

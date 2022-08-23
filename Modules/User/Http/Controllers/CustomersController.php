@@ -41,8 +41,8 @@ class CustomersController extends Controller
             'name' => 'required|max:50|min:5',
             'phone' => 'nullable|max:25|min:5',
             'address' => 'nullable|max:255|min:5',
-            'access_key' => 'nullable|max:15|min:15',
-            'puid' => 'nullable|max:6|min:6',
+            'access_key' => 'nullable|max:25|min:15',
+            'puid' => 'nullable|max:10|min:4',
             'total_machines' => 'required|integer|between:0,9999|min:0',
             'pool' => 'nullable|max:50|min:3'
         ]);
@@ -69,8 +69,8 @@ class CustomersController extends Controller
             'name' => 'required|max:50|min:5',
             'phone' => 'nullable|max:25|min:5',
             'address' => 'nullable|max:255|min:5',
-            'access_key' => 'nullable|max:15|min:15',
-            'puid' => 'nullable|max:6|min:6',
+            'access_key' => 'nullable|max:25|min:15',
+            'puid' => 'nullable|max:10|min:4',
             'total_machines' => 'required|integer|between:0,9999|min:0',
             'pool' => 'nullable|max:50|min:3'
         ]);

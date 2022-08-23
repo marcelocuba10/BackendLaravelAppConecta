@@ -41,19 +41,33 @@
                 <!-- end col -->
                 <div class="col-6">
                   <div class="input-style-1">
-                    <label>Estado</label>
-                    <input type="text" value="{{ $machine->status }}" readonly>
-                  </div>
-                </div>
-                <!-- end col -->
-                <div class="col-6">
-                  <div class="input-style-1">
                     <label>Cliente</label>
                     <input type="text" value="{{ $machine->customer_name }}" readonly>
                   </div>
                 </div>
                 <!-- end col -->
-                <div class="col-6">
+                <div class="col-4">
+                  <div class="input-style-1">
+                    <label>Estado</label>
+                    <input type="text" value="{{ $machine->status }}" readonly>
+                  </div>
+                </div>
+                <!-- end col -->
+                <div class="col-4">
+                  <div class="input-style-1">
+                    <label>Potencia Mineración</label>
+                    <input type="text" value="{{ $machine->mining_power }}" readonly>
+                  </div>
+                </div>
+                <!-- end col -->
+                <div class="col-4">
+                  <div class="input-style-1">
+                    <label>Valor Potencia</label>
+                    <input type="text" value="{{ $machine->total_power }}" readonly>
+                  </div>
+                </div>
+                <!-- end col -->
+                <div class="col-12">
                   <div class="input-style-1">
                     <label>Observación</label>
                     <textarea type="text" value="{{ $machine->observation }}"

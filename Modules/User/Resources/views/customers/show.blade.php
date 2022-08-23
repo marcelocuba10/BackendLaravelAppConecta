@@ -61,17 +61,24 @@
                     </div>
                   </div>
                   <!-- end col -->
-                  <div class="col-6">
+                  <div class="col-4">
                     <div class="input-style-1">
-                      <label>Access Key</label>
-                      <input type="text" name="access_key" value="{{ $customer->access_key ?? old('access_key') }}" readonly>
+                      <label>Pool Name</label>
+                      <input type="text" name="pool" value="{{ $customer->pool ?? old('pool') }}" >
                     </div>
                   </div>
                   <!-- end col -->
-                  <div class="col-6">
+                  <div class="col-4">
+                    <div class="input-style-1">
+                      <label>Access Key</label>
+                      <input type="text" name="access_key" value="{{ $customer->access_key ?? old('access_key') }}" >
+                    </div>
+                  </div>
+                  <!-- end col -->
+                  <div class="col-4">
                     <div class="input-style-1">
                       <label>Puid</label>
-                      <input type="text" name="puid" value="{{ $customer->puid ?? old('puid') }}" readonly>
+                      <input type="text" name="puid" value="{{ $customer->puid ?? old('puid') }}">
                     </div>
                   </div>
                   <!-- end col -->

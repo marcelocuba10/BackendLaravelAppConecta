@@ -15,7 +15,8 @@ class Customers extends Model
         'address',
         'access_key',
         'puid',
-        'total_machines'
+        'total_machines',
+        'pool'
     ];
     
     protected static function newFactory()

@@ -57,7 +57,7 @@ class MachinesController extends Controller
         $machines = DB::table('machines')
             ->leftjoin('users', 'machines.user_id', '=', 'users.id')
             ->leftjoin('customers', 'machines.customer_id', '=', 'customers.id')
-            ->select('users.name AS user_name', 'machines.id', 'machines.name', 'machines.codeQR', 'machines.customer_id', 'machines.status', 'machines.observation', 'customers.name AS customer_name')
+            ->select('users.name AS user_name', 'machines.id', 'machines.name','machines.codeQR', 'machines.customer_id', 'machines.status', 'machines.observation', 'customers.name AS customer_name')
             ->orderBy('machines.created_at','DESC')
             ->get();
 
@@ -137,7 +137,7 @@ class MachinesController extends Controller
             $machines = DB::table('machines')
                 ->leftjoin('users', 'machines.user_id', '=', 'users.id')
                 ->leftjoin('customers', 'machines.customer_id', '=', 'customers.id')
-                ->select('users.name AS user_name', 'machines.id', 'machines.name', 'machines.codeQR', 'machines.status', 'machines.observation', 'customers.name AS customer_name')
+                ->select('users.name AS user_name', 'machines.id', 'machines.name', 'machines.codeQR','machines.status', 'machines.observation', 'customers.name AS customer_name')
                 ->where('customers.name', 'LIKE', "%{$filter}%")
                 ->orWhere('machines.name', 'LIKE', "%{$filter}%")
                 ->orWhere('machines.status', 'LIKE', "{$filter}")
@@ -182,7 +182,7 @@ class MachinesController extends Controller
         $machines = DB::table('machines')
             ->leftjoin('users', 'machines.user_id', '=', 'users.id')
             ->leftjoin('customers', 'machines.customer_id', '=', 'customers.id')
-            ->select('users.name AS user_name', 'machines.id', 'machines.name', 'machines.codeQR', 'machines.customer_id', 'machines.status', 'machines.observation', 'customers.name AS customer_name')
+            ->select('users.name AS user_name', 'machines.id', 'machines.name','machines.codeQR', 'machines.customer_id', 'machines.status', 'machines.observation', 'customers.name AS customer_name')
             ->get();
 
         return view('user::machines.index_grid', compact('search', 'customers', 'machines', 'filter'));
@@ -218,13 +218,13 @@ class MachinesController extends Controller
             $machines = DB::table('machines')
                 ->leftjoin('users', 'machines.user_id', '=', 'users.id')
                 ->leftjoin('customers', 'machines.customer_id', '=', 'customers.id')
-                ->select('users.name AS user_name', 'machines.id', 'machines.name', 'machines.codeQR', 'machines.customer_id', 'machines.status', 'machines.observation', 'customers.name AS customer_name')
+                ->select('users.name AS user_name', 'machines.id', 'machines.name', 'machines.codeQR','machines.customer_id', 'machines.status', 'machines.observation', 'customers.name AS customer_name')
                 ->get();
         } else {
             $machines = DB::table('machines')
                 ->leftjoin('users', 'machines.user_id', '=', 'users.id')
                 ->leftjoin('customers', 'machines.customer_id', '=', 'customers.id')
-                ->select('users.name AS user_name', 'machines.id', 'machines.name', 'machines.codeQR', 'machines.customer_id', 'machines.status', 'machines.observation', 'customers.name AS customer_name')
+                ->select('users.name AS user_name', 'machines.id', 'machines.name', 'machines.codeQR', 'machines.customer_id','machines.status', 'machines.observation', 'customers.name AS customer_name')
                 ->where('machines.status', 'LIKE', "{$filter}")
                 ->get();
         }
@@ -276,8 +276,8 @@ class MachinesController extends Controller
     public function show($id)
     {
         $machine = DB::table('machines')
-            ->leftjoin('customers', 'machines.customer_id', '=', 'customers.id')
-            ->select('customers.name AS customer_name', 'machines.id', 'machines.name', 'machines.codeQR', 'machines.customer_id', 'machines.status', 'machines.observation')
+            ->rightjoin('customers', 'machines.customer_id', '=', 'customers.id')
+            ->select('customers.name AS customer_name', 'machines.id', 'machines.name', 'machines.mining_power ', 'machines.total_power','machines.codeQR', 'machines.customer_id', 'machines.status', 'machines.observation')
             ->where('machines.id', '=', $id)
             ->first();
 
@@ -285,7 +285,7 @@ class MachinesController extends Controller
             ->leftjoin('machines', 'machines_history.machine_id', '=', 'machines.id')
             ->leftjoin('users', 'machines_history.user_id', '=', 'users.id')
             ->leftjoin('customers', 'machines_history.customer_id', '=', 'customers.id')
-            ->select('users.name AS user_name', 'machines_history.created_at', 'machines_history.name', 'machines_history.created_at', 'machines_history.status', 'machines_history.observation', 'customers.name AS customer_name')
+            ->select('users.name AS user_name', 'machines_history.created_at', 'machines_history.name', 'machines_history.mining_power ', 'machines_history.total_power','machines_history.created_at', 'machines_history.status', 'machines_history.observation', 'customers.name AS customer_name')
             ->where('machines_history.machine_id', '=', $id)
             ->orderBy('created_at', 'desc')
             ->get();
@@ -311,11 +311,12 @@ class MachinesController extends Controller
     {
         $customers = DB::table('customers')->get();
         $status = ['ACTIVE', 'Apagado', 'Mantenimiento', 'Requiere Atención', 'Error', 'INACTIVE'];
+        $mining_power_options = ['MegaHash', 'GigaHash', 'TeraHash', 'PentaHash'];
         $machine = null;
         $codeQR = Str::random(8);
         $machine_changes  = null;
 
-        return view('user::machines.create', compact('customers', 'status', 'machine', 'codeQR', 'machine_changes'));
+        return view('user::machines.create', compact('customers', 'status', 'machine', 'codeQR', 'machine_changes','mining_power_options'));
     }
 
     public function store(Request $request)
@@ -326,6 +327,8 @@ class MachinesController extends Controller
             'customer_id' => 'required',
             'codeQR' => 'required|max:20|min:5|unique:machines,codeQR',
             'observation' => 'nullable|max:200|min:5',
+            'mining_power' => 'nullable|max:15|min:5',
+            'total_power' => 'nullable|max:20|between:0,9999',
         ]);
 
         $input = $request->all();
@@ -340,10 +343,11 @@ class MachinesController extends Controller
     {
         $customers = Customers::all();
         $status = ['ACTIVE', 'Apagado', 'Mantenimiento', 'Requiere Atención', 'Error', 'INACTIVE'];
+        $mining_power_options = ['MegaHash', 'GigaHash', 'TeraHash', 'PentaHash'];
 
         $machine = DB::table('machines')
             ->leftjoin('customers', 'machines.customer_id', '=', 'customers.id')
-            ->select('customers.name AS customer_name', 'machines.id', 'machines.name', 'machines.codeQR', 'machines.customer_id', 'machines.status', 'machines.observation')
+            ->select('customers.name AS customer_name', 'machines.id', 'machines.name', 'machines.mining_power ', 'machines.total_power', 'machines.codeQR', 'machines.customer_id', 'machines.status', 'machines.observation')
             ->where('machines.id', '=', $id)
             ->first();
 
@@ -351,7 +355,7 @@ class MachinesController extends Controller
             ->leftjoin('machines', 'machines_history.machine_id', '=', 'machines.id')
             ->leftjoin('users', 'machines_history.user_id', '=', 'users.id')
             ->leftjoin('customers', 'machines_history.customer_id', '=', 'customers.id')
-            ->select('users.name AS user_name', 'machines_history.created_at', 'machines_history.name', 'machines_history.created_at', 'machines_history.status', 'machines_history.observation', 'customers.name AS customer_name')
+            ->select('users.name AS user_name', 'machines_history.created_at', 'machines_history.name', 'machines_history.mining_power ', 'machines_history.total_power','machines_history.created_at', 'machines_history.status', 'machines_history.observation', 'customers.name AS customer_name')
             ->where('machines_history.machine_id', '=', $id)
             ->orderBy('created_at', 'desc')
             ->get();
@@ -359,7 +363,7 @@ class MachinesController extends Controller
         //to generate the qr code in the view from the obtained data
         $codeQR = $machine->codeQR;
 
-        return view('user::machines.edit', compact('machine', 'status', 'customers', 'codeQR', 'machine_changes'))->with('i', (request()->input('page', 1) - 1) * 5);
+        return view('user::machines.edit', compact('machine', 'status', 'customers', 'codeQR', 'machine_changes','mining_power_options'))->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
     public function update(Request $request, $id)
@@ -370,6 +374,8 @@ class MachinesController extends Controller
             'customer_id' => 'required',
             'codeQR' => 'required|max:20|min:5|unique:machines,codeQR,' . $id,
             'observation' => 'nullable|max:200|min:5',
+            'mining_power' => 'nullable|max:15|min:5',
+            'total_power' => 'nullable|max:20|between:0,9999',
         ]);
 
         //find machine and create history machine actual status

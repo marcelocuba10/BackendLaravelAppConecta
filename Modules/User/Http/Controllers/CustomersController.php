@@ -44,6 +44,7 @@ class CustomersController extends Controller
             'access_key' => 'nullable|max:15|min:15',
             'puid' => 'nullable|max:6|min:6',
             'total_machines' => 'required|integer|between:0,9999|min:0',
+            'pool' => 'nullable|max:50|min:3'
         ]);
 
         Customers::create($request->all());
@@ -71,6 +72,7 @@ class CustomersController extends Controller
             'access_key' => 'nullable|max:15|min:15',
             'puid' => 'nullable|max:6|min:6',
             'total_machines' => 'required|integer|between:0,9999|min:0',
+            'pool' => 'nullable|max:50|min:3'
         ]);
 
         $customer = Customers::find($id);

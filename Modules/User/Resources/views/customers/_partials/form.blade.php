@@ -28,14 +28,21 @@
       </div>
     </div>
     <!-- end col -->
-    <div class="col-6">
+    <div class="col-4">
+      <div class="input-style-1">
+        <label>Pool Name</label>
+        <input type="text" name="pool" value="{{ $customer->pool ?? old('pool') }}" class="bg-transparent">
+      </div>
+    </div>
+    <!-- end col -->
+    <div class="col-4">
       <div class="input-style-1">
         <label>Access Key</label>
         <input type="text" name="access_key" value="{{ $customer->access_key ?? old('access_key') }}" class="bg-transparent">
       </div>
     </div>
     <!-- end col -->
-    <div class="col-6">
+    <div class="col-4">
       <div class="input-style-1">
         <label>Puid</label>
         <input type="text" name="puid" value="{{ $customer->puid ?? old('puid') }}" class="bg-transparent">

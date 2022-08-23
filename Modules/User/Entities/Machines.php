@@ -15,7 +15,9 @@ class Machines extends Model
         'codeQR',
         'customer_id',
         'user_id',
-        'observation'
+        'observation',
+        'mining_power',
+        'total_power'
     ];
     
     protected static function newFactory()

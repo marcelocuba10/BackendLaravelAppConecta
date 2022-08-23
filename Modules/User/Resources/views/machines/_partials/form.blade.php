@@ -10,7 +10,31 @@
           </div>
         </div>
         <!-- end col -->
-        <div class="col-sm-6">
+        <div class="col-6">
+          <div class="select-style-1">
+            <label>(*) Cliente</label>
+            <div class="select-position">
+              @if($machine)
+              <select name="customer_id">
+                @foreach ($customers as $customer)
+                    <option value="{{ $customer->id }}" {{ ( $customer->id == $machine->customer_id) ? 'selected' : '' }}> {{ $customer->name}} </option>
+                @endforeach 
+              </select>
+              @else
+              <select name="customer_id">
+                @foreach ($customers as $customer)
+                    <option value="{{ $customer->id }}"> {{ $customer->name}} </option>
+                @endforeach 
+              </select>
+              @endIf
+            </div>
+          </div>
+        </div>
+        <!-- end col -->
+      </div>
+      <!-- end row -->
+      <div class="row">
+        <div class="col-sm-4">
           <div class="select-style-1">
             <label>(*) Estado</label>
             <div class="select-position">
@@ -30,46 +54,52 @@
             </div>
           </div>
         </div>
+        <!-- end col -->
+        <div class="col-sm-4">
+          <div class="select-style-1">
+            <label>Potencia Mineración</label>
+            <div class="select-position">
+              @if ($machine)
+                <select name="mining_power">
+                  @foreach ($mining_power_options as $mining_power)
+                      <option value="{{ $mining_power }}" {{ ( $mining_power === $machine->mining_power) ? 'selected' : '' }}> {{ $mining_power }} </option>
+                  @endforeach 
+                </select> 
+              @else
+                <select name="mining_power">
+                  @foreach ($mining_power_options as $mining_power)
+                      <option value="{{ $mining_power }}"> {{ $mining_power}} </option>
+                  @endforeach 
+                </select> 
+              @endif
+            </div>
+          </div>
+        </div>
+        <!-- end col -->
+        <div class="col-sm-4">
+          <div class="input-style-1">
+            <label>Valor Potencia</label>
+            <input style="text-transform: uppercase" type="decimal" name="total_power" value="{{ $machine->total_power ?? old('total_power') }}" class="bg-transparent">
+          </div>
+        </div>
+        <!-- end col -->
       </div>
-      <!-- end col -->
-      <div class="col-12">
-        <div class="select-style-1">
-          <label>(*) Cliente</label>
-          <div class="select-position">
-            @if($machine)
-            <select name="customer_id">
-              @foreach ($customers as $customer)
-                  <option value="{{ $customer->id }}" {{ ( $customer->id == $machine->customer_id) ? 'selected' : '' }}> {{ $customer->name}} </option>
-              @endforeach 
-            </select>
-            @else
-            <select name="customer_id">
-              @foreach ($customers as $customer)
-                  <option value="{{ $customer->id }}"> {{ $customer->name}} </option>
-              @endforeach 
-            </select>
-            @endIf
+      <div class="row">
+        <div class="col-12">
+          <div class="input-style-1">
+            <label>Observación</label>
+            <textarea type="text" name="observation" value="{{ $machine->observation ?? old('observation') }}" class="bg-transparent">{{ $machine->observation ?? old('observation') }}</textarea>
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="button-group d-flex justify-content-center flex-wrap">
+            <button type="submit" class="main-btn primary-btn btn-hover m-2">Guardar</button>
+            <a class="main-btn danger-btn-outline m-2" href="/user/machines/grid_view" >Atrás</a>
           </div>
         </div>
       </div>
-      <!-- end col -->
-      <div class="col-12">
-        <div class="input-style-1">
-          <label>Observación</label>
-          <textarea type="text" name="observation" value="{{ $machine->observation ?? old('observation') }}" class="bg-transparent">{{ $machine->observation ?? old('observation') }}</textarea>
-        </div>
-      </div>
-      <!-- end col -->
-      <div class="col-12">
-        <div class="button-group d-flex justify-content-center flex-wrap">
-          <button type="submit" class="main-btn primary-btn btn-hover m-2">Guardar</button>
-          <a class="main-btn danger-btn-outline m-2" href="/user/machines/grid_view" >Atrás</a>
-        </div>
-      </div>
     </div>
-    <!-- end card -->
   </div>
-  <!-- end col -->
   <div class="col-lg-4">
     <div class="card-style mb-30">
       <div style="text-align: center">
@@ -80,9 +110,8 @@
       </div>
     </div>
   </div>
-  <!-- End Col -->
 </div>
-<!-- End Row -->
+
 
 <div class="row">
   <div class="title-wrapper pt-30">

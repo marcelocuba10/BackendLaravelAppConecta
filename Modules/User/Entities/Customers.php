@@ -16,7 +16,10 @@ class Customers extends Model
         'access_key',
         'puid',
         'total_machines',
-        'pool'
+        'pool',
+        'userIdPool',
+        'apiKey',
+        'secretKey'
     ];
     
     protected static function newFactory()

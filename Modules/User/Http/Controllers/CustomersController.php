@@ -30,9 +30,26 @@ class CustomersController extends Controller
         return view('user::customers.index', compact('customers'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
+    public function grid_view()
+    {
+        $filter = null;
+        $customers = DB::table('customers')->get();
+        $machines = DB::table('machines')
+            ->leftjoin('users', 'machines.user_id', '=', 'users.id')
+            ->leftjoin('customers', 'machines.customer_id', '=', 'customers.id')
+            ->select('users.name AS user_name', 'machines.id', 'machines.name', 'machines.codeQR', 'machines.customer_id', 'machines.status', 'machines.observation', 'customers.name AS customer_name')
+            ->orderBy('machines.created_at', 'DESC')
+            ->get();
+
+        return view('user::customers.show', compact('machines', 'customers', 'filter'));
+    }
+
     public function create()
     {
-        return view('user::customers.create');
+        $customer = null;
+        $pools_options = ['btc.com', 'antpool.com', 'binance.com', 'poolin.com'];
+
+        return view('user::customers.create', compact('pools_options', 'customer'));
     }
 
     public function store(Request $request)
@@ -44,7 +61,10 @@ class CustomersController extends Controller
             'access_key' => 'nullable|max:25|min:15',
             'puid' => 'nullable|max:10|min:4',
             'total_machines' => 'required|integer|between:0,9999|min:0',
-            'pool' => 'nullable|max:50|min:3'
+            'pool' => 'nullable|max:50|min:3',
+            'userIdPool' => 'nullable|max:25|min:4',
+            'apiKey' => 'nullable|max:40|min:4',
+            'secretKey' => 'nullable|max:40|min:4',
         ]);
 
         Customers::create($request->all());
@@ -53,14 +73,51 @@ class CustomersController extends Controller
 
     public function show($id)
     {
-        $customer = Customers::find($id);
-        return view('user::customers.show', compact('customer'));
+        $customer = DB::table('customers')
+            ->where('customers.id', '=', $id)
+            ->select(
+                'customers.id',
+                'customers.name',
+                'customers.pool',
+                'customers.userIdPool',
+                'customers.apiKey',
+                'customers.secretKey',
+                'customers.workers_active',
+                'customers.workers_inactive',
+                'customers.workers_dead',
+                'customers.workers_total',
+                'customers.shares_1m',
+                'customers.shares_5m',
+                'customers.shares_15m',
+                'customers.shares_1d',
+                'customers.total_machines'
+            )
+            ->first();
+
+        $machines = DB::table('machines')
+            ->leftjoin('users', 'machines.user_id', '=', 'users.id')
+            ->where('machines.customer_id', '=', $id)
+            ->select('users.name AS user_name', 'machines.total_power' ,'machines.id', 'machines.name', 'machines.codeQR', 'machines.customer_id', 'machines.status', 'machines.observation')
+            ->orderBy('machines.created_at', 'DESC')
+            ->get();
+
+        
+        $machines_api = DB::table('machines_api')
+            ->select('machines_api.id', 'machines_api.last10m', 'machines_api.worker')
+            ->where('machines_api.customer_id', '=', $customer->id)
+            ->orderBy('created_at', 'DESC')
+            ->take($customer->total_machines)
+            ->get();
+
+        return view('user::customers.show', compact('customer', 'machines','machines_api'));
     }
 
     public function edit($id)
     {
         $customer = Customers::find($id);
-        return view('user::customers.edit', compact('customer'));
+        $pools_options = ['btc.com', 'antpool.com', 'binance.com', 'poolin.com'];
+
+        return view('user::customers.edit', compact('customer', 'pools_options'));
     }
 
     public function update(Request $request, $id)
@@ -72,7 +129,10 @@ class CustomersController extends Controller
             'access_key' => 'nullable|max:25|min:15',
             'puid' => 'nullable|max:10|min:4',
             'total_machines' => 'required|integer|between:0,9999|min:0',
-            'pool' => 'nullable|max:50|min:3'
+            'pool' => 'nullable|max:50|min:3',
+            'userIdPool' => 'nullable|max:25|min:4',
+            'apiKey' => 'nullable|max:40|min:4',
+            'secretKey' => 'nullable|max:40|min:4',
         ]);
 
         $customer = Customers::find($id);

@@ -6,7 +6,8 @@
         <div class="col-sm-6">
           <div class="input-style-1">
             <label>(*) Nombre</label>
-            <input style="text-transform: uppercase" type="text" name="name" value="{{ $machine->name ?? old('name') }}" class="bg-transparent">
+            {{-- <input style="text-transform: uppercase" type="text" name="name" value="{{ $machine->name ?? old('name') }}" class="bg-transparent"> --}}
+            <input type="text" name="name" value="{{ $machine->name ?? old('name') }}" class="bg-transparent">
           </div>
         </div>
         <!-- end col -->
@@ -79,7 +80,7 @@
         <div class="col-sm-4">
           <div class="input-style-1">
             <label>Valor Potencia</label>
-            <input style="text-transform: uppercase" type="decimal" name="total_power" value="{{ $machine->total_power ?? old('total_power') }}" class="bg-transparent">
+            <input type="decimal" name="total_power" value="{{ $machine->total_power ?? old('total_power') }}" class="bg-transparent">
           </div>
         </div>
         <!-- end col -->

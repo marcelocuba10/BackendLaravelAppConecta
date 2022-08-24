@@ -8,7 +8,7 @@
         <div class="row align-items-center">
           <div class="col-md-8">
             <div class="title d-flex align-items-center flex-wrap mb-30">
-              <h2 class="mr-40">Listado Local de Máquinas</h2>
+              <h2 class="mr-40">Máquinas Local</h2>
               @can('machine-create')
                 <a href="{{ route('machines.create') }}" class="main-btn info-btn btn-hover btn-sm"><i class="lni lni-plus mr-5"></i> Nuevo</a>
               @endcan 

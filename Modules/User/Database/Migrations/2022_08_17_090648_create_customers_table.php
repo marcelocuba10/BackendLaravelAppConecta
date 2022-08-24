@@ -22,6 +22,9 @@ class CreateCustomersTable extends Migration
             $table->string('puid')->nullable();
             $table->integer('total_machines');
             $table->string('pool')->nullable();
+            $table->string('userIdPool')->nullable();
+            $table->string('apiKey')->nullable();
+            $table->string('secretKey')->nullable();
 
             $table->integer('workers_active')->nullable();
             $table->integer('workers_inactive')->nullable();

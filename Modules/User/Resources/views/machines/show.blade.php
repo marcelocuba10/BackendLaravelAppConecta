@@ -62,12 +62,22 @@
                 <!-- end col -->
                 <div class="col-4">
                   <div class="input-style-1">
-                    <label>Valor Potencia</label>
+                    <label>Valor Hash</label>
                     <input type="text" value="{{ $machine->total_power }}" readonly>
                   </div>
                 </div>
                 <!-- end col -->
-                <div class="col-12">
+                <div class="col-4">
+                  <div class="input-style-1">
+                    <label>Valor Real Hash</label>
+                    <input type="text" value="{{ $machine_api->last10m ?? old('last10m')}}" readonly>
+                    @if ($machine_api)
+                      <span class="form-text m-b-none">Actualizado: {{ $machine_api->created_at ?? old('created_at')}}</span>
+                    @endif
+                  </div>
+                </div>
+                <!-- end col -->
+                <div class="col-8">
                   <div class="input-style-1">
                     <label>Observación</label>
                     <textarea type="text" value="{{ $machine->observation }}"

@@ -72,6 +72,78 @@ class MachinesController extends Controller
         if ($customers->count() == 0) {
             $machines = null; //return null for break ajax scroll
         } else {
+            if ($customers[0]->userIdPool && $customers[0]->apiKey && $customers[0]->secretKey) {
+                if ($customers[0]->pool == 'antpool.com') {
+
+                    /** parameters to authenticate a request */
+                    $page_size = $customers[0]->total_machines;
+                    $currency = 'BTC';
+                    $userId = $customers[0]->userIdPool;
+                    $api_key = $customers[0]->apiKey;
+                    $api_secret = $customers[0]->secretKey;
+                    $typeUrl = 'workers';
+
+                    /** Nonce is a regular integer number. It must be increasing with every request you make */
+                    $nonce = time();
+
+                    /** Signature is a HMAC-SHA256 */
+                    $hmac_message = $userId . $api_key . $nonce;
+                    $hmac = strtoupper(hash_hmac('sha256', $hmac_message, $api_secret, false));
+
+                    /** create curl request */
+                    $post_fields = array(
+                        'key' => 'd36e7c47078f432aa52ee883d334f7bb',
+                        'nonce' => $nonce,
+                        'signature' => $hmac,
+                        'coin' => $currency
+                    );
+
+                    $post_fields = array_merge($post_fields, array('pageSize' => $page_size));
+                    $post_data = '';
+
+                    foreach ($post_fields as $key => $value) {
+                        $post_data .= $key . '=' . $value . '&';
+                    }
+
+                    rtrim($post_data, '&');
+
+                    $ch = curl_init();
+                    curl_setopt($ch, CURLOPT_URL, 'https://antpool.com/api/' . $typeUrl . '.htm');
+                    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                    curl_setopt($ch, CURLOPT_SSLVERSION, CURL_SSLVERSION_TLSv1_2);
+                    curl_setopt($ch, CURLOPT_POST, count($post_fields));
+                    curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+                    // set large timeout because API lak sometimes
+                    curl_setopt($ch, CURLOPT_TIMEOUT, 60);
+                    $result = curl_exec($ch);
+                    curl_close($ch);
+
+                    // check if curl was timed out
+                    if ($result === false) {
+                        if ($this->print_error_if_api_down) {
+                            exit('Error: No API connect');
+                        } else {
+                            exit();
+                        }
+                    }
+
+                    // validate JSON
+                    $result_json = json_decode($result, true);
+
+                    if ($result_json['message'] == 'ok') {
+
+                        /** save in DB table machines_api */
+                        $created_at = \Carbon\Carbon::now();
+                        foreach ($result_json['data']['rows'] as $listApi) {
+                            $machines = $result_json['data']['rows'];
+                        }
+                    } else {
+                        exit('API Error: ' . print_r($result_json, true));
+                    }
+                }
+            }
+
             if ($customers[0]->access_key && $customers[0]->puid) {
                 $worker_stats = json_decode(file_get_contents('https://pool.api.btc.com/v1/worker/stats?access_key=' . $customers[0]->access_key . '&puid=' . $customers[0]->puid), true);
 
@@ -174,15 +246,25 @@ class MachinesController extends Controller
         $filter = null;
         $search = $request->input('search');
 
+        if ($search == '') {
+            $machines = DB::table('machines')
+                ->leftjoin('users', 'machines.user_id', '=', 'users.id')
+                ->leftjoin('customers', 'machines.customer_id', '=', 'customers.id')
+                ->select('users.name AS user_name', 'machines.id', 'machines.name', 'machines.codeQR', 'machines.customer_id', 'machines.status', 'machines.observation', 'customers.name AS customer_name')
+                ->get();
+        } else {
+            $machines = DB::table('machines')
+                ->leftjoin('users', 'machines.user_id', '=', 'users.id')
+                ->leftjoin('customers', 'machines.customer_id', '=', 'customers.id')
+                ->select('users.name AS user_name', 'machines.id', 'machines.name', 'machines.codeQR', 'machines.customer_id', 'machines.status', 'machines.observation', 'customers.name AS customer_name')
+                ->where('customers.name', 'LIKE', "%{$search}%")
+                ->orWhere('machines.name', 'LIKE', "%{$search}%")
+                ->orWhere('machines.status', 'LIKE', "{$search}")
+                ->get();
+        }
+
         $customers = DB::table('customers')
             ->select('customers.id', 'customers.name', 'customers.access_key', 'customers.puid')
-            ->where('customers.name', 'LIKE', "%{$search}%")
-            ->get();
-
-        $machines = DB::table('machines')
-            ->leftjoin('users', 'machines.user_id', '=', 'users.id')
-            ->leftjoin('customers', 'machines.customer_id', '=', 'customers.id')
-            ->select('users.name AS user_name', 'machines.id', 'machines.name', 'machines.codeQR', 'machines.customer_id', 'machines.status', 'machines.observation', 'customers.name AS customer_name')
             ->get();
 
         return view('user::machines.index_grid', compact('search', 'customers', 'machines', 'filter'));
@@ -277,8 +359,15 @@ class MachinesController extends Controller
     {
         $machine = DB::table('machines')
             ->leftjoin('customers', 'machines.customer_id', '=', 'customers.id')
-            ->select('customers.name AS customer_name', 'machines.id', 'machines.name', 'machines.total_power','machines.mining_power', 'machines.codeQR', 'machines.customer_id', 'machines.status', 'machines.observation')
+            ->select('customers.name AS customer_name', 'customers.total_machines', 'customers.id AS customer_id', 'machines.id', 'machines.name', 'machines.total_power', 'machines.mining_power', 'machines.codeQR', 'machines.customer_id', 'machines.status', 'machines.observation')
             ->where('machines.id', '=', $id)
+            ->first();
+
+        $machine_api = DB::table('machines_api')
+            ->select('machines_api.id', 'machines_api.last10m', 'machines_api.worker', 'machines_api.created_at')
+            ->where('machines_api.worker', '=', $machine->name)
+            ->orderBy('created_at', 'DESC')
+            ->take(1)
             ->first();
 
         $machine_changes = DB::table('machines_history')
@@ -293,7 +382,7 @@ class MachinesController extends Controller
         //to generate the qr code in the view from the obtained data
         $codeQR = $machine->codeQR;
 
-        return view('user::machines.show', compact('machine', 'codeQR', 'machine_changes'))->with('i', (request()->input('page', 1) - 1) * 5);
+        return view('user::machines.show', compact('machine', 'codeQR', 'machine_changes', 'machine_api'));
     }
 
     public function show_api($id)
@@ -333,7 +422,7 @@ class MachinesController extends Controller
 
         $input = $request->all();
         $input['user_id'] = $request->user()->id;
-        $input['name'] = strtoupper($request->input('name'));
+        //$input['name'] = strtoupper($request->input('name'));
         Machines::create($input);
 
         return redirect()->route('machines.grid_view')->with('message', 'Machine created successfully.');
@@ -396,7 +485,7 @@ class MachinesController extends Controller
         //update machine
         $input = $request->all();
         $input['user_id'] = $request->user()->id;
-        $input['name'] = strtoupper($request->input('name'));
+        //$input['name'] = strtoupper($request->input('name'));
         $machine = Machines::find($id);
         $machine->update($input);
 

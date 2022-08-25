@@ -49,11 +49,25 @@
             @endif
         </div>
 
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-check checkbox-style mb-30">
+                  <input class="form-check-input" type="checkbox" name="remember" value="1" id="checkbox-remember">
+                  <label class="form-check-label" for="remember"><small>Recordarme</small></label>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="text-start text-md-end text-lg-start text-xxl-end mb-30">
+                  <a href="/user/forget-password" style="color: #212529;" class="hover-underline">
+                    <small>¿Has olvidado tu contraseña?</small>
+                  </a>
+                </div>
+            </div>
+        </div>
+
         <div class="form-group">
             <button type="submit" class="btn btn-block create-account">Entrar</button>
         </div>
-
-        <a class="pokioj" href="/user/forget-password"><small>¿Has olvidado tu contraseña?</small></a>
     </form>
 </div>
 

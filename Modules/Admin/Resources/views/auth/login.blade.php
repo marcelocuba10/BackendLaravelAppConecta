@@ -11,7 +11,7 @@
         </div>    
         <div class="login-texto">
             <p class="login-title">Panel Administrativo</p>
-            <p class="login-message">Facilidades increíbles para tu empresa! :)</p>
+            <p class="login-message">Gestiona tu empresa de un solo lugar!</p>
         </div>
     </div>    
 </div> 
@@ -47,6 +47,22 @@
             @if ($errors->has('password'))
                 <span class="text-danger text-left">{{ $errors->first('password') }}</span>
             @endif
+        </div>
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-check checkbox-style mb-30">
+                  <input class="form-check-input" type="checkbox" name="remember" value="1" id="checkbox-remember">
+                  <label class="form-check-label" for="remember"><small>Recordarme</small></label>
+                </div>
+            </div>
+            <div class="col-sm-6" style="display: none">
+                <div class="text-start text-md-end text-lg-start text-xxl-end mb-30">
+                  <a href="#" style="color: #212529;" class="hover-underline">
+                    <small>¿Has olvidado tu contraseña?</small>
+                  </a>
+                </div>
+            </div>
         </div>
 
         <div class="form-group">

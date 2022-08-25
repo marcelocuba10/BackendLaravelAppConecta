@@ -34,6 +34,7 @@ class LoginController extends Controller
         $email = $request->input('email');
         $password = $request->input('password');
 
+        /** Validations */
         $user = User::where('email', '=', $email)->first();
 
         if (!$user) {
@@ -48,11 +49,13 @@ class LoginController extends Controller
             return redirect()->to('/user/login')->with('error', 'Credenciales incorrectas');
         }
 
+        /** Check if user is enabled or disabled */
         if ($user->idMaster == 0) {
             return redirect()->to('/user/login')->with('error', 'Usuario inhabilitado');
         } else {
             $user = Auth::getProvider()->retrieveByCredentials($credentials);
-            Auth::login($user);
+            // Auth::login($user);
+            Auth::login($user, $request->get('remember'));
             return $this->authenticated($request, $user);
         }
     }

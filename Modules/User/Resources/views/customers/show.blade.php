@@ -387,21 +387,26 @@
                     <div id="grid">
                       @foreach($machines as $machine)
                         @foreach ($machines_api as $machines_api_item)
-                            @if ($machines_api_item->worker == $machine->name )
+                            @if (strtolower($machines_api_item->worker)  === strtolower($machine->name)  )
                               @php
+                                $machineStatus='';
                                 $percent = $machine->total_power * 0.10;
-                                $total_power_percent = $machine->total_power - $percent; 
+                                $total_power_percent = $machine->total_power - $percent;
                               @endphp
-
-                              @if ($total_power_percent >= $machines_api_item->last10m || $machine->status == 'Requiere Atención')
-                                <a href="/user/machines/{{$machine->id}}/show">
-                                  <div id="item" data-toggle="tooltip" data-placement="bottom" title="{{ $machine->name }}" 
-                                    class="bg-card-attention">
-                                    <p class="text-sm  text-white" style="margin-top: 10px;">{{ Str::limit($machine->name, 3) }}</p>
-                                  </div>
-                                </a>
+                              @if ($machines_api_item->last10m > 0)
+                                @php
+                                  $machineStatus = "bg-card-enabled";        
+                                @endphp    
+                        
+                              @elseIf ($machines_api_item->last10m < $total_power_percent && $machines_api_item->last10m > 0)
+                                @php
+                                  $machineStatus = "bg-card-attention";        
+                                @endphp  
                               @else
-                                <a href="/user/machines/{{$machine->id}}/show">
+                                @php
+                                  $machineStatus = "bg-card-disabled";   
+                                @endphp  
+                                {{-- <a href="/user/machines/{{$machine->id}}/show">
                                   <div id="item" data-toggle="tooltip" data-placement="bottom" title="{{ $machine->name }}" 
                                     class="
                                     @if($machine->status == 'ACTIVE') bg-card-enabled 
@@ -413,8 +418,14 @@
                                     @endif">
                                     <p class="text-sm  text-white" style="margin-top: 10px;">{{ Str::limit($machine->name, 3) }}</p>
                                   </div>
-                                </a> 
+                                </a>  --}}
                               @endif 
+                              <a href="/user/machines/{{$machine->id}}/show">
+                                <div id="item" data-toggle="tooltip" data-placement="bottom" title="{{ $machine->name }}" 
+                                  class=" {{ $machineStatus }}">
+                                  <p class="text-sm  text-white" style="margin-top: 10px;">{{ Str::limit($machine->name, 3) }}</p>
+                                </div>
+                              </a> 
                             @endif
                         @endforeach
                       @endforeach

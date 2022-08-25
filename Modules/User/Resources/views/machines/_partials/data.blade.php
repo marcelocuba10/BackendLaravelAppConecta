@@ -17,7 +17,7 @@
                                     <div class="text">
                                         <p class="text-sm text-active">
                                             <span class="text-dark">Machines Total</span>&nbsp;
-                                            ({{ $worker_stats['data']['workers_total'] }})
+                                            ({{ $customer->workers_total }})
                                         </p>
                                     </div>
                                 </div>
@@ -27,7 +27,7 @@
                                     <div class="text">
                                         <p class="text-sm text-custom-enabled">
                                             <span class="text-dark">Total Active</span>&nbsp;
-                                            ({{ $worker_stats['data']['workers_active'] }})
+                                            ({{ $customer->workers_active }})
                                             <i class="lni lni-arrow-up"></i>
                                         </p>
                                     </div>
@@ -38,7 +38,7 @@
                                     <div class="text">
                                         <p class="text-sm text-gray">
                                             <span class="text-dark">Total Inactive</span>&nbsp;
-                                            ({{ $worker_stats['data']['workers_inactive'] }})
+                                            ({{ $customer->workers_inactive }})
                                             <i class="lni lni-arrow-down"></i>
                                         </p>
                                     </div>
@@ -49,7 +49,7 @@
                                     <div class="text">
                                         <p class="text-sm text-gray">
                                             <span class="text-dark">Total Dead</span>&nbsp;
-                                            ({{ $worker_stats['data']['workers_dead'] }})
+                                            ({{ $customer->workers_dead }})
                                             <i class="lni lni-arrow-down"></i>
                                         </p>
                                     </div>

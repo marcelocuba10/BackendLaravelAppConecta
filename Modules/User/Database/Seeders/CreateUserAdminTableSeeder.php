@@ -32,7 +32,8 @@ class CreateUserAdminTableSeeder extends Seeder
             'email' => 'user@user.com',
             'password' => 'teste123',
             'company_name' => 'empresa one',
-            'status' => '1'
+            'status' => '1',
+            'exp_date_plan' => 20,
         ]);
 
         $role = Role::create([

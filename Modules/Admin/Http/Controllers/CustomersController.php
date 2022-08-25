@@ -67,13 +67,14 @@ class CustomersController extends Controller
 
     public function store(Request $request)
     {
+        
         $this->validate($request, [
             'idMaster' => 'required|integer|between:0,1',
             'name' => 'required|max:50|min:5',
             'last_name' => 'required|max:50|min:5',
             'email' => 'required|email|unique:users,email',
             'phone' => 'nullable|max:20|min:5',
-            'ci' => 'required|max:8|min:5|unique:users,ci',
+            'ci' => 'required|max:25|min:5|unique:users,ci',
             'password' => 'required|max:50|min:5',
             'confirm_password' => 'required|max:50|min:5|same:password',
             'roles' => 'required',
@@ -94,6 +95,7 @@ class CustomersController extends Controller
                 'customer_id' => $input['idReference'],
                 'plan_id' => $input['plan_id'],
                 'exp_date_plan' => $input['exp_date_plan'],
+                'status' => $input['idMaster'],
                 'created_at' => Carbon::now(),
             ]
         );
@@ -177,7 +179,7 @@ class CustomersController extends Controller
             'last_name' => 'required|max:50|min:5',
             'email' => 'required|email|unique:users,email,' . $id,
             'phone' => 'nullable|max:50|min:5',
-            'ci' => 'required|max:8|min:5|unique:users,ci,' . $id,
+            'ci' => 'required|max:25|min:5|unique:users,ci,' . $id,
             'password' => 'nullable|max:50|min:5',
             'confirm_password' => 'nullable|max:20|min:5|same:password',
             'roles' => 'required',
@@ -203,6 +205,7 @@ class CustomersController extends Controller
             [
                 'plan_id' => $input['plan_id'],
                 'exp_date_plan' => $input['exp_date_plan'],
+                'status' => $input['idMaster'],
                 'updated_at' => Carbon::now(),
             ]
         );

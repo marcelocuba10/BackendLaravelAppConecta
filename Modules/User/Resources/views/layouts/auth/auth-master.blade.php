@@ -11,7 +11,7 @@
     <link href="/tema/font-awesome/css/font-awesome.css" rel="stylesheet">
 
     <link href="/tema/css/animate.css" rel="stylesheet">
-    <link rel="stylesheet" href="/css/login-register.css">
+    <link rel="stylesheet" href="/css/login_register.css">
 
 </head>
 

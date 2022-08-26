@@ -378,6 +378,8 @@ class MachinesController extends Controller
                 ->orderBy('created_at', 'DESC')
                 ->take(1)
                 ->first();
+        }else{
+            $machine_api = null;
         }
 
         $machine_changes = DB::table('machines_history')

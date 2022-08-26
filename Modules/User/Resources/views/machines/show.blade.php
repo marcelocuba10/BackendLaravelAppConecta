@@ -71,14 +71,31 @@
                   <div class="input-style-1">
                     <label>Valor Real Hash</label>
                     @if ($machine->customer_pool == 'btc.com')
-                      @php
-                          //dd($machine_api);
-                      @endphp
-                      <input type="text" value="{{ $machine_api->shares_1m ?? old('shares_1m')}}" readonly>
+                      @if (!$machine_api)
+                        <input type="text" value="Sin Información" readonly>
+                      @else
+                        <input type="text" value="{{ $machine_api->shares_1m ?? old('shares_1m')}}" readonly>
+                      @endif
                     @elseIf($machine->customer_pool == 'antpool.com')
-                      <input type="text" value="{{ $machine_api->last10m ?? old('last10m')}}" readonly>
+                      @if (!$machine_api)
+                        <input type="text" value="Sin Información" readonly>
+                      @else
+                        <input type="text" value="{{ $machine_api->last10m ?? old('last10m')}}" readonly>
+                      @endif
+                    @elseIf($machine->customer_pool == 'binance.com')
+                      @if (!$machine_api)
+                        <input type="text" value="Sin Información" readonly>
+                      @else
+                        <input type="text" value="{{ $machine_api->last10m ?? old('last10m')}}" readonly>
+                      @endif  
+                    @elseIf($machine->customer_pool == 'poolin.com')
+                      @if (!$machine_api)
+                        <input type="text" value="Sin Información" readonly>
+                      @else
+                        <input type="text" value="{{ $machine_api->last10m ?? old('last10m')}}" readonly>
+                      @endif    
                     @endif
-                    
+
                     @if ($machine_api)
                       <span class="form-text m-b-none">Actualizado: {{ $machine_api->created_at ?? old('created_at')}}</span>
                     @endif

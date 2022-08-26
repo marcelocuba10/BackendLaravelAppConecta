@@ -1,3 +1,14 @@
+.invoice-card .invoice-address {
+    padding-top: 30px;
+    display: flex;
+    margin-bottom: 5px;
+    padding-bottom: 5px;
+}
+
+.invoice-card .invoice-address {
+    padding-top: 5px;
+}
+
 /** start tabs style **/
 .tab-style-3 nav {
     margin-bottom: 20px;

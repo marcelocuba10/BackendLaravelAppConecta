@@ -7,8 +7,8 @@
     <div class="title-wrapper pt-30">
       <div class="row align-items-center">
         <div class="col-md-6">
-            <div class="titlemb-30">
-                <h2>Detalle Cliente: {{ $customer->name }}</h2>
+            <div class="title mb-30">
+                <h2>Información del Cliente</h2>
             </div>
         </div>
         <div class="col-md-6">
@@ -25,243 +25,83 @@
       </div>
     </div>
     <!-- ========== title-wrapper end ========== -->
-    <div class="form-layout-wrapper">
+    <div class="invoice-wrapper">
       <div class="row">
-        <div class="col-lg-12">
-          <div class="tab-style-2 card-style mb-30">
-            <nav class="nav" id="nav-tab">
-              <button id="tab-2-2" class="main-btn deactive-btn active" data-bs-toggle="tab" data-bs-target="#tabContent-2-2">
-                <i class="lni lni-graph mr-10"></i>Información de Máquinas
-              </button>
-              <button id="tab-2-1" class="main-btn deactive-btn" data-bs-toggle="tab" data-bs-target="#tabContent-2-1">
-                <i class="lni lni-user mr-10"></i>Información Básica
-              </button>
-            </nav>
-            <div class="tab-content" id="nav-tabContent2">
-              <div class="tab-pane fade " id="tabContent-2-1">
-                <div class="row">
-                  <div class="col-4">
-                    <div class="input-style-1">
-                      <label>Nombre</label>
-                      <input type="text" value="{{ $customer->name ?? old('name') }}" name="name" readonly>
-                    </div>
-                  </div>
-                  <!-- end col -->
-                  <div class="col-4">
-                    <div class="input-style-1">
-                      <label>Teléfono</label>
-                      <input type="text" value="{{ $customer->phone ?? old('phone') }}" name="phone" readonly>
-                    </div>
-                  </div>
-                  <!-- end col -->
-                  <div class="col-4">
-                    <div class="input-style-1">
-                      <label>Dirección</label>
-                      <input type="text" value="{{ $customer->address ?? old('address') }}" name="address" readonly>
-                    </div>
-                  </div>
-                  <!-- end col -->
-                  <div class="col-4">
-                    <div class="input-style-1">
-                      <label>Pool Name</label>
-                      <input type="text" name="pool" value="{{ $customer->pool ?? old('pool') }}" >
-                    </div>
-                  </div>
-                  <!-- end col -->
-                  <div class="col-4">
-                    <div class="input-style-1">
-                      <label>Access Key (btc.com)</label>
-                      <input type="text" name="access_key" value="{{ $customer->access_key ?? old('access_key') }}" >
-                    </div>
-                  </div>
-                  <!-- end col -->
-                  <div class="col-4">
-                    <div class="input-style-1">
-                      <label>Puid (btc.com)</label>
-                      <input type="text" name="puid" value="{{ $customer->puid ?? old('puid') }}">
-                    </div>
-                  </div>
-                  <!-- end col -->
-                  <div class="col-4">
-                    <div class="input-style-1">
-                      <label>UserId (antpool.com)</label>
-                      <input type="text" name="userIdPool" value="{{ $customer->userIdPool ?? old('userIdPool') }}">
-                    </div>
-                  </div>
-                  <!-- end col -->
-                  <div class="col-4">
-                    <div class="input-style-1">
-                      <label>Api Key (antpool.com)</label>
-                      <input type="text" name="apiKey" value="{{ $customer->apiKey ?? old('apiKey') }}" >
-                    </div>
-                  </div>
-                  <!-- end col -->
-                  <div class="col-4">
-                    <div class="input-style-1">
-                      <label>Secret Api Key (antpool.com)</label>
-                      <input type="text" name="secretKey" value="{{ $customer->secretKey ?? old('secretKey') }}" >
-                    </div>
-                  </div>
-                  <!-- end col -->
-                  <div class="col-12">
-                    <div class="button-groupd-flexjustify-content-centerflex-wrap">
-                      <a class="main-btn danger-btn-outline m-2" href="/user/customers">Atrás</a>
-                    </div>
-                  </div>
-                </div>
+        <div class="col-12">
+          <div class="invoice-card card-style mb-30" style="padding-bottom: 5px;">
+            <div class="invoice-address">
+              <div class="address-item">
+                <p class="text-sm">
+                  <span class="text-sm">Cliente:</span>
+                  <span class="text-sm text-bold">{{ $customer->name ?? old('name') }}</span>
+                </p>
+                <p class="text-sm">
+                  <span class="text-sm">Total Máquinas:</span>
+                  <span class="text-sm text-bold">{{ $customer->total_machines ?? old('total_machines') }}</span>
+                </p>
+                <p class="text-sm">
+                  <span class="text-sm">Teléfono:</span>
+                  <span class="text-sm text-medium">{{ $customer->phone ?? old('phone') }}</span>
+                </p>
+                <p class="text-sm">
+                  <span class="text-sm">Dirección:</span>
+                  <span class="text-sm text-medium">{{ $customer->address ?? old('address') }}</span>
+                </p>
               </div>
-              <div class="tab-pane fade active show" id="tabContent-2-2">
-                <div class="row">
-                  <div class="col-3">
-                    <div class="input-style-1">
-                      <label>workers_total</label>
-                      <input type="text" value="{{ $customer->workers_total }}" readonly>
-                    </div>
-                  </div>
-                  <!-- end col -->
-                  <div class="col-3">
-                    <div class="input-style-1">
-                      <label>workers_active</label>
-                      <input type="text" value="{{ $customer->workers_active }}" readonly>
-                    </div>
-                  </div>
-                  <!-- end col -->
-                  <div class="col-3">
-                    <div class="input-style-1">
-                      <label>workers_inactive</label>
-                      <input type="text" value="{{ $customer->workers_inactive }}" readonly>
-                    </div>
-                  </div>
-                  <!-- end col -->
-                  <div class="col-3">
-                    <div class="input-style-1">
-                      <label>workers_dead</label>
-                      <input type="text" value="{{ $customer->workers_dead }}" readonly>
-                    </div>
-                  </div>
-                  <!-- end col -->
-                  <div class="col-3">
-                    <div class="input-style-1">
-                      <label>shares_1m</label>
-                      <input type="text" value="{{ $customer->shares_1m }}" readonly>
-                    </div>
-                  </div>
-                  <!-- end col -->
-                  <div class="col-3">
-                    <div class="input-style-1">
-                      <label>shares_5m</label>
-                      <input type="text" value="{{ $customer->shares_5m }}" readonly>
-                    </div>
-                  </div>
-                  <!-- end col -->
-                  <div class="col-3">
-                    <div class="input-style-1">
-                      <label>shares_15m</label>
-                      <input type="text" value="{{ $customer->shares_15m }}" readonly>
-                    </div>
-                  </div>
-                  <!-- end col -->
-                  <div class="col-3">
-                    <div class="input-style-1">
-                      <label>shares_1d</label>
-                      <input type="text" value="{{ $customer->shares_1d }}" readonly>
-                    </div>
-                  </div>
-                  <!-- end col -->
-                  <div class="col-12">
-                    <div class="button-groupd-flexjustify-content-centerflex-wrap">
-                      <a class="main-btn danger-btn-outline m-2" href="/user/customers">Atrás</a>
-                    </div>
-                  </div>
-                </div>
+              <div class="address-item">
+                <p class="text-sm">
+                  <span class="text-sm">Pool:</span>
+                  <span class="text-sm text-bold">{{ $customer->pool ?? old('pool') }}</span>
+                </p>
+                <p class="text-sm">
+                  <span class="text-sm">Actualizado:</span>
+                  <span class="text-sm text-bold">{{ $customer->updated_at ?? old('updated_at') }} </span>
+                </p>
+                <p class="text-sm">
+                  <span class="text-sm">Total Máquinas:</span>
+                  <span class="text-sm text-bold">{{ $customer->workers_total ?? old('workers_total') }}</span>
+                </p>
+                <p class="text-sm">
+                  <span class="text-sm">Máquinas Activas:</span>
+                  <span class="text-sm text-bold">{{ $customer->workers_active ?? old('workers_active') }}</span>
+                </p>
+              </div>
+              <div class="address-item">
+                <p class="text-sm">
+                  <span class="text-sm">Máquinas Inactivas:</span>
+                  <span class="text-sm text-bold">{{ $customer->workers_inactive ?? old('workers_inactive') }}</span>
+                </p>
+                <p class="text-sm">
+                  <span class="text-sm">Máquinas Muertas:</span>
+                  <span class="text-sm text-bold">{{ $customer->workers_dead ?? old('workers_dead') }}</span>
+                </p>
+                <p class="text-sm">
+                  <span class="text-sm">Total Máquinas:</span>
+                  <span class="text-sm text-bold">{{ $customer->workers_total ?? old('workers_total') }}</span>
+                </p>
+                <p class="text-sm">
+                  <span class="text-sm">Máquinas Activas:</span>
+                  <span class="text-sm text-bold">{{ $customer->workers_active ?? old('workers_active') }}</span>
+                </p>
               </div>
             </div>
           </div>
+          <!-- End Card -->
         </div>
+        <!-- ENd Col -->
       </div>
+      <!-- End Row -->
     </div>
   </div>
 </section>
-
-{{-- <section class="section">
-  <div class="container-fluid">
-    <!-- Chart Card Wrapper Start -->
-    <div class="chart-card-wrapper">
-      <div class="row" style="display: none">
-        <div class="col-lg-7">
-          <div class="card-style mb-30">
-            <div class="chart"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
-              <canvas id="Chart1" style="width: 846px; height: 400px; display: block;" width="846" height="400" class="chartjs-render-monitor"></canvas>
-            </div>
-            <!-- End Chart -->
-          </div>
-        </div>
-        <!-- End Col -->
-        <div class="col-lg-5">
-          <div class="card-style mb-30">
-            <div class="title d-flex justify-content-between">
-              <div class="left">
-                <h6 class="text-medium mb-20">Bar Chart</h6>
-              </div>
-            </div>
-            <!-- End Title -->
-            <div class="chart"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
-              <canvas id="Chart4" style="width: 100%; height: 400px; display: block;" width="579" height="400" class="chartjs-render-monitor"></canvas>
-            </div>
-            <!-- End Chart -->
-          </div>
-        </div>
-        <!-- End Col -->
-      </div>
-      <!-- End Row -->
-      <div class="row">
-        <div class="col-lg-7" style="margin: auto">
-          <div class="card-style">
-            <div class="title d-flex align-items-center justify-content-between">
-              <div class="left">
-                <h6 class="text-medium mb-20">Line Chart</h6>
-              </div>
-            </div>
-            <!-- End Title -->
-            <div class="chart"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
-              <canvas id="Chart3" style="width: 846px; height: 400px; display: block;" width="846" height="400" class="chartjs-render-monitor"></canvas>
-            </div>
-          </div>
-        </div>
-        <!-- End Col -->
-        <div class="col-lg-5" style="display: none">
-          <div class="card-style mb-30">
-            <div class="title d-flex justify-content-between">
-              <div class="left">
-                <h6 class="text-medium mb-20">Bar Chart</h6>
-              </div>
-            </div>
-            <!-- End Title -->
-            <div class="chart"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
-              <canvas id="Chart2" style="width: 100%; height: 400px; display: block;" width="579" height="400" class="chartjs-render-monitor"></canvas>
-            </div>
-            <!-- End Chart -->
-          </div>
-        </div>
-        <!-- End Col -->
-      </div>
-      <!-- End Row -->
-
-      <!-- End Row -->
-    </div>
-    <!-- Chart Card Wrapper End -->
-  </div>
-  <!-- end container -->
-</section> --}}
-
 
 <section class="section">
   <div class="container-fluid">
     <div class="title-wrapper pt-30">
       <div class="row align-items-center">
         <div class="col-md-6">
-            <div class="titlemb-30">
-                <h2>Comparacion de Máquinas</h2>
+            <div class="title mb-30">
+                <h2>Rendimiento de Máquinas</h2>
             </div>
         </div>
       </div>

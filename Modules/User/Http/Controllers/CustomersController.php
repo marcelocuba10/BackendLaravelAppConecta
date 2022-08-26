@@ -78,7 +78,11 @@ class CustomersController extends Controller
             ->select(
                 'customers.id',
                 'customers.name',
+                'customers.phone',
+                'customers.address',
                 'customers.pool',
+                'customers.puid',
+                'customers.access_key',
                 'customers.userIdPool',
                 'customers.apiKey',
                 'customers.secretKey',
@@ -90,7 +94,8 @@ class CustomersController extends Controller
                 'customers.shares_5m',
                 'customers.shares_15m',
                 'customers.shares_1d',
-                'customers.total_machines'
+                'customers.total_machines',
+                'customers.updated_at'
             )
             ->first();
 

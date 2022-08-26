@@ -8,6 +8,9 @@ Route::prefix('admin')->group(function () {
 
     Route::group(['middleware' => ['guest']], function () {
 
+        /** CronJob */
+        Route::get('/machines/cron', 'MachinesController@cronjob')->name('machines.cronjob.index');
+
         /*** Register Routes ***/
         // Route::get('/register', 'Auth\RegisterController@show')->name('admin.register.show');
         // Route::post('/register', 'Auth\RegisterController@register')->name('admin.register.perform');
@@ -91,33 +94,6 @@ Route::prefix('admin')->group(function () {
             Route::put('/update/{id}', 'FinancialController@update')->name('financial.update');
             Route::delete('/delete/{id}', 'FinancialController@destroy')->name('financial.destroy');
             Route::get('/search', 'FinancialController@search')->name('financial.search');
-        });
-
-        Route::group(['prefix' => 'machines'], function () {
-            Route::any('/list', 'MachinesController@index_list')->name('machines.index_list');
-            Route::any('/list_api', 'MachinesController@index_list_api')->name('machines.index_list_api');
-
-            Route::get('/grid_view', 'MachinesController@grid_view')->name('machines.grid_view');
-            Route::any('/grid_view_api', 'MachinesController@grid_view_api')->name('machines.grid_view_api');
-
-            Route::get('/create', 'MachinesController@create')->name('machines.create');
-            Route::post('/create', 'MachinesController@store')->name('machines.store');
-
-            Route::get('/show/{id}', 'MachinesController@show')->name('machines.show');
-            Route::get('/show_api/{id}', 'MachinesController@show_api')->name('machines.show_api');
-
-            Route::get('/edit/{id}', 'MachinesController@edit')->name('machines.edit');
-            Route::put('/update/{id}', 'MachinesController@update')->name('machines.update');
-            Route::delete('/delete/{id}', 'MachinesController@destroy')->name('machines.destroy');
-            Route::get('/createPDF', 'MachinesController@createPDF')->name('machines.admin.createPDF');
-
-            Route::any('/search_filter_list', 'MachinesController@search_filter_list')->name('machines.search_filter_list');
-            Route::any('/search_filter_list_api', 'MachinesController@search_filter_list_api')->name('machines.search_filter_list_api');
-
-            Route::any('/search_gridview', 'MachinesController@search_gridview')->name('machines.search_gridview');
-            Route::any('/search_gridview_api', 'MachinesController@search_gridview_api')->name('machines.search_gridview_api');
-            Route::any('/filter_gridview', 'MachinesController@filter_gridview')->name('machines.filter_gridview');
-            Route::any('/filter_gridview_api', 'MachinesController@filter_gridview_api')->name('machines.filter_gridview_api');
         });
 
         /*** ACL Routes ***/

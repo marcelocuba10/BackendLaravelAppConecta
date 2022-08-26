@@ -80,7 +80,7 @@ class ApiCron extends Command
                         ]
                     );
 
-                    \Log::info("rows in machines_api is added!");
+                    \Log::info("machine api name" . $listApi['worker_name'] . " added in machines_api");
                 }
 
                 \DB::table('customers')->where('id', $customer->id)->update(
@@ -98,7 +98,7 @@ class ApiCron extends Command
                         'updated_at' => $created_at
                     ]
                 );
-                \Log::info("rows in customers updated!");
+                \Log::info("customer " . $customer->id . " stats info updated");
             }
 
 
@@ -137,7 +137,7 @@ class ApiCron extends Command
                 rtrim($post_data, '&');
 
                 $ch = curl_init();
-                curl_setopt($ch, CURLOPT_URL, 'https://antpool.com/api/'.$typeUrl.'.htm');
+                curl_setopt($ch, CURLOPT_URL, 'https://antpool.com/api/' . $typeUrl . '.htm');
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
                 curl_setopt($ch, CURLOPT_SSLVERSION, CURL_SSLVERSION_TLSv1_2);
                 curl_setopt($ch, CURLOPT_POST, count($post_fields));
@@ -182,7 +182,7 @@ class ApiCron extends Command
                             ]
                         );
 
-                        \Log::info("info of antpool added in machines_api");
+                        \Log::info("machine api name" . substr($listApi['worker'], 5) . " added in machines_api");
                     }
                 } else {
                     exit('API Error: ' . print_r($result_json, true));

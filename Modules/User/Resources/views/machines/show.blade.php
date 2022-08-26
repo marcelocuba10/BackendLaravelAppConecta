@@ -70,7 +70,15 @@
                 <div class="col-4">
                   <div class="input-style-1">
                     <label>Valor Real Hash</label>
-                    <input type="text" value="{{ $machine_api->last10m ?? old('last10m')}}" readonly>
+                    @if ($machine->customer_pool == 'btc.com')
+                      @php
+                          //dd($machine_api);
+                      @endphp
+                      <input type="text" value="{{ $machine_api->shares_1m ?? old('shares_1m')}}" readonly>
+                    @elseIf($machine->customer_pool == 'antpool.com')
+                      <input type="text" value="{{ $machine_api->last10m ?? old('last10m')}}" readonly>
+                    @endif
+                    
                     @if ($machine_api)
                       <span class="form-text m-b-none">Actualizado: {{ $machine_api->created_at ?? old('created_at')}}</span>
                     @endif
@@ -142,7 +150,7 @@
               <table class="table">
                 <thead>
                   <tr>
-                    <th><h6>#</h6></th>
+                    {{-- <th><h6>#</h6></th> --}}
                     <th><h6>Nombre</h6></th>
                     <th><h6>Estado</h6></th>
                     <th><h6>Fecha</h6></th>
@@ -155,7 +163,7 @@
                 <tbody>
                     @foreach ($machine_changes as $machine)
                     <tr>
-                        <td class="min-width"><p>{{ ++$i }}</p></td>
+                        {{-- <td class="min-width"><p>{{ ++$i }}</p></td> --}}
                         <td class="min-width"><p>{{ $machine->name }}</p></td>
                         <td class="min-width"><h5 class="text-bold text-dark">{{ $machine->status }}</h5></td>
                         <td class="min-width"><p><i class="lni lni-calendar mr-10"></i>{{ $machine->created_at }}</p></td>
@@ -183,7 +191,7 @@
               <table class="table">
                 <thead>
                   <tr>
-                    <th><h6>#</h6></th>
+                    {{-- <th><h6>#</h6></th> --}}
                     <th><h6>Nombre</h6></th>
                     <th><h6>Estado</h6></th>
                     <th><h6>Fecha</h6></th>
@@ -195,7 +203,6 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td class="min-width"><p></p></td>
                         <td class="min-width"><p></p></td>
                         <td class="min-width"><p></p></td>
                         <td class="min-width"><p></p></td>

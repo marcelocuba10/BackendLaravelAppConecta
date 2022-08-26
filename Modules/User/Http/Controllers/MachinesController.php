@@ -359,16 +359,26 @@ class MachinesController extends Controller
     {
         $machine = DB::table('machines')
             ->leftjoin('customers', 'machines.customer_id', '=', 'customers.id')
-            ->select('customers.name AS customer_name', 'customers.total_machines', 'customers.id AS customer_id', 'machines.id', 'machines.name', 'machines.total_power', 'machines.mining_power', 'machines.codeQR', 'machines.customer_id', 'machines.status', 'machines.observation')
+            ->select('customers.name AS customer_name', 'customers.total_machines', 'customers.pool AS customer_pool', 'customers.id AS customer_id', 'machines.id', 'machines.name', 'machines.total_power', 'machines.mining_power', 'machines.codeQR', 'machines.customer_id', 'machines.status', 'machines.observation')
             ->where('machines.id', '=', $id)
             ->first();
 
-        $machine_api = DB::table('machines_api')
-            ->select('machines_api.id', 'machines_api.last10m', 'machines_api.worker', 'machines_api.created_at')
-            ->where('machines_api.worker', '=', $machine->name)
-            ->orderBy('created_at', 'DESC')
-            ->take(1)
-            ->first();
+        if ($machine->customer_pool == 'btc.com') {
+            $machine_api = DB::table('machines_api')
+                ->select('machines_api.id', 'machines_api.shares_1m', 'machines_api.worker_name', 'machines_api.created_at')
+                ->where('machines_api.worker_name', '=', $machine->name)
+                ->orderBy('created_at', 'DESC')
+                ->take(1)
+                ->first();
+
+        } elseif ($machine->customer_pool == 'antpool.com') {
+            $machine_api = DB::table('machines_api')
+                ->select('machines_api.id', 'machines_api.last10m', 'machines_api.worker', 'machines_api.created_at')
+                ->where('machines_api.worker', '=', $machine->name)
+                ->orderBy('created_at', 'DESC')
+                ->take(1)
+                ->first();
+        }
 
         $machine_changes = DB::table('machines_history')
             ->leftjoin('machines', 'machines_history.machine_id', '=', 'machines.id')

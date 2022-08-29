@@ -5,6 +5,7 @@ namespace Modules\User\Http\Controllers;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Modules\User\Entities\Notifications;
 
@@ -22,9 +23,13 @@ class NotificationsController extends Controller
 
     public function index()
     {
+        $idRefCurrentUser = Auth::user()->idReference;
         $notifications = DB::table('notifications')
+            ->where('notifications.idReference', '=', $idRefCurrentUser)
+            ->select('notifications.id', 'notifications.title', 'notifications.subject', 'notifications.date')
             ->orderBy('date', 'DESC')
             ->paginate(10);
+
         return view('user::notifications.index', compact('notifications'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
@@ -45,7 +50,12 @@ class NotificationsController extends Controller
             'subject' => 'required|max:150|min:5',
         ]);
 
-        Notifications::create($request->all());
+        $input = $request->all();
+
+        /** link the customer with the admin user */
+        $input['idReference'] = Auth::user()->idReference;
+
+        Notifications::create($input);
 
         return redirect()->route('notifications.index')->with('message', 'Notification created successfully.');
     }

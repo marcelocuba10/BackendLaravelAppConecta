@@ -53,7 +53,7 @@ class UsersController extends Controller
             'last_name' => 'required|max:50|min:5',
             'email' => 'required|email|unique:super_users,email',
             'phone' => 'nullable|max:20|min:5',
-            'ci' => 'required|max:8|min:5',
+            'ci' => 'required|max:25|min:5',
             'password' => 'required|max:50|min:5',
             'confirm_password' => 'required|max:50|min:5|same:password',
             'roles' => 'required'
@@ -146,7 +146,7 @@ class UsersController extends Controller
             'last_name' => 'required|max:50|min:5',
             'email' => 'required|email|unique:super_users,email,' . $id,
             'phone' => 'nullable|max:20|min:5',
-            'ci' => 'required|max:8|min:5',
+            'ci' => 'required|max:25|min:5',
             'password' => 'nullable|max:50|min:5',
             'confirm_password' => 'nullable|max:50|min:5|same:password',
             'roles' => 'required'
@@ -184,7 +184,7 @@ class UsersController extends Controller
             'last_name' => 'required|max:50|min:5',
             'email' => 'required|email|unique:super_users,email,' . $id,
             'phone' => 'nullable|max:20|min:5',
-            'ci' => 'required|max:8|min:5',
+            'ci' => 'required|max:25|min:5',
             'password' => 'nullable|max:50|min:5',
             'confirm_password' => 'nullable|max:50|min:5|same:password',
             'roles' => 'required'

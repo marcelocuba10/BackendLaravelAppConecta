@@ -11,6 +11,7 @@ class Notifications extends Model
 
     protected $fillable = [
         'title',
+        'idReference',
         'subject',
         'date'
     ];

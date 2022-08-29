@@ -76,7 +76,7 @@ class UserController extends Controller
             'last_name' => 'required|max:50|min:5',
             'email' => 'required|email|unique:users,email',
             'phone' => 'nullable|max:20|min:5',
-            'ci' => 'required|max:8|min:5|unique:users,ci',
+            'ci' => 'required|max:25|min:5|unique:users,ci',
             'password' => 'required|max:50|min:5',
             'confirm_password' => 'required|max:50|min:5|same:password',
             'roles' => 'required'
@@ -208,7 +208,7 @@ class UserController extends Controller
             'last_name' => 'required|max:50|min:5',
             'email' => 'required|email|unique:users,email,' . $id,
             'phone' => 'nullable|max:50|min:5',
-            'ci' => 'required|max:8|min:5|unique:users,ci,' . $id,
+            'ci' => 'required|max:25|min:5|unique:users,ci,' . $id,
             'password' => 'nullable|max:50|min:5',
             'confirm_password' => 'nullable|max:50|min:5|same:password',
             'roles' => 'required'
@@ -245,7 +245,7 @@ class UserController extends Controller
             'last_name' => 'required|max:50|min:5',
             'email' => 'required|email|unique:users,email,' . $id,
             'phone' => 'nullable|max:50|min:5',
-            'ci' => 'required|max:8|min:5|unique:users,ci,' . $id,
+            'ci' => 'required|max:25|min:5|unique:users,ci,' . $id,
             'password' => 'nullable|max:50|min:5',
             'confirm_password' => 'nullable|max:50|min:5|same:password',
             'roles' => 'required'

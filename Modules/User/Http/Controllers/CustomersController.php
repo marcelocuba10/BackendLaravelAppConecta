@@ -5,6 +5,7 @@ namespace Modules\User\Http\Controllers;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Modules\User\Entities\Customers;
 
@@ -23,8 +24,11 @@ class CustomersController extends Controller
 
     public function index()
     {
+        $idRefCurrentUser = Auth::user()->idReference;
         $customers = DB::table('customers')
-            ->orderBy('created_at', 'DESC')
+            ->where('customers.idReference', '=', $idRefCurrentUser)
+            ->select('customers.id', 'customers.name', 'customers.phone', 'customers.total_machines', 'customers.address')
+            ->orderBy('customers.created_at', 'DESC')
             ->paginate(10);
 
         return view('user::customers.index', compact('customers'))->with('i', (request()->input('page', 1) - 1) * 10);
@@ -67,7 +71,12 @@ class CustomersController extends Controller
             'secretKey' => 'nullable|max:40|min:4',
         ]);
 
-        Customers::create($request->all());
+        $input = $request->all();
+
+        /** link the customer with the admin user */
+        $input['idReference'] = Auth::user()->idReference;
+        Customers::create($input);
+
         return redirect()->to('/user/customers')->with('message', 'Customer created successfully.');
     }
 
@@ -102,11 +111,11 @@ class CustomersController extends Controller
         $machines = DB::table('machines')
             ->leftjoin('users', 'machines.user_id', '=', 'users.id')
             ->where('machines.customer_id', '=', $id)
-            ->select('users.name AS user_name', 'machines.total_power' ,'machines.id', 'machines.name', 'machines.codeQR', 'machines.customer_id', 'machines.status', 'machines.observation')
+            ->select('users.name AS user_name', 'machines.total_power', 'machines.id', 'machines.name', 'machines.codeQR', 'machines.customer_id', 'machines.status', 'machines.observation')
             ->orderBy('machines.created_at', 'DESC')
             ->get();
 
-        
+
         $machines_api = DB::table('machines_api')
             ->select('machines_api.id', 'machines_api.last10m', 'machines_api.worker')
             ->where('machines_api.customer_id', '=', $customer->id)
@@ -114,7 +123,7 @@ class CustomersController extends Controller
             ->take($customer->total_machines)
             ->get();
 
-        return view('user::customers.show', compact('customer', 'machines','machines_api'));
+        return view('user::customers.show', compact('customer', 'machines', 'machines_api'));
     }
 
     public function edit($id)

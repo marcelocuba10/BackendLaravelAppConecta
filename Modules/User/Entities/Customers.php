@@ -19,7 +19,8 @@ class Customers extends Model
         'pool',
         'userIdPool',
         'apiKey',
-        'secretKey'
+        'secretKey',
+        'idReference'
     ];
     
     protected static function newFactory()

@@ -46,9 +46,9 @@ class MachinesController extends Controller
         $idRefCurrentUser = Auth::user()->idReference;
         $machines = DB::table('machines_api')
             ->leftjoin('customers', 'machines_api.customer_id', '=', 'customers.id')
-            ->select('machines_api.id', 'machines_api.worker_name', 'machines_api.status', 'machines_api.shares_1m', 'machines_api.shares_5m', 'machines_api.shares_15m', 'customers.name AS customer_name')
+            ->select('machines_api.id','machines_api.created_at', 'machines_api.worker_name', 'machines_api.status', 'machines_api.shares_1m', 'machines_api.shares_5m', 'machines_api.shares_15m', 'customers.name AS customer_name')
             ->where('customers.idReference', '=', $idRefCurrentUser)
-            ->orderBy('id', 'DESC')
+            ->orderBy('machines_api.created_at', 'DESC')
             ->paginate(20);
 
         return view('user::machines.index_list_api', compact('machines', 'filter'))->with('i', (request()->input('page', 1) - 1) * 20);
@@ -241,11 +241,29 @@ class MachinesController extends Controller
     {
         $filter = $request->input('filter');
         $idRefCurrentUser = Auth::user()->idReference;
+        $countMachines=0;
 
         if ($filter == '') {
+
+            $customers = DB::table('customers')
+            ->select('customers.id', 'customers.name', 'customers.total_machines', 'customers.workers_total')
+            ->where('customers.idReference', '=', $idRefCurrentUser)
+            ->get();
+
+            foreach ($customers as $customer) {
+                if ($customer->pool == "btc.com") {
+                    $countMachines += $customer->workers_active;
+                }elseif ($customer->pool == "antpool.com") {
+                    $countMachines += $customer->workers_active;
+                }
+                
+            }
+
+            dd($countMachines);
+
             $machines = DB::table('machines_api')
                 ->leftjoin('customers', 'machines_api.customer_id', '=', 'customers.id')
-                ->select('machines_api.id', 'machines_api.worker_name', 'machines_api.status', 'machines_api.shares_1m', 'machines_api.shares_5m', 'machines_api.shares_15m', 'customers.name AS customer_name')
+                ->select('machines_api.id', 'machines_api.created_at', 'machines_api.worker_name', 'machines_api.status', 'machines_api.shares_1m', 'machines_api.shares_5m', 'machines_api.shares_15m', 'customers.name AS customer_name')
                 ->where('customers.idReference', '=', $idRefCurrentUser)
                 ->paginate(30);
         } else {

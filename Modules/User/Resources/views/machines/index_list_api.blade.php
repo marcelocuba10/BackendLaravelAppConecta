@@ -90,6 +90,7 @@
                         <th><h6>#</h6></th>
                         <th><h6>Nombre</h6></th>
                         <th><h6>Estado</h6></th>
+                        <th><h6>created_at</h6></th>
                         <th><h6>Cliente</h6></th>
                         <th><h6>shares_1m </h6></th>
                         <th><h6>shares_5m</h6></th>
@@ -115,6 +116,7 @@
                                 {{ $machine->status }}
                               </span>
                             </td>
+                            <td class="min-width"><p>{{ $machine->created_at }}</p></td>
                             <td class="min-width"><p>{{ $machine->customer_name }}</p></td>
                             <td class="min-width"><p>{{ $machine->shares_1m }}</p></td>
                             <td class="min-width"><p>{{ $machine->shares_5m }}</p></td>

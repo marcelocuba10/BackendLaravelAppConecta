@@ -126,7 +126,7 @@ class MachinesController extends Controller
     {
         if ($customer->access_key && $customer->puid) {
 
-            $worker_stats = json_decode(file_get_contents('https://pool.api.btc.com/v1/worker/stats?access_key=' . $customer->access_key . '&puid=' . $customer->puid), true);
+            $worker_stats = json_decode(file_get_contents('https://pool.api.btc.com/v1/worker/full-stats?access_key=' . $customer->access_key . '&puid=' . $customer->puid), true);
 
             if ($worker_stats['err_no'] != 10010) {
                 $api_response  = json_decode(file_get_contents('https://pool.api.btc.com/v1/worker?access_key=' . $customer->access_key . '&puid=' . $customer->puid . '&status=all&page_size=1000'), true);
@@ -167,8 +167,8 @@ class MachinesController extends Controller
                     'shares_15m' => $worker_stats['data']['shares_15m'],
                     'workers_total' => $worker_stats['data']['workers_total'],
                     'shares_unit' => $worker_stats['data']['shares_unit'],
-                    'shares_1d' => $worker_stats['data']['shares_1d'],
-                    'shares_1h' => $worker_stats['data']['shares_1h'],
+                    'shares_1d' => $worker_stats['data']['shares_1d']['size'],
+                    'shares_1h' => $worker_stats['data']['shares_1h']['size'],
                     'updated_at' => $created_at
                 ]);
 

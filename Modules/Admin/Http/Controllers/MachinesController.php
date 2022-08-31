@@ -95,9 +95,9 @@ class MachinesController extends Controller
 
                     if ($result_json['message'] == 'ok') {
                         \DB::table('customers')->where('id', $customer->id)->update([
-                            'hsLast10m' => $result_json['data']['hsLast10m'],
-                            'hsLast1h' => $result_json['data']['hsLast1h'],
-                            'hsLast1d' => $result_json['data']['hsLast1d'],
+                            'hsLast10m' => number_format(($result_json['data']['hsLast10m'] / 1000000000000), 7),
+                            'hsLast1h' => number_format(($result_json['data']['hsLast1h'] / 1000000000000), 7),
+                            'hsLast1d' => number_format(($result_json['data']['hsLast1d'] / 1000000000000), 7),
                             'totalAmount' => $result_json['data']['totalAmount'],
                             'unpaidAmount' => $result_json['data']['unpaidAmount'],
                             'yesterdayAmount' => $result_json['data']['yesterdayAmount'],

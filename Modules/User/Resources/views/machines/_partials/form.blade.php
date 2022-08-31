@@ -79,8 +79,8 @@
         <!-- end col -->
         <div class="col-sm-4">
           <div class="input-style-1">
-            <label>Valor Potencia</label>
-            <input type="decimal" name="total_power" value="{{ $machine->total_power ?? old('total_power') }}" class="bg-transparent">
+            <label>Standard Hashrate (13.5, 14,5)</label>
+            <input type="number" pattern="[0-9]+([\.,][0-9]+)?" step="0.01" name="total_power" value="{{ $machine->total_power ?? old('total_power') }}" class="bg-transparent">
           </div>
         </div>
         <!-- end col -->

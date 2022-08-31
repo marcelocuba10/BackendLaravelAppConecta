@@ -30,6 +30,7 @@
         <div class="col-12">
           <div class="invoice-card card-style mb-30" style="padding-bottom: 5px;">
             <div class="invoice-address">
+
               <div class="address-item">
                 <p class="text-sm">
                   <span class="text-sm">Cliente:</span>
@@ -48,6 +49,7 @@
                   <span class="text-sm text-medium">{{ $customer->address ?? old('address') }}</span>
                 </p>
               </div>
+
               <div class="address-item">
                 <p class="text-sm">
                   <span class="text-sm">Pool:</span>
@@ -57,86 +59,103 @@
                   <span class="text-sm">Actualizado:</span>
                   <span class="text-sm text-bold">{{ $customer->updated_at ?? old('updated_at') }} </span>
                 </p>
-                <p class="text-sm">
-                  <span class="text-sm">Total Máquinas Pool:</span>
-                  @if ($customer->pool == "antpool.com")
-                    <span class="text-sm text-bold">{{ $customer->totalWorkerNum ?? old('totalWorkerNum') }}</span>
-                  @elseIf($customer->pool == "btc.com")
-                    <span class="text-sm text-bold">{{ $customer->workers_total ?? old('workers_total') }}</span>
-                  @endif
-                </p>
-                <p class="text-sm">
-                  <span class="text-sm">Máquinas Activas:</span>
-                  @if ($customer->pool == "antpool.com")
-                    <span class="text-sm text-bold">{{ $customer->activeWorkerNum ?? old('activeWorkerNum') }}</span>
-                  @elseIf($customer->pool == "btc.com")
-                    <span class="text-sm text-bold">{{ $customer->workers_active ?? old('workers_active') }}</span>
-                  @endif
-                </p>
-              </div>
-              <div class="address-item">
-                <p class="text-sm">
-                  <span class="text-sm">Máquinas Inactivas:</span>
-                  @if ($customer->pool == "antpool.com")
-                    <span class="text-sm text-bold">{{ $customer->inactiveWorkerNum ?? old('inactiveWorkerNum') }}</span>
-                  @elseIf($customer->pool == "btc.com")
-                    <span class="text-sm text-bold">{{ $customer->workers_inactive ?? old('workers_inactive') }}</span>
-                  @endif
-                </p>
-                <p class="text-sm">
-                  <span class="text-sm">Máquinas Apagadas:</span>
-                    @if ($customer->pool == "antpool.com")
-                      <span class="text-sm text-bold">{{ $customer->invalidWorkerNum ?? old('invalidWorkerNum') }}</span>
-                    @elseIf($customer->pool == "btc.com")
-                      <span class="text-sm text-bold">{{ $customer->workers_dead ?? old('workers_dead') }}</span>
-                    @endif
-                </p>
-                <p class="text-sm">
-                  @if ($customer->pool == "antpool.com")
-                    <span class="text-sm">shares_10m:</span>
-                    <span class="text-sm text-bold">{{ $customer->hsLast10m ?? old('hsLast10m') }}</span>
-                  @elseIf($customer->pool == "btc.com")
-                    <span class="text-sm">shares_1m:</span>
-                    <span class="text-sm text-bold">{{ $customer->shares_1m ?? old('shares_1m') }}</span>
-                  @endif
-                </p>
-                <p class="text-sm">
-                  @if($customer->pool == "btc.com")
-                    <span class="text-sm">shares_5m:</span>
-                    <span class="text-sm text-bold">{{ $customer->shares_5m ?? old('shares_5m') }}</span>
-                  @endif
-                </p>
-              </div>
-              <div class="address-item">
                 @if ($customer->pool == "btc.com")
                   <p class="text-sm">
-                    <span class="text-sm">shares_15m:</span>
-                    <span class="text-sm text-bold">{{ $customer->shares_15m ?? old('shares_15m') }}</span>
-                  </p>
-                @endif
-                <p class="text-sm">
-                  <span class="text-sm">shares_1h:</span>
-                  @if ($customer->pool == "antpool.com")
-                    <span class="text-sm text-bold">{{ $customer->hsLast1h ?? old('hsLast1h') }}</span>
-                  @elseIf($customer->pool == "btc.com")
-                    <span class="text-sm text-bold">{{ $customer->shares_1h ?? old('shares_1h') }}</span>
-                  @endif
-                </p>
-                <p class="text-sm">
-                  <span class="text-sm">shares_1d:</span>
-                  @if ($customer->pool == "antpool.com")
-                    <span class="text-sm text-bold">{{ $customer->hsLast1d ?? old('hsLast1d') }}</span>
-                  @elseIf($customer->pool == "btc.com")
-                    <span class="text-sm text-bold">{{ $customer->shares_1d ?? old('shares_1d') }}</span>
-                  @endif
-                </p>
-                @if ($customer->pool == "btc.com")
-                  <p class="text-sm">
-                    <span class="text-sm">shares_unit:</span>
+                    <span class="text-sm">Unidad Hashrate:</span>
                     <span class="text-sm text-bold">{{ $customer->shares_unit ?? old('shares_unit') }}</span>
                   </p>
                 @endif
+                @if ($customer->pool == "antpool.com")
+                  <p class="text-sm">
+                    <span class="text-sm">Total Earnings:</span>
+                    <span class="text-sm text-bold">{{ $customer->totalAmount ?? old('totalAmount') }}</span>
+                  </p>
+                  <p class="text-sm">
+                    <span class="text-sm">Pedding Earnings:</span>
+                    <span class="text-sm text-bold">{{ $customer->unpaidAmount ?? old('unpaidAmount') }}</span>
+                  </p>
+                @endif
               </div>
+
+              @if ($customer->pool == "btc.com")
+                <div class="address-item">
+                  <p class="text-sm">
+                    <span class="text-sm">Total Máquinas Pool:</span>
+                    <span class="text-sm text-bold">{{ $customer->workers_total ?? old('workers_total') }}</span>
+                  </p>
+                  <p class="text-sm">
+                    <span class="text-sm">Máquinas Activas:</span>
+                    <span class="text-sm text-bold">{{ $customer->workers_active ?? old('workers_active') }}</span>
+                  </p>
+                  <p class="text-sm">
+                    <span class="text-sm">Máquinas Inactivas:</span>
+                    <span class="text-sm text-bold">{{ $customer->workers_inactive ?? old('workers_inactive') }}</span>
+                  </p>
+                  <p class="text-sm">
+                    <span class="text-sm">Máquinas Apagadas:</span>
+                    <span class="text-sm text-bold">{{ $customer->workers_dead ?? old('workers_dead') }}</span>
+                  </p>
+                </div>
+              @endIf
+
+              @if ($customer->pool == "antpool.com")
+                <div class="address-item">
+                  <p class="text-sm">
+                    <span class="text-sm">Total Máquinas Pool:</span>
+                    <span class="text-sm text-bold">{{ $customer->totalWorkerNum ?? old('totalWorkerNum') }}</span>
+                  </p>
+                  <p class="text-sm">
+                    <span class="text-sm">Máquinas Activas:</span>
+                    <span class="text-sm text-bold">{{ $customer->activeWorkerNum ?? old('activeWorkerNum') }}</span>
+                  </p>
+                  <p class="text-sm">
+                    <span class="text-sm">Máquinas Inactivas:</span>
+                    <span class="text-sm text-bold">{{ $customer->inactiveWorkerNum ?? old('inactiveWorkerNum') }}</span>
+                  </p>
+                  <p class="text-sm">
+                    <span class="text-sm">Máquinas Apagadas:</span>
+                    <span class="text-sm text-bold">{{ $customer->invalidWorkerNum ?? old('invalidWorkerNum') }}</span>
+                  </p>
+                </div>
+              @endIf
+
+              @if ($customer->pool == "btc.com")
+                <div class="address-item">
+                  <p class="text-sm">
+                    <span class="text-sm">1Min Hashrate:</span>
+                    <span class="text-sm text-bold">{{ $customer->shares_1m ?? old('shares_1m') }}</span>
+                  </p>
+                  <p class="text-sm">
+                    <span class="text-sm">5Min Hashrate:</span>
+                    <span class="text-sm text-bold">{{ $customer->shares_5m ?? old('shares_5m') }}</span>
+                  </p>
+                  <p class="text-sm">
+                    <span class="text-sm">1h Hashrate:</span>
+                    <span class="text-sm text-bold">{{ $customer->shares_1h ?? old('shares_1h') }}</span>
+                  </p>
+                  <p class="text-sm">
+                    <span class="text-sm">24hr Hashrate:</span>
+                    <span class="text-sm text-bold">{{ $customer->shares_1d ?? old('shares_1d') }}</span>
+                  </p>
+                </div>
+              @endif
+
+              @if ($customer->pool == "antpool.com")
+                <div class="address-item">
+                  <p class="text-sm">
+                    <span class="text-sm">10Min Hashrate:</span>
+                    <span class="text-sm text-bold">{{ $customer->hsLast10m ?? old('hsLast10m') }}</span>
+                  </p>
+                  <p class="text-sm">
+                    <span class="text-sm">1h TH:</span>
+                    <span class="text-sm text-bold">{{ $customer->hsLast1h ?? old('hsLast1h') }}</span>
+                  </p>
+                  <p class="text-sm">
+                    <span class="text-sm">24hr TH:</span>
+                    <span class="text-sm text-bold">{{ $customer->hsLast1d ?? old('hsLast1d') }}</span>
+                  </p>
+                </div>
+              @endif
             </div>
           </div>
           <!-- End Card -->

@@ -62,14 +62,14 @@
                 <!-- end col -->
                 <div class="col-4">
                   <div class="input-style-1">
-                    <label>Valor Hash</label>
+                    <label>Standard Hashrate</label>
                     <input type="text" value="{{ $machine->total_power }}" readonly>
                   </div>
                 </div>
                 <!-- end col -->
                 <div class="col-4">
                   <div class="input-style-1">
-                    <label>Valor Real Hash</label>
+                    <label>Tiempo Real Hashrate</label>
                     @if ($machine->customer_pool == 'btc.com')
                       @if (!$machine_api)
                         <input type="text" value="Sin Información" readonly>

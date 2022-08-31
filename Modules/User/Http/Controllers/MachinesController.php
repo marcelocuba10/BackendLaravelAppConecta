@@ -483,6 +483,8 @@ class MachinesController extends Controller
                 'machines_api.shares_1m',
                 'machines_api.shares_5m',
                 'machines_api.shares_15m',
+                'machines_api.shares_1h',
+                'machines_api.shares_1d',
                 'machines_api.status',
                 'machines_api.last_share_time',
                 'machines_api.first_share_time',

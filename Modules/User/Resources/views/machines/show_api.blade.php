@@ -8,7 +8,7 @@
       <div class="row align-items-center">
         <div class="col-md-6">
           <div class="titlemb-30">
-            <h2>Detalle Máquina de btc.com</h2>
+            <h2>Detalle Máquina - Pool {{ $machine->customer_pool }}</h2>
           </div>
         </div>
         <div class="col-md-6">
@@ -41,36 +41,36 @@
                 <!-- end col -->
                 <div class="col-4">
                   <div class="input-style-1">
-                    <label>Nombre</label>
+                    <label>Máquina</label>
                     <input type="text" value="{{ $machine->worker_name }} {{ $machine->worker }}" readonly>
                   </div>
                 </div>
                 <!-- end col -->
                 @if ($machine->customer_pool == "antpool.com")
-                  <div class="col-4">
+                  <div class="col-3">
                     <div class="input-style-1">
-                      <label>shares_10m</label>
+                      <label>10Min Hashrate</label>
                       <input type="text" value="{{ $machine->last10m }}" readonly>
                     </div>
                   </div>
                   <!-- end col -->
-                  <div class="col-4">
+                  <div class="col-3">
                     <div class="input-style-1">
-                      <label>shares_30m</label>
+                      <label>30Min Hashrate</label>
                       <input type="text" value="{{ $machine->last30m }}" readonly>
                     </div>
                   </div>
                   <!-- end col -->
-                  <div class="col-4">
+                  <div class="col-3">
                     <div class="input-style-1">
-                      <label>shares_1h</label>
+                      <label>1h Hashrate</label>
                       <input type="text" value="{{ $machine->last1h }}" readonly>
                     </div>
                   </div>
                   <!-- end col -->
-                  <div class="col-4">
+                  <div class="col-3">
                     <div class="input-style-1">
-                      <label>shares_1d</label>
+                      <label>24hr Hashrate</label>
                       <input type="text" value="{{ $machine->last1d }}" readonly>
                     </div>
                   </div>
@@ -79,42 +79,56 @@
                 @if ($machine->customer_pool == "btc.com")
                   <div class="col-4">
                     <div class="input-style-1">
-                      <label>shares_1m</label>
+                      <label>Status</label>
+                      <input type="text" value="{{ $machine->status }}" readonly>
+                    </div>
+                  </div>
+                  <!-- end col -->
+                  <div class="col-3">
+                    <div class="input-style-1">
+                      <label>1Min Hashrate</label>
                       <input type="text" value="{{ $machine->shares_1m }}" readonly>
                     </div>
                   </div>
                   <!-- end col -->
-                  <div class="col-4">
+                  <div class="col-3">
                     <div class="input-style-1">
-                      <label>shares_5m</label>
-                      <input type="text" value="{{ $machine->shares_5m }}" readonly>
-                    </div>
-                  </div>
-                  <!-- end col -->
-                  <div class="col-4">
-                    <div class="input-style-1">
-                      <label>shares_15m</label>
+                      <label>15Min Hashrate</label>
                       <input type="text" value="{{ $machine->shares_15m }}" readonly>
                     </div>
                   </div>
                   <!-- end col -->
-                  <div class="col-4">
+                  <div class="col-3">
                     <div class="input-style-1">
-                      <label>last_share_time</label>
-                      <input type="text" value="{{ $machine->last_share_time }}" readonly>
+                      <label>1h Hashrate</label>
+                      <input type="text" value="{{ $machine->shares_1h }}" readonly>
+                    </div>
+                  </div>
+                  <!-- end col -->
+                  <div class="col-3">
+                    <div class="input-style-1">
+                      <label>24Hr Hashrate</label>
+                      <input type="text" value="{{ $machine->shares_1d }}" readonly>
                     </div>
                   </div>
                   <!-- end col -->
                   <div class="col-4">
                     <div class="input-style-1">
-                      <label>first_share_time</label>
-                      <input type="text" value="{{ $machine->first_share_time }}" readonly>
+                      <label>Primer tiempo compartido</label>
+                      <input type="text" value="{{ date('m/d/Y', $machine->first_share_time ) }}" readonly>
                     </div>
                   </div>
                   <!-- end col -->
                   <div class="col-4">
                     <div class="input-style-1">
-                      <label>miner_agent</label>
+                      <label>Último tiempo compartido</label>
+                      <input type="text" value="{{  date('m/d/Y', $machine->last_share_time ) }}" readonly>
+                    </div>
+                  </div>
+                  <!-- end col -->
+                  <div class="col-4">
+                    <div class="input-style-1">
+                      <label>Agente Minero</label>
                       <input type="text" value="{{ $machine->miner_agent }}" readonly>
                     </div>
                   </div>

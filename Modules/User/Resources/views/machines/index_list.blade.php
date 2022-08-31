@@ -139,8 +139,8 @@
                         <th><h6>Nombre</h6></th>
                         <th><h6>Estado</h6></th>
                         <th><h6>Cliente</h6></th>
-                        <th><h6>Funcionario</h6></th>
-                        <th><h6>Observación</h6></th>
+                        <th><h6>Potencia</h6></th>
+                        <th><h6>Hashrate</h6></th>
                         <th><h6>Acciones</h6></th>
                       </tr>
                       <!-- end table row-->
@@ -163,8 +163,8 @@
                               </span>
                             </td>
                             <td class="min-width"><p>{{ $machine->customer_name }}</p></td>
-                            <td class="min-width"><p>{{ $machine->user_name }}</p></td>
-                            <td class="min-width"><p>{{ $machine->observation }}</p></td>
+                            <td class="min-width"><p>{{ $machine->mining_power }}</p></td>
+                            <td class="min-width"><p>{{ $machine->total_power }}</p></td>
                             <td class="text-right">
                                 <div class="btn-group">
                                     <div class="action">

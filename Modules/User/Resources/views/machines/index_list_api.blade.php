@@ -91,11 +91,10 @@
                         <th><h6>Nombre</h6></th>
                         <th><h6>Estado</h6></th>
                         <th><h6>Cliente</h6></th>
-                        <th><h6>1Min hashrate </h6></th>
-                        <th><h6>5Min hashrate</h6></th>
-                        <th><h6>10Min hashrate</h6></th>
-                        <th><h6>1h hashrate</h6></th>
-                        <th><h6>1d hashrate</h6></th>
+                        <th><h6>1Min Hashrate </h6></th>
+                        <th><h6>10Min Hashrate</h6></th>
+                        <th><h6>1h Hashrate</h6></th>
+                        <th><h6>1d Hashrate</h6></th>
                       </tr>
                       <!-- end table row-->
                     </thead>
@@ -103,25 +102,38 @@
                         @foreach ($machines_api as $machine)
                         <tr>
                             <td class="text-sm"><h6 class="text-sm">#{{ ++$i }}</h6></td>
-                            <td class="min-width"><h5 class="text-bold text-dark"><a href="/user/machines/{{ $machine->id }}/show_api">{{ $machine->worker_name }}</a></h5></td>
-                            <td class="min-width">
-                              <span class="status-btn 
-                              @if($machine->status == 'ACTIVE') btn-custom-enabled
-                              @elseIf($machine->status == 'Apagado') btn-custom-disabled
-                              @elseIf($machine->status == 'Requiere Atención') btn-custom-attention
-                              @elseIf($machine->status == 'Mantenimiento') btn-custom-maintenance
-                              @elseIf($machine->status == 'Error') btn-custom-error
-                              @elseIf($machine->status == 'INACTIVE') btn-custom-offline
-                              @endif">
-                                {{ $machine->status }}
-                              </span>
-                            </td>
+                            @if ($machine->customer_pool == "btc.com")
+                              <td class="min-width"><h5 class="text-bold text-dark"><a href="/user/machines/{{ $machine->id }}/show_api">{{ $machine->worker_name }}</a></h5></td>
+                              <td class="min-width">
+                                <span class="status-btn 
+                                @if($machine->status == 'ACTIVE') btn-custom-enabled
+                                @elseIf($machine->status == 'Apagado') btn-custom-disabled
+                                @elseIf($machine->status == 'Requiere Atención') btn-custom-attention
+                                @elseIf($machine->status == 'Mantenimiento') btn-custom-maintenance
+                                @elseIf($machine->status == 'Error') btn-custom-error
+                                @elseIf($machine->status == 'INACTIVE') btn-custom-offline
+                                @endif">
+                                  {{ $machine->status }}
+                                </span>
+                              </td>
+                            @endif
+                            @if ($machine->customer_pool == "antpool.com")
+                              <td class="min-width"><h5 class="text-bold text-dark"><a href="/user/machines/{{ $machine->id }}/show_api">{{ $machine->worker }}</a></h5></td>
+                              <td class="min-width">
+                                <p>No Disponible</p>
+                              </td>
+                            @endif
                             <td class="min-width"><p>{{ $machine->customer_name }}</p></td>
                             <td class="min-width"><p>{{ $machine->shares_1m }}</p></td>
-                            <td class="min-width"><p>{{ $machine->shares_5m }}</p></td>
-                            <td class="min-width"><p>{{ $machine->shares_15m }}</p></td>
-                            <td class="min-width"><p>{{ $machine->shares_1h }}</p></td>
-                            <td class="min-width"><p>{{ $machine->shares_1d }}</p></td>
+                            <td class="min-width"><p>{{ $machine->last10m }}</p></td>
+                            @if ($machine->customer_pool == "btc.com")
+                              <td class="min-width"><p>{{ $machine->shares_1h }}</p></td>
+                              <td class="min-width"><p>{{ $machine->shares_1d }}</p></td>
+                            @endif
+                            @if ($machine->customer_pool == "antpool.com")
+                              <td class="min-width"><p>{{ $machine->last1h }}</p></td>
+                              <td class="min-width"><p>{{ $machine->last1d }}</p></td>
+                            @endif
                         </tr>
                         @endforeach
                       <!-- end table row -->

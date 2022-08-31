@@ -32,7 +32,7 @@ class MachinesController extends Controller
         $machines = DB::table('machines')
             ->leftjoin('users', 'machines.user_id', '=', 'users.id')
             ->leftjoin('customers', 'machines.customer_id', '=', 'customers.id')
-            ->select('users.name AS user_name', 'machines.id', 'machines.name', 'machines.codeQR', 'machines.status', 'machines.observation', 'customers.name AS customer_name')
+            ->select('users.name AS user_name', 'machines.id', 'machines.name', 'machines.total_power', 'machines.mining_power', 'machines.status', 'customers.name AS customer_name')
             ->where('customers.idReference', '=', $idRefCurrentUser)
             ->orderBy('id', 'DESC')
             ->paginate(15);
@@ -49,6 +49,7 @@ class MachinesController extends Controller
             ->select(
                 'machines_api.id',
                 'customers.name AS customer_name',
+                'customers.pool AS customer_pool',
                 'machines_api.worker_name',
                 'machines_api.shares_1m',
                 'machines_api.shares_5m',
@@ -188,14 +189,14 @@ class MachinesController extends Controller
             $machines = DB::table('machines')
                 ->leftjoin('users', 'machines.user_id', '=', 'users.id')
                 ->leftjoin('customers', 'machines.customer_id', '=', 'customers.id')
-                ->select('users.name AS user_name', 'machines.id', 'machines.name', 'machines.codeQR', 'machines.status', 'machines.observation', 'customers.name AS customer_name')
+                ->select('users.name AS user_name', 'machines.id', 'machines.name', 'machines.total_power', 'machines.mining_power', 'machines.status', 'customers.name AS customer_name')
                 ->where('customers.idReference', '=', $idRefCurrentUser)
                 ->paginate(30);
         } else {
             $machines = DB::table('machines')
                 ->leftjoin('users', 'machines.user_id', '=', 'users.id')
                 ->leftjoin('customers', 'machines.customer_id', '=', 'customers.id')
-                ->select('users.name AS user_name', 'machines.id', 'machines.name', 'machines.codeQR', 'machines.status', 'machines.observation', 'customers.name AS customer_name')
+                ->select('users.name AS user_name', 'machines.id', 'machines.name', 'machines.total_power', 'machines.mining_power', 'machines.status', 'customers.name AS customer_name')
                 ->where('customers.name', 'LIKE', "%{$filter}%")
                 ->orWhere('machines.name', 'LIKE', "%{$filter}%")
                 ->orWhere('machines.status', 'LIKE', "{$filter}")
@@ -225,7 +226,6 @@ class MachinesController extends Controller
                     'customers.activeWorkerNum',
                     'customers.inactiveWorkerNum',
                     'customers.invalidWorkerNum',
-
                     'customers.workers_total',
                     'customers.workers_active',
                     'customers.workers_inactive',
@@ -247,13 +247,19 @@ class MachinesController extends Controller
                 ->select(
                     'machines_api.id',
                     'machines_api.worker_name',
+                    'customers.name AS customer_name',
+                    'customers.pool AS customer_pool',
                     'machines_api.status',
                     'machines_api.shares_1m',
                     'machines_api.shares_5m',
                     'machines_api.shares_15m',
                     'machines_api.shares_1h',
                     'machines_api.shares_1d',
-                    'customers.name AS customer_name'
+                    'machines_api.worker',
+                    'machines_api.last10m',
+                    'machines_api.last30m',
+                    'machines_api.last1h',
+                    'machines_api.last1d',
                 )
                 ->where('customers.idReference', '=', $idRefCurrentUser)
                 ->paginate(30);
@@ -263,13 +269,19 @@ class MachinesController extends Controller
                 ->select(
                     'machines_api.id',
                     'machines_api.worker_name',
+                    'customers.name AS customer_name',
+                    'customers.pool AS customer_pool',
                     'machines_api.status',
                     'machines_api.shares_1m',
                     'machines_api.shares_5m',
                     'machines_api.shares_15m',
                     'machines_api.shares_1h',
                     'machines_api.shares_1d',
-                    'customers.name AS customer_name'
+                    'machines_api.worker',
+                    'machines_api.last10m',
+                    'machines_api.last30m',
+                    'machines_api.last1h',
+                    'machines_api.last1d',
                 )
                 ->where('customers.name', 'LIKE', "%{$filter}%")
                 ->orWhere('machines_api.worker_name', 'LIKE', "%{$filter}%")
@@ -527,7 +539,7 @@ class MachinesController extends Controller
             'codeQR' => 'required|max:20|min:5|unique:machines,codeQR',
             'observation' => 'nullable|max:200|min:5',
             'mining_power' => 'nullable|max:15|min:5',
-            'total_power' => 'nullable|max:20|between:0,9999',
+            'total_power' => 'nullable|max:20|between:0,9999|numeric|min:0',
         ]);
 
         $input = $request->all();
@@ -579,7 +591,7 @@ class MachinesController extends Controller
             'codeQR' => 'required|max:20|min:5|unique:machines,codeQR,' . $id,
             'observation' => 'nullable|max:200|min:5',
             'mining_power' => 'nullable|max:15|min:5',
-            'total_power' => 'nullable|max:20|between:0,9999',
+            'total_power' => 'nullable|max:20|between:0,9999|numeric|min:0',
         ]);
 
         //find machine and create history machine actual status

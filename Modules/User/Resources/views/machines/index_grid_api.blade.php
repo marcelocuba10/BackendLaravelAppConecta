@@ -7,7 +7,7 @@
       <div class="row align-items-center">
         <div class="col-md-8">
           <div class="title d-flex align-items-center flex-wrap mb-30">
-            <h2 class="mr-40">Listado Máquinas de btc.com</h2>
+            <h2 class="mr-40">Listado Máquinas Pool</h2>
             <a style="margin-left: 17px;" href="/user/machines/grid_view_api"><i class="hthtg lni lni-grid-alt"></i></a>
             <a style="margin-left: 17px;" href="/user/machines/list_api"><i class="hthtg lni lni-list"></i></a>
           </div>

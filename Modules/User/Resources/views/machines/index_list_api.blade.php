@@ -8,7 +8,7 @@
         <div class="row align-items-center">
           <div class="col-md-8">
             <div class="title d-flex align-items-center flex-wrap mb-30">
-              <h2 class="mr-40">Listado Máquinas de btc.com</h2>
+              <h2 class="mr-40">Listado Máquinas Pool</h2>
               <a style="margin-left: 17px;" href="/user/machines/grid_view_api"><i class="hthtg lni lni-grid-alt"></i></a>
               <a style="margin-left: 17px;" href="/user/machines/list_api"><i class="hthtg lni lni-list"></i></a>
             </div>
@@ -90,17 +90,17 @@
                         <th><h6>#</h6></th>
                         <th><h6>Nombre</h6></th>
                         <th><h6>Estado</h6></th>
-                        <th><h6>created_at</h6></th>
                         <th><h6>Cliente</h6></th>
-                        <th><h6>shares_1m </h6></th>
-                        <th><h6>shares_5m</h6></th>
-                        <th><h6>shares_15m</h6></th>
-                        <th><h6>Acciones</h6></th>
+                        <th><h6>1Min hashrate </h6></th>
+                        <th><h6>5Min hashrate</h6></th>
+                        <th><h6>10Min hashrate</h6></th>
+                        <th><h6>1h hashrate</h6></th>
+                        <th><h6>1d hashrate</h6></th>
                       </tr>
                       <!-- end table row-->
                     </thead>
                     <tbody>
-                        @foreach ($machines as $machine)
+                        @foreach ($machines_api as $machine)
                         <tr>
                             <td class="text-sm"><h6 class="text-sm">#{{ ++$i }}</h6></td>
                             <td class="min-width"><h5 class="text-bold text-dark"><a href="/user/machines/{{ $machine->id }}/show_api">{{ $machine->worker_name }}</a></h5></td>
@@ -116,22 +116,12 @@
                                 {{ $machine->status }}
                               </span>
                             </td>
-                            <td class="min-width"><p>{{ $machine->created_at }}</p></td>
                             <td class="min-width"><p>{{ $machine->customer_name }}</p></td>
                             <td class="min-width"><p>{{ $machine->shares_1m }}</p></td>
                             <td class="min-width"><p>{{ $machine->shares_5m }}</p></td>
                             <td class="min-width"><p>{{ $machine->shares_15m }}</p></td>
-                            <td class="text-right">
-                                <div class="btn-group">
-                                    <div class="action">
-                                      <a href="/user/machines/{{ $machine->id }}/show_api">
-                                          <button class="text-active">
-                                              <i class="lni lni-eye"></i>
-                                          </button>
-                                      </a>
-                                    </div>
-                                </div>
-                            </td>
+                            <td class="min-width"><p>{{ $machine->shares_1h }}</p></td>
+                            <td class="min-width"><p>{{ $machine->shares_1d }}</p></td>
                         </tr>
                         @endforeach
                       <!-- end table row -->
@@ -143,9 +133,9 @@
                   @if (isset($filter))
                   {{-- {{ $machines->appends(['sort' =>$filter])->links() }}  --}}
                   {{-- {!! $machines->appends(Request::except('page'))->render() !!} --}}
-                    {!! $machines-> appends($filter)->links() !!} <!-- appends envia variable en la paginacion-->
+                    {!! $machines_api-> appends($filter)->links() !!} <!-- appends envia variable en la paginacion-->
                   @else
-                    {!! $machines-> links() !!}    
+                    {!! $machines_api-> links() !!}    
                   @endif
                 </div>
               </div>

@@ -44,14 +44,32 @@ class MachinesController extends Controller
     {
         $filter = null;
         $idRefCurrentUser = Auth::user()->idReference;
-        $machines = DB::table('machines_api')
+        $machines_api = DB::table('machines_api')
             ->leftjoin('customers', 'machines_api.customer_id', '=', 'customers.id')
-            ->select('machines_api.id','machines_api.created_at', 'machines_api.worker_name', 'machines_api.status', 'machines_api.shares_1m', 'machines_api.shares_5m', 'machines_api.shares_15m', 'customers.name AS customer_name')
+            ->select(
+                'machines_api.id',
+                'customers.name AS customer_name',
+                'machines_api.worker_name',
+                'machines_api.shares_1m',
+                'machines_api.shares_5m',
+                'machines_api.shares_15m',
+                'machines_api.shares_1h',
+                'machines_api.shares_1d',
+                'machines_api.status',
+                'machines_api.last_share_time',
+                'machines_api.first_share_time',
+                'machines_api.miner_agent',
+                'machines_api.worker',
+                'machines_api.last10m',
+                'machines_api.last30m',
+                'machines_api.last1h',
+                'machines_api.last1d',
+            )
             ->where('customers.idReference', '=', $idRefCurrentUser)
             ->orderBy('machines_api.created_at', 'DESC')
             ->paginate(20);
 
-        return view('user::machines.index_list_api', compact('machines', 'filter'))->with('i', (request()->input('page', 1) - 1) * 20);
+        return view('user::machines.index_list_api', compact('machines_api', 'filter'))->with('i', (request()->input('page', 1) - 1) * 20);
     }
 
     public function grid_view()
@@ -60,13 +78,13 @@ class MachinesController extends Controller
         $idRefCurrentUser = Auth::user()->idReference;
         $customers = DB::table('customers')
             ->where('customers.idReference', '=', $idRefCurrentUser)
-            ->select('customers.id', 'customers.name', 'customers.phone', 'customers.total_machines', 'customers.address')
+            ->select('customers.id', 'customers.name', 'customers.phone', 'customers.total_machines', 'customers.address', 'customers.totalWorkerNum', 'customers.activeWorkerNum', 'customers.inactiveWorkerNum', 'customers.invalidWorkerNum')
             ->get();
 
         $machines = DB::table('machines')
             ->leftjoin('users', 'machines.user_id', '=', 'users.id')
             ->leftjoin('customers', 'machines.customer_id', '=', 'customers.id')
-            ->select('users.name AS user_name', 'machines.id', 'machines.name', 'machines.codeQR', 'machines.customer_id', 'machines.status', 'machines.observation', 'customers.name AS customer_name')
+            ->select('users.name AS user_name', 'machines.id', 'machines.name', 'machines.codeQR', 'machines.customer_id', 'machines.status', 'machines.observation')
             ->orderBy('machines.created_at', 'DESC')
             ->get();
 
@@ -78,96 +96,59 @@ class MachinesController extends Controller
         $idRefCurrentUser = Auth::user()->idReference;
         $customers = DB::table('customers')
             ->where('customers.idReference', '=', $idRefCurrentUser)
-            ->select('customers.id', 'customers.name', 'customers.pool','customers.apiKey', 'customers.secretKey', 
-            'customers.userIdPool','customers.access_key','customers.puid','customers.total_machines',
-            'customers.workers_total','customers.workers_active','customers.workers_inactive','customers.workers_dead')
+            ->select(
+                'customers.id',
+                'customers.name',
+                'customers.pool',
+                'customers.apiKey',
+                'customers.secretKey',
+                'customers.userIdPool',
+                'customers.access_key',
+                'customers.puid',
+                'customers.total_machines',
+
+                'customers.totalWorkerNum',
+                'customers.activeWorkerNum',
+                'customers.inactiveWorkerNum',
+                'customers.invalidWorkerNum',
+
+                'customers.workers_total',
+                'customers.workers_active',
+                'customers.workers_inactive',
+                'customers.workers_dead',
+                'customers.updated_at'
+            )
             ->paginate(1);
 
         /** if the pagination does not have more users */
         if ($customers->count() == 0) {
             $machines = null; //return null for break ajax scroll
         } else {
-            if ($customers[0]->userIdPool && $customers[0]->apiKey && $customers[0]->secretKey) {
-                if ($customers[0]->pool == 'antpool.com') {
-
-                    /** parameters to authenticate a request */
-                    $page_size = $customers[0]->total_machines;
-                    $currency = 'BTC';
-                    $userId = $customers[0]->userIdPool;
-                    $api_key = $customers[0]->apiKey;
-                    $api_secret = $customers[0]->secretKey;
-                    $typeUrl = 'workers';
-
-                    /** Nonce is a regular integer number. It must be increasing with every request you make */
-                    $nonce = time();
-
-                    /** Signature is a HMAC-SHA256 */
-                    $hmac_message = $userId . $api_key . $nonce;
-                    $hmac = strtoupper(hash_hmac('sha256', $hmac_message, $api_secret, false));
-
-                    /** create curl request */
-                    $post_fields = array(
-                        'key' => 'd36e7c47078f432aa52ee883d334f7bb',
-                        'nonce' => $nonce,
-                        'signature' => $hmac,
-                        'coin' => $currency
-                    );
-
-                    $post_fields = array_merge($post_fields, array('pageSize' => $page_size));
-                    $post_data = '';
-
-                    foreach ($post_fields as $key => $value) {
-                        $post_data .= $key . '=' . $value . '&';
-                    }
-
-                    rtrim($post_data, '&');
-
-                    $ch = curl_init();
-                    curl_setopt($ch, CURLOPT_URL, 'https://antpool.com/api/' . $typeUrl . '.htm');
-                    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-                    curl_setopt($ch, CURLOPT_SSLVERSION, CURL_SSLVERSION_TLSv1_2);
-                    curl_setopt($ch, CURLOPT_POST, count($post_fields));
-                    curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
-                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-                    // set large timeout because API lak sometimes
-                    curl_setopt($ch, CURLOPT_TIMEOUT, 60);
-                    $result = curl_exec($ch);
-                    curl_close($ch);
-
-                    // check if curl was timed out
-                    if ($result === false) {
-                        if ($this->print_error_if_api_down) {
-                            exit('Error: No API connect');
-                        } else {
-                            exit();
-                        }
-                    }
-
-                    // validate JSON
-                    $result_json = json_decode($result, true);
-
-                    if ($result_json['message'] == 'ok') {
-
-                        /** save in DB table machines_api */
-                        $created_at = \Carbon\Carbon::now();
-                        foreach ($result_json['data']['rows'] as $listApi) {
-                            $machines = $result_json['data']['rows'];
-                        }
-                    } else {
-                        exit('API Error: ' . print_r($result_json, true));
-                    }
+            if ($customers[0]->pool == 'antpool.com') {
+                if ($customers[0]->userIdPool && $customers[0]->apiKey && $customers[0]->secretKey) {
+                    $machines = DB::table('machines_api')
+                        ->select('machines_api.id', 'machines_api.worker', 'machines_api.last10m')
+                        ->where('machines_api.customer_id', '=', $customers[0]->id)
+                        ->orderBy('created_at', 'DESC')
+                        ->take($customers[0]->totalWorkerNum)
+                        ->get();
+                } else {
+                    $machines = DB::table('machines_api')
+                        ->select('machines_api.id', 'machines_api.worker', 'machines_api.last10m')
+                        ->where('machines_api.customer_id', '=', $customers[0]->id)
+                        ->orderBy('created_at', 'DESC')
+                        ->take($customers[0]->total_machines)
+                        ->get();
                 }
             }
 
-            if ($customers[0]->access_key && $customers[0]->puid) {
-                $worker_stats = json_decode(file_get_contents('https://pool.api.btc.com/v1/worker/stats?access_key=' . $customers[0]->access_key . '&puid=' . $customers[0]->puid), true);
-
-                if ($worker_stats['err_no'] != 10010) {
+            if ($customers[0]->pool == 'btc.com') {
+                if ($customers[0]->access_key && $customers[0]->puid) {
                     $machines = DB::table('machines_api')
                         ->select('machines_api.id', 'machines_api.worker_name', 'machines_api.status')
                         ->where('machines_api.customer_id', '=', $customers[0]->id)
                         ->orderBy('created_at', 'DESC')
-                        ->take($worker_stats['data']['workers_total'])
+                        ->take($customers[0]->workers_total)
                         ->get();
                 } else {
                     $machines = DB::table('machines_api')
@@ -176,18 +157,7 @@ class MachinesController extends Controller
                         ->orderBy('created_at', 'DESC')
                         ->take($customers[0]->total_machines)
                         ->get();
-
-                    $worker_stats = null;
                 }
-            } else {
-                $machines = DB::table('machines_api')
-                    ->select('machines_api.id', 'machines_api.worker_name', 'machines_api.status')
-                    ->where('machines_api.customer_id', '=', $customers[0]->id)
-                    ->orderBy('created_at', 'DESC')
-                    ->take($customers[0]->total_machines)
-                    ->get();
-
-                $worker_stats = null;
             }
 
             /** if the user does not have any machine */
@@ -198,10 +168,9 @@ class MachinesController extends Controller
 
         if ($request->ajax()) {
             if ($machines != null) {
-                $view = view('user::machines._partials.data', compact('machines', 'customers', 'worker_stats'))->render();
+                $view = view('user::machines._partials.data', compact('machines', 'customers'))->render();
             } else {
-                $worker_stats = null;
-                $view = view('user::machines._partials.data', compact('machines', 'customers', 'worker_stats'))->render();
+                $view = view('user::machines._partials.data', compact('machines', 'customers'))->render();
             }
 
             return response()->json(['html' => $view]);
@@ -241,35 +210,67 @@ class MachinesController extends Controller
     {
         $filter = $request->input('filter');
         $idRefCurrentUser = Auth::user()->idReference;
-        $countMachines=0;
+        $countMachines = 0;
 
         if ($filter == '') {
 
             $customers = DB::table('customers')
-            ->select('customers.id', 'customers.name', 'customers.total_machines', 'customers.workers_total')
-            ->where('customers.idReference', '=', $idRefCurrentUser)
-            ->get();
+                ->select(
+                    'customers.id',
+                    'customers.name',
+                    'customers.total_machines',
+                    'customers.pool',
+                    'customers.workers_total',
+                    'customers.totalWorkerNum',
+                    'customers.activeWorkerNum',
+                    'customers.inactiveWorkerNum',
+                    'customers.invalidWorkerNum',
+
+                    'customers.workers_total',
+                    'customers.workers_active',
+                    'customers.workers_inactive',
+                    'customers.workers_dead',
+                )
+                ->where('customers.idReference', '=', $idRefCurrentUser)
+                ->get();
 
             foreach ($customers as $customer) {
                 if ($customer->pool == "btc.com") {
                     $countMachines += $customer->workers_active;
-                }elseif ($customer->pool == "antpool.com") {
+                } elseif ($customer->pool == "antpool.com") {
                     $countMachines += $customer->workers_active;
                 }
-                
             }
 
-            dd($countMachines);
-
-            $machines = DB::table('machines_api')
+            $machines_api = DB::table('machines_api')
                 ->leftjoin('customers', 'machines_api.customer_id', '=', 'customers.id')
-                ->select('machines_api.id', 'machines_api.created_at', 'machines_api.worker_name', 'machines_api.status', 'machines_api.shares_1m', 'machines_api.shares_5m', 'machines_api.shares_15m', 'customers.name AS customer_name')
+                ->select(
+                    'machines_api.id',
+                    'machines_api.worker_name',
+                    'machines_api.status',
+                    'machines_api.shares_1m',
+                    'machines_api.shares_5m',
+                    'machines_api.shares_15m',
+                    'machines_api.shares_1h',
+                    'machines_api.shares_1d',
+                    'customers.name AS customer_name'
+                )
                 ->where('customers.idReference', '=', $idRefCurrentUser)
                 ->paginate(30);
         } else {
-            $machines = DB::table('machines_api')
+            $machines_api = DB::table('machines_api')
                 ->leftjoin('customers', 'machines_api.customer_id', '=', 'customers.id')
-                ->select('machines_api.id', 'machines_api.worker_name', 'machines_api.status', 'machines_api.shares_1m', 'machines_api.shares_5m', 'machines_api.shares_15m', 'customers.name AS customer_name')
+                ->select(
+                    'machines_api.id',
+                    'machines_api.worker_name',
+                    'machines_api.status',
+                    'machines_api.shares_1m',
+                    'machines_api.shares_5m',
+                    'machines_api.shares_15m',
+                    'machines_api.shares_1h',
+                    'machines_api.shares_1d',
+                    'customers.name AS customer_name'
+                )
                 ->where('customers.name', 'LIKE', "%{$filter}%")
                 ->orWhere('machines_api.worker_name', 'LIKE', "%{$filter}%")
                 ->orWhere('machines_api.status', 'LIKE', "{$filter}")
@@ -277,7 +278,7 @@ class MachinesController extends Controller
                 ->paginate(30);
         }
 
-        return view('user::machines.index_list_api', compact('machines', 'filter'))->with('i', (request()->input('page', 1) - 1) * 30);
+        return view('user::machines.index_list_api', compact('machines_api', 'filter'))->with('i', (request()->input('page', 1) - 1) * 30);
     }
 
     public function search_gridview(Request $request)
@@ -368,9 +369,27 @@ class MachinesController extends Controller
         $idRefCurrentUser = Auth::user()->idReference;
         $customers = DB::table('customers')
             ->where('customers.idReference', '=', $idRefCurrentUser)
-            ->select('customers.id', 'customers.name', 'customers.pool','customers.apiKey', 'customers.secretKey', 
-            'customers.userIdPool','customers.access_key','customers.puid','customers.total_machines',
-            'customers.workers_total','customers.workers_active','customers.workers_inactive','customers.workers_dead')
+            ->select(
+                'customers.id',
+                'customers.name',
+                'customers.pool',
+                'customers.apiKey',
+                'customers.secretKey',
+                'customers.userIdPool',
+                'customers.access_key',
+                'customers.puid',
+                'customers.total_machines',
+
+                'customers.totalWorkerNum',
+                'customers.activeWorkerNum',
+                'customers.inactiveWorkerNum',
+                'customers.invalidWorkerNum',
+
+                'customers.workers_total',
+                'customers.workers_active',
+                'customers.workers_inactive',
+                'customers.workers_dead'
+            )
             ->paginate(1);
 
         /** if the pagination does not have more users */
@@ -456,7 +475,24 @@ class MachinesController extends Controller
     {
         $machine = DB::table('machines_api')
             ->leftjoin('customers', 'machines_api.customer_id', '=', 'customers.id')
-            ->select('customers.name AS customer_name', 'machines_api.id', 'machines_api.worker_name', 'machines_api.shares_1m', 'machines_api.shares_5m', 'machines_api.shares_15m', 'machines_api.status', 'machines_api.last_share_time', 'machines_api.first_share_time', 'machines_api.miner_agent')
+            ->select(
+                'customers.name AS customer_name',
+                'customers.pool AS customer_pool',
+                'machines_api.id',
+                'machines_api.worker_name',
+                'machines_api.shares_1m',
+                'machines_api.shares_5m',
+                'machines_api.shares_15m',
+                'machines_api.status',
+                'machines_api.last_share_time',
+                'machines_api.first_share_time',
+                'machines_api.miner_agent',
+                'machines_api.worker',
+                'machines_api.last10m',
+                'machines_api.last30m',
+                'machines_api.last1h',
+                'machines_api.last1d'
+            )
             ->where('machines_api.id', '=', $id)
             ->first();
 
@@ -507,7 +543,7 @@ class MachinesController extends Controller
             ->where('customers.idReference', '=', $idRefCurrentUser)
             ->select('customers.id', 'customers.name')
             ->get();
-            
+
         $status = ['ACTIVE', 'Apagado', 'Mantenimiento', 'Requiere Atención', 'Error', 'INACTIVE'];
         $mining_power_options = ['MegaHash', 'GigaHash', 'TeraHash', 'PentaHash'];
 

@@ -61,6 +61,7 @@
                         <th><h6>#</h6></th>
                         <th><h6>Nombre</h6></th>
                         <th><h6>Teléfono</h6></th>
+                        <th><h6>Pool</h6></th>
                         <th><h6>Máquinas</h6></th>
                         <th><h6>Dirección</h6></th>
                         <th><h6>Acciones</h6></th>
@@ -73,6 +74,7 @@
                             <td class="text-sm"><h6 class="text-sm">#{{ ++$i }}</h6></td>
                             <td class="min-width"><p>{{ $customer->name }}</p></td>
                             <td class="min-width"><p>{{ $customer->phone }}</p></td>
+                            <td class="min-width"><p>{{ $customer->pool }}</p></td>
                             <td class="min-width"><p>{{ $customer->total_machines }}</p></td>
                             <td class="min-width"><p>{{ $customer->address }}</p></td>
                             <td class="text-right">

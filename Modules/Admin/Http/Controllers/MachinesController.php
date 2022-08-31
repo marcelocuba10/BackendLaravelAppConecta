@@ -23,7 +23,7 @@ class MachinesController extends Controller
     public function cronjob()
     {
         $customers = DB::table('customers')
-            ->select('customers.id', 'customers.name', 'customers.pool', 'customers.created_at', 'customers.totalWorkers', 'customers.total_machines', 'customers.userIdPool', 'customers.apiKey', 'customers.secretKey', 'customers.access_key', 'customers.puid')
+            ->select('customers.id', 'customers.name', 'customers.pool', 'customers.created_at', 'customers.totalWorkerNum', 'customers.total_machines', 'customers.userIdPool', 'customers.apiKey', 'customers.secretKey', 'customers.access_key', 'customers.puid')
             ->get();
 
         foreach ($customers as $customer) {
@@ -39,12 +39,11 @@ class MachinesController extends Controller
                 if ($customer->userIdPool && $customer->apiKey && $customer->secretKey) {
 
                     /** parameters to authenticate a request */
-                    $page_size = $customer->total_machines;
                     $currency = 'BTC';
                     $userId = $customer->userIdPool;
                     $api_key = $customer->apiKey;
                     $api_secret = $customer->secretKey;
-                    $typeUrl = 'hashrate';
+                    $typeUrl = 'accountOverview';
 
                     /** Nonce is a regular integer number. It must be increasing with every request you make */
                     $nonce = time();
@@ -58,10 +57,10 @@ class MachinesController extends Controller
                         'key' => 'd36e7c47078f432aa52ee883d334f7bb',
                         'nonce' => $nonce,
                         'signature' => $hmac,
-                        'coin' => $currency
+                        'coin' => $currency,
+                        'userId' => $userId
                     );
 
-                    $post_fields = array_merge($post_fields, array('pageSize' => $page_size));
                     $post_data = '';
 
                     foreach ($post_fields as $key => $value) {
@@ -96,17 +95,16 @@ class MachinesController extends Controller
 
                     if ($result_json['message'] == 'ok') {
                         \DB::table('customers')->where('id', $customer->id)->update([
-                            'last10m' => number_format(($result_json['data']['last10m'] / 1000000), 2),
-                            'last30m' => number_format(($result_json['data']['last30m'] / 1000000), 2),
-                            'last1h' => number_format(($result_json['data']['last1h'] / 1000000), 2),
-                            'last1d' => $result_json['data']['last1d'],
-                            'prev10m' => number_format(($result_json['data']['prev10m'] / 1000000), 2),
-                            'prev30m' => number_format(($result_json['data']['prev30m'] / 1000000), 2),
-                            'prev1h' => number_format(($result_json['data']['prev1h'] / 1000000), 2),
-                            'prev1d' => number_format(($result_json['data']['prev1d'] / 1000000), 2),
-                            'accepted' => $result_json['data']['accepted'],
-                            'totalWorkers' => $result_json['data']['totalWorkers'],
-                            'activeWorkers' => $result_json['data']['activeWorkers'],
+                            'hsLast10m' => $result_json['data']['hsLast10m'],
+                            'hsLast1h' => $result_json['data']['hsLast1h'],
+                            'hsLast1d' => $result_json['data']['hsLast1d'],
+                            'totalAmount' => $result_json['data']['totalAmount'],
+                            'unpaidAmount' => $result_json['data']['unpaidAmount'],
+                            'yesterdayAmount' => $result_json['data']['yesterdayAmount'],
+                            'inactiveWorkerNum' => $result_json['data']['inactiveWorkerNum'],
+                            'activeWorkerNum' => $result_json['data']['activeWorkerNum'],
+                            'invalidWorkerNum' => $result_json['data']['invalidWorkerNum'],
+                            'totalWorkerNum' => $result_json['data']['totalWorkerNum'],
                             'updated_at' => $created_at
                         ]);
 
@@ -138,6 +136,8 @@ class MachinesController extends Controller
                         'shares_1m' => $listApi['shares_1m'],
                         'shares_5m' => $listApi['shares_5m'],
                         'shares_15m' => $listApi['shares_15m'],
+                        'shares_1h' => $listApi['shares_1h'],
+                        'shares_1d' => $listApi['shares_1d'],
                         'last_share_time' => $listApi['last_share_time'],
                         'last_share_ip' => $listApi['last_share_ip'],
                         'reject_percent' => $listApi['reject_percent'],
@@ -145,10 +145,8 @@ class MachinesController extends Controller
                         'miner_agent' => $listApi['miner_agent'],
                         'shares_unit' => $listApi['shares_unit'],
                         'status' => $listApi['status'],
-                        // 'shares_1m_pure' => $listApi['shares_1m_pure'],
                         // 'shares_5m_pure' => $listApi['shares_5m_pure'],
                         // 'shares_15m_pure' => $listApi['shares_15m_pure'],
-                        'shares_1d' => $listApi['shares_1d'],
                         'shares_1d_unit' => $listApi['shares_1d_unit'],
                         'reject_percent_1d' => $listApi['reject_percent_1d'],
                         'created_at' => $created_at,
@@ -182,7 +180,7 @@ class MachinesController extends Controller
     public function getDataFromApiANTPOOL($customer, $created_at)
     {
         /** parameters to authenticate a request */
-        $page_size = $customer->totalWorkers;
+        $page_size = $customer->totalWorkerNum;
         $currency = 'BTC';
         $userId = $customer->userIdPool;
         $api_key = $customer->apiKey;

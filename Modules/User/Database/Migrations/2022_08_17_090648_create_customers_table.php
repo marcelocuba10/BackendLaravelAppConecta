@@ -33,22 +33,21 @@ class CreateCustomersTable extends Migration
             $table->decimal('shares_1m', 20)->nullable();
             $table->decimal('shares_5m', 20)->nullable();
             $table->decimal('shares_15m', 20)->nullable();
+            $table->decimal('shares_1h', 20)->nullable();
+            $table->decimal('shares_1d', 20)->nullable();
             $table->integer('workers_total')->nullable();
             $table->string('shares_unit')->nullable();
-            $table->decimal('shares_1d', 20)->nullable();
-            $table->decimal('shares_1h', 20)->nullable();
 
-            $table->string('last10m')->nullable();
-            $table->string('last30m')->nullable();
-            $table->string('last1h')->nullable();
-            $table->string('last1d')->nullable();
-            $table->string('prev10m')->nullable();
-            $table->string('prev30m')->nullable();
-            $table->string('prev1h')->nullable();
-            $table->string('prev1d')->nullable();
-            $table->string('accepted')->nullable();
-            $table->string('totalWorkers')->nullable();
-            $table->string('activeWorkers')->nullable();
+            $table->string('hsLast10m')->nullable();
+            $table->string('hsLast1h')->nullable();
+            $table->string('hsLast1d')->nullable();
+            $table->string('totalAmount')->nullable();
+            $table->string('unpaidAmount')->nullable();
+            $table->string('yesterdayAmount')->nullable();
+            $table->string('inactiveWorkerNum')->nullable();
+            $table->string('activeWorkerNum')->nullable();
+            $table->string('invalidWorkerNum')->nullable();
+            $table->string('totalWorkerNum')->nullable();
             $table->timestamps();
         });
     }

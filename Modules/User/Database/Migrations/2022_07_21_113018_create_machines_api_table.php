@@ -29,6 +29,8 @@ class CreateMachinesApiTable extends Migration
             $table->double('shares_1m')->nullable();
             $table->string('shares_5m')->nullable();
             $table->string('shares_15m')->nullable();
+            $table->string('shares_1h')->nullable();
+            $table->string('shares_1d')->nullable();
             $table->double('last_share_time')->nullable();
             $table->string('last_share_ip')->nullable();
             $table->string('reject_percent')->nullable();
@@ -39,7 +41,6 @@ class CreateMachinesApiTable extends Migration
             $table->string('shares_1m_pure')->nullable();
             $table->string('shares_5m_pure')->nullable();
             $table->string('shares_15m_pure')->nullable();
-            $table->string('shares_1d')->nullable();
             $table->string('shares_1d_unit')->nullable();
             $table->string('reject_percent_1d')->nullable();
             $table->integer('customer_id');

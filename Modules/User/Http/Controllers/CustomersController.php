@@ -27,7 +27,7 @@ class CustomersController extends Controller
         $idRefCurrentUser = Auth::user()->idReference;
         $customers = DB::table('customers')
             ->where('customers.idReference', '=', $idRefCurrentUser)
-            ->select('customers.id', 'customers.name', 'customers.phone', 'customers.total_machines', 'customers.address')
+            ->select('customers.id', 'customers.name', 'customers.pool','customers.phone', 'customers.total_machines', 'customers.address')
             ->orderBy('customers.created_at', 'DESC')
             ->paginate(10);
 
@@ -90,28 +90,33 @@ class CustomersController extends Controller
                 'customers.phone',
                 'customers.address',
                 'customers.pool',
+                'customers.total_machines',
                 'customers.puid',
                 'customers.access_key',
                 'customers.userIdPool',
                 'customers.apiKey',
                 'customers.secretKey',
+                'customers.shares_1m',
+                'customers.shares_5m',
+                'customers.shares_15m',
+                'customers.shares_1h',
+                'customers.shares_1d',
+                'customers.shares_unit',
+
                 'customers.workers_active',
-                'customers.activeWorkers',
                 'customers.workers_inactive',
                 'customers.workers_dead',
                 'customers.workers_total',
-                'customers.totalWorkers',
-                'customers.shares_1m',
-                'customers.last10m',
-                'customers.shares_5m',
-                'customers.shares_15m',
-                'customers.last30m',
-                'customers.shares_1d',
-                'customers.last1d',
-                'customers.shares_1h',
-                'customers.last1h',
-                'customers.shares_unit',
-                'customers.total_machines',
+                'customers.hsLast10m',
+                'customers.hsLast1h',
+                'customers.hsLast1d',
+                'customers.totalAmount',
+                'customers.unpaidAmount',
+                'customers.yesterdayAmount',
+                'customers.inactiveWorkerNum',
+                'customers.activeWorkerNum',
+                'customers.invalidWorkerNum',
+                'customers.totalWorkerNum',
                 'customers.updated_at'
             )
             ->first();

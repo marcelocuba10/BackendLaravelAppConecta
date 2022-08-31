@@ -60,7 +60,7 @@
                 <p class="text-sm">
                   <span class="text-sm">Total Máquinas Pool:</span>
                   @if ($customer->pool == "antpool.com")
-                    <span class="text-sm text-bold">{{ $customer->totalWorkers ?? old('totalWorkers') }}</span>
+                    <span class="text-sm text-bold">{{ $customer->totalWorkerNum ?? old('totalWorkerNum') }}</span>
                   @elseIf($customer->pool == "btc.com")
                     <span class="text-sm text-bold">{{ $customer->workers_total ?? old('workers_total') }}</span>
                   @endif
@@ -68,7 +68,7 @@
                 <p class="text-sm">
                   <span class="text-sm">Máquinas Activas:</span>
                   @if ($customer->pool == "antpool.com")
-                    <span class="text-sm text-bold">{{ $customer->activeWorkers ?? old('activeWorkers') }}</span>
+                    <span class="text-sm text-bold">{{ $customer->activeWorkerNum ?? old('activeWorkerNum') }}</span>
                   @elseIf($customer->pool == "btc.com")
                     <span class="text-sm text-bold">{{ $customer->workers_active ?? old('workers_active') }}</span>
                   @endif
@@ -76,46 +76,48 @@
               </div>
               <div class="address-item">
                 <p class="text-sm">
+                  <span class="text-sm">Máquinas Inactivas:</span>
                   @if ($customer->pool == "antpool.com")
-                    <span class="text-sm">Máquinas Inactivas:</span>
-                    <span class="text-sm text-bold">{{ $customer->workers_inactive ?? old('workers_inactive') }}</span>
+                    <span class="text-sm text-bold">{{ $customer->inactiveWorkerNum ?? old('inactiveWorkerNum') }}</span>
                   @elseIf($customer->pool == "btc.com")
-                    <span class="text-sm">Máquinas Inactivas:</span>
                     <span class="text-sm text-bold">{{ $customer->workers_inactive ?? old('workers_inactive') }}</span>
                   @endif
                 </p>
                 <p class="text-sm">
-                  <span class="text-sm">Máquinas Muertas:</span>
-                  <span class="text-sm text-bold">{{ $customer->workers_dead ?? old('workers_dead') }}</span>
+                  <span class="text-sm">Máquinas Apagadas:</span>
+                    @if ($customer->pool == "antpool.com")
+                      <span class="text-sm text-bold">{{ $customer->invalidWorkerNum ?? old('invalidWorkerNum') }}</span>
+                    @elseIf($customer->pool == "btc.com")
+                      <span class="text-sm text-bold">{{ $customer->workers_dead ?? old('workers_dead') }}</span>
+                    @endif
                 </p>
                 <p class="text-sm">
                   @if ($customer->pool == "antpool.com")
                     <span class="text-sm">shares_10m:</span>
-                    <span class="text-sm text-bold">{{ $customer->last10m ?? old('last10m') }}</span>
+                    <span class="text-sm text-bold">{{ $customer->hsLast10m ?? old('hsLast10m') }}</span>
                   @elseIf($customer->pool == "btc.com")
                     <span class="text-sm">shares_1m:</span>
                     <span class="text-sm text-bold">{{ $customer->shares_1m ?? old('shares_1m') }}</span>
                   @endif
                 </p>
                 <p class="text-sm">
-                  @if ($customer->pool == "antpool.com")
-                    <span class="text-sm">shares_30m:</span>
-                    <span class="text-sm text-bold">{{ $customer->last30m ?? old('last30m') }}</span>
-                  @elseIf($customer->pool == "btc.com")
+                  @if($customer->pool == "btc.com")
                     <span class="text-sm">shares_5m:</span>
                     <span class="text-sm text-bold">{{ $customer->shares_5m ?? old('shares_5m') }}</span>
                   @endif
                 </p>
               </div>
               <div class="address-item">
-                <p class="text-sm">
-                  <span class="text-sm">shares_15m:</span>
-                  <span class="text-sm text-bold">{{ $customer->shares_15m ?? old('shares_15m') }}</span>
-                </p>
+                @if ($customer->pool == "btc.com")
+                  <p class="text-sm">
+                    <span class="text-sm">shares_15m:</span>
+                    <span class="text-sm text-bold">{{ $customer->shares_15m ?? old('shares_15m') }}</span>
+                  </p>
+                @endif
                 <p class="text-sm">
                   <span class="text-sm">shares_1h:</span>
                   @if ($customer->pool == "antpool.com")
-                    <span class="text-sm text-bold">{{ $customer->last1h ?? old('last1h') }}</span>
+                    <span class="text-sm text-bold">{{ $customer->hsLast1h ?? old('hsLast1h') }}</span>
                   @elseIf($customer->pool == "btc.com")
                     <span class="text-sm text-bold">{{ $customer->shares_1h ?? old('shares_1h') }}</span>
                   @endif
@@ -123,15 +125,17 @@
                 <p class="text-sm">
                   <span class="text-sm">shares_1d:</span>
                   @if ($customer->pool == "antpool.com")
-                    <span class="text-sm text-bold">{{ $customer->last1d ?? old('last1d') }}</span>
+                    <span class="text-sm text-bold">{{ $customer->hsLast1d ?? old('hsLast1d') }}</span>
                   @elseIf($customer->pool == "btc.com")
                     <span class="text-sm text-bold">{{ $customer->shares_1d ?? old('shares_1d') }}</span>
                   @endif
                 </p>
-                <p class="text-sm">
-                  <span class="text-sm">shares_unit:</span>
-                  <span class="text-sm text-bold">{{ $customer->shares_unit ?? old('shares_unit') }}</span>
-                </p>
+                @if ($customer->pool == "btc.com")
+                  <p class="text-sm">
+                    <span class="text-sm">shares_unit:</span>
+                    <span class="text-sm text-bold">{{ $customer->shares_unit ?? old('shares_unit') }}</span>
+                  </p>
+                @endif
               </div>
             </div>
           </div>
@@ -278,7 +282,7 @@
                         @foreach ($machines_api as $machines_api_item)
                             @if (strtolower($machines_api_item->worker)  === strtolower($machine->name)  )
                               @php
-                                $machineStatus='';
+                                $machineStatus = '';
                                 $percent = $machine->total_power * 0.10;
                                 $total_power_percent = $machine->total_power - $percent;
                               @endphp
@@ -295,23 +299,9 @@
                                 @php
                                   $machineStatus = "bg-card-disabled";   
                                 @endphp  
-                                {{-- <a href="/user/machines/{{$machine->id}}/show">
-                                  <div id="item" data-toggle="tooltip" data-placement="bottom" title="{{ $machine->name }}" 
-                                    class="
-                                    @if($machine->status == 'ACTIVE') bg-card-enabled 
-                                    @elseIf($machine->status == 'Apagado') bg-card-disabled
-                                    @elseIf($machine->status == 'Requiere Atención') bg-card-attention
-                                    @elseIf($machine->status == 'Mantenimiento') bg-card-maintenance
-                                    @elseIf($machine->status == 'Error') bg-card-error
-                                    @elseIf($machine->status == 'INACTIVE') bg-card-offline 
-                                    @endif">
-                                    <p class="text-sm  text-white" style="margin-top: 10px;">{{ Str::limit($machine->name, 3) }}</p>
-                                  </div>
-                                </a>  --}}
                               @endif 
                               <a href="/user/machines/{{$machine->id}}/show">
-                                <div id="item" data-toggle="tooltip" data-placement="bottom" title="{{ $machine->name }}" 
-                                  class=" {{ $machineStatus }}">
+                                <div id="item" data-toggle="tooltip" data-placement="bottom" title="{{ $machine->name }}" class="{{ $machineStatus }}">
                                   <p class="text-sm  text-white" style="margin-top: 10px;">{{ Str::limit($machine->name, 3) }}</p>
                                 </div>
                               </a> 
@@ -320,7 +310,6 @@
                       @endforeach
                     </div> 
                   @endif
-
               </div>
             </div>
         </div>

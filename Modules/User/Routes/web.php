@@ -31,7 +31,7 @@ Route::prefix('user')->group(function () {
         Route::get('/logout', 'Auth\LogoutController@perform')->name('logout.perform');
 
         /*** ACL Routes ***/
-        Route::group(['prefix'=>'ACL'],function(){
+        Route::group(['prefix' => 'ACL'], function () {
             Route::group(['prefix' => 'roles'], function () {
                 Route::get('/', 'ACL\RolesController@index')->name('roles.user.index');
                 Route::get('/create', 'ACL\RolesController@create')->name('roles.user.create');
@@ -108,6 +108,10 @@ Route::prefix('user')->group(function () {
             Route::any('/search_gridview_api', 'MachinesController@search_gridview_api')->name('machines.search_gridview_api');
             Route::any('/filter_gridview', 'MachinesController@filter_gridview')->name('machines.filter_gridview');
             Route::any('/filter_gridview_api', 'MachinesController@filter_gridview_api')->name('machines.filter_gridview_api');
+
+            /** Import/Export CSV */
+            Route::get('import-csv', 'ImportExportController@index')->name('index.import.csv');
+            Route::post('import', 'ImportExportController@importcsv')->name('import.csv');
         });
 
         /*** Customers Routes ***/

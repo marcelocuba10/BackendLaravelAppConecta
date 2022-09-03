@@ -8,22 +8,13 @@
         <div class="row align-items-center">
           <div class="col-md-6">
             <div class="title mb-30">
-              <h2>ConectaCode Dashboard</h2>
+              <h2>ConectaFarm Dashboard</h2>
             </div>
           </div>
           <!-- end col -->
           <div class="col-md-6">
             <div class="breadcrumb-wrapper mb-30">
-              <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                  <li class="breadcrumb-item">
-                    <a href="/user/dashboard">Dashboard</a>
-                  </li>
-                  <li class="breadcrumb-item active" aria-current="page">
-                    Conectacode
-                  </li>
-                </ol>
-              </nav>
+
             </div>
           </div>
           <!-- end col -->
@@ -40,10 +31,40 @@
             <div class="content">
               @php
                 use Modules\User\Entities\Customers;
-                $cant_customers = Customers::count(); 
+                $idRefCurrentUser = Auth::user()->idReference;
+                $customers = DB::table('customers')
+                    ->where('customers.idReference', '=', $idRefCurrentUser)
+                    ->select('customers.id', 'customers.name', 'customers.pool','customers.phone', 'customers.total_machines', 'customers.address')
+                    ->orderBy('customers.created_at', 'DESC')
+                    ->get();
+                $cant_customers = count($customers); 
               @endphp
               <h6 class="mb-10">Total Clientes</h6>
               <h3 class="text-bold mb-10">{{ $cant_customers }}</h3>
+            </div>
+          </div>
+          <!-- End Icon Cart -->
+        </div>
+        <!-- End Col -->
+        <div class="col-xl-3 col-lg-4 col-sm-6">
+          <div class="icon-card mb-30">
+            <div class="icon orange">
+              <i class="lni lni-user"></i>
+            </div>
+            <div class="content">
+              <h6 class="mb-10">Total Usuarios</h6>
+              @php
+                use Modules\User\Entities\User;
+                $idRefCurrentUser = Auth::user()->idReference;
+                $users = DB::table('users')
+                  ->where('idReference', '=', $idRefCurrentUser)
+                  ->select('id', 'name', 'idReference', 'idMaster', 'email')
+                  ->orderBy('created_at', 'DESC')
+                  ->get();
+
+                $cant_users = count($users); 
+              @endphp
+              <h3 class="text-bold mb-10">{{$cant_users}}</h3>
             </div>
           </div>
           <!-- End Icon Cart -->
@@ -59,7 +80,7 @@
                 use Modules\User\Entities\Machines;
                 $cant_machines = Machines::count();
               @endphp
-              <h6 class="mb-10">Total Máquinas Locales</h6>
+              <h6 class="mb-10">Total Máquinas Registradas</h6>
               <h3 class="text-bold mb-10">{{ $cant_machines }}</h3>
             </div>
           </div>
@@ -76,25 +97,8 @@
                 use Modules\User\Entities\Machines;
                 $cant_machines = Machines::count(); 
               @endphp --}}
-              <h6 class="mb-10">Total Máquinas de btc.com</h6>
+              <h6 class="mb-10">Total Máquinas Pool</h6>
               <h3 class="text-bold mb-10">$24,567</h3>
-            </div>
-          </div>
-          <!-- End Icon Cart -->
-        </div>
-        <!-- End Col -->
-        <div class="col-xl-3 col-lg-4 col-sm-6">
-          <div class="icon-card mb-30">
-            <div class="icon orange">
-              <i class="lni lni-user"></i>
-            </div>
-            <div class="content">
-              <h6 class="mb-10">Total Usuarios</h6>
-              @php
-                use Modules\User\Entities\User;
-                $cant_users = User::count(); 
-              @endphp
-              <h3 class="text-bold mb-10">{{$cant_users}}</h3>
             </div>
           </div>
           <!-- End Icon Cart -->
@@ -103,12 +107,6 @@
       </div>
       <!-- End Row -->
       <div class="row">
-        <div class="col-lg-6 col-xl-12 col-xxl-6">
-          <div class="card-style calendar-card mb-30">
-            <div id="calendar-mini"></div>
-          </div>
-        </div>
-        <!-- End Col -->
         <div class="col-md-6 col-lg-3 col-xl-6 col-xxl-3">
           <div class="card-style mb-30">
             <div class="title d-flex flex-wrap align-items-center justify-content-between mb-10">
@@ -376,7 +374,12 @@
             </div>
           </div>
         </div>
-
+        <div class="col-lg-6 col-xl-12 col-xxl-6">
+          <div class="card-style calendar-card mb-30">
+            <div id="calendar-mini"></div>
+          </div>
+        </div>
+        <!-- End Col -->
       </div>
       <!-- End Row -->
 

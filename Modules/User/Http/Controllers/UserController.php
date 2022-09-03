@@ -220,7 +220,7 @@ class UserController extends Controller
             $input = Arr::except($input, array('password'));
         } else {
             if (empty($input['confirm_password'])) {
-                return redirect()->to('/user/users/edit/'. $id)->withErrors('Confirm password')->withInput();
+                return redirect()->to('/user/users/edit/' . $id)->withErrors('Confirm password')->withInput();
             }
         }
 
@@ -276,19 +276,26 @@ class UserController extends Controller
 
     public function search(Request $request)
     {
-        $currentUser = Auth::user();
-        $currentUserId = $currentUser->id;
+        $currentUserId = Auth::user()->id;
+        $idRefCurrentUser = Auth::user()->idReference;
         $search = $request->input('search');
 
         if ($search == '') {
-            $users = DB::table('users')->paginate(10);
+            $users = DB::table('users')
+                ->select('users.id', 'users.name', 'users.idReference', 'users.idMaster', 'users.email')
+                ->where('users.idReference', '=', $idRefCurrentUser)
+                ->orderBy('created_at', 'DESC')
+                ->paginate(10);
         } else {
             $users = DB::table('users')
+                ->select('users.id', 'users.name', 'users.idReference', 'users.idMaster', 'users.email')
                 ->where('users.name', 'LIKE', "%{$search}%")
+                ->where('users.idReference', '=', $idRefCurrentUser)
+                ->orderBy('created_at', 'DESC')
                 ->paginate();
         }
 
-        return view('user::users.index', compact('users', 'search','currentUserId'))->with('i', (request()->input('page', 1) - 1) * 10);
+        return view('user::users.index', compact('users', 'search', 'currentUserId'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
     public function destroy($id)

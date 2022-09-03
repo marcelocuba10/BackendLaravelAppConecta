@@ -14,7 +14,10 @@
               @endcan 
               <a style="margin-left: 17px;" href="/user/machines/grid_view"><i class="hthtg lni lni-grid-alt"></i></a>
               <a style="margin-left: 17px;" href="/user/machines/list"><i class="hthtg lni lni-list"></i></a>
-              <a style="margin-left: 17px;" href="{{route('machines.createPDF',['download'=>'pdf'])}}" target="_blank"><i class="hthtg lni lni-printer"></i></a>
+              {{-- @if(count($machines) > 0)
+                <a style="margin-left: 17px;" href="{{route('machines.createPDF',['download'=>'pdf'])}}" target="_blank"><i class="hthtg lni lni-printer"></i></a>
+              @endif --}}
+              <a style="margin-left: 17px;" href="/user/machines/import-csv" title="Importar csv"><i class="hthtg lni lni-upload"></i></a>
             </div>
           </div>
           <!-- end col -->

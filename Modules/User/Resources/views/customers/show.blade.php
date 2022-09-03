@@ -119,6 +119,48 @@
                 </div>
               @endIf
 
+              @if ($customer->pool == "binance.com")
+                <div class="address-item">
+                  <p class="text-sm">
+                    <span class="text-sm">Total Máquinas Pool:</span>
+                    <span class="text-sm text-bold">{{ $customer->workers_total ?? old('workers_total') }}</span>
+                  </p>
+                  <p class="text-sm">
+                    <span class="text-sm">Máquinas Activas:</span>
+                    <span class="text-sm text-bold">{{ $customer->workers_active ?? old('workers_active') }}</span>
+                  </p>
+                  <p class="text-sm">
+                    <span class="text-sm">Máquinas Inactivas:</span>
+                    <span class="text-sm text-bold">{{ $customer->workers_inactive ?? old('workers_inactive') }}</span>
+                  </p>
+                  <p class="text-sm">
+                    <span class="text-sm">Máquinas Apagadas:</span>
+                    <span class="text-sm text-bold">{{ $customer->workers_dead ?? old('workers_dead') }}</span>
+                  </p>
+                </div>
+              @endIf
+
+              @if ($customer->pool == "poolin.com")
+                <div class="address-item">
+                  <p class="text-sm">
+                    <span class="text-sm">Total Máquinas Pool:</span>
+                    <span class="text-sm text-bold">{{ $customer->workers_total ?? old('workers_total') }}</span>
+                  </p>
+                  <p class="text-sm">
+                    <span class="text-sm">Máquinas Activas:</span>
+                    <span class="text-sm text-bold">{{ $customer->workers_active ?? old('workers_active') }}</span>
+                  </p>
+                  <p class="text-sm">
+                    <span class="text-sm">Máquinas Inactivas:</span>
+                    <span class="text-sm text-bold">{{ $customer->workers_inactive ?? old('workers_inactive') }}</span>
+                  </p>
+                  <p class="text-sm">
+                    <span class="text-sm">Máquinas Apagadas:</span>
+                    <span class="text-sm text-bold">{{ $customer->workers_dead ?? old('workers_dead') }}</span>
+                  </p>
+                </div>
+              @endIf
+
               @if ($customer->pool == "btc.com")
                 <div class="address-item">
                   <p class="text-sm">
@@ -153,6 +195,48 @@
                   <p class="text-sm">
                     <span class="text-sm">24hr TH:</span>
                     <span class="text-sm text-bold">{{ $customer->hsLast1d ?? old('hsLast1d') }}</span>
+                  </p>
+                </div>
+              @endif
+
+              @if ($customer->pool == "binance.com")
+                <div class="address-item">
+                  <p class="text-sm">
+                    <span class="text-sm">1Min Hashrate:</span>
+                    <span class="text-sm text-bold">{{ $customer->shares_1m ?? old('shares_1m') }}</span>
+                  </p>
+                  <p class="text-sm">
+                    <span class="text-sm">5Min Hashrate:</span>
+                    <span class="text-sm text-bold">{{ $customer->shares_5m ?? old('shares_5m') }}</span>
+                  </p>
+                  <p class="text-sm">
+                    <span class="text-sm">1h Hashrate:</span>
+                    <span class="text-sm text-bold">{{ $customer->shares_1h ?? old('shares_1h') }}</span>
+                  </p>
+                  <p class="text-sm">
+                    <span class="text-sm">24hr Hashrate:</span>
+                    <span class="text-sm text-bold">{{ $customer->shares_1d ?? old('shares_1d') }}</span>
+                  </p>
+                </div>
+              @endif
+
+              @if ($customer->pool == "poolin.com")
+                <div class="address-item">
+                  <p class="text-sm">
+                    <span class="text-sm">1Min Hashrate:</span>
+                    <span class="text-sm text-bold">{{ $customer->shares_1m ?? old('shares_1m') }}</span>
+                  </p>
+                  <p class="text-sm">
+                    <span class="text-sm">5Min Hashrate:</span>
+                    <span class="text-sm text-bold">{{ $customer->shares_5m ?? old('shares_5m') }}</span>
+                  </p>
+                  <p class="text-sm">
+                    <span class="text-sm">1h Hashrate:</span>
+                    <span class="text-sm text-bold">{{ $customer->shares_1h ?? old('shares_1h') }}</span>
+                  </p>
+                  <p class="text-sm">
+                    <span class="text-sm">24hr Hashrate:</span>
+                    <span class="text-sm text-bold">{{ $customer->shares_1d ?? old('shares_1d') }}</span>
                   </p>
                 </div>
               @endif

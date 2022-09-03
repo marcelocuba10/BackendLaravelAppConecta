@@ -27,7 +27,7 @@ class CustomersController extends Controller
         $idRefCurrentUser = Auth::user()->idReference;
         $customers = DB::table('customers')
             ->where('customers.idReference', '=', $idRefCurrentUser)
-            ->select('customers.id', 'customers.name', 'customers.pool','customers.phone', 'customers.total_machines', 'customers.address')
+            ->select('customers.id', 'customers.name', 'customers.pool', 'customers.phone', 'customers.total_machines', 'customers.address')
             ->orderBy('customers.created_at', 'DESC')
             ->paginate(10);
 
@@ -171,11 +171,21 @@ class CustomersController extends Controller
     public function search(Request $request)
     {
         $search = $request->input('search');
+        $idRefCurrentUser = Auth::user()->idReference;
 
         if ($search == '') {
-            $customers = DB::table('customers')->paginate(30);
+            $customers = DB::table('customers')
+                ->select('customers.id', 'customers.name', 'customers.phone', 'customers.pool', 'customers.total_machines')
+                ->where('customers.idReference', '=', $idRefCurrentUser)
+                ->orderBy('customers.created_at', 'DESC')
+                ->paginate(10);
         } else {
-            $customers = DB::table('customers')->where('customers.name', 'LIKE', "%{$search}%")->paginate();
+            $customers = DB::table('customers')
+                ->select('customers.id', 'customers.name', 'customers.phone', 'customers.pool', 'customers.total_machines')
+                ->where('customers.name', 'LIKE', "%{$search}%")
+                ->where('customers.idReference', '=', $idRefCurrentUser)
+                ->orderBy('customers.created_at', 'DESC')
+                ->paginate();
         }
 
         return view('user::customers.index', compact('customers', 'search'))->with('i', (request()->input('page', 1) - 1) * 10);

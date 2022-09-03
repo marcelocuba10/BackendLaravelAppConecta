@@ -11,9 +11,12 @@
             @can('machine-create')
             <a href="/user/machines/create" class="main-btn info-btn btn-hover btn-sm"><i class="lni lni-plus mr-5"></i> Nuevo</a>
             @endcan
-            <a style="margin-left: 17px;" href="/user/machines/grid_view"><i class="hthtg lni lni-grid-alt"></i></a>
-            <a style="margin-left: 17px;" href="/user/machines/list"><i class="hthtg lni lni-list"></i></a>
-            <a style="margin-left: 17px;" href="{{route('machines.createPDF',['download'=>'pdf'])}}" target="_blank"><i class="hthtg lni lni-printer"></i></a>
+            <a style="margin-left: 17px;" href="/user/machines/grid_view" title="Vista modo cuadricula"><i class="hthtg lni lni-grid-alt"></i></a>
+            <a style="margin-left: 17px;" href="/user/machines/list" title="Vista modo lista"><i class="hthtg lni lni-list"></i></a>
+            {{-- @if(count($machines) > 0)
+              <a style="margin-left: 17px;" href="{{route('machines.createPDF',['download'=>'pdf'])}}" target="_blank"><i class="hthtg lni lni-printer"></i></a>
+            @endif --}}
+            <a style="margin-left: 17px;" href="/user/machines/import-csv" title="Importar csv"><i class="hthtg lni lni-upload"></i></a>
           </div>
         </div>
         <!-- end col -->
@@ -128,32 +131,34 @@
             </div>
           </div>
 
-          @foreach($customers as $customer)
-            <div class="card-style-3 mb-30">
-              <div class="card-content">
-                <h4><a href="/user/customers/show/{{ $customer->id }}">Cliente: {{ $customer->name }}</a></h4>
-                  <div id="grid">
-                    @foreach($machines as $machine)
-                      @if ( $machine->customer_id == $customer->id)
-                        <a href="/user/machines/{{$machine->id}}/show">
-                          <div id="item" data-toggle="tooltip" data-placement="bottom" title="{{ $machine->name }}" 
-                            class="
-                            @if($machine->status == 'ACTIVE') bg-card-enabled 
-                            @elseIf($machine->status == 'Apagado') bg-card-disabled
-                            @elseIf($machine->status == 'Requiere Atención') bg-card-attention
-                            @elseIf($machine->status == 'Mantenimiento') bg-card-maintenance
-                            @elseIf($machine->status == 'Error') bg-card-error
-                            @elseIf($machine->status == 'INACTIVE') bg-card-offline 
-                            @endif">
-                            <p class="text-sm  text-white" style="margin-top: 10px;">{{ Str::limit($machine->name, 3) }}</p>
-                          </div>
-                        </a> 
-                      @endif
-                    @endforeach
-                  </div>
+          @if(count($machines) > 0)
+            @foreach($customers as $customer)
+              <div class="card-style-3 mb-30">
+                <div class="card-content">
+                  <h4><a href="/user/customers/show/{{ $customer->id }}">Cliente: {{ $customer->name }}</a></h4>
+                    <div id="grid">
+                      @foreach($machines as $machine)
+                        @if ( $machine->customer_id == $customer->id)
+                          <a href="/user/machines/{{$machine->id}}/show">
+                            <div id="item" data-toggle="tooltip" data-placement="bottom" title="{{ $machine->name }}" 
+                              class="
+                              @if($machine->status == 'ACTIVE') bg-card-enabled 
+                              @elseIf($machine->status == 'Apagado') bg-card-disabled
+                              @elseIf($machine->status == 'Requiere Atención') bg-card-attention
+                              @elseIf($machine->status == 'Mantenimiento') bg-card-maintenance
+                              @elseIf($machine->status == 'Error') bg-card-error
+                              @elseIf($machine->status == 'INACTIVE') bg-card-offline 
+                              @endif">
+                              <p class="text-sm  text-white" style="margin-top: 10px;">{{ Str::limit($machine->name, 3) }}</p>
+                            </div>
+                          </a> 
+                        @endif
+                      @endforeach
+                    </div>
+                </div>
               </div>
-            </div>
-          @endforeach
+            @endforeach
+          @endif
         </div>
       <!-- end row -->
     </div>

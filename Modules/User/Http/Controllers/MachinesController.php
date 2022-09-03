@@ -161,6 +161,24 @@ class MachinesController extends Controller
                 }
             }
 
+            if ($customers[0]->pool == 'binance.com') {
+                $machines = DB::table('machines_api')
+                    ->select('machines_api.id', 'machines_api.worker_name', 'machines_api.status')
+                    ->where('machines_api.customer_id', '=', $customers[0]->id)
+                    ->orderBy('created_at', 'DESC')
+                    ->take($customers[0]->total_machines)
+                    ->get();
+            }
+
+            if ($customers[0]->pool == 'poolin.com') {
+                $machines = DB::table('machines_api')
+                    ->select('machines_api.id', 'machines_api.worker_name', 'machines_api.status')
+                    ->where('machines_api.customer_id', '=', $customers[0]->id)
+                    ->orderBy('created_at', 'DESC')
+                    ->take($customers[0]->total_machines)
+                    ->get();
+            }
+
             /** if the user does not have any machine */
             if ($machines->count() == 0) {
                 $machines = null; //return null for break ajax scroll
@@ -522,12 +540,23 @@ class MachinesController extends Controller
             ->get();
 
         $status = ['ACTIVE', 'Apagado', 'Mantenimiento', 'Requiere Atención', 'Error', 'INACTIVE'];
-        $mining_power_options = ['MegaHash', 'GigaHash', 'TeraHash', 'PentaHash'];
+        $mining_power_options = ['Megahash', 'Gigahash', 'Terahash', 'Pentahash'];
         $machine = null;
-        $codeQR = Str::random(8);
+
+        //$codeQR = Str::random(8);
+        $codeQR = $this->generateUniqueCodeQR();
         $machine_changes  = null;
 
         return view('user::machines.create', compact('customers', 'status', 'machine', 'codeQR', 'machine_changes', 'mining_power_options'));
+    }
+
+    public function generateUniqueCodeQR()
+    {
+        do {
+            $codeQR = random_int(10000000, 99999999);
+        } while (Machines::where("codeQR", "=", $codeQR)->first());
+
+        return $codeQR;
     }
 
     public function store(Request $request)
@@ -536,7 +565,7 @@ class MachinesController extends Controller
             'name' => 'required|max:15|min:8|unique:machines,name',
             'status' => 'required|max:30|min:5',
             'customer_id' => 'required',
-            'codeQR' => 'required|max:20|min:5|unique:machines,codeQR',
+            'codeQR' => 'required|max:8|min:8|unique:machines,codeQR',
             'observation' => 'nullable|max:200|min:5',
             'mining_power' => 'nullable|max:15|min:5',
             'total_power' => 'nullable|max:20|between:0,9999|numeric|min:0',
@@ -559,7 +588,7 @@ class MachinesController extends Controller
             ->get();
 
         $status = ['ACTIVE', 'Apagado', 'Mantenimiento', 'Requiere Atención', 'Error', 'INACTIVE'];
-        $mining_power_options = ['MegaHash', 'GigaHash', 'TeraHash', 'PentaHash'];
+        $mining_power_options = ['Megahash', 'Gigahash', 'Terahash', 'Pentahash'];
 
         $machine = DB::table('machines')
             ->leftjoin('customers', 'machines.customer_id', '=', 'customers.id')
@@ -588,7 +617,7 @@ class MachinesController extends Controller
             'name' => 'required|max:15|min:8|unique:machines,name,' . $id,
             'status' => 'required|max:30|min:5',
             'customer_id' => 'required',
-            'codeQR' => 'required|max:20|min:5|unique:machines,codeQR,' . $id,
+            'codeQR' => 'required|max:8|min:8|unique:machines,codeQR,' . $id,
             'observation' => 'nullable|max:200|min:5',
             'mining_power' => 'nullable|max:15|min:5',
             'total_power' => 'nullable|max:20|between:0,9999|numeric|min:0',
@@ -621,7 +650,13 @@ class MachinesController extends Controller
 
     public function createPDF(Request $request)
     {
-        $machines = DB::table('machines')->get();
+        $idRefCurrentUser = Auth::user()->idReference;
+        $machines = DB::table('machines')
+            ->leftjoin('customers', 'machines.customer_id', '=', 'customers.id')
+            ->select('machines.id', 'machines.name', 'machines.codeQR')
+            ->where('customers.idReference', '=', $idRefCurrentUser)
+            ->get();
+
         $machinesCount = count($machines);
 
         if ($request->has('download')) {
@@ -630,7 +665,7 @@ class MachinesController extends Controller
             return $pdf->stream('pdfview.pdf');
         }
 
-        return view('user::machines.createPDF', compact('machines'));
+        return view('user::machines.createPDF', compact('machines', 'machinesCount'));
     }
 
     public function destroy($id)

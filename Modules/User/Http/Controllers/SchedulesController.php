@@ -6,6 +6,7 @@ use Modules\User\Entities\User;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Modules\User\Entities\Schedules;
 
@@ -23,7 +24,9 @@ class SchedulesController extends Controller
 
     public function index()
     {
+        $idRefCurrentUser = Auth::user()->idReference;
         $schedules = DB::table('schedules')
+            ->where('schedules.idReference', '=', $idRefCurrentUser)
             ->join('users', 'schedules.user_id', '=', 'users.id')
             ->select('users.name', 'users.last_name', 'schedules.id', 'schedules.date', 'schedules.check_in_time', 'schedules.check_out_time', 'schedules.address_latitude_in', 'schedules.address_longitude_in', 'schedules.address_latitude_out', 'schedules.address_longitude_out')
             ->orderBy('schedules.created_at', 'DESC')
@@ -34,7 +37,15 @@ class SchedulesController extends Controller
 
     public function create()
     {
-        $users = DB::table('users')->get();
+        $idRefCurrentUser = Auth::user()->idReference;
+
+        //send all user list for select options
+        $users = DB::table('users')
+            ->select('users.id', 'users.name')
+            ->where('users.idReference', '=', $idRefCurrentUser)
+            ->orderBy('created_at', 'DESC')
+            ->get();
+
         $schedule = null;
 
         return view('user::schedules.create', compact('users', 'schedule'));
@@ -53,7 +64,11 @@ class SchedulesController extends Controller
             'date' => 'required|date_format:Y-m-d|after_or_equal:' . $initialDate . '|before:' . $currentDate,
         ]);
 
-        Schedules::create($request->all());
+        $input = $request->all();
+        /** link the customer with the admin user */
+        $input['idReference'] = Auth::user()->idReference;
+
+        Schedules::create($input);
 
         return redirect()->route('schedules.index')->with('message', 'Schedule created successfully.');
     }
@@ -71,8 +86,14 @@ class SchedulesController extends Controller
 
     public function edit($id)
     {
-        //if create new schedule, send all user list
-        $users = DB::table('users')->get();
+        $idRefCurrentUser = Auth::user()->idReference;
+
+        //send all user list for select options
+        $users = DB::table('users')
+            ->select('users.id', 'users.name')
+            ->where('users.idReference', '=', $idRefCurrentUser)
+            ->orderBy('created_at', 'DESC')
+            ->get();
 
         $schedule = DB::table('schedules')
             ->leftjoin('users', 'schedules.user_id', '=', 'users.id')
@@ -106,9 +127,11 @@ class SchedulesController extends Controller
     public function search(Request $request)
     {
         $search = $request->input('search');
+        $idRefCurrentUser = Auth::user()->idReference;
 
         if ($search == '') {
             $schedules = DB::table('schedules')
+                ->where('schedules.idReference', '=', $idRefCurrentUser)
                 ->leftjoin('users', 'schedules.user_id', '=', 'users.id')
                 ->select('users.name', 'users.last_name', 'schedules.id', 'schedules.date', 'schedules.check_in_time', 'schedules.check_out_time', 'schedules.address_latitude_in', 'schedules.address_longitude_in', 'schedules.address_latitude_out', 'schedules.address_longitude_out')
                 ->paginate(10);
@@ -116,6 +139,7 @@ class SchedulesController extends Controller
             $schedules = DB::table('schedules')
                 ->leftjoin('users', 'schedules.user_id', '=', 'users.id')
                 ->select('users.name', 'users.last_name', 'schedules.id', 'schedules.date', 'schedules.check_in_time', 'schedules.check_out_time', 'schedules.address_latitude_in', 'schedules.address_longitude_in', 'schedules.address_latitude_out', 'schedules.address_longitude_out')
+                ->where('schedules.idReference', '=', $idRefCurrentUser)
                 ->where('users.name', 'LIKE', "%{$search}%")
                 ->paginate();
         }

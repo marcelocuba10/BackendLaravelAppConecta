@@ -17,6 +17,7 @@ class CreateSchedulesTable extends Migration
         Schema::create('schedules', function (Blueprint $table) {
             $table->id();
             $table->integer('user_id');
+            $table->integer('idReference');
             $table->string('date');
             $table->string('check_in_time')->nullable();
             $table->string('check_out_time')->nullable();

@@ -11,6 +11,7 @@ class Schedules extends Model
 
     protected $fillable = [
         'user_id',
+        'idReference',
         'date',
         'check_in_time',
         'check_out_time',

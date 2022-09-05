@@ -41,9 +41,6 @@
           </a>
         </li>
         @endcan
-        <span class="divider">
-          <hr />
-        </span>
         @can('machine-list')
         <li class="nav-item {{ (request()->is('user/machines/grid_view')) || (request()->is('user/machines/list')) ? 'active' : '' }}">
           <a href="/user/machines/grid_view">
@@ -88,9 +85,6 @@
           </a>
         </li>
         @endcan
-        <span class="divider">
-          <hr />
-        </span>
         @can('report-list')
         <li class="nav-item nav-item-has-children">
           <a aria-expanded="false" class="collapsed" id="ddlink_1" href="#" onclick="toggle('ddmenu_1', 'ddlink_1')">
@@ -117,11 +111,6 @@
           </ul>
         </li>
         @endcan
-
-        <span class="divider">
-          <hr />
-        </span>
-
         <li class="nav-item nav-item-has-children">
           <a aria-expanded="false" class="collapsed" id="ddlink_2" href="#" onclick="toggle('ddmenu_2', 'ddlink_2')">
             <span class="icon">

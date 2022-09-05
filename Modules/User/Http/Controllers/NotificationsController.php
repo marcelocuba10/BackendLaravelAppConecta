@@ -99,13 +99,18 @@ class NotificationsController extends Controller
     public function search(Request $request)
     {
         $search = $request->input('search');
+        $idRefCurrentUser = Auth::user()->idReference;
 
         if ($search == '') {
-            $notifications = DB::table('notifications')->paginate(10);
+            $notifications = DB::table('notifications')
+                ->where('notifications.idReference', '=', $idRefCurrentUser)
+                ->select('notifications.id', 'notifications.title', 'notifications.subject', 'notifications.date')
+                ->orderBy('date', 'DESC')
+                ->paginate(10);
         } else {
             $notifications = DB::table('notifications')
+                ->where('notifications.idReference', '=', $idRefCurrentUser)
                 ->where('notifications.title', 'LIKE', "%{$search}%")
-                ->orWhere('notifications.subject', 'LIKE', "%{$search}%")
                 ->paginate();
         }
 

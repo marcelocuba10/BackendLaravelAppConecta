@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Support\Facades\View;
 //spatie
 use Spatie\Permission\Models\Permission;
 
@@ -30,6 +30,20 @@ class PermissionsController extends Controller
             ->paginate(10);
 
         return view('admin::permissions.index', compact('permissions'))->with('i', (request()->input('page', 1) - 1) * 10);
+    }
+
+    public function getPermissions(Request $request)
+    {
+
+        $guard_name = $request->guard_name;
+
+        $permissions = DB::table('permissions')
+            ->where('guard_name', '=', $guard_name)
+            ->select('guard_name', 'id', 'name', 'system_permission')
+            ->orderBy('created_at', 'DESC')
+            ->get();
+
+        return View::make('admin::roles._partials.data', compact('permissions'));
     }
 
     public function create()

@@ -24,7 +24,7 @@
       <div class="select-style-1">
         <label>(*) Guard</label>
         <div class="select-position">
-          <select name="guard_name" onchange="hi()">
+          <select name="guard_name" id="guard_name">
             @foreach ($guard_names as $guard_name)
               <option value="{{ $guard_name }}" {{ ( $guard_name == $roleGuard) ? 'selected' : '' }}> {{ $guard_name}} </option>
             @endforeach 
@@ -33,31 +33,17 @@
       </div>
     </div>
     <!-- end col -->
-    <div class="col-12">
-      <div class="form-group">
-        <label>Team</label>
-        <select name="team_id" class="form-control select2"  data-placeholder="Select a Team" id="team_id" style="width: 100%;" onchange="displayVals(this.value)">
-          @foreach($guard_names as $guard_name)
-            <option value="{{$guard_name}}" {{ ( $guard_name == $roleGuard) ? 'selected' : '' }}>{{$guard_name}}</option>
-          @endforeach
-        </select>
+    
+    <div class="col-12" id="toshow">
+      <div class="input-style-1">
+          <label>(*) Permisos</label>
+      </div>
+      <!-- show content javascript -->
+      <div id="permissions">
       </div>
     </div>
-    <div id="campaign">
-    
-    </div>
-    {{-- <div class="col-12" id="toshow">
-        <div class="input-style-1">
-            <label>(*) Permisos</label>
-        </div>
-        @foreach ($permissions as $permission )
-            <div class="form-check checkbox-style checkbox-success mb-20">
-                <input class="form-check-input" name="permission[]" type="checkbox" value="{{ $permission->id }}" @if(!empty($rolePermission)) {{ in_array($permission->name, $rolePermission)  ? 'checked' : '' }} @endif>
-                <label class="form-check-label" for="checkbox-1">{{ $permission->name }} </label>
-            </div>
-        @endforeach
-    </div> --}}
     <!-- end col -->
+
     <div class="col-12">
       <div class="button-group d-flex justify-content-center flex-wrap">
         <button type="submit" class="main-btn primary-btn btn-hover m-2">Guardar</button>
@@ -68,42 +54,38 @@
 
 <script>
 $(document).ready(function(){
-  $('#team_id').on( 'change', function(){ hi(); } );
 
-  function displayVals(data)
-  {
-    alert('display funciton')
-      var option = data;
-      $.ajax({
+  // when starting, it captures the value of the select, to then perform the query
+  var guard_name = document.getElementById("guard_name").value;
+  $.ajax({
       type: "POST",
       url: "{{ route('permissions.admin.getPermissions') }}",
       data: { 
-        guard_name : option ,
+        guard_name : guard_name,
         "_token": "{{ csrf_token() }}",
       },
-          success:function(campaigns)
-          {
-              $("#campaign").html(campaigns);
-          }
-      });
-  }
-
-  function hi(){
-            alert('hi');
+        success:function(permissions)
+        {
+          $("#permissions").html(permissions);
         }
+    });
 
+    // call the function when an event is generated in the select
+    $('#guard_name').on( 'change', function(){ 
+    guard_name = document.getElementById("guard_name").value;
+    $.ajax({
+      type: "POST",
+      url: "{{ route('permissions.admin.getPermissions') }}",
+      data: { 
+        guard_name : guard_name,
+        "_token": "{{ csrf_token() }}",
+      },
+        success:function(permissions)
+        {
+          $("#permissions").html(permissions);
+        }
+    });
+  });
 });
-
-  // function displayVals(selectObject) {
-  //   alert('display funciton');
-  //   var value = selectObject.value;  
-  //   if(value == "web"){
-  //     $("#toshow").show();
-  //   }else{
-  //     $("#toshow").hide();
-  //   }
-  //   console.log(value);
-  // }
-
 
 </script>

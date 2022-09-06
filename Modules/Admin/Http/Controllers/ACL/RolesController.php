@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\Console\Input\Input;
 
 class RolesController extends Controller
 {
@@ -54,21 +55,6 @@ class RolesController extends Controller
             ->get();
 
         return view('admin::roles.create', compact('permissions', 'keys', 'system_role', 'guard_names', 'roleGuard'));
-    }
-
-    public function getPermissions(){
-
-        $guard_name = Input::get('guard_name');
-
-        dd($guard_name);
-        
-        $permissions = DB::table('permissions')
-        ->where('guard_name', '=', $guard_name)
-        ->select('guard_name', 'id', 'name', 'system_permission')
-        ->orderBy('created_at', 'DESC')
-        ->get();
-
-        return View::make('admin::roles._partials.data', compact('permissions'));
     }
 
     public function store(Request $request)

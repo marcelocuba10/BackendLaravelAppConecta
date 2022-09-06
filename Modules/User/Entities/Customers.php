@@ -11,7 +11,10 @@ class Customers extends Model
 
     protected $fillable = [
         'name',
+        'last_name',
         'phone',
+        'doc_id',
+        'email',
         'address',
         'access_key',
         'puid',

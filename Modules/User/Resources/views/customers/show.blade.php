@@ -28,13 +28,13 @@
     <div class="invoice-wrapper">
       <div class="row">
         <div class="col-12">
-          <div class="invoice-card card-style mb-30" style="padding-bottom: 5px;">
+          <div class="invoice-card card-style mb-30" style="padding: 15px 15px;">
             <div class="invoice-address">
 
               <div class="address-item">
                 <p class="text-sm">
                   <span class="text-sm">Cliente:</span>
-                  <span class="text-sm text-bold">{{ $customer->name ?? old('name') }}</span>
+                  <span class="text-sm text-bold">{{ $customer->name ?? old('name') }} {{ $customer->last_name ?? old('last_name') }}</span>
                 </p>
                 <p class="text-sm">
                   <span class="text-sm">Máquinas Registradas:</span>
@@ -48,9 +48,17 @@
                   <span class="text-sm">Dirección:</span>
                   <span class="text-sm text-medium">{{ $customer->address ?? old('address') }}</span>
                 </p>
+                <p class="text-sm">
+                  <span class="text-sm">Email:</span>
+                  <span class="text-sm text-medium">{{ $customer->email ?? old('email') }}</span>
+                </p>
               </div>
 
               <div class="address-item">
+                <p class="text-sm">
+                  <span class="text-sm">Doc Identidad:</span>
+                  <span class="text-sm text-medium">{{ $customer->doc_id ?? old('doc_id') }}</span>
+                </p>
                 <p class="text-sm">
                   <span class="text-sm">Pool:</span>
                   <span class="text-sm text-bold">{{ $customer->pool ?? old('pool') }}</span>
@@ -162,7 +170,7 @@
               @endIf
 
               @if ($customer->pool == "btc.com")
-                <div class="address-item">
+                <div class="address-item" style="margin-left: -65px;">
                   <p class="text-sm">
                     <span class="text-sm">1Min Hashrate:</span>
                     <span class="text-sm text-bold">{{ $customer->shares_1m ?? old('shares_1m') }}</span>
@@ -183,7 +191,7 @@
               @endif
 
               @if ($customer->pool == "antpool.com")
-                <div class="address-item">
+                <div class="address-item" style="margin-left: -65px;">
                   <p class="text-sm">
                     <span class="text-sm">10Min Hashrate:</span>
                     <span class="text-sm text-bold">{{ $customer->hsLast10m ?? old('hsLast10m') }}</span>
@@ -200,7 +208,7 @@
               @endif
 
               @if ($customer->pool == "binance.com")
-                <div class="address-item">
+                <div class="address-item" style="margin-left: -65px;">
                   <p class="text-sm">
                     <span class="text-sm">1Min Hashrate:</span>
                     <span class="text-sm text-bold">{{ $customer->shares_1m ?? old('shares_1m') }}</span>
@@ -221,7 +229,7 @@
               @endif
 
               @if ($customer->pool == "poolin.com")
-                <div class="address-item">
+                <div class="address-item" style="margin-left: -65px;">
                   <p class="text-sm">
                     <span class="text-sm">1Min Hashrate:</span>
                     <span class="text-sm text-bold">{{ $customer->shares_1m ?? old('shares_1m') }}</span>

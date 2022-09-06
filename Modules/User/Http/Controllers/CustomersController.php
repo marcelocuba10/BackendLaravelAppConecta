@@ -27,7 +27,7 @@ class CustomersController extends Controller
         $idRefCurrentUser = Auth::user()->idReference;
         $customers = DB::table('customers')
             ->where('customers.idReference', '=', $idRefCurrentUser)
-            ->select('customers.id', 'customers.name', 'customers.pool', 'customers.phone', 'customers.total_machines', 'customers.address')
+            ->select('customers.id', 'customers.name', 'customers.last_name', 'customers.pool', 'customers.phone', 'customers.total_machines', 'customers.address')
             ->orderBy('customers.created_at', 'DESC')
             ->paginate(10);
 
@@ -51,7 +51,7 @@ class CustomersController extends Controller
     public function create()
     {
         $customer = null;
-        $pools_options = ['btc.com', 'antpool.com', 'binance.com', 'poolin.com'];
+        $pools_options = ['btc.com', 'antpool.com'];
 
         return view('user::customers.create', compact('pools_options', 'customer'));
     }
@@ -60,7 +60,10 @@ class CustomersController extends Controller
     {
         $request->validate([
             'name' => 'required|max:50|min:5',
+            'last_name' => 'required|max:50|min:4',
             'phone' => 'nullable|max:25|min:5',
+            'doc_id' => 'nullable|max:25|min:5',
+            'email' => 'nullable|max:25|min:5|email:rfc,dns',
             'address' => 'nullable|max:255|min:5',
             'access_key' => 'nullable|max:25|min:15',
             'puid' => 'nullable|max:10|min:4',
@@ -87,8 +90,11 @@ class CustomersController extends Controller
             ->select(
                 'customers.id',
                 'customers.name',
+                'customers.last_name',
                 'customers.phone',
                 'customers.address',
+                'customers.email',
+                'customers.doc_id',
                 'customers.pool',
                 'customers.total_machines',
                 'customers.puid',
@@ -142,7 +148,7 @@ class CustomersController extends Controller
     public function edit($id)
     {
         $customer = Customers::find($id);
-        $pools_options = ['btc.com', 'antpool.com', 'binance.com', 'poolin.com'];
+        $pools_options = ['btc.com', 'antpool.com'];
 
         return view('user::customers.edit', compact('customer', 'pools_options'));
     }
@@ -151,7 +157,10 @@ class CustomersController extends Controller
     {
         $request->validate([
             'name' => 'required|max:50|min:5',
+            'last_name' => 'nullable|max:50|min:4',
             'phone' => 'nullable|max:25|min:5',
+            'doc_id' => 'nullable|max:25|min:5',
+            'email' => 'nullable|max:25|min:5|email:rfc,dns',
             'address' => 'nullable|max:255|min:5',
             'access_key' => 'nullable|max:25|min:15',
             'puid' => 'nullable|max:10|min:4',

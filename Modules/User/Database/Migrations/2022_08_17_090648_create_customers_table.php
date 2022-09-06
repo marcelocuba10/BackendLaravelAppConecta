@@ -17,7 +17,10 @@ class CreateCustomersTable extends Migration
             $table->id();
             $table->integer('idReference');
             $table->string('name');
+            $table->string('last_name')->nullable();
+            $table->string('doc_id')->nullable();
             $table->string('phone')->nullable();
+            $table->string('email')->nullable();
             $table->string('address')->nullable();
             $table->string('access_key')->nullable();
             $table->string('puid')->nullable();

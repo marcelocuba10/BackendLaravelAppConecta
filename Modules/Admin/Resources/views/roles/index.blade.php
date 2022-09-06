@@ -60,6 +60,8 @@
                       <tr>
                         <th><h6>#</h6></th>
                         <th><h6>Nombre</h6></th>
+                        <th><h6>Cliente</h6></th>
+                        <th><h6>IdReferencia</h6></th>
                         <th><h6>Guard</h6></th>
                         <th><h6>Acciones</h6></th>
                       </tr>
@@ -69,6 +71,16 @@
                         <tr>
                             <td class="min-width"><h6 class="text-sm">#{{ ++$i }}</h6></td>
                             <td class="min-width"><p>{{ $role->name }}</p></td>
+                            @if ($role->customer_name == null)
+                              <td class="min-width"><p>Sistema</p></td>
+                            @else
+                              <td class="min-width"><p>{{ $role->customer_name }}</p></td>
+                            @endif
+                            @if (strlen($role->customer_idReference) == 6)
+                              <td class="min-width"><p>{{ $role->customer_idReference }}</p></td>
+                            @else
+                              <td class="min-width"><p>Sistema</p></td>
+                            @endif
                             <td class="min-width"><p>{{ $role->guard_name }}</p></td>
 
                             <td class="text-right">

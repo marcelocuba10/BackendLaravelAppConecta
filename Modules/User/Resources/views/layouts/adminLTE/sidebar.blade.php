@@ -128,23 +128,9 @@
               </a>
             </li>
             @endcan
-            @can('role-list','permission-list')
+            @can('role-list')
             <li>
-              <a aria-expanded="false" class="collapsed" id="ddlink_3" href="#" onclick="toggle('ddmenu_3', 'ddlink_3')">
-                <span class="text">ACL</span>
-              </a>
-              <ul id="ddmenu_3" class="dropdown-nav" style="{{ (request()->is('user/ACL/*')) ? '' : 'display:none' }}">
-                @can('role-list')
-                <li>
-                  <a href="/user/ACL/roles" class="{{ (request()->is('user/ACL/roles')) ? 'active' : '' }}"><span class="text">Roles</span></a>
-                </li>
-                @endcan
-                @can('permission-list')
-                <li>
-                  <a href="/user/ACL/permissions" class="{{ (request()->is('user/ACL/permissions')) ? 'active' : '' }}"><span class="text">Permisos</span></a>
-                </li>
-                @endcan
-              </ul>
+              <a href="/user/ACL/roles" class="{{ (request()->is('user/ACL/roles')) ? 'active' : '' }}"><span class="text">Roles</span></a>
             </li>
             @endcan
           </ul>

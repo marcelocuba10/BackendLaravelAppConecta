@@ -111,6 +111,7 @@ Route::prefix('admin')->group(function () {
 
             Route::group(['prefix' => 'permissions'], function () {
                 Route::get('/', 'ACL\PermissionsController@index')->name('permissions.admin.index');
+                Route::any('/get', 'ACL\PermissionsController@getPermissions')->name('permissions.admin.getPermissions');
                 Route::get('/create', 'ACL\PermissionsController@create')->name('permissions.admin.create');
                 Route::post('/create', 'ACL\PermissionsController@store')->name('permissions.admin.store');
                 Route::get('/show/{id}', 'ACL\PermissionsController@show')->name('permissions.admin.show');

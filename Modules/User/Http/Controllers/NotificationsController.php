@@ -51,10 +51,8 @@ class NotificationsController extends Controller
         ]);
 
         $input = $request->all();
-
         /** link the customer with the admin user */
         $input['idReference'] = Auth::user()->idReference;
-
         Notifications::create($input);
 
         return redirect()->route('notifications.index')->with('message', 'Notification created successfully.');

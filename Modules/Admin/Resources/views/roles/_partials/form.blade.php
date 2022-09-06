@@ -24,7 +24,7 @@
       <div class="select-style-1">
         <label>(*) Guard</label>
         <div class="select-position">
-          <select name="guard_name">
+          <select name="guard_name" onchange="hi()">
             @foreach ($guard_names as $guard_name)
               <option value="{{ $guard_name }}" {{ ( $guard_name == $roleGuard) ? 'selected' : '' }}> {{ $guard_name}} </option>
             @endforeach 
@@ -34,6 +34,19 @@
     </div>
     <!-- end col -->
     <div class="col-12">
+      <div class="form-group">
+        <label>Team</label>
+        <select name="team_id" class="form-control select2"  data-placeholder="Select a Team" id="team_id" style="width: 100%;" onchange="displayVals(this.value)">
+          @foreach($guard_names as $guard_name)
+            <option value="{{$guard_name}}" {{ ( $guard_name == $roleGuard) ? 'selected' : '' }}>{{$guard_name}}</option>
+          @endforeach
+        </select>
+      </div>
+    </div>
+    <div id="campaign">
+    
+    </div>
+    {{-- <div class="col-12" id="toshow">
         <div class="input-style-1">
             <label>(*) Permisos</label>
         </div>
@@ -43,7 +56,7 @@
                 <label class="form-check-label" for="checkbox-1">{{ $permission->name }} </label>
             </div>
         @endforeach
-    </div>
+    </div> --}}
     <!-- end col -->
     <div class="col-12">
       <div class="button-group d-flex justify-content-center flex-wrap">
@@ -52,3 +65,45 @@
       </div>
     </div>
 </div>
+
+<script>
+$(document).ready(function(){
+  $('#team_id').on( 'change', function(){ hi(); } );
+
+  function displayVals(data)
+  {
+    alert('display funciton')
+      var option = data;
+      $.ajax({
+      type: "POST",
+      url: "{{ route('permissions.admin.getPermissions') }}",
+      data: { 
+        guard_name : option ,
+        "_token": "{{ csrf_token() }}",
+      },
+          success:function(campaigns)
+          {
+              $("#campaign").html(campaigns);
+          }
+      });
+  }
+
+  function hi(){
+            alert('hi');
+        }
+
+});
+
+  // function displayVals(selectObject) {
+  //   alert('display funciton');
+  //   var value = selectObject.value;  
+  //   if(value == "web"){
+  //     $("#toshow").show();
+  //   }else{
+  //     $("#toshow").hide();
+  //   }
+  //   console.log(value);
+  // }
+
+
+</script>

@@ -34,7 +34,8 @@ class CreateUserSuperAdminSeederTableSeeder extends Seeder
         $role = Role::create([
             'name' => 'SuperAdmin',
             'guard_name' => 'admin',
-            'system_role' => '1'
+            'system_role' => '1',
+            'idReference' => 1
         ],);
         
         $permissions = Permission::where('guard_name', '=', 'admin')->pluck('id', 'id')->all();

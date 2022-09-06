@@ -26,12 +26,12 @@ class RolesController extends Controller
     {
         $guard_name = Auth::getDefaultDriver();
         $roles = DB::table('roles')
-            //->where('guard_name', '=', 'admin')
-            ->select('guard_name', 'id', 'name', 'system_role')
-            ->orderBy('created_at', 'DESC')
+            ->leftjoin('users', 'roles.idReference', '=', 'users.idReference')
+            ->select('roles.guard_name', 'roles.id', 'roles.name', 'roles.system_role', 'roles.idReference', 'users.name AS customer_name', 'users.idReference AS customer_idReference')
+            ->orderBy('roles.created_at', 'DESC')
             ->paginate(10);
 
-        return view('admin::roles.index', compact('roles','guard_name'))->with('i', (request()->input('page', 1) - 1) * 10);
+        return view('admin::roles.index', compact('roles', 'guard_name'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
     public function create()
@@ -56,6 +56,21 @@ class RolesController extends Controller
         return view('admin::roles.create', compact('permissions', 'keys', 'system_role', 'guard_names', 'roleGuard'));
     }
 
+    public function getPermissions(){
+
+        $guard_name = Input::get('guard_name');
+
+        dd($guard_name);
+        
+        $permissions = DB::table('permissions')
+        ->where('guard_name', '=', $guard_name)
+        ->select('guard_name', 'id', 'name', 'system_permission')
+        ->orderBy('created_at', 'DESC')
+        ->get();
+
+        return View::make('admin::roles._partials.data', compact('permissions'));
+    }
+
     public function store(Request $request)
     {
         $this->validate($request, [
@@ -65,10 +80,14 @@ class RolesController extends Controller
             'guard_name' => 'required'
         ]);
 
+        /** Create idReference; by default it is 6 characters, to create a unique string, I remove 2 characters */
+        $idReference = substr(Auth::user()->id, 0, -2);
+
         $role = Role::create([
             'name' => $request->input('name'),
             'guard_name' => $request->input('guard_name'),
-            'system_role' => $request->input('system_role')
+            'system_role' => $request->input('system_role'),
+            'idReference' => $idReference
         ]);
 
         $role->syncPermissions($request->input('permission'));
@@ -89,7 +108,7 @@ class RolesController extends Controller
         $rolePermission = $role->permissions->pluck('name')->toArray();
 
         //dd($rolePermission);
-        return view('admin::roles.show', compact('role', 'rolePermission','keys'));
+        return view('admin::roles.show', compact('role', 'rolePermission', 'keys'));
     }
 
     public function edit($id)
@@ -136,16 +155,24 @@ class RolesController extends Controller
     public function search(Request $request)
     {
         $search = $request->input('search');
+        $guard_name = Auth::getDefaultDriver();
 
         if ($search == '') {
-            $roles = DB::table('roles')->paginate(10);
+            $roles = DB::table('roles')
+                ->leftjoin('users', 'roles.idReference', '=', 'users.idReference')
+                ->select('roles.guard_name', 'roles.id', 'roles.name', 'roles.system_role', 'roles.idReference', 'users.name AS customer_name', 'users.idReference AS customer_idReference')
+                ->orderBy('roles.created_at', 'DESC')
+                ->paginate(10);
         } else {
             $roles = DB::table('roles')
+                ->leftjoin('users', 'roles.idReference', '=', 'users.idReference')
+                ->select('roles.guard_name', 'roles.id', 'roles.name', 'roles.system_role', 'roles.idReference', 'users.name AS customer_name', 'users.idReference AS customer_idReference')
                 ->where('roles.name', 'LIKE', "%{$search}%")
+                ->orderBy('roles.created_at', 'DESC')
                 ->paginate();
         }
 
-        return view('admin::roles.index', compact('roles', 'search'))->with('i', (request()->input('page', 1) - 1) * 10);
+        return view('admin::roles.index', compact('roles', 'search', 'guard_name'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
     public function destroy($id)

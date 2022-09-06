@@ -24,8 +24,11 @@ class RolesController extends Controller
 
     public function index()
     {
+        $idRefCurrentUser = Auth::user()->idReference;
         $roles = DB::table('roles')
             ->where('guard_name', '=', 'web')
+            ->where('roles.idReference', '=', $idRefCurrentUser)
+            ->orWhere('roles.idReference', '=', 0) //roles with IdReference = 0 is system role default - module user
             ->select('guard_name', 'id', 'name', 'system_role')
             ->orderBy('created_at', 'DESC')
             ->paginate(10);
@@ -42,7 +45,7 @@ class RolesController extends Controller
             ->orderBy('created_at', 'DESC')
             ->get();
 
-        return view('user::roles.create', compact('permissions','guard_name'));
+        return view('user::roles.create', compact('permissions', 'guard_name'));
     }
 
     public function store(Request $request)
@@ -52,7 +55,13 @@ class RolesController extends Controller
             'permission' => 'required'
         ]);
 
-        $role = Role::create(['name' => $request->input('name'), 'guard_name' => 'web']);
+        $role = Role::create([
+            'name' => $request->input('name'),
+            'guard_name' => 'web',
+            'system_role' => 0,
+            'idReference' => Auth::user()->idReference
+        ]);
+
         $role->syncPermissions($request->input('permission'));
 
         return redirect()->route('roles.user.index')->with('message', 'Role created successfully');
@@ -83,7 +92,7 @@ class RolesController extends Controller
         //->pluck('role_has_permissions.permission_id', 'role_has_permissions.permission_id')
         //->all();  
 
-        return view('user::roles.edit', compact('role', 'permissions', 'rolePermission','guard_name'));
+        return view('user::roles.edit', compact('role', 'permissions', 'rolePermission', 'guard_name'));
     }
 
     public function update(Request $request, $id)
@@ -105,11 +114,20 @@ class RolesController extends Controller
     public function search(Request $request)
     {
         $search = $request->input('search');
+        $idRefCurrentUser = Auth::user()->idReference;
 
         if ($search == '') {
-            $roles = DB::table('roles')->paginate(10);
+            $roles = DB::table('roles')
+                ->where('guard_name', '=', 'web')
+                ->where('roles.idReference', '=', $idRefCurrentUser)
+                ->orWhere('roles.idReference', '=', 0) //roles with IdReference = 0 is system role default - module user
+                ->select('guard_name', 'id', 'name', 'system_role')
+                ->orderBy('created_at', 'DESC')
+                ->paginate(10);
         } else {
             $roles = DB::table('roles')
+                ->where('roles.idReference', '=', $idRefCurrentUser)
+                ->orWhere('roles.idReference', '=', 0) //roles with IdReference = 0 is system role default - module user
                 ->where('roles.name', 'LIKE', "%{$search}%")
                 ->paginate();
         }

@@ -26,18 +26,19 @@ class RoleTableSeeder extends Seeder
 
         //Create role
         $role = Role::create([
-            'name' => 'Guest',
+            'name' => 'Funcionario',
             'guard_name' => 'web',
-            'system_role' => '1'
+            'system_role' => '1',
+            'idReference' => 0
         ]);
 
         //Assign permissions
         $role->givePermissionTo('user-list');
-        $role->givePermissionTo('user-edit');
         $role->givePermissionTo('machine-list');
+        $role->givePermissionTo('machine-edit');
         $role->givePermissionTo('customer-list');
         $role->givePermissionTo('notification-list');
         $role->givePermissionTo('schedule-list');
-        
+        $role->givePermissionTo('schedule-create');
     }
 }

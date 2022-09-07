@@ -8,7 +8,7 @@
         <div class="row align-items-center">
           <div class="col-md-8">
             <div class="title d-flex align-items-center flex-wrap mb-30">
-              <h2 class="mr-40">Relatorio de Funcionarios</h2>
+              <h2 class="mr-40">Relatorio de Usuarios</h2>
             </div>
           </div>
           <!-- end col -->
@@ -31,9 +31,9 @@
                     <div class="row">
                       <div class="col-md-3">
                         <div class="input-style-1">
-                          <label>Funcionario</label>
+                          <label>Usuarios</label>
                           <form action="/user/reports/customers/search">
-                            <input disabled class="bg-gray" style="background-color: #fff;" id="search" type="text" name="search" value="{{ $search ?? '' }}" placeholder="Buscar funcionario..">
+                            <input disabled class="bg-gray" style="background-color: #fff;" id="search" type="text" name="search" value="{{ $search ?? '' }}" placeholder="Buscar usuario..">
                           </form>
                         </div>
                       </div>
@@ -69,10 +69,10 @@
                         <h6 class="text-sm text-medium"></h6>
                       </th>
                       <th class="lg">
-                        <h6 class="text-sm text-medium">Nombre</h6>
+                        <h6 class="text-sm text-medium">Nombre Completo</h6>
                       </th>
                       <th class="lg">
-                        <h6 class="text-sm text-medium">Apellidos</h6>
+                        <h6 class="text-sm text-medium">ID Referencia</h6>
                       </th>
                       <th class="md">
                         <h6 class="text-sm text-medium">Teléfono</h6>
@@ -89,8 +89,8 @@
                     @foreach ($users as $user)
                     <tr>
                         <td class="text-sm"><h6 class="text-sm">#{{ ++$i }}</h6></td>
-                        <td class="text-sm"><p>{{ $user->name }}</p></td>
-                        <td class="text-sm"><p>{{ $user->last_name }}</p></td>
+                        <td class="text-sm"><p>{{ $user->name }} {{ $user->last_name }}</p></td>
+                        <td class="text-sm"><p>{{ $user->idReference }}</p></td>
                         <td class="text-sm"><p><i class="lni lni-phone mr-10"></i>{{ $user->phone }}</p></td>
                         <td class="text-sm"><p>{{ $user->email }}</p></td>
                         <td class="text-sm"><p>{{ $user->ci }}</p></td>

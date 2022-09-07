@@ -99,11 +99,11 @@
             <li >
               <a href="/user/reports/customers" class="{{ (request()->is('user/reports/customers')) ? 'active' : '' }}">Clientes</a>
             </li>
-            <li >
+            {{-- <li >
               <a href="/user/reports/machines" class="{{ (request()->is('user/reports/machines')) ? 'active' : '' }}">Maquinas</a>
-            </li>
+            </li> --}}
             <li >
-              <a href="/user/reports/users" class="{{ (request()->is('user/reports/users')) ? 'active' : '' }}">Funcionarios</a>
+              <a href="/user/reports/users" class="{{ (request()->is('user/reports/users')) ? 'active' : '' }}">Usuarios</a>
             </li>
             <li >
               <a href="/user/reports/schedules" class="{{ (request()->is('user/reports/schedules')) ? 'active' : '' }}">Horarios</a>

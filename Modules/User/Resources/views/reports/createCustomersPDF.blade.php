@@ -35,19 +35,21 @@
     <table class="table table-bordered mb-5">
         <thead>
             <tr class="table-danger">
-                <th style="width: 30%" scope="col">Nombre</th>
+                <th style="width: 30%" scope="col">Nombre Completo</th>
                 <th style="width: 15%" scope="col">Teléfono</th>
-                <th style="width: 40%" scope="col">Dirección</th>
                 <th style="width: 15%" scope="col">Máquinas</th>
+                <th style="width: 15%" scope="col">Pool</th>
+                <th style="width: 40%" scope="col">Dirección</th>
             </tr>
         </thead>
         <tbody>
             @foreach($customers as $customer)
             <tr>
-                <td>{{ $customer->name }}</td>
+                <td>{{ $customer->name }} {{ $customer->last_name }}</td>
                 <td>{{ $customer->phone }}</td>
-                <td>{{ $customer->address }}</td>
                 <td>{{ $customer->total_machines }}</td>
+                <td>{{ $customer->pool }}</td>
+                <td>{{ $customer->address }}</td>
             </tr>
             @endforeach
         </tbody>

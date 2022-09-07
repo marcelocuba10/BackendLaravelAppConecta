@@ -69,13 +69,16 @@
                         <h6 class="text-sm text-medium"></h6>
                       </th>
                       <th class="lg">
-                        <h6 class="text-sm text-medium">Nombre</h6>
+                        <h6 class="text-sm text-medium">Nombre Completo</h6>
                       </th>
                       <th class="md">
                         <h6 class="text-sm text-medium">Teléfono</h6>
                       </th>
                       <th class="md">
                         <h6 class="text-sm text-medium">Máquinas</h6>
+                      </th>
+                      <th class="md">
+                        <h6 class="text-sm text-medium">Pool</h6>
                       </th>
                       <th class="lg">
                         <h6 class="text-sm text-medium">Dirección</h6>
@@ -86,9 +89,10 @@
                     @foreach ($customers as $customer)
                     <tr>
                         <td class="text-sm"><h6 class="text-sm">#{{ ++$i }}</h6></td>
-                        <td class="text-sm"><p>{{ $customer->name }}</p></td>
+                        <td class="text-sm"><p>{{ $customer->name }} {{ $customer->last_name }}</p></td>
                         <td class="text-sm"><p><i class="lni lni-phone mr-10"></i>{{ $customer->phone }}</p></td>
                         <td class="text-sm"><p>{{ $customer->total_machines }}</p></td>
+                        <td class="text-sm"><p>{{ $customer->pool }}</p></td>
                         <td class="text-sm"><p>{{ $customer->address }}</p></td>
                     </tr>
                     @endforeach

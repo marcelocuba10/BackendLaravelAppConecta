@@ -73,7 +73,7 @@
                         <tr>
                             <td class="text-sm"><h6 class="text-sm">#{{ ++$i }}</h6></td>
                             <td class="min-width"><p>{{ $customer->id }}</p></td>
-                            <td class="min-width"><p>{{ $customer->name }} {{ $customer->last_name ?? old('last_name') }}</p></td>
+                            <td class="min-width"><h5 class="text-bold text-dark"><a href="/user/customers/show/{{$customer->id}}">{{ $customer->name }} {{ $customer->last_name ?? old('last_name') }}</a></h5></td>
                             <td class="min-width"><p>{{ $customer->phone }}</p></td>
                             <td class="min-width"><p>{{ $customer->pool }}</p></td>
                             <td class="min-width"><p>{{ $customer->total_machines }}</p></td>

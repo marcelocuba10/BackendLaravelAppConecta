@@ -6,7 +6,7 @@
                 <div class="d-flex align-items-center">
                   <span class="text-regular text-sm">Actualizado:&nbsp;{{ $customer->updated_at }}</span>
                 </div>
-              </div>
+            </div>
             <div class="title d-flex justify-content-between">
                 <div class="left">
                 </div>

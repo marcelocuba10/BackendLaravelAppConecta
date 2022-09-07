@@ -94,8 +94,11 @@ class MachinesController extends Controller
 
     public function grid_view_api(Request $request)
     {
+        $search = $request->search;
         $idRefCurrentUser = Auth::user()->idReference;
-        $customers = DB::table('customers')
+
+        if ($search == "") {
+            $customers = DB::table('customers')
             ->where('customers.idReference', '=', $idRefCurrentUser)
             ->select(
                 'customers.id',
@@ -120,6 +123,36 @@ class MachinesController extends Controller
                 'customers.updated_at'
             )
             ->paginate(1);
+        }else{
+            $customers = DB::table('customers')
+            ->where('customers.idReference', '=', $idRefCurrentUser)
+            ->where('customers.name','LIKE', "%{$search}%")
+            ->select(
+                'customers.id',
+                'customers.name',
+                'customers.pool',
+                'customers.apiKey',
+                'customers.secretKey',
+                'customers.userIdPool',
+                'customers.access_key',
+                'customers.puid',
+                'customers.total_machines',
+
+                'customers.totalWorkerNum',
+                'customers.activeWorkerNum',
+                'customers.inactiveWorkerNum',
+                'customers.invalidWorkerNum',
+
+                'customers.workers_total',
+                'customers.workers_active',
+                'customers.workers_inactive',
+                'customers.workers_dead',
+                'customers.updated_at'
+            )
+            ->paginate(1);
+        }
+        
+        
 
         /** if the pagination does not have more users */
         if ($customers->count() == 0) {
@@ -186,16 +219,11 @@ class MachinesController extends Controller
         }
 
         if ($request->ajax()) {
-            if ($machines != null) {
-                $view = view('user::machines._partials.data', compact('machines', 'customers'))->render();
-            } else {
-                $view = view('user::machines._partials.data', compact('machines', 'customers'))->render();
-            }
-
+            $view = view('user::machines._partials.data', compact('machines', 'customers', 'search'))->render();
             return response()->json(['html' => $view]);
         }
 
-        return view('user::machines.index_grid_api');
+        return view('user::machines.index_grid_api',compact('search'));
     }
 
     public function search_filter_list(Request $request)
@@ -343,25 +371,105 @@ class MachinesController extends Controller
 
     public function search_gridview_api(Request $request)
     {
-        $filter = null;
-        $status = "all";
-        $search = $request->input('search');
+        $search = $request->search;
         $idRefCurrentUser = Auth::user()->idReference;
-
         $customers = DB::table('customers')
-            ->select('customers.id', 'customers.name', 'customers.access_key', 'customers.puid')
-            ->where('customers.name', 'LIKE', "%{$search}%")
             ->where('customers.idReference', '=', $idRefCurrentUser)
-            ->get();
+            ->where('customers.name','LIKE', "%{$search}%")
+            ->select(
+                'customers.id',
+                'customers.name',
+                'customers.pool',
+                'customers.apiKey',
+                'customers.secretKey',
+                'customers.userIdPool',
+                'customers.access_key',
+                'customers.puid',
+                'customers.total_machines',
 
-        return view('user::machines.results', compact('customers'))->with(['search' => $request->search])->render();
+                'customers.totalWorkerNum',
+                'customers.activeWorkerNum',
+                'customers.inactiveWorkerNum',
+                'customers.invalidWorkerNum',
 
-        // if ($request->ajax()) {
-        //     $view = view('user::machines._partials.data', compact('customers', 'status'))->render();
-        //     return response()->json(['html' => $view]);
-        // }
+                'customers.workers_total',
+                'customers.workers_active',
+                'customers.workers_inactive',
+                'customers.workers_dead',
+                'customers.updated_at'
+            )
+            ->paginate(1);
 
-        // return view('user::machines.index_grid_api', compact('search', 'customers', 'filter', 'status'));
+        /** if the pagination does not have more users */
+        if ($customers->count() == 0) {
+            $machines = null; //return null for break ajax scroll
+        } else {
+            if ($customers[0]->pool == 'antpool.com') {
+                if ($customers[0]->userIdPool && $customers[0]->apiKey && $customers[0]->secretKey) {
+                    $machines = DB::table('machines_api')
+                        ->select('machines_api.id', 'machines_api.worker', 'machines_api.last10m')
+                        ->where('machines_api.customer_id', '=', $customers[0]->id)
+                        ->orderBy('created_at', 'DESC')
+                        ->take($customers[0]->totalWorkerNum)
+                        ->get();
+                } else {
+                    $machines = DB::table('machines_api')
+                        ->select('machines_api.id', 'machines_api.worker', 'machines_api.last10m')
+                        ->where('machines_api.customer_id', '=', $customers[0]->id)
+                        ->orderBy('created_at', 'DESC')
+                        ->take($customers[0]->total_machines)
+                        ->get();
+                }
+            }
+
+            if ($customers[0]->pool == 'btc.com') {
+                if ($customers[0]->access_key && $customers[0]->puid) {
+                    $machines = DB::table('machines_api')
+                        ->select('machines_api.id', 'machines_api.worker_name', 'machines_api.status')
+                        ->where('machines_api.customer_id', '=', $customers[0]->id)
+                        ->orderBy('created_at', 'DESC')
+                        ->take($customers[0]->workers_total)
+                        ->get();
+                } else {
+                    $machines = DB::table('machines_api')
+                        ->select('machines_api.id', 'machines_api.worker_name', 'machines_api.status')
+                        ->where('machines_api.customer_id', '=', $customers[0]->id)
+                        ->orderBy('created_at', 'DESC')
+                        ->take($customers[0]->total_machines)
+                        ->get();
+                }
+            }
+
+            if ($customers[0]->pool == 'binance.com') {
+                $machines = DB::table('machines_api')
+                    ->select('machines_api.id', 'machines_api.worker_name', 'machines_api.status')
+                    ->where('machines_api.customer_id', '=', $customers[0]->id)
+                    ->orderBy('created_at', 'DESC')
+                    ->take($customers[0]->total_machines)
+                    ->get();
+            }
+
+            if ($customers[0]->pool == 'poolin.com') {
+                $machines = DB::table('machines_api')
+                    ->select('machines_api.id', 'machines_api.worker_name', 'machines_api.status')
+                    ->where('machines_api.customer_id', '=', $customers[0]->id)
+                    ->orderBy('created_at', 'DESC')
+                    ->take($customers[0]->total_machines)
+                    ->get();
+            }
+
+            /** if the user does not have any machine */
+            if ($machines->count() == 0) {
+                $machines = null; //return null for break ajax scroll
+            }
+        }
+
+        if ($request->ajax()) {
+            $view = view('user::machines._partials.data', compact('machines', 'customers'))->render();
+            return response()->json(['html' => $view]);
+        }
+
+        return view('user::machines.index_grid_api');
     }
 
     public function filter_gridview(Request $request)

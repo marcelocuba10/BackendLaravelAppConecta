@@ -15,12 +15,12 @@
         <!-- end col -->
         <div class="col-md-4">
           <div class="right">
-            {{-- <div class="table-search d-flex" style="margin-top: -35px;float: right;">
-              <form action="/#" method="POST">
-                @csrf
-                <input style="background-color: #fff;" id="search" type="text" name="search" value="{{ $search ?? '' }}" placeholder="Buscar cliente..">
-              </form>   
-            </div> --}}
+            <div class="table-search d-flex" style="margin-top: -35px;float: right;">
+              <form>
+                <input style="background-color: #fff;" type="text" name="search" id="search" value="{{ $search ?? '' }}" placeholder="Buscar cliente..">
+                <button id="myBtnSearch"><i class="lni lni-search-alt"></i></button>
+              </form>
+            </div>
           </div>
         </div>
         <!-- end col -->
@@ -42,7 +42,7 @@
                       <div class="text">
                         {{-- <form action="/user/machines/filter_gridview_api" method="POST"> --}}
                           @csrf
-                          <button class="btn-group-status" id="filter" name="filter" value="active" type="submit"><p class="text-sm text-dark">Activo</p></button>
+                          <button class="btn-group-status" name="filter" value="active" type="submit"><p class="text-sm text-dark">Activo</p></button>
                         {{-- </form>  --}}
                       </div>
                     </div>
@@ -53,7 +53,7 @@
                       <div class="text">
                         {{-- <form action="/user/machines/filter_gridview_api" method="POST"> --}}
                           @csrf
-                          <button class="btn-group-status" id="filter" name="filter" value="inactive" type="submit"><p class="text-sm text-dark">Inactivo</p></button>
+                          <button class="btn-group-status" name="filter" value="inactive" type="submit"><p class="text-sm text-dark">Inactivo</p></button>
                         {{-- </form>  --}}
                       </div>
                     </div>
@@ -67,10 +67,10 @@
                 <li>
                   <div class="d-flex">
                     <div class="text">
-                      <form action="/user/machines/search_gridview_api" method="POST">
+                      {{-- <form action="/user/machines/search_gridview_api" method="POST">
                         @csrf
                         <button class="btn-group-status" name="search" id="search" value="" type="submit"><p class="text-sm text-dark"><i class="lni lni-close"></i>&nbsp; Quitar Filtros</p></button>
-                      </form> 
+                      </form>  --}}
                     </div>
                   </div>
                 </li>
@@ -118,60 +118,52 @@
 
   <script type="text/javascript">
     var page = 1;
-    var search;
-    var filter;
-    var status="all";
 
-    // capture characters from input
-    //search = document.getElementById("search").value;
-
-    //teste search
-    // $('#search').on('keyup', function(){
-    //   var keyword = $('#search').val();
-    //   //alert(keyword);
-    //   //search();
-    // });
-
-    //disable scroll if set filter or search not marked
-    // if(search.length == 0 || filter == ""){
-
-    // }
-
-    $(window).scroll(function() {
-        if($(window).scrollTop() + $(window).height() >= $(document).height()) {
-            page++;
-            loadMoreData(page,status);
-        }
-    });
-    
-    // on load page
+    // On load page
     $(document).ready(function(){  
-      checkPage(page,status);
-      // $(document).on("click", "#filter", function(){
-      //   filter = $(this).val();
-      //   alert('init loadFilter');
-      //   loadFilter();
-      //   loadMoreData(page,status)
-      // });
+      // when starting, it captures the value, to input search
+      var search = document.getElementById("search").value;
+      //getFirstTwoRows(page);
 
-      // if(search.length == 0  && filter == null){
-      //   //loadMoreData(page);
-      //   checkPage(page,status);
-      // }
+      if(search.length == 0 ){
+        //loadMoreData(page);
+        getFirstTwoRows(page);
+
+        $(window).scroll(function() {
+          if($(window).scrollTop() + $(window).height() >= $(document).height()) {
+              page++;
+              loadMoreData(page);
+          }
+        });
+      }else{
+        searchInput(page);
+        $(window).scroll(function() {
+          if($(window).scrollTop() + $(window).height() >= $(document).height()) {
+              page++;
+              searchInput(page);
+          }
+        });
+      }
     });
 
-    async function checkPage(){
-      await loadMoreData(page,status);
+    $("#search").keyup(function(event) {
+      //if press key Enter in input
+      if (event.keyCode === 13) {
+        searchInput(page);
+      }
+    });
+
+    async function getFirstTwoRows(){
+      await loadMoreData(page);
       page++;
-      loadMoreData(page,status);
+      loadMoreData(page);
     }
   
-    function loadMoreData(page,status){
+    function loadMoreData(page){
       $.ajax({
         url: '?page=' + page,
         type: "get",
         data: {
-          status: status,
           "_token": "{{ csrf_token() }}",
         },
         beforeSend: function()
@@ -180,7 +172,6 @@
         }
       })
       .done(function(data){
-        //alert(data.html);
         if(data.html == ""){
           $('.ajax-load').html("No se encontraron más registros");
           return;
@@ -193,17 +184,12 @@
       });
     }
 
-    function loadFilter(page,filter){
-      $.ajax({
-        //url: "{{ route('machines.search_gridview_api') }}" + "?page=" + page,
+  function searchInput(page){
+    $.ajax({
         url: '?page=' + page,
-        // type: "get",
-        type: "POST",
-        dataType: 'html',
-        contentType:'application/x-www-form-urlencoded',
-        //headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+        type: "get",
         data: {
-          status: status,
+          search: search.value,
           "_token": "{{ csrf_token() }}",
         },
         beforeSend: function()
@@ -222,7 +208,8 @@
       .fail(function(jqXHR, ajaxOptions, thrownError){
         alert('server not responding...');
       });
-    }
+  }
+
   </script>
 </section>
 @endsection

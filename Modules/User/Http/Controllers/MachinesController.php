@@ -363,6 +363,7 @@ class MachinesController extends Controller
                 ->select('users.name AS user_name', 'machines.id', 'machines.name', 'machines.codeQR', 'machines.customer_id', 'machines.status', 'machines.observation', 'customers.name AS customer_name')
                 ->where('customers.name', 'LIKE', "%{$search}%")
                 ->orWhere('machines.name', 'LIKE', "%{$search}%")
+                ->orderBy('machines.created_at', 'DESC')
                 ->get();
         }
 
@@ -476,6 +477,7 @@ class MachinesController extends Controller
     {
         $filter = $request->input('filter');
         $idRefCurrentUser = Auth::user()->idReference;
+        
         $customers = DB::table('customers')
             ->where('customers.idReference', '=', $idRefCurrentUser)
             ->select('customers.id', 'customers.name', 'customers.phone', 'customers.total_machines', 'customers.address')
@@ -647,7 +649,7 @@ class MachinesController extends Controller
             ->select('customers.id', 'customers.name')
             ->get();
 
-        $status = ['ACTIVE', 'Apagado', 'Mantenimiento', 'Requiere Atención', 'Error', 'INACTIVE'];
+        $status = ['Active', 'Apagado', 'Mantenimiento', 'Requiere Atención', 'Error', 'Inactive'];
         $mining_power_options = ['Megahash', 'Gigahash', 'Terahash', 'Pentahash'];
         $machine = null;
 
@@ -695,7 +697,7 @@ class MachinesController extends Controller
             ->select('customers.id', 'customers.name')
             ->get();
 
-        $status = ['ACTIVE', 'Apagado', 'Mantenimiento', 'Requiere Atención', 'Error', 'INACTIVE'];
+        $status = ['Active', 'Apagado', 'Mantenimiento', 'Requiere Atención', 'Error', 'Inactive'];
         $mining_power_options = ['Megahash', 'Gigahash', 'Terahash', 'Pentahash'];
 
         $machine = DB::table('machines')

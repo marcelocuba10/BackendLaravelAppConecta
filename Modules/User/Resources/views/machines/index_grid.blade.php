@@ -50,7 +50,7 @@
                       <div class="text">
                         <form action="/user/machines/filter_gridview" method="POST">
                           @csrf
-                          <button class="btn-group-status" name="filter" value="active" type="submit"><p class="text-sm text-dark">Activo</p></button>
+                          <button class="btn-group-status" name="filter" value="Active" type="submit"><p class="text-sm text-dark">Activo</p></button>
                         </form> 
                       </div>
                     </div>
@@ -94,7 +94,7 @@
                       <div class="text">
                         <form action="/user/machines/filter_gridview" method="POST">
                           @csrf
-                          <button class="btn-group-status" name="filter" value="inactive" type="submit"><p class="text-sm text-dark">Inactivo</p></button>
+                          <button class="btn-group-status" name="filter" value="Inactive" type="submit"><p class="text-sm text-dark">Inactivo</p></button>
                         </form> 
                       </div>
                     </div>
@@ -142,12 +142,12 @@
                           <a href="/user/machines/{{$machine->id}}/show">
                             <div id="item" data-toggle="tooltip" data-placement="bottom" title="{{ $machine->name }}" 
                               class="
-                              @if($machine->status == 'ACTIVE') bg-card-enabled 
-                              @elseIf($machine->status == 'Apagado') bg-card-disabled
+                              @if(strtolower($machine->status) == 'active' || $machine->status == 1) bg-card-enabled 
+                              @elseIf($machine->status == 'Apagado' || $machine->status == 0) bg-card-disabled
                               @elseIf($machine->status == 'Requiere Atención') bg-card-attention
                               @elseIf($machine->status == 'Mantenimiento') bg-card-maintenance
                               @elseIf($machine->status == 'Error') bg-card-error
-                              @elseIf($machine->status == 'INACTIVE') bg-card-offline 
+                              @elseIf(strtolower($machine->status) == 'inactive') bg-card-offline 
                               @endif">
                               <p class="text-sm  text-white" style="margin-top: 10px;">{{ Str::limit($machine->name, 3) }}</p>
                             </div>

@@ -15,7 +15,7 @@ class MachinesImport implements ToModel, WithHeadingRow
             'user_id' => Auth::user()->id,
             'customer_id' => $row['customer_id'],
             'name' => $row['name'],
-            'status' => $row['status'] ? 1 : 0,
+            'status' => $row['status'],
             'codeQR' => $this->generateUniqueCodeQR(),
             'mining_power' => $row['mining_power'],
             'total_power' => $row['total_power'],

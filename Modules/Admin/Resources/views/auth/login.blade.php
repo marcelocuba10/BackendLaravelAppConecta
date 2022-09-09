@@ -21,9 +21,10 @@
     <form method="post" action="/admin/login">
 
         <div class="form-icon"><img class="img-logo" src="/img/conectacode.png"></div>
-        <p class="login-message2">Iniciar sesión en ConectaCode</p>
+        <p class="login-message2">Iniciar sesión en ConectaFarm</p>
         
         <input type="hidden" name="_token" value="{{ csrf_token() }}" />
+
         @if (Session::has('message'))
             <div class="alert alert-success" role="alert">
                 {{ Session::get('message') }}
@@ -34,19 +35,23 @@
                 {{ Session::get('error') }}
             </div>
         @endif
+        @if ($errors->has('email'))
+            <div class="alert alert-warning" role="alert">
+                {{ $errors->first('email') }}
+            </div>
+        @endif
+        @if ($errors->has('password'))
+            <div class="alert alert-warning" role="alert">
+                {{ $errors->first('password') }}
+            </div>
+        @endif
 
         <div class="form-group">
             <input name="email" value="{{ old('email') }}" type="text" class="form-control item" placeholder="Email" required>
-            @if ($errors->has('email'))
-                <span class="text-danger text-left">{{ $errors->first('email') }}</span>
-            @endif
         </div>
 
         <div class="form-group">
-            <input name="password" value="{{ old('password') }}" type="password" class="form-control item" placeholder="Password" required>
-            @if ($errors->has('password'))
-                <span class="text-danger text-left">{{ $errors->first('password') }}</span>
-            @endif
+            <input name="password" value="{{ old('password') }}" type="password" class="form-control item" placeholder="Contraseña" required>
         </div>
 
         <div class="row">
@@ -65,8 +70,8 @@
             </div>
         </div>
 
-        <div class="form-group">
-            <button type="submit" class="btn btn-block create-account">Entrar</button>
+        <div class="form-group" style="text-align: center;">
+            <button type="submit" style="padding: 10px 50px;" class="btn btn-block create-account">Ingresar</button>
         </div>
 
         {{-- <a class="pokioj" href="/admin/forget-password"><small>¿Has olvidado tu contraseña?</small></a> --}}

@@ -9,7 +9,7 @@
             <a href="/"><button class="ththhf" type="button" class="btn btn-block create-account">Página Web</button></a>
         </div>    
         <div class="login-texto">
-            <p class="login-title">Bienvenido a ConectaCode</p>
+            <p class="login-title">Bienvenido a ConectaFarm</p>
             <p class="login-message">Facilidades increíbles para tu empresa! :)</p>
         </div>
     </div>    
@@ -23,34 +23,47 @@
 
         <div class="form-icon"><img class="img-logo" src="/img/conectacode.png"></div>
         <p class="login-message2">Restablecer la Contraseña</p>
+
+        @if (Session::has('message'))
+            <div class="alert alert-success" role="alert">
+                {{ Session::get('message') }}
+            </div>
+        @endif
+        @if (Session::has('error'))
+            <div class="alert alert-warning" role="alert">
+                {{ Session::get('error') }}
+            </div>
+        @endif
+        @if ($errors->has('email'))
+            <div class="alert alert-warning" role="alert">
+                {{ $errors->first('email') }}
+            </div>
+        @endif
+        @if ($errors->has('password'))
+            <span class="text-danger">{{ $errors->first('password') }}</span>
+        @endif
+        @if ($errors->has('password_confirmation'))
+            <span class="text-danger">{{ $errors->first('password_confirmation') }}</span>
+        @endif
         
         <div class="form-group">
             <input name="email" type="email" value="{{ old('email') }}" class="form-control item" placeholder="Email" required>
-            @if ($errors->has('email'))
-                <span class="text-danger">{{ $errors->first('email') }}</span>
-            @endif
         </div>
 
         <div class="form-group">
-            <input name="password" type="password" value="{{ old('password') }}" class="form-control item" placeholder="Password" required>
-            @if ($errors->has('password'))
-                <span class="text-danger">{{ $errors->first('password') }}</span>
-            @endif
+            <input name="password" type="password" value="{{ old('password') }}" class="form-control item" placeholder="Contraseña" required>
         </div>
 
         <div class="form-group">
-            <input name="password_confirmation" type="password" value="{{ old('password_confirmation') }}" class="form-control item" placeholder="Confirm Password" required>
-            @if ($errors->has('password_confirmation'))
-                <span class="text-danger">{{ $errors->first('password_confirmation') }}</span>
-            @endif
+            <input name="password_confirmation" type="password" value="{{ old('password_confirmation') }}" class="form-control item" placeholder="Confirme Contraseña" required>
         </div>
 
-        <div class="form-group">
+        <div class="form-group" style="text-align: center;margin-top: -25px;">
             <button type="submit" class="btn btn-block create-account">Restablecer Contraseña</button>
         </div>
 
         <p class="text-muted text-center" style="margin-bottom: 0px;margin-top: 15px;"><small>¿Ya tienes una cuenta?</small></p>
-        <a class="btn btn-sm btn-white btn-block" style="text-decoration: underline;" href="/user/login">Iniciar Sesión</a>
+        <p class="text-muted text-center"><a style="color: #212529;text-decoration: underline;" href="/user/login">Iniciar Sesión</a><p>
     </form>
 </div>
 

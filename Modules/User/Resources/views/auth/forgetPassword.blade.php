@@ -9,7 +9,7 @@
             <a href="/"><button class="ththhf" type="button" class="btn btn-block create-account">Página Web</button></a>
         </div>    
         <div class="login-texto">
-            <p class="login-title">Bienvenido a ConectaCode</p>
+            <p class="login-title">Bienvenido a ConectaFarm</p>
             <p class="login-message">Facilidades increíbles para tu empresa! :)</p>
         </div>
     </div>    
@@ -30,20 +30,27 @@
                 {{ Session::get('message') }}
             </div>
         @endif
+        @if (Session::has('error'))
+            <div class="alert alert-warning" role="alert">
+                {{ Session::get('message') }}
+            </div>
+        @endif
+        @if ($errors->has('email'))
+            <div class="alert alert-warning" role="alert">
+                {{ $errors->first('email') }}
+            </div>
+        @endif
 
         <div class="form-group">
             <input name="email" id="email_address" type="text" value="{{ old('email') }}" class="form-control item" placeholder="Email" required>
-            @if ($errors->has('email'))
-                <span class="text-danger">{{ $errors->first('email') }}</span>
-            @endif
         </div>
 
-        <div class="form-group">
+        <div class="form-group" style="text-align: center;margin-top: -25px;">
             <button type="submit" class="btn btn-block create-account">Continuar</button>
         </div>
 
         <p class="text-muted text-center" style="margin-bottom: 0px;margin-top: 15px;"><small>¿Ya tienes una cuenta?</small></p>
-        <a class="btn btn-sm btn-white btn-block" style="text-decoration: underline;" href="/user/login">Iniciar Sesión</a>
+        <p class="text-muted text-center"><a style="color: #212529;text-decoration: underline;" href="/user/login">Iniciar Sesión</a><p>
     </form>
 </div>
 

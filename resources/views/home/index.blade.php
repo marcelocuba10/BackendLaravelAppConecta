@@ -11,9 +11,7 @@
                 text-center
                 max-w-[780px]
                 mx-auto
-                wow
-                fadeInUp
-              " data-wow-delay=".2s">
+                wow fadeInUp" data-wow-delay=".2s">
                         <h1 class="
                   text-white
                   font-bold
@@ -23,8 +21,7 @@
                   leading-snug
                   sm:leading-snug
                   md:leading-snug
-                  mb-8
-                ">
+                  mb-8">
                             Open-Source Web Template for SaaS, Startup, Apps, and More
                         </h1>
                         <p class="
@@ -34,8 +31,7 @@
                   mx-auto
                   mb-10
                   text-[#e4e4e4]
-                  max-w-[600px]
-                ">
+                  max-w-[600px]">
                             Multidisciplinary Web Template Built with Your Favourite
                             Technology - HTML Bootstrap, Tailwind and React NextJS.
                         </p>
@@ -55,8 +51,7 @@
                       rounded-lg
                       transition
                       duration-300
-                      ease-in-out
-                    ">
+                      ease-in-out">
                                     Contact Us
                                 </a>
                             </li>
@@ -73,8 +68,7 @@
                       hover:opacity-70
                       transition
                       duration-300
-                      ease-in-out
-                    ">
+                      ease-in-out">
                                     See Plans
                                     <span class="pl-2">
                                         <svg width="20" height="8" viewBox="0 0 20 8" class="fill-current">
@@ -94,8 +88,7 @@
                     hover:opacity-100
                     transition
                     duration-300
-                    ease-in-out
-                  " />
+                    ease-in-out" />
                         </div>
                     </div>
                 </div>
@@ -103,8 +96,7 @@
                 <div class="w-full px-4">
                     <div class="mx-auto max-w-[845px] relative z-10 wow fadeInUp" data-wow-delay=".25s">
                         <div class="mt-16">
-                            <img src="/site/assets/images/hero/hero-image.jpg" alt="hero"
-                                class="max-w-full mx-auto rounded-t-xl rounded-tr-xl" />
+                            <img src="/site/assets/images/hero/hero-image.jpg" alt="hero" class="max-w-full mx-auto rounded-t-xl rounded-tr-xl" />
                         </div>
                         <div class="absolute z-[-1] bottom-0 -left-9">
                             <svg width="134" height="106" viewBox="0 0 134 106" fill="none"
@@ -446,23 +438,19 @@
                         <span class="font-semibold text-lg text-primary mb-2 block">
                             Features
                         </span>
-                        <h2 class="
-                  font-bold
+                        <h2 class="font-bold
                   text-3xl
                   sm:text-4xl
                   md:text-[42px]
                   text-dark
-                  mb-4
-                ">
+                  mb-4">
                             Main Features Of Play
                         </h2>
-                        <p class="
-                  text-lg
+                        <p class="text-lg
                   sm:text-xl
                   leading-relaxed
                   sm:leading-relaxed
-                  text-body-color
-                ">
+                  text-body-color">
                             There are many variations of passages of Lorem Ipsum available
                             but the majority have suffered alteration in some form.
                         </p>
@@ -482,8 +470,7 @@
                   rounded-2xl
                   mb-8
                   relative
-                  z-10
-                ">
+                  z-10">
                             <span class="
                     w-[70px]
                     h-[70px]
@@ -499,8 +486,7 @@
                     left-0
                     rotate-[25deg]
                     group-hover:rotate-45
-                    duration-300
-                  "></span>
+                    duration-300"></span>
                             <svg width="35" height="35" viewBox="0 0 52 52" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <path
@@ -2473,5 +2459,58 @@
         </div>
     </section>
     <!-- ====== Contact End ====== -->
+    <script>
 
+        $(document).ready(function () {
+    
+            $('body').scrollspy({
+                target: '#navbar',
+                offset: 80
+            });
+    
+            // Page scrolling feature
+            $('a.page-scroll').bind('click', function(event) {
+                var link = $(this);
+                $('html, body').stop().animate({
+                    scrollTop: $(link.attr('href')).offset().top - 50
+                }, 500);
+                event.preventDefault();
+                $("#navbar").collapse('hide');
+            });
+        });
+    
+        var cbpAnimatedHeader = (function() {
+            var docElem = document.documentElement,
+                    header = document.querySelector( '.navbar-default' ),
+                    didScroll = false,
+                    changeHeaderOn = 200;
+            function init() {
+                window.addEventListener( 'scroll', function( event ) {
+                    if( !didScroll ) {
+                        didScroll = true;
+                        setTimeout( scrollPage, 250 );
+                    }
+                }, false );
+            }
+            function scrollPage() {
+                var sy = scrollY();
+                if ( sy >= changeHeaderOn ) {
+                    $(header).addClass('navbar-scroll')
+                }
+                else {
+                    $(header).removeClass('navbar-scroll')
+                }
+                didScroll = false;
+            }
+            function scrollY() {
+                return window.pageYOffset || docElem.scrollTop;
+            }
+            init();
+    
+        })();
+    
+        // Activate WOW.js plugin for animation on scrol
+        new WOW().init();
+    
+    </script>
 @endsection

@@ -65,8 +65,8 @@ class ForgotPasswordController extends Controller
 
         $request->validate([
             'email' => 'required|exists:users',
-            'password' => 'required|string|min:6|confirmed',
-            'password_confirmation' => 'required'
+            'password' => 'required|string|min:5|confirmed',
+            'password_confirmation' => 'required|max:50|min:5|same:password',
         ]);
 
         $updatePassword = DB::table('reset_password_users')
@@ -77,7 +77,7 @@ class ForgotPasswordController extends Controller
             ->first();
 
         if (!$updatePassword) {
-            return back()->withInput()->with('error', 'Invalid token!');
+            return back()->withInput()->with('error', 'Email inválido, verifique datos por favor.');
         }
 
         $user = User::where('email', $request->email)

@@ -5,7 +5,7 @@
         <div class="container">
             <div class="flex -mx-4 items-center justify-between relative">
                 <div class="px-4 w-60 max-w-full">
-                    <a href="index.html" class="navbar-logo w-full block py-5">
+                    <a href="index.html" class="navbar-logo w-full block py-5" style="width: 185px;">
                         <img src="/site/assets/images/logo/Conectacode_Branco.png" alt="logo"
                             class="w-full header-logo" />
                     </a>
@@ -274,4 +274,59 @@
             </div>
         </div>
     </div>
+    
+<script>
+
+    $(document).ready(function () {
+
+        $('body').scrollspy({
+            target: '#navbar',
+            offset: 80
+        });
+
+        // Page scrolling feature
+        $('a.page-scroll').bind('click', function(event) {
+            var link = $(this);
+            $('html, body').stop().animate({
+                scrollTop: $(link.attr('href')).offset().top - 50
+            }, 500);
+            event.preventDefault();
+            $("#navbar").collapse('hide');
+        });
+    });
+
+    var cbpAnimatedHeader = (function() {
+        var docElem = document.documentElement,
+                header = document.querySelector( '.navbar-default' ),
+                didScroll = false,
+                changeHeaderOn = 200;
+        function init() {
+            window.addEventListener( 'scroll', function( event ) {
+                if( !didScroll ) {
+                    didScroll = true;
+                    setTimeout( scrollPage, 250 );
+                }
+            }, false );
+        }
+        function scrollPage() {
+            var sy = scrollY();
+            if ( sy >= changeHeaderOn ) {
+                $(header).addClass('navbar-scroll')
+            }
+            else {
+                $(header).removeClass('navbar-scroll')
+            }
+            didScroll = false;
+        }
+        function scrollY() {
+            return window.pageYOffset || docElem.scrollTop;
+        }
+        init();
+
+    })();
+
+    // Activate WOW.js plugin for animation on scrol
+    new WOW().init();
+
+</script>
     <!-- ====== Navbar Section End -->

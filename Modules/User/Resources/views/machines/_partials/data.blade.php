@@ -72,7 +72,7 @@
             @endif
 
             @if ($customer->pool == "antpool.com")
-                @if ($customers[0]->userIdPool && $customers[0]->apiKey && $customers[0]->secretKey)
+                @if ($customer->userIdPool && $customer->apiKey && $customer->secretKey)
                     <div id="legend4">
                         <ul class="legend3 d-flex flex-wrap align-items-center mb-30">
                             <li>

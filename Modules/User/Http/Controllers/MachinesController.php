@@ -79,14 +79,35 @@ class MachinesController extends Controller
         $idRefCurrentUser = Auth::user()->idReference;
         $customers = DB::table('customers')
             ->where('customers.idReference', '=', $idRefCurrentUser)
-            ->select('customers.id', 'customers.name', 'customers.phone', 'customers.total_machines', 'customers.address', 'customers.totalWorkerNum', 'customers.activeWorkerNum', 'customers.inactiveWorkerNum', 'customers.invalidWorkerNum')
+            ->select(
+                'customers.id',
+                'customers.name',
+                'customers.pool',
+                'customers.apiKey',
+                'customers.secretKey',
+                'customers.userIdPool',
+                'customers.access_key',
+                'customers.puid',
+                'customers.total_machines',
+
+                'customers.totalWorkerNum',
+                'customers.activeWorkerNum',
+                'customers.inactiveWorkerNum',
+                'customers.invalidWorkerNum',
+
+                'customers.workers_total',
+                'customers.workers_active',
+                'customers.workers_inactive',
+                'customers.workers_dead',
+                'customers.updated_at'
+            )
             ->get();
 
         $machines = DB::table('machines')
             ->leftjoin('users', 'machines.user_id', '=', 'users.id')
             ->leftjoin('customers', 'machines.customer_id', '=', 'customers.id')
             ->select('users.name AS user_name', 'machines.id', 'machines.name', 'machines.codeQR', 'machines.customer_id', 'machines.status', 'machines.observation')
-            ->orderBy('machines.created_at', 'DESC')
+            ->orderBy('machines.status', 'DESC')
             ->get();
 
         return view('user::machines.index_grid', compact('machines', 'customers', 'filter'));
@@ -99,60 +120,58 @@ class MachinesController extends Controller
 
         if ($search == "") {
             $customers = DB::table('customers')
-            ->where('customers.idReference', '=', $idRefCurrentUser)
-            ->select(
-                'customers.id',
-                'customers.name',
-                'customers.pool',
-                'customers.apiKey',
-                'customers.secretKey',
-                'customers.userIdPool',
-                'customers.access_key',
-                'customers.puid',
-                'customers.total_machines',
+                ->where('customers.idReference', '=', $idRefCurrentUser)
+                ->select(
+                    'customers.id',
+                    'customers.name',
+                    'customers.pool',
+                    'customers.apiKey',
+                    'customers.secretKey',
+                    'customers.userIdPool',
+                    'customers.access_key',
+                    'customers.puid',
+                    'customers.total_machines',
 
-                'customers.totalWorkerNum',
-                'customers.activeWorkerNum',
-                'customers.inactiveWorkerNum',
-                'customers.invalidWorkerNum',
+                    'customers.totalWorkerNum',
+                    'customers.activeWorkerNum',
+                    'customers.inactiveWorkerNum',
+                    'customers.invalidWorkerNum',
 
-                'customers.workers_total',
-                'customers.workers_active',
-                'customers.workers_inactive',
-                'customers.workers_dead',
-                'customers.updated_at'
-            )
-            ->paginate(1);
-        }else{
+                    'customers.workers_total',
+                    'customers.workers_active',
+                    'customers.workers_inactive',
+                    'customers.workers_dead',
+                    'customers.updated_at'
+                )
+                ->paginate(1);
+        } else {
             $customers = DB::table('customers')
-            ->where('customers.idReference', '=', $idRefCurrentUser)
-            ->where('customers.name','LIKE', "%{$search}%")
-            ->select(
-                'customers.id',
-                'customers.name',
-                'customers.pool',
-                'customers.apiKey',
-                'customers.secretKey',
-                'customers.userIdPool',
-                'customers.access_key',
-                'customers.puid',
-                'customers.total_machines',
+                ->where('customers.idReference', '=', $idRefCurrentUser)
+                ->where('customers.name', 'LIKE', "%{$search}%")
+                ->select(
+                    'customers.id',
+                    'customers.name',
+                    'customers.pool',
+                    'customers.apiKey',
+                    'customers.secretKey',
+                    'customers.userIdPool',
+                    'customers.access_key',
+                    'customers.puid',
+                    'customers.total_machines',
 
-                'customers.totalWorkerNum',
-                'customers.activeWorkerNum',
-                'customers.inactiveWorkerNum',
-                'customers.invalidWorkerNum',
+                    'customers.totalWorkerNum',
+                    'customers.activeWorkerNum',
+                    'customers.inactiveWorkerNum',
+                    'customers.invalidWorkerNum',
 
-                'customers.workers_total',
-                'customers.workers_active',
-                'customers.workers_inactive',
-                'customers.workers_dead',
-                'customers.updated_at'
-            )
-            ->paginate(1);
+                    'customers.workers_total',
+                    'customers.workers_active',
+                    'customers.workers_inactive',
+                    'customers.workers_dead',
+                    'customers.updated_at'
+                )
+                ->paginate(1);
         }
-        
-        
 
         /** if the pagination does not have more users */
         if ($customers->count() == 0) {
@@ -223,7 +242,7 @@ class MachinesController extends Controller
             return response()->json(['html' => $view]);
         }
 
-        return view('user::machines.index_grid_api',compact('search'));
+        return view('user::machines.index_grid_api', compact('search'));
     }
 
     public function search_filter_list(Request $request)
@@ -346,7 +365,28 @@ class MachinesController extends Controller
         $idRefCurrentUser = Auth::user()->idReference;
 
         $customers = DB::table('customers')
-            ->select('customers.id', 'customers.name', 'customers.access_key', 'customers.puid')
+            ->select(
+                'customers.id',
+                'customers.name',
+                'customers.pool',
+                'customers.apiKey',
+                'customers.secretKey',
+                'customers.userIdPool',
+                'customers.access_key',
+                'customers.puid',
+                'customers.total_machines',
+
+                'customers.totalWorkerNum',
+                'customers.activeWorkerNum',
+                'customers.inactiveWorkerNum',
+                'customers.invalidWorkerNum',
+
+                'customers.workers_total',
+                'customers.workers_active',
+                'customers.workers_inactive',
+                'customers.workers_dead',
+                'customers.updated_at'
+            )
             ->where('customers.idReference', '=', $idRefCurrentUser)
             ->get();
 
@@ -363,7 +403,7 @@ class MachinesController extends Controller
                 ->select('users.name AS user_name', 'machines.id', 'machines.name', 'machines.codeQR', 'machines.customer_id', 'machines.status', 'machines.observation', 'customers.name AS customer_name')
                 ->where('customers.name', 'LIKE', "%{$search}%")
                 ->orWhere('machines.name', 'LIKE', "%{$search}%")
-                ->orderBy('machines.created_at', 'DESC')
+                ->orderBy('machines.status', 'DESC')
                 ->get();
         }
 
@@ -376,7 +416,7 @@ class MachinesController extends Controller
         $idRefCurrentUser = Auth::user()->idReference;
         $customers = DB::table('customers')
             ->where('customers.idReference', '=', $idRefCurrentUser)
-            ->where('customers.name','LIKE', "%{$search}%")
+            ->where('customers.name', 'LIKE', "%{$search}%")
             ->select(
                 'customers.id',
                 'customers.name',
@@ -477,10 +517,31 @@ class MachinesController extends Controller
     {
         $filter = $request->input('filter');
         $idRefCurrentUser = Auth::user()->idReference;
-        
+
         $customers = DB::table('customers')
             ->where('customers.idReference', '=', $idRefCurrentUser)
-            ->select('customers.id', 'customers.name', 'customers.phone', 'customers.total_machines', 'customers.address')
+            ->select(
+                'customers.id',
+                'customers.name',
+                'customers.pool',
+                'customers.apiKey',
+                'customers.secretKey',
+                'customers.userIdPool',
+                'customers.access_key',
+                'customers.puid',
+                'customers.total_machines',
+
+                'customers.totalWorkerNum',
+                'customers.activeWorkerNum',
+                'customers.inactiveWorkerNum',
+                'customers.invalidWorkerNum',
+
+                'customers.workers_total',
+                'customers.workers_active',
+                'customers.workers_inactive',
+                'customers.workers_dead',
+                'customers.updated_at'
+            )
             ->get();
 
         if ($filter == "") {
@@ -649,7 +710,7 @@ class MachinesController extends Controller
             ->select('customers.id', 'customers.name')
             ->get();
 
-        $status = ['Active', 'Apagado', 'Mantenimiento', 'Requiere Atención', 'Error', 'Inactive'];
+        $status = ['Active', 'Inactive', 'Apagado', 'Mantenimiento', 'Requiere Atención', 'Error'];
         $mining_power_options = ['Megahash', 'Gigahash', 'Terahash', 'Pentahash'];
         $machine = null;
 
@@ -678,12 +739,12 @@ class MachinesController extends Controller
             'codeQR' => 'required|max:8|min:8|unique:machines,codeQR',
             'observation' => 'nullable|max:200|min:5',
             'mining_power' => 'nullable|max:15|min:5',
-            'total_power' => 'nullable|max:20|between:0,9999|numeric|min:0',
+            'total_power' => 'nullable|max:100|between:0,9999|numeric|min:0',
         ]);
 
         $input = $request->all();
         $input['user_id'] = $request->user()->id;
-        //$input['name'] = strtoupper($request->input('name'));
+
         Machines::create($input);
 
         return redirect()->route('machines.grid_view')->with('message', 'Machine created successfully.');
@@ -697,7 +758,7 @@ class MachinesController extends Controller
             ->select('customers.id', 'customers.name')
             ->get();
 
-        $status = ['Active', 'Apagado', 'Mantenimiento', 'Requiere Atención', 'Error', 'Inactive'];
+        $status = ['Active', 'Inactive', 'Apagado', 'Mantenimiento', 'Requiere Atención', 'Error'];
         $mining_power_options = ['Megahash', 'Gigahash', 'Terahash', 'Pentahash'];
 
         $machine = DB::table('machines')
@@ -730,7 +791,7 @@ class MachinesController extends Controller
             'codeQR' => 'required|max:8|min:8|unique:machines,codeQR,' . $id,
             'observation' => 'nullable|max:200|min:5',
             'mining_power' => 'nullable|max:15|min:5',
-            'total_power' => 'nullable|max:20|between:0,9999|numeric|min:0',
+            'total_power' => 'nullable|max:100|between:0,9999|numeric|min:0',
         ]);
 
         //find machine and create history machine actual status

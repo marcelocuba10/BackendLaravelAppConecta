@@ -252,7 +252,7 @@
                                         </div>
                                     </div>
                                 </li>
-                                <li>
+                                {{-- <li>
                                     <div class="d-flex">
                                         <div class="text">
                                             <p class="text-sm text-custom-enabled">
@@ -269,7 +269,7 @@
                                             </p>
                                         </div>
                                     </div>
-                                </li>
+                                </li> --}}
                                 {{-- <li>
                                     <div class="d-flex">
                                         <div class="text">
@@ -298,32 +298,83 @@
                     @endif
                   @endif
 
-                  <div id="grid">
-                    @foreach($machines as $machine)
-                      @if ($machine->customer_id == $customer->id)
-                        <a href="/user/machines/{{$machine->id}}/show">
-                          <div id="item" data-toggle="tooltip" data-placement="bottom" title="{{ $machine->name }}" 
-                            class="
-                            @if(strtolower($machine->status) == 'active') bg-card-enabled 
-                            @elseIf($machine->status == 'Apagado') bg-card-disabled
-                            @elseIf($machine->status == 'Requiere Atención') bg-card-attention
-                            @elseIf($machine->status == 'Mantenimiento') bg-card-maintenance
-                            @elseIf($machine->status == 'Error') bg-card-error
-                            @elseIf(strtolower($machine->status) == 'inactive') bg-card-offline 
-                            @endif">
-                            <p class="text-sm text-white" style="margin-top: 10px;">{{ Str::limit($machine->name, 3) }}</p>
-                          </div>
-                        </a> 
-                      @endif
-                    @endforeach
-                  </div>
+                  @if ($customer->pool == "antpool.com")
+                    <div id="grid">
+                      @foreach($machines as $machine)
+                        {{-- @php
+                          $machines_api = DB::table('machines_api')
+                            ->select('machines_api.id', 'machines_api.last10m', 'machines_api.worker')
+                            ->where('machines_api.customer_id', '=', $customer->id)
+                            ->orderBy('created_at', 'DESC')
+                            ->take($customer->total_machines)
+                            ->get();
+                        @endphp --}}
+                        @foreach ($machines_api as $machines_api_item)
+                            @if (strtolower($machines_api_item->worker)  === strtolower($machine->name)  )
+                              @php
+                                $machineStatus = '';
+                                $percent = $machine->total_power * 0.10;
+                                $percentFifty = $machine->total_power * 0.50;
+                                $total_power_percent = $machine->total_power - $percent;
+                                $total_power_percent_fifty = $machine->total_power - $percentFifty;
+                              @endphp
+                              @if ($machines_api_item->last10m >= $machine->total_power)
+                                @php
+                                  $machineStatus = "bg-card-enabled";        
+                                @endphp    
+                        
+                              @elseIf ($machines_api_item->last10m < $total_power_percent && $machines_api_item->last10m > 0)
+                                @php
+                                  $machineStatus = "bg-card-attention";        
+                                @endphp  
+                              @elseIf ($machines_api_item->last10m < $total_power_percent_fifty && $machines_api_item->last10m > 0)
+                                @php
+                                  $machineStatus = "bg-card-error";        
+                                @endphp    
+                              @else
+                                @php
+                                  $machineStatus = "bg-card-disabled";   
+                                @endphp  
+                              @endif 
+                              <a href="/user/machines/{{$machine->id}}/show">
+                                <div id="item" data-toggle="tooltip" data-placement="bottom" title="{{ $machine->name }}" class="{{ $machineStatus }}">
+                                  <p class="text-sm  text-white" style="margin-top: 10px;">{{ Str::limit($machine->name, 3) }}</p>
+                                </div>
+                              </a> 
+                            @endif
+                        @endforeach
+                      @endforeach
+                    </div> 
+                  @endIf
+
+                  @if ($customer->pool == "btc.com")
+                    <div id="grid">
+                      @foreach($machines as $machine)
+                        @if ($machine->customer_id == $customer->id)
+                          <a href="/user/machines/{{$machine->id}}/show">
+                            <div id="item" data-toggle="tooltip" data-placement="bottom" title="{{ $machine->name }}" 
+                              class="
+                              @if(strtolower($machine->status) == 'active') bg-card-enabled 
+                              @elseIf($machine->status == 'Apagado') bg-card-disabled
+                              @elseIf($machine->status == 'Requiere Atención') bg-card-attention
+                              @elseIf($machine->status == 'Mantenimiento') bg-card-maintenance
+                              @elseIf($machine->status == 'Error') bg-card-error
+                              @elseIf(strtolower($machine->status) == 'inactive') bg-card-offline 
+                              @endif">
+                              <p class="text-sm text-white" style="margin-top: 10px;">{{ Str::limit($machine->name, 3) }}</p>
+                            </div>
+                          </a> 
+                        @endif
+                      @endforeach
+                    </div>
+                  @endIf
                 </div>
               </div>
             @endforeach
           @else
             <div class="alert-box primary-alert" style="width: max-content;">
               <div class="alert">
-                  <p class="text-medium">Sin datos encontrados con el nombre <b>{{ $search }}</b></p>
+                  <p class="text-medium">Sin resultados..</p>
               </div>
             </div>
           @endif

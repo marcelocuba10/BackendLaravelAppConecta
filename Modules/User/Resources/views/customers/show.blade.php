@@ -373,12 +373,12 @@
                         <a href="/user/machines/{{$machine->id}}/show">
                           <div id="item" data-toggle="tooltip" data-placement="bottom" title="{{ $machine->name }}" 
                             class="
-                            @if($machine->status == 'ACTIVE') bg-card-enabled 
+                            @if(strtolower($machine->status) == 'active') bg-card-enabled 
                             @elseIf($machine->status == 'Apagado') bg-card-disabled
                             @elseIf($machine->status == 'Requiere Atención') bg-card-attention
                             @elseIf($machine->status == 'Mantenimiento') bg-card-maintenance
                             @elseIf($machine->status == 'Error') bg-card-error
-                            @elseIf($machine->status == 'INACTIVE') bg-card-offline 
+                            @elseIf(strtolower($machine->status) == 'inactive') bg-card-offline 
                             @endif">
                             <p class="text-sm  text-white" style="margin-top: 10px;">{{ Str::limit($machine->name, 3) }}</p>
                           </div>
@@ -397,7 +397,7 @@
                                 $percent = $machine->total_power * 0.10;
                                 $total_power_percent = $machine->total_power - $percent;
                               @endphp
-                              @if ($machines_api_item->last10m > 0)
+                              @if ($machines_api_item->last10m >= $machine->total_power)
                                 @php
                                   $machineStatus = "bg-card-enabled";        
                                 @endphp    

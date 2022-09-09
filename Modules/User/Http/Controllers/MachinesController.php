@@ -82,23 +82,39 @@ class MachinesController extends Controller
             ->select(
                 'customers.id',
                 'customers.name',
+                'customers.last_name',
+                'customers.phone',
+                'customers.address',
+                'customers.email',
+                'customers.doc_id',
                 'customers.pool',
+                'customers.total_machines',
+                'customers.puid',
+                'customers.access_key',
+                'customers.userIdPool',
                 'customers.apiKey',
                 'customers.secretKey',
-                'customers.userIdPool',
-                'customers.access_key',
-                'customers.puid',
-                'customers.total_machines',
+                'customers.shares_1m',
+                'customers.shares_5m',
+                'customers.shares_15m',
+                'customers.shares_1h',
+                'customers.shares_1d',
+                'customers.shares_unit',
 
-                'customers.totalWorkerNum',
-                'customers.activeWorkerNum',
-                'customers.inactiveWorkerNum',
-                'customers.invalidWorkerNum',
-
-                'customers.workers_total',
                 'customers.workers_active',
                 'customers.workers_inactive',
                 'customers.workers_dead',
+                'customers.workers_total',
+                'customers.hsLast10m',
+                'customers.hsLast1h',
+                'customers.hsLast1d',
+                'customers.totalAmount',
+                'customers.unpaidAmount',
+                'customers.yesterdayAmount',
+                'customers.inactiveWorkerNum',
+                'customers.activeWorkerNum',
+                'customers.invalidWorkerNum',
+                'customers.totalWorkerNum',
                 'customers.updated_at'
             )
             ->get();
@@ -106,11 +122,21 @@ class MachinesController extends Controller
         $machines = DB::table('machines')
             ->leftjoin('users', 'machines.user_id', '=', 'users.id')
             ->leftjoin('customers', 'machines.customer_id', '=', 'customers.id')
-            ->select('users.name AS user_name', 'machines.id', 'machines.name', 'machines.codeQR', 'machines.customer_id', 'machines.status', 'machines.observation')
+            ->select('users.name AS user_name', 'machines.total_power', 'machines.id', 'machines.name', 'machines.codeQR', 'machines.customer_id', 'machines.status', 'machines.observation')
             ->orderBy('machines.status', 'DESC')
             ->get();
 
-        return view('user::machines.index_grid', compact('machines', 'customers', 'filter'));
+        $machines_api = DB::table('machines_api')
+            ->leftjoin('customers', 'machines_api.customer_id', '=', 'customers.id')
+            ->select('machines_api.id', 'machines_api.last10m', 'machines_api.worker')
+            // ->where('machines_api.customer_id', '=', 'customers.id')
+            ->orderBy('machines_api.created_at', 'DESC')
+            ->take(350)
+            ->get();
+
+        //dd($machines_api);
+
+        return view('user::machines.index_grid', compact('machines', 'customers', 'filter', 'machines_api'));
     }
 
     public function grid_view_api(Request $request)
@@ -394,20 +420,28 @@ class MachinesController extends Controller
             $machines = DB::table('machines')
                 ->leftjoin('users', 'machines.user_id', '=', 'users.id')
                 ->leftjoin('customers', 'machines.customer_id', '=', 'customers.id')
-                ->select('users.name AS user_name', 'machines.id', 'machines.name', 'machines.codeQR', 'machines.customer_id', 'machines.status', 'machines.observation', 'customers.name AS customer_name')
+                ->select('users.name AS user_name', 'machines.id', 'machines.name','machines.total_power' ,'machines.codeQR', 'machines.customer_id', 'machines.status', 'machines.observation', 'customers.name AS customer_name')
                 ->get();
         } else {
             $machines = DB::table('machines')
                 ->leftjoin('users', 'machines.user_id', '=', 'users.id')
                 ->leftjoin('customers', 'machines.customer_id', '=', 'customers.id')
-                ->select('users.name AS user_name', 'machines.id', 'machines.name', 'machines.codeQR', 'machines.customer_id', 'machines.status', 'machines.observation', 'customers.name AS customer_name')
+                ->select('users.name AS user_name', 'machines.total_power', 'machines.id', 'machines.name', 'machines.codeQR', 'machines.customer_id', 'machines.status', 'machines.observation')
                 ->where('customers.name', 'LIKE', "%{$search}%")
                 ->orWhere('machines.name', 'LIKE', "%{$search}%")
                 ->orderBy('machines.status', 'DESC')
                 ->get();
         }
 
-        return view('user::machines.index_grid', compact('search', 'customers', 'machines', 'filter'));
+        $machines_api = DB::table('machines_api')
+            ->leftjoin('customers', 'machines_api.customer_id', '=', 'customers.id')
+            ->select('machines_api.id', 'machines_api.last10m', 'machines_api.worker')
+            // ->where('machines_api.customer_id', '=', 'customers.id')
+            ->orderBy('machines_api.created_at', 'DESC')
+            ->take(350)
+            ->get();
+
+        return view('user::machines.index_grid', compact('search', 'customers', 'machines', 'filter', 'machines_api'));
     }
 
     public function search_gridview_api(Request $request)
@@ -517,6 +551,7 @@ class MachinesController extends Controller
     {
         $filter = $request->input('filter');
         $idRefCurrentUser = Auth::user()->idReference;
+        $search = null;
 
         $customers = DB::table('customers')
             ->where('customers.idReference', '=', $idRefCurrentUser)
@@ -548,20 +583,28 @@ class MachinesController extends Controller
             $machines = DB::table('machines')
                 ->leftjoin('users', 'machines.user_id', '=', 'users.id')
                 ->leftjoin('customers', 'machines.customer_id', '=', 'customers.id')
-                ->select('users.name AS user_name', 'machines.id', 'machines.name', 'machines.codeQR', 'machines.customer_id', 'machines.status', 'machines.observation', 'customers.name AS customer_name')
+                ->select('users.name AS user_name', 'machines.id', 'machines.total_power','machines.name', 'machines.codeQR', 'machines.customer_id', 'machines.status', 'machines.observation', 'customers.name AS customer_name')
                 ->where('customers.idReference', '=', $idRefCurrentUser)
                 ->get();
         } else {
             $machines = DB::table('machines')
                 ->leftjoin('users', 'machines.user_id', '=', 'users.id')
                 ->leftjoin('customers', 'machines.customer_id', '=', 'customers.id')
-                ->select('users.name AS user_name', 'machines.id', 'machines.name', 'machines.codeQR', 'machines.customer_id', 'machines.status', 'machines.observation', 'customers.name AS customer_name')
+                ->select('users.name AS user_name', 'machines.id', 'machines.name','machines.total_power' ,'machines.codeQR', 'machines.customer_id', 'machines.status', 'machines.observation', 'customers.name AS customer_name')
                 ->where('machines.status', 'LIKE', "{$filter}")
                 ->where('customers.idReference', '=', $idRefCurrentUser)
                 ->get();
+
+            $machines_api = DB::table('machines_api')
+                ->leftjoin('customers', 'machines_api.customer_id', '=', 'customers.id')
+                ->select('machines_api.id', 'machines_api.last10m', 'machines_api.worker')
+                // ->where('machines_api.customer_id', '=', 'customers.id')
+                ->orderBy('machines_api.created_at', 'DESC')
+                ->take(350)
+                ->get();
         }
 
-        return view('user::machines.index_grid', compact('filter', 'customers', 'machines'));
+        return view('user::machines.index_grid', compact('filter', 'customers', 'machines','machines_api'));
     }
 
     public function filter_gridview_api(Request $request)

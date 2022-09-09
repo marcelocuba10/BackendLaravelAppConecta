@@ -34,20 +34,6 @@ class CustomersController extends Controller
         return view('user::customers.index', compact('customers'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
-    public function grid_view()
-    {
-        $filter = null;
-        $customers = DB::table('customers')->get();
-        $machines = DB::table('machines')
-            ->leftjoin('users', 'machines.user_id', '=', 'users.id')
-            ->leftjoin('customers', 'machines.customer_id', '=', 'customers.id')
-            ->select('users.name AS user_name', 'machines.id', 'machines.name', 'machines.codeQR', 'machines.customer_id', 'machines.status', 'machines.observation', 'customers.name AS customer_name')
-            ->orderBy('machines.created_at', 'DESC')
-            ->get();
-
-        return view('user::customers.show', compact('machines', 'customers', 'filter'));
-    }
-
     public function create()
     {
         $customer = null;

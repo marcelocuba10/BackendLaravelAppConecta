@@ -29,16 +29,6 @@
               <i class="lni lni-users"></i>
             </div>
             <div class="content">
-              @php
-                use Modules\User\Entities\Customers;
-                $idRefCurrentUser = Auth::user()->idReference;
-                $customers = DB::table('customers')
-                    ->where('customers.idReference', '=', $idRefCurrentUser)
-                    ->select('customers.id', 'customers.name', 'customers.pool','customers.phone', 'customers.total_machines', 'customers.address')
-                    ->orderBy('customers.created_at', 'DESC')
-                    ->get();
-                $cant_customers = count($customers); 
-              @endphp
               <h6 class="mb-10">Total Clientes</h6>
               <h3 class="text-bold mb-10">{{ $cant_customers }}</h3>
             </div>
@@ -53,17 +43,6 @@
             </div>
             <div class="content">
               <h6 class="mb-10">Total Usuarios</h6>
-              @php
-                use Modules\User\Entities\User;
-                $idRefCurrentUser = Auth::user()->idReference;
-                $users = DB::table('users')
-                  ->where('idReference', '=', $idRefCurrentUser)
-                  ->select('id', 'name', 'idReference', 'idMaster', 'email')
-                  ->orderBy('created_at', 'DESC')
-                  ->get();
-
-                $cant_users = count($users); 
-              @endphp
               <h3 class="text-bold mb-10">{{$cant_users}}</h3>
             </div>
           </div>
@@ -76,10 +55,6 @@
               <i class="lni lni-graph"></i>
             </div>
             <div class="content">
-              @php
-                use Modules\User\Entities\Machines;
-                $cant_machines = Machines::count();
-              @endphp
               <h6 class="mb-10">Total Máquinas Registradas</h6>
               <h3 class="text-bold mb-10">{{ $cant_machines }}</h3>
             </div>
@@ -111,132 +86,39 @@
           <div class="card-style mb-30">
             <div class="title d-flex flex-wrap align-items-center justify-content-between mb-10">
               <div class="left">
-                <h6 class="text-medium mb-2">Sell Order</h6>
+                <h6 class="text-medium mb-2">Clientes Registrados</h6>
               </div>
               <div class="right mb-2">
-                <div class="more-btn-wrapper mb-10">
-                  <button class="more-btn dropdown-toggle" id="moreAction" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="lni lni-more-alt"></i>
-                  </button>
-                  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="moreAction">
-                    <li class="dropdown-item">
-                      <a href="#0" class="text-gray">Add All</a>
-                    </li>
-                    <li class="dropdown-item">
-                      <a href="#0" class="text-gray">Remove All</a>
-                    </li>
-                  </ul>
-                </div>
               </div>
             </div>
             <!-- End Title -->
-
-            <div class="select-style-1 mb-2">
-              <div class="select-position select-sm">
-                <select class="radius-30">
-                  <option value="">Bitcion</option>
-                  <option value="">Ethereum</option>
-                  <option value="">Litecion</option>
-                </select>
-              </div>
-            </div>
-            <!-- end select -->
 
             <div class="table-responsive">
               <table class="table sell-order-table">
                 <thead>
                   <tr>
                     <th>
-                      <h6 class="text-sm fw-500">Price</h6>
+                      <h6 class="text-sm fw-500">Nombre</h6>
                     </th>
                     <th>
-                      <h6 class="text-sm fw-500">Amount</h6>
+                      <h6 class="text-sm fw-500">Pool</h6>
                     </th>
                     <th class="text-end">
-                      <h6 class="text-sm fw-500">Total</h6>
+                      <h6 class="text-sm fw-500">Total Máquinas</h6>
                     </th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>
-                      <p class="text-sm fw-500 text-gray">65.8</p>
-                    </td>
-                    <td>
-                      <p class="text-sm fw-500 text-gray">17.10</p>
-                    </td>
-                    <td class="text-end">
-                      <p class="text-sm fw-500 text-gray">$251,77</p>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <p class="text-sm fw-500 text-gray">65.8</p>
-                    </td>
-                    <td>
-                      <p class="text-sm fw-500 text-gray">17.10</p>
-                    </td>
-                    <td class="text-end">
-                      <p class="text-sm fw-500 text-gray">$251,77</p>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <p class="text-sm fw-500 text-gray">65.8</p>
-                    </td>
-                    <td>
-                      <p class="text-sm fw-500 text-gray">17.10</p>
-                    </td>
-                    <td class="text-end">
-                      <p class="text-sm fw-500 text-gray">$251,77</p>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <p class="text-sm fw-500 text-gray">65.8</p>
-                    </td>
-                    <td>
-                      <p class="text-sm fw-500 text-gray">17.10</p>
-                    </td>
-                    <td class="text-end">
-                      <p class="text-sm fw-500 text-gray">$251,77</p>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <p class="text-sm fw-500 text-gray">65.8</p>
-                    </td>
-                    <td>
-                      <p class="text-sm fw-500 text-gray">17.10</p>
-                    </td>
-                    <td class="text-end">
-                      <p class="text-sm fw-500 text-gray">$251,77</p>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <p class="text-sm fw-500 text-gray">65.8</p>
-                    </td>
-                    <td>
-                      <p class="text-sm fw-500 text-gray">17.10</p>
-                    </td>
-                    <td class="text-end">
-                      <p class="text-sm fw-500 text-gray">$251,77</p>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <p class="text-sm fw-500 text-gray">65.8</p>
-                    </td>
-                    <td>
-                      <p class="text-sm fw-500 text-gray">17.10</p>
-                    </td>
-                    <td class="text-end">
-                      <p class="text-sm fw-500 text-gray">$251,77</p>
-                    </td>
-                  </tr>
+                  @foreach ($customers as $customer)
+                    <tr>
+                        <td><p class="text-sm fw-500 text-gray"><a href="/user/customers/show/{{$customer->id}}">{{ $customer->name ?? old('name') }} {{ $customer->last_name ?? old('last_name') }}</a></p></td>
+                        <td><p class="text-sm fw-500 text-gray">{{ $customer->pool }}</p></td>
+                        <td><p class="text-sm fw-500 text-gray text-end">{{ $customer->total_machines }}</p></td>
+                    </tr>
+                  @endforeach
                 </tbody>
               </table>
+              <a href="/user/customers"><p class="text-sm mb-20">Ver más..</p></a>
             </div>
           </div>
         </div>
@@ -245,132 +127,35 @@
           <div class="card-style mb-30">
             <div class="title d-flex flex-wrap align-items-center justify-content-between mb-10">
               <div class="left">
-                <h6 class="text-medium mb-2">Buy Order</h6>
+                <h6 class="text-medium mb-2">Usuarios Registrados</h6>
               </div>
               <div class="right mb-2">
-                <div class="more-btn-wrapper mb-10">
-                  <button class="more-btn dropdown-toggle" id="moreAction" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="lni lni-more-alt"></i>
-                  </button>
-                  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="moreAction">
-                    <li class="dropdown-item">
-                      <a href="#0" class="text-gray">Add All</a>
-                    </li>
-                    <li class="dropdown-item">
-                      <a href="#0" class="text-gray">Remove All</a>
-                    </li>
-                  </ul>
-                </div>
               </div>
             </div>
             <!-- End Title -->
-
-            <div class="select-style-1 mb-2">
-              <div class="select-position select-sm">
-                <select class="radius-30">
-                  <option value="">Bitcion</option>
-                  <option value="">Ethereum</option>
-                  <option value="">Litecion</option>
-                </select>
-              </div>
-            </div>
-            <!-- end select -->
 
             <div class="table-responsive">
               <table class="table sell-order-table">
                 <thead>
                   <tr>
                     <th>
-                      <h6 class="text-sm fw-500">Price</h6>
+                      <h6 class="text-sm fw-500">Nombre</h6>
                     </th>
                     <th>
-                      <h6 class="text-sm fw-500">Amount</h6>
-                    </th>
-                    <th class="text-end">
-                      <h6 class="text-sm fw-500">Total</h6>
+                      <h6 class="text-sm fw-500">Email</h6>
                     </th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>
-                      <p class="text-sm fw-500 text-gray">65.8</p>
-                    </td>
-                    <td>
-                      <p class="text-sm fw-500 text-gray">17.10</p>
-                    </td>
-                    <td class="text-end">
-                      <p class="text-sm fw-500 text-gray">$251,77</p>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <p class="text-sm fw-500 text-gray">65.8</p>
-                    </td>
-                    <td>
-                      <p class="text-sm fw-500 text-gray">17.10</p>
-                    </td>
-                    <td class="text-end">
-                      <p class="text-sm fw-500 text-gray">$251,77</p>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <p class="text-sm fw-500 text-gray">65.8</p>
-                    </td>
-                    <td>
-                      <p class="text-sm fw-500 text-gray">17.10</p>
-                    </td>
-                    <td class="text-end">
-                      <p class="text-sm fw-500 text-gray">$251,77</p>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <p class="text-sm fw-500 text-gray">65.8</p>
-                    </td>
-                    <td>
-                      <p class="text-sm fw-500 text-gray">17.10</p>
-                    </td>
-                    <td class="text-end">
-                      <p class="text-sm fw-500 text-gray">$251,77</p>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <p class="text-sm fw-500 text-gray">65.8</p>
-                    </td>
-                    <td>
-                      <p class="text-sm fw-500 text-gray">17.10</p>
-                    </td>
-                    <td class="text-end">
-                      <p class="text-sm fw-500 text-gray">$251,77</p>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <p class="text-sm fw-500 text-gray">65.8</p>
-                    </td>
-                    <td>
-                      <p class="text-sm fw-500 text-gray">17.10</p>
-                    </td>
-                    <td class="text-end">
-                      <p class="text-sm fw-500 text-gray">$251,77</p>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <p class="text-sm fw-500 text-gray">65.8</p>
-                    </td>
-                    <td>
-                      <p class="text-sm fw-500 text-gray">17.10</p>
-                    </td>
-                    <td class="text-end">
-                      <p class="text-sm fw-500 text-gray">$251,77</p>
-                    </td>
-                  </tr>
+                  @foreach ($users as $user)
+                    <tr>
+                        <td><p class="text-sm fw-500 text-gray"><a href="/user/users/{{$user->id}}/show">{{ $user->name ?? old('name') }} {{ $user->last_name ?? old('last_name') }}</a></p></td>
+                        <td><p class="text-sm fw-500 text-gray">{{ $user->email }}</p></td>
+                    </tr>
+                  @endforeach
                 </tbody>
               </table>
+              <a href="/user/users"><p class="text-sm mb-20">Ver más..</p></a>
             </div>
           </div>
         </div>

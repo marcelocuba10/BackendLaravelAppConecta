@@ -7,10 +7,6 @@
                   <span class="text-regular text-sm">Actualizado:&nbsp;{{ $customer->updated_at }}</span>
                 </div>
             </div>
-            <div class="title d-flex justify-content-between">
-                <div class="left">
-                </div>
-            </div>
 
             @if ($customer->pool == "btc.com")
                 @if ($customer->access_key && $customer->puid)
@@ -84,7 +80,7 @@
                                     </div>
                                 </div>
                             </li>
-                            <li>
+                            {{-- <li>
                                 <div class="d-flex">
                                     <div class="text">
                                         <p class="text-sm text-custom-enabled">
@@ -110,7 +106,7 @@
                                         </p>
                                     </div>
                                 </div>
-                            </li>
+                            </li> --}}
                         </ul>
                     </div>
                 @else
@@ -130,33 +126,9 @@
                 @endif
             @endif
 
-            <div id="grid">
-                @if ($machines == null || $machines == "")
-                    <div class="alert-box primary-alert" style="width: max-content;">
-                        <div class="alert">
-                            <p class="text-medium">Sin información de máquinas </p>
-                        </div>
-                    </div>
-                @else
-                    @if ($customer->pool == "btc.com")
-                        @foreach($machines as $machine)
-                            <a href="/user/machines/{{ $machine->id }}/show_api">
-                                <div id="item" data-toggle="tooltip" data-placement="bottom" title="{{ $machine->worker_name }}" 
-                                    class="
-                                    @if($machine->status == 'ACTIVE') bg-card-enabled 
-                                    @elseIf($machine->status == 'Apagado') bg-card-disabled
-                                    @elseIf($machine->status == 'Requiere Atención') bg-card-attention
-                                    @elseIf($machine->status == 'Mantenimiento') bg-card-maintenance
-                                    @elseIf($machine->status == 'Error') bg-card-error
-                                    @elseIf($machine->status == 'INACTIVE') bg-card-offline 
-                                    @endif">
-                                    <p class="text-sm  text-white" style="margin-top: 10px;">{{ Str::limit($machine->worker_name, 3) }}</p>
-                                </div>
-                            </a> 
-                        @endforeach
-                    @endif    
-                    
-                    @if ($customer->pool == "antpool.com")
+            @if($machines != null || $machines != "")
+                @if ($customer->pool == "antpool.com")
+                    <div id="grid">
                         @foreach($machines as $machine)
                             @php
                                 $machineStatus = '';
@@ -176,9 +148,35 @@
                                 </div>
                             </a> 
                         @endforeach
-                    @endif
+                    </div>
                 @endif
-            </div>
+                
+                @if ($customer->pool == "btc.com")
+                    <div id="grid">
+                        @foreach($machines as $machine)
+                            <a href="/user/machines/{{ $machine->id }}/show_api">
+                                <div id="item" data-toggle="tooltip" data-placement="bottom" title="{{ $machine->worker_name }}" 
+                                    class="
+                                    @if(strtolower($machine->status) == 'active') bg-card-enabled 
+                                    @elseIf($machine->status == 'Apagado') bg-card-disabled
+                                    @elseIf($machine->status == 'Requiere Atención') bg-card-attention
+                                    @elseIf($machine->status == 'Mantenimiento') bg-card-maintenance
+                                    @elseIf($machine->status == 'Error') bg-card-error
+                                    @elseIf(strtolower($machine->status) == 'inactive') bg-card-disabled 
+                                    @endif">
+                                    <p class="text-sm  text-white" style="margin-top: 10px;">{{ Str::limit($machine->worker_name, 3) }}</p>
+                                </div>
+                            </a> 
+                        @endforeach
+                    </div>
+                @endIf
+            @else
+                <div class="alert-box primary-alert" style="width: max-content;">
+                    <div class="alert">
+                        <p class="text-medium">Sin información de máquinas </p>
+                    </div>
+                </div>   
+            @endif
         </div>
     </div>
 

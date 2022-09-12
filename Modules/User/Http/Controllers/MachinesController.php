@@ -134,8 +134,6 @@ class MachinesController extends Controller
             ->take(350)
             ->get();
 
-        //dd($machines_api);
-
         return view('user::machines.index_grid', compact('machines', 'customers', 'filter', 'machines_api'));
     }
 

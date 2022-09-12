@@ -115,11 +115,15 @@ class CustomersController extends Controller
 
         $machines = DB::table('machines')
             ->leftjoin('users', 'machines.user_id', '=', 'users.id')
-            ->where('machines.customer_id', '=', $id)
+            ->where('machines.customer_id', '=', $customer->id)
             ->select('users.name AS user_name', 'machines.total_power', 'machines.id', 'machines.name', 'machines.codeQR', 'machines.customer_id', 'machines.status', 'machines.observation')
             ->orderBy('machines.created_at', 'DESC')
             ->get();
 
+        $total_hash_local = DB::table('machines')
+            ->where('machines.customer_id', '=', $customer->id)
+            ->orderBy('created_at', 'DESC')
+            ->sum('machines.total_power');
 
         $machines_api = DB::table('machines_api')
             ->select('machines_api.id', 'machines_api.last10m', 'machines_api.worker')
@@ -128,7 +132,21 @@ class CustomersController extends Controller
             ->take($customer->total_machines)
             ->get();
 
-        return view('user::customers.show', compact('customer', 'machines', 'machines_api'));
+        /** Count total hashrate from api antpool */
+        if ($customer->pool == "antpool.com") {
+            $total_hash_pool = DB::table('machines_api')
+                ->where('machines_api.customer_id', '=', $customer->id)
+                ->orderBy('created_at', 'DESC')
+                ->take($customer->total_machines)
+                ->sum('machines_api.last10m');
+        }
+
+        /** Count total hashrate from api antpool */
+        if ($customer->pool == "btc.com") {
+            $total_hash_pool = null;
+        }
+
+        return view('user::customers.show', compact('customer', 'machines', 'machines_api', 'total_hash_pool', 'total_hash_local'));
     }
 
     public function edit($id)

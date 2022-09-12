@@ -75,12 +75,12 @@
                 @endif
                 @if ($customer->pool == "antpool.com")
                   <p class="text-sm">
-                    <span class="text-sm">Total Earnings:</span>
-                    <span class="text-sm text-bold">{{ $customer->totalAmount ?? old('totalAmount') }}</span>
+                    <span class="text-sm">Total Hashrate Local:</span>
+                    <span class="text-sm text-bold">{{ round($total_hash_local,3) ?? old('total_hash_local') }}</span>
                   </p>
                   <p class="text-sm">
-                    <span class="text-sm">Pedding Earnings:</span>
-                    <span class="text-sm text-bold">{{ $customer->unpaidAmount ?? old('unpaidAmount') }}</span>
+                    <span class="text-sm">Total Hashrate Pool:</span>
+                    <span class="text-sm text-bold">{{ round($total_hash_pool,3) ?? old('total_hash_pool') }}</span>
                   </p>
                 @endif
               </div>
@@ -284,7 +284,7 @@
                       <div class="text">
                         <form action="#" method="">
                           @csrf
-                          <button class="btn-group-status" name="filter" value="active" type="submit"><p class="text-sm text-dark">Activo</p></button>
+                          <button class="btn-group-status" name="filter" value="active" type="submit"><p class="text-sm text-dark">Work 100%</p></button>
                         </form> 
                       </div>
                     </div>
@@ -295,23 +295,23 @@
                       <div class="text">
                         <form action="#" method="">
                           @csrf
-                          <button class="btn-group-status" name="filter" value="Requiere Atención" type="submit"><p class="text-sm text-dark">Requiere Atención</p></button>
+                          <button class="btn-group-status" name="filter" value="Requiere Atención" type="submit"><p class="text-sm text-dark">Work -10 to -40%</p></button>
                         </form> 
                       </div>
                     </div>
                   </li>
                   <li>
                     <div class="d-flex">
-                      <span class="bg-color bg-card-error"> </span>
+                      <span class="bg-color bg-card-attention-2"> </span>
                       <div class="text">
                         <form action="#" method="#">
                           @csrf
-                          <button class="btn-group-status" name="filter" value="Error" type="submit"><p class="text-sm text-dark">Error</p></button>
+                          <button class="btn-group-status" name="filter" value="Error" type="submit"><p class="text-sm text-dark">Work -50%</p></button>
                         </form> 
                       </div>
                     </div>
                   </li>
-                  <li>
+                  {{-- <li>
                     <div class="d-flex">
                       <span class="bg-color bg-card-maintenance"></span>
                       <div class="text">
@@ -321,25 +321,14 @@
                         </form> 
                       </div>
                     </div>
-                  </li>
-                  <li>
-                    <div class="d-flex">
-                      <span class="bg-color bg-card-offline"></span>
-                      <div class="text">
-                        <form action="#" method="#">
-                          @csrf
-                          <button class="btn-group-status" name="filter" value="inactive" type="submit"><p class="text-sm text-dark">Inactivo</p></button>
-                        </form> 
-                      </div>
-                    </div>
-                  </li>
+                  </li> --}}
                   <li>
                     <div class="d-flex">
                       <span class="bg-color bg-card-disabled"></span>
                       <div class="text">
                         <form action="#" method="#">
                           @csrf
-                          <button class="btn-group-status" name="filter" value="Apagado" type="submit"><p class="text-sm text-dark">Apagado</p></button>
+                          <button class="btn-group-status" name="filter" value="inactive" type="submit"><p class="text-sm text-dark">Offline</p></button>
                         </form> 
                       </div>
                     </div>
@@ -391,32 +380,52 @@
                     <div id="grid">
                       @foreach($machines as $machine)
                         @foreach ($machines_api as $machines_api_item)
-                            @if (strtolower($machines_api_item->worker)  === strtolower($machine->name)  )
-                              @php
-                                $machineStatus = '';
-                                $percent = $machine->total_power * 0.10;
-                                $total_power_percent = $machine->total_power - $percent;
-                              @endphp
-                              @if ($machines_api_item->last10m >= $machine->total_power)
-                                @php
-                                  $machineStatus = "bg-card-enabled";        
-                                @endphp    
-                        
-                              @elseIf ($machines_api_item->last10m < $total_power_percent && $machines_api_item->last10m > 0)
-                                @php
-                                  $machineStatus = "bg-card-attention";        
-                                @endphp  
-                              @else
+                          @if (strtolower($machines_api_item->worker)  === strtolower($machine->name)  )
+                            @php
+                              $machineStatus = '';
+                              $percent = $machine->total_power * 0.10;
+                              $percentFourty = $machine->total_power * 0.40;
+                              $percentFifty = $machine->total_power * 0.50;
+
+                              $total_power_percent_ten = $machine->total_power - $percent;
+                              $total_power_percent_fourty = $machine->total_power - $percentFourty;
+                              $total_power_percent_fifty = $machine->total_power - $percentFifty;
+                            @endphp
+
+                            @if($machines_api_item->last10m == 0)
                                 @php
                                   $machineStatus = "bg-card-disabled";   
-                                @endphp  
-                              @endif 
-                              <a href="/user/machines/{{$machine->id}}/show">
-                                <div id="item" data-toggle="tooltip" data-placement="bottom" title="{{ $machine->name }}" class="{{ $machineStatus }}">
-                                  <p class="text-sm  text-white" style="margin-top: 10px;">{{ Str::limit($machine->name, 3) }}</p>
-                                </div>
-                              </a> 
+                                @endphp
+                              @else
+                              {{-- If machine working 100% or more, show card color green --}}
+                              @if ($machines_api_item->last10m >= $machine->total_power || $machines_api_item->last10m >= $total_power_percent_ten)
+                                @php
+                                  $machineStatus = "bg-card-enabled";       
+                                @endphp    
+                              {{-- If machine working -50% or more, show card color orange --}}
+                              @elseIf ($machines_api_item->last10m <= $total_power_percent_fifty && $machines_api_item->last10m > 0)
+                                @php
+                                  $machineStatus = "bg-card-attention-2";        
+                                @endphp
+                              {{-- If machine working -10% and -40% or more, show card color yellow --}}   
+                              @elseIf ($machines_api_item->last10m <= $total_power_percent_ten || $machines_api_item->last10m <= $total_power_percent_fourty && $machines_api_item->last10m > 0 && $machines_api_item->last10m >= $total_power_percent_fifty)
+                                @php
+                                  $machineStatus = "bg-card-attention";        
+                                @endphp
+                              {{-- If machine not working with result 0.00 or undefined, card color dark --}}       
+                              @else
+                                @php
+                                  $machineStatus = "bg-card-dark";   
+                                @endphp 
+                              @endif    
                             @endif
+
+                            <a href="/user/machines/{{$machine->id}}/show">
+                              <div id="item" data-toggle="tooltip" data-placement="bottom" title="{{ $machine->name }}" class="{{ $machineStatus }}">
+                                <p class="text-sm  text-white" style="margin-top: 10px;">{{ Str::limit($machine->name, 3) }}</p>
+                              </div>
+                            </a> 
+                          @endif
                         @endforeach
                       @endforeach
                     </div> 

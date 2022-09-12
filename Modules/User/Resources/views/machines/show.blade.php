@@ -69,7 +69,7 @@
                 <!-- end col -->
                 <div class="col-4">
                   <div class="input-style-1">
-                    <label>Tiempo Real Hashrate</label>
+                    <label>API Hashrate</label>
                     @if ($machine->customer_pool == 'btc.com')
                       @if (!$machine_api)
                         <input type="text" value="Sin Información" readonly>

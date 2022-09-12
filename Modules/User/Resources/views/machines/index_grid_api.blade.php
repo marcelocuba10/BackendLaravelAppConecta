@@ -49,7 +49,7 @@
                   </li>
                   <li>
                     <div class="d-flex">
-                      <span class="bg-color bg-card-offline"></span>
+                      <span class="bg-color bg-card-disabled"></span>
                       <div class="text">
                         {{-- <form action="/user/machines/filter_gridview_api" method="POST"> --}}
                           @csrf

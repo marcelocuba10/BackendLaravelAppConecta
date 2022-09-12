@@ -212,6 +212,9 @@
 .bg-card-disabled{
     background-color: #9E9E9E;
 }
+.bg-card-attention-2 {
+    background-color: #ff5722;
+}
 
 /** end */
 /** custom button list view machines */

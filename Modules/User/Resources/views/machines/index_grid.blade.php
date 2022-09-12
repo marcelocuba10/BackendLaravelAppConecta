@@ -50,18 +50,7 @@
                       <div class="text">
                         <form action="/user/machines/filter_gridview" method="POST">
                           @csrf
-                          <button class="btn-group-status" name="filter" value="Active" type="submit"><p class="text-sm text-dark">Activo</p></button>
-                        </form> 
-                      </div>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="d-flex">
-                      <span class="bg-color bg-card-offline"></span>
-                      <div class="text">
-                        <form action="/user/machines/filter_gridview" method="POST">
-                          @csrf
-                          <button class="btn-group-status" name="filter" value="Inactive" type="submit"><p class="text-sm text-dark">Inactivo</p></button>
+                          <button class="btn-group-status" name="filter" value="Active" type="submit"><p class="text-sm text-dark">Work 100%</p></button>
                         </form> 
                       </div>
                     </div>
@@ -72,23 +61,34 @@
                       <div class="text">
                         <form action="/user/machines/filter_gridview" method="POST">
                           @csrf
-                          <button class="btn-group-status" name="filter" value="Apagado" type="submit"><p class="text-sm text-dark">Apagado</p></button>
+                          <button class="btn-group-status" name="filter" value="Inactive" type="submit"><p class="text-sm text-dark">Offline</p></button>
                         </form> 
                       </div>
                     </div>
                   </li>
+                  {{-- <li>
+                    <div class="d-flex">
+                      <span class="bg-color bg-card-disabled"></span>
+                      <div class="text">
+                        <form action="/user/machines/filter_gridview" method="POST">
+                          @csrf
+                          <button class="btn-group-status" name="filter" value="Apagado" type="submit"><p class="text-sm text-dark">Apagado</p></button>
+                        </form> 
+                      </div>
+                    </div>
+                  </li> --}}
                   <li>
                     <div class="d-flex">
                       <span class="bg-color bg-card-attention"> </span>
                       <div class="text">
                         <form action="/user/machines/filter_gridview" method="POST">
                           @csrf
-                          <button class="btn-group-status" name="filter" value="Requiere Atención" type="submit"><p class="text-sm text-dark">Requiere Atención</p></button>
+                          <button class="btn-group-status" name="filter" value="Requiere Atención" type="submit"><p class="text-sm text-dark">Work -10 to -40%</p></button>
                         </form> 
                       </div>
                     </div>
                   </li>
-                  <li>
+                  {{-- <li>
                     <div class="d-flex">
                       <span class="bg-color bg-card-maintenance"></span>
                       <div class="text">
@@ -98,14 +98,14 @@
                         </form> 
                       </div>
                     </div>
-                  </li>
+                  </li> --}}
                   <li>
                     <div class="d-flex">
-                      <span class="bg-color bg-card-error"> </span>
+                      <span class="bg-color bg-card-attention-2"> </span>
                       <div class="text">
                         <form action="/user/machines/filter_gridview" method="POST">
                           @csrf
-                          <button class="btn-group-status" name="filter" value="Error" type="submit"><p class="text-sm text-dark">Error</p></button>
+                          <button class="btn-group-status" name="filter" value="Error" type="submit"><p class="text-sm text-dark">Work -50%</p></button>
                         </form> 
                       </div>
                     </div>
@@ -140,38 +140,41 @@
                 $count_warning = 0;
                 $count_dead = 0;
               @endphp
+
               <div class="card-style-3 mb-30" style="border: 1px solid #817c7c36;padding: 20px 10px;">
                 <div class="card-content">
                   <div class="title d-flex flex-wrap pl-10 pr-30 mb-10 align-items-center justify-content-between">
                       <h6><a href="/user/customers/show/{{ $customer->id }}">Cliente: {{ $customer->name }}</a> | {{ $customer->pool }}</h6>
                   </div>
 
-                  @foreach($machines as $machine)
-                    @if ($machine->customer_id == $customer->id)
-                      @php
-                        $total_machines += 1;
-                      @endphp
-                      @if (strtolower($machine->status) == 'active')
-                        @php
-                            $count_active += 1;
-                        @endphp
-                      @elseIf (strtolower($machine->status) == 'inactive')
-                        @php
-                          $count_inactive += 1;
-                        @endphp
-                      @elseIf ($machine->status == 'Requiere Atención')
-                        @php
-                          $count_warning += 1;
-                        @endphp
-                      @elseIf ($machine->status == 'Apagado')
-                        @php
-                          $count_dead += 1;
-                        @endphp
-                      @endif
-                    @endif
-                  @endforeach
-
+                  {{-- Stats parameters btc.com --}}
                   @if ($customer->pool == "btc.com")
+                    {{-- Get data for stats --}}
+                    @foreach($machines as $machine)
+                      @if ($machine->customer_id == $customer->id)
+                        @php
+                          $total_machines += 1;
+                        @endphp
+                        @if (strtolower($machine->status) == 'active')
+                          @php
+                              $count_active += 1;
+                          @endphp
+                        @elseIf (strtolower($machine->status) == 'inactive')
+                          @php
+                            $count_inactive += 1;
+                          @endphp
+                        @elseIf ($machine->status == 'Requiere Atención')
+                          @php
+                            $count_warning += 1;
+                          @endphp
+                        @elseIf ($machine->status == 'Apagado')
+                          @php
+                            $count_dead += 1;
+                          @endphp
+                        @endif
+                      @endif
+                    @endforeach
+
                     @if ($customer->access_key && $customer->puid)
                       <div id="legend4">
                           <ul class="legend3 d-flex flex-wrap align-items-center mb-30">
@@ -239,7 +242,34 @@
                     @endif
                   @endif
 
+                  {{-- Stats parameters antpool.com --}}
                   @if ($customer->pool == "antpool.com")
+                    {{-- Get data for stats --}}
+                    @foreach($machines as $machine)
+                      @if ($machine->customer_id == $customer->id)
+                        @php
+                          $total_machines += 1;
+                        @endphp
+                        {{-- @if (strtolower($machine->status) == 'active')
+                          @php
+                              $count_active += 1;
+                          @endphp
+                        @elseIf (strtolower($machine->status) == 'inactive')
+                          @php
+                            $count_inactive += 1;
+                          @endphp
+                        @elseIf ($machine->status == 'Requiere Atención')
+                          @php
+                            $count_warning += 1;
+                          @endphp
+                        @elseIf ($machine->status == 'Apagado')
+                          @php
+                            $count_dead += 1;
+                          @endphp
+                        @endif --}}
+                      @endif
+                    @endforeach
+
                     @if ($customer->userIdPool && $customer->apiKey && $customer->secretKey)
                         <div id="legend4">
                             <ul class="legend3 d-flex flex-wrap align-items-center mb-30">
@@ -260,8 +290,8 @@
                                             </p>
                                         </div>
                                     </div>
-                                </li>
-                                <li>
+                                </li> --}}
+                                {{-- <li>
                                     <div class="d-flex">
                                         <div class="text">
                                             <p class="text-sm text-gray">
@@ -298,44 +328,50 @@
                     @endif
                   @endif
 
+                  {{-- show Grid antpool.com --}}
                   @if ($customer->pool == "antpool.com")
                     <div id="grid">
                       @foreach($machines as $machine)
-                        {{-- @php
-                          $machines_api = DB::table('machines_api')
-                            ->select('machines_api.id', 'machines_api.last10m', 'machines_api.worker')
-                            ->where('machines_api.customer_id', '=', $customer->id)
-                            ->orderBy('created_at', 'DESC')
-                            ->take($customer->total_machines)
-                            ->get();
-                        @endphp --}}
                         @foreach ($machines_api as $machines_api_item)
                             @if (strtolower($machines_api_item->worker)  === strtolower($machine->name)  )
                               @php
                                 $machineStatus = '';
                                 $percent = $machine->total_power * 0.10;
+                                $percentFourty = $machine->total_power * 0.40;
                                 $percentFifty = $machine->total_power * 0.50;
-                                $total_power_percent = $machine->total_power - $percent;
+                                $total_power_percent_ten = $machine->total_power - $percent;
+                                $total_power_percent_fourty = $machine->total_power - $percentFourty;
                                 $total_power_percent_fifty = $machine->total_power - $percentFifty;
                               @endphp
-                              @if ($machines_api_item->last10m >= $machine->total_power)
-                                @php
-                                  $machineStatus = "bg-card-enabled";        
-                                @endphp    
-                        
-                              @elseIf ($machines_api_item->last10m < $total_power_percent && $machines_api_item->last10m > 0)
-                                @php
-                                  $machineStatus = "bg-card-attention";        
-                                @endphp  
-                              @elseIf ($machines_api_item->last10m < $total_power_percent_fifty && $machines_api_item->last10m > 0)
-                                @php
-                                  $machineStatus = "bg-card-error";        
-                                @endphp    
-                              @else
+
+                              @if($machines_api_item->last10m == 0)
                                 @php
                                   $machineStatus = "bg-card-disabled";   
-                                @endphp  
-                              @endif 
+                                @endphp
+                              @else
+                                {{-- If machine working 100% or more, show card color green --}}
+                                @if ($machines_api_item->last10m >= $machine->total_power || $machines_api_item->last10m >= $total_power_percent_ten)
+                                  @php
+                                    $machineStatus = "bg-card-enabled";       
+                                  @endphp    
+                                {{-- If machine working -50% or more, show card color orange --}}
+                                @elseIf ($machines_api_item->last10m <= $total_power_percent_fifty && $machines_api_item->last10m > 0)
+                                @php
+                                  $machineStatus = "bg-card-attention-2";        
+                                @endphp
+                                {{-- If machine working -10% and -40% or more, show card color yellow --}}   
+                                @elseIf ($machines_api_item->last10m <= $total_power_percent_ten || $machines_api_item->last10m <= $total_power_percent_fourty && $machines_api_item->last10m > 0 && $machines_api_item->last10m >= $total_power_percent_fifty)
+                                  @php
+                                    $machineStatus = "bg-card-attention";        
+                                  @endphp
+                                {{-- If machine not working with result 0.00 or undefined, card color dark --}}       
+                                @else
+                                  @php
+                                    $machineStatus = "bg-card-dark";   
+                                  @endphp 
+                                @endif    
+                              @endif
+                              
                               <a href="/user/machines/{{$machine->id}}/show">
                                 <div id="item" data-toggle="tooltip" data-placement="bottom" title="{{ $machine->name }}" class="{{ $machineStatus }}">
                                   <p class="text-sm  text-white" style="margin-top: 10px;">{{ Str::limit($machine->name, 3) }}</p>
@@ -347,6 +383,7 @@
                     </div> 
                   @endIf
 
+                  {{-- show Grid btc.com --}}
                   @if ($customer->pool == "btc.com")
                     <div id="grid">
                       @foreach($machines as $machine)

@@ -10,14 +10,14 @@
             <div class="title d-flex align-items-center flex-wrap mb-30">
               <h2 class="mr-40">Usuarios</h2>
               @can('user-create')
-                <a href="{{ route('users.create') }}" class="main-btn info-btn btn-hover btn-sm"><i class="lni lni-plus mr-5"></i> Nuevo</a>
+                <a href="{{ route('users.create') }}" class="main-btn info-btn btn-hover btn-sm"><i class="lni lni-plus mr-5"></i></a>
               @endcan  
             </div>
           </div>
           <!-- end col -->
           <div class="col-md-4">
             <div class="right">
-              <div class="table-search d-flex" style="margin-top: -35px;float: right;">
+              <div class="table-search d-flex st-input-search">
                 <form action="/user/users/search">
                   <input style="background-color: #fff;" id="search" type="text" name="search" value="{{ $search ?? '' }}" placeholder="Buscar usuario..">
                   {{-- <button type="submit"><i class="lni lni-search-alt"></i></button> --}}
@@ -58,19 +58,19 @@
                   <table class="table">
                     <thead>
                       <tr>
-                        <th class="sm"><h6 class="text-sm text-medium"></h6></th>
-                        <th class="md"><h6>Nombre</h6></th>
-                        <th class="md"><h6>Cod Referencia</h6></th>
-                        <th class="md"><h6>Status</h6></th>
-                        <th class="md"><h6>Email</h6></th>
-                        <th class="md"><h6>Acciones</h6></th>
+                        <th><h6>#</h6></th>
+                        <th><h6>Nombre</h6></th>
+                        <th><h6>Cod Referencia</h6></th>
+                        <th><h6>Status</h6></th>
+                        <th><h6>Email</h6></th>
+                        <th><h6>Acciones</h6></th>
                       </tr>
                       <!-- end table row-->
                     </thead>
                     <tbody>
                         @foreach ($users as $user)
                         <tr>
-                            <td class="min-width"><h6 class="text-sm">#{{ ++$i }}</h6></td>
+                            <td class="text-sm"><h6 class="text-sm">{{ ++$i }}</h6></td>
                             <td class="min-width"><p>{{ $user->name }}</p></td>
                             <td class="min-width"><p>{{ $user->idReference }}</p></td>
                             <td class="min-width">

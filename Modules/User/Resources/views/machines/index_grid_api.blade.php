@@ -8,14 +8,23 @@
         <div class="col-md-8">
           <div class="title d-flex align-items-center flex-wrap mb-30">
             <h2 class="mr-40">Listado Máquinas Pool</h2>
-            <a style="margin-left: 17px;" href="/user/machines/grid_view_api"><i class="hthtg lni lni-grid-alt"></i></a>
-            <a style="margin-left: 17px;" href="/user/machines/list_api"><i class="hthtg lni lni-list"></i></a>
+            <div class="off-mobile">
+              <a style="margin-left: 17px;" href="/user/machines/grid_view_api"><i class="hthtg lni lni-grid-alt"></i></a>
+              <a style="margin-left: 17px;" href="/user/machines/list_api"><i class="hthtg lni lni-list"></i></a>
+            </div>
+
+            <div class="on-mobile">
+              <div class="button-group-m">
+                <a href="/user/machines/grid_view_api" title="Vista modo cuadricula" class="active">Vista Cuadrícula</a>
+                <a href="/user/machines/list_api" title="Vista modo lista">Vista Lista</a>
+              </div>
+            </div>
           </div>
         </div>
         <!-- end col -->
         <div class="col-md-4">
           <div class="right">
-            <div class="table-search d-flex" style="margin-top: -35px;float: right;">
+            <div class="table-search d-flex st-input-search">
               <form>
                 <input style="background-color: #fff;" type="text" name="search" id="search" value="{{ $search ?? '' }}" placeholder="Buscar cliente..">
                 <button id="myBtnSearch"><i class="lni lni-search-alt"></i></button>
@@ -35,7 +44,7 @@
           <div class="d-flex flex-wrap justify-content-between align-items-center py-3">
             <div class="left col-md-9">
               <div id="legend3">
-                <ul class="legend3 d-flex align-items-center mb-30">
+                <ul class="legend3 d-flex flex-wrap align-items-center mb-30">
                   <li>
                     <div class="d-flex">
                       <span class="bg-color bg-card-enabled"></span>

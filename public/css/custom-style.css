@@ -27,6 +27,27 @@
 
 }
 
+.button-group-m {
+    display: flex;
+    align-items: center;
+    border-radius: 50px;
+    border: 1px solid #dedede;
+    margin-top: 10px;
+}
+.button-group-m a.active, .button-group-m a:hover {
+    background: #4a6cf7;
+    color: #fff;
+}
+.button-group-m a {
+    font-weight: 500;
+    font-size: 12px;
+    padding: 4px 16px;
+    display: inline-block;
+    color: #2f3546;
+    border-radius: 50px;
+    margin: 3px;
+}
+
 .on-mobile {
     display: none;
 }

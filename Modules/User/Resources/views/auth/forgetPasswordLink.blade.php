@@ -8,7 +8,7 @@
         <div class="ergts">
             <a href="/"><button class="ththhf" type="button" class="btn btn-block create-account">Página Web</button></a>
         </div>    
-        <div class="login-texto">
+        <div class="login-texto off-mobile">
             <p class="login-title">Bienvenido a ConectaFarm</p>
             <p class="login-message">Facilidades increíbles para tu empresa! :)</p>
         </div>

@@ -10,14 +10,14 @@
             <div class="title d-flex align-items-center flex-wrap mb-30">
               <h2 class="mr-40">Notificaciones</h2>
               @can('notification-create')
-                <a href="/user/notifications/create" class="main-btn info-btn btn-hover btn-sm"><i class="lni lni-plus mr-5"></i> Nuevo</a>
+                <a href="/user/notifications/create" class="main-btn info-btn btn-hover btn-sm"><i class="lni lni-plus mr-5"></i></a>
               @endcan  
             </div>
           </div>
           <!-- end col -->
           <div class="col-md-4">
             <div class="right">
-              <div class="table-search d-flex" style="margin-top: -35px;float: right;">
+              <div class="table-search d-flex st-input-search">
                 <form action="/user/notifications/search">
                   <input style="background-color: #fff;" id="search" type="text" name="search" value="{{ $search ?? '' }}" placeholder="Buscar aviso..">
                   <button type="submit"><i class="lni lni-search-alt"></i></button>

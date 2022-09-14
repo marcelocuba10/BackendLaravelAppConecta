@@ -10,14 +10,14 @@
             <div class="title d-flex align-items-center flex-wrap mb-30">
               <h2 class="mr-40">Listado de Clientes</h2>
               @can('customer-create')
-                <a href="/user/customers/create" class="main-btn info-btn btn-hover btn-sm"><i class="lni lni-plus mr-5"></i> Nuevo</a>
+                <a href="/user/customers/create" class="main-btn info-btn btn-hover btn-sm"><i class="lni lni-plus mr-5"></i></a>
               @endcan  
             </div>
           </div>
           <!-- end col -->
           <div class="col-md-4">
             <div class="right">
-              <div class="table-search d-flex" style="margin-top: -35px;float: right;">
+              <div class="table-search d-flex st-input-search">
                 <form action="/user/customers/search">
                   <input style="background-color: #fff;" id="search" type="text" name="search" value="{{ $search ?? '' }}" placeholder="Buscar cliente..">
                   <button type="submit"><i class="lni lni-search-alt"></i></button>
@@ -59,8 +59,8 @@
                     <thead>
                       <tr>
                         <th><h6>#</h6></th>
-                        <th><h6>ID</h6></th>
                         <th><h6>Nombre</h6></th>
+                        <th><h6>ID</h6></th>
                         <th><h6>Teléfono</h6></th>
                         <th><h6>Pool</h6></th>
                         <th><h6>Máquinas</h6></th>
@@ -71,9 +71,9 @@
                     <tbody>
                         @foreach ($customers as $customer)
                         <tr>
-                            <td class="text-sm"><h6 class="text-sm">#{{ ++$i }}</h6></td>
-                            <td class="min-width"><p>{{ $customer->id }}</p></td>
+                            <td class="text-sm"><h6 class="text-sm">{{ ++$i }}</h6></td>
                             <td class="min-width"><h5 class="text-bold text-dark"><a href="/user/customers/show/{{$customer->id}}">{{ $customer->name }} {{ $customer->last_name ?? old('last_name') }}</a></h5></td>
+                            <td class="min-width"><p>{{ $customer->id }}</p></td>
                             <td class="min-width"><p>{{ $customer->phone }}</p></td>
                             <td class="min-width"><p>{{ $customer->pool }}</p></td>
                             <td class="min-width"><p>{{ $customer->total_machines }}</p></td>

@@ -9,14 +9,23 @@
           <div class="title d-flex align-items-center flex-wrap mb-30">
             <h2 class="mr-40">Máquinas Local</h2>
             @can('machine-create')
-            <a href="/user/machines/create" class="main-btn info-btn btn-hover btn-sm"><i class="lni lni-plus mr-5"></i> Nuevo</a>
+            <a href="/user/machines/create" class="main-btn info-btn btn-hover btn-sm"><i class="lni lni-plus mr-5"></i></a>
             @endcan
-            <a style="margin-left: 17px;" href="/user/machines/grid_view" title="Vista modo cuadricula"><i class="hthtg lni lni-grid-alt"></i></a>
-            <a style="margin-left: 17px;" href="/user/machines/list" title="Vista modo lista"><i class="hthtg lni lni-list"></i></a>
-            {{-- @if(count($machines) > 0)
-              <a style="margin-left: 17px;" href="{{route('machines.createPDF',['download'=>'pdf'])}}" target="_blank"><i class="hthtg lni lni-printer"></i></a>
-            @endif --}}
-            <a style="margin-left: 17px;" href="/user/machines/import-csv" title="Importar csv"><i class="hthtg lni lni-upload"></i></a>
+            <div class="off-mobile">
+              <a style="margin-left: 17px;" href="/user/machines/grid_view" title="Vista modo cuadricula"><i class="hthtg lni lni-grid-alt"></i></a>
+              <a style="margin-left: 17px;" href="/user/machines/list" title="Vista modo lista"><i class="hthtg lni lni-list"></i></a>
+              {{-- @if(count($machines) > 0)
+                <a style="margin-left: 17px;" href="{{route('machines.createPDF',['download'=>'pdf'])}}" target="_blank"><i class="hthtg lni lni-printer"></i></a>
+              @endif --}}
+              <a style="margin-left: 17px;" href="/user/machines/import-csv" title="Importar csv"><i class="hthtg lni lni-upload"></i></a>
+            </div>
+
+            <div class="on-mobile">
+              <div class="button-group-m">
+                <a href="/user/machines/grid_view" title="Vista modo cuadricula" class="active">Vista Cuadrícula</a>
+                <a href="/user/machines/list" title="Vista modo lista">Vista Lista</a>
+              </div>
+            </div>
           </div>
         </div>
         <!-- end col -->
@@ -43,7 +52,7 @@
           <div class="d-flex flex-wrap justify-content-between align-items-center py-3">
             <div class="left col-md-9">
               <div id="legend3">
-                <ul class="legend3 d-flex align-items-center mb-30">
+                <ul class="legend3 d-flex flex-wrap align-items-center mb-30">
                   <li>
                     <div class="d-flex">
                       <span class="bg-color bg-card-enabled"></span>

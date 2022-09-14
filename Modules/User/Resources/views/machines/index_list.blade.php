@@ -10,20 +10,29 @@
             <div class="title d-flex align-items-center flex-wrap mb-30">
               <h2 class="mr-40">Máquinas Local</h2>
               @can('machine-create')
-                <a href="{{ route('machines.create') }}" class="main-btn info-btn btn-hover btn-sm"><i class="lni lni-plus mr-5"></i> Nuevo</a>
+                <a href="{{ route('machines.create') }}" class="main-btn info-btn btn-hover btn-sm"><i class="lni lni-plus mr-5"></i></a>
               @endcan 
-              <a style="margin-left: 17px;" href="/user/machines/grid_view"><i class="hthtg lni lni-grid-alt"></i></a>
-              <a style="margin-left: 17px;" href="/user/machines/list"><i class="hthtg lni lni-list"></i></a>
-              {{-- @if(count($machines) > 0)
-                <a style="margin-left: 17px;" href="{{route('machines.createPDF',['download'=>'pdf'])}}" target="_blank"><i class="hthtg lni lni-printer"></i></a>
-              @endif --}}
-              <a style="margin-left: 17px;" href="/user/machines/import-csv" title="Importar csv"><i class="hthtg lni lni-upload"></i></a>
+              <div class="off-mobile">
+                <a style="margin-left: 17px;" href="/user/machines/grid_view" title="Vista modo cuadricula"><i class="hthtg lni lni-grid-alt"></i></a>
+                <a style="margin-left: 17px;" href="/user/machines/list" title="Vista modo lista"><i class="hthtg lni lni-list"></i></a>
+                {{-- @if(count($machines) > 0)
+                  <a style="margin-left: 17px;" href="{{route('machines.createPDF',['download'=>'pdf'])}}" target="_blank"><i class="hthtg lni lni-printer"></i></a>
+                @endif --}}
+                <a style="margin-left: 17px;" href="/user/machines/import-csv" title="Importar csv"><i class="hthtg lni lni-upload"></i></a>
+              </div>
+
+              <div class="on-mobile">
+                <div class="button-group-m">
+                  <a href="/user/machines/grid_view" title="Vista modo cuadricula">Vista Cuadrícula</a>
+                  <a href="/user/machines/list" title="Vista modo lista" class="active">Vista Lista</a>
+                </div>
+              </div>
             </div>
           </div>
           <!-- end col -->
           <div class="col-md-4">
             <div class="right">
-              <div class="table-search d-flex" style="margin-top: -35px;float: right;">
+              <div class="table-search d-flex st-input-search">
                 <form action="{{ route('machines.search_filter_list') }}" method="POST">
                   @csrf
                   <input style="background-color: #fff;" type="text" name="filter" value="{{ $filter ?? '' }}" placeholder="Buscar..">
@@ -47,7 +56,7 @@
                 <div class="d-flex flex-wrap justify-content-between align-items-center py-3">
                   <div class="left">
                     <div id="legend3">
-                      <ul class="legend3 d-flex align-items-center mb-30">
+                      <ul class="legend3 d-flex flex-wrap align-items-center mb-30">
                         <li>
                           <div class="d-flex">
                             <span class="bg-color bg-card-enabled"></span>
@@ -81,7 +90,7 @@
                             </div>
                           </div>
                         </li>
-                        <li>
+                        {{-- <li>
                           <div class="d-flex">
                             <span class="bg-color bg-card-maintenance"></span>
                             <div class="text">
@@ -91,10 +100,10 @@
                               </form> 
                             </div>
                           </div>
-                        </li>
+                        </li> --}}
                         <li>
                           <div class="d-flex">
-                            <span class="bg-color bg-card-offline"></span>
+                            <span class="bg-color bg-card-disabled"></span>
                             <div class="text">
                               <form action="{{ route('machines.search_filter_list') }}" method="POST">
                                 @csrf
@@ -103,7 +112,7 @@
                             </div>
                           </div>
                         </li>
-                        <li>
+                        {{-- <li>
                           <div class="d-flex">
                             <span class="bg-color bg-card-disabled"></span>
                             <div class="text">
@@ -113,7 +122,7 @@
                               </form> 
                             </div>
                           </div>
-                        </li>
+                        </li> --}}
                       </ul>
                     </div>
                   </div>

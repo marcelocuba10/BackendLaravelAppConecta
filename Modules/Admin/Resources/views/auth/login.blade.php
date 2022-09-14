@@ -3,13 +3,13 @@
 @section('content')
 
 <div class="container">
-    <div class="left"></div>
+    <div class="left-admin"></div>
     <div class="right">
-        <div class="ergts">
+        <div class="ergts" style="display: flex;">
             <a href="/"><button class="ththhf" type="button" class="btn btn-block create-account">Página Web</button></a>
             <a href="/user/login"><button class="ththhf" type="button" class="btn btn-block create-account">Usuarios</button></a>
         </div>    
-        <div class="login-texto">
+        <div class="login-texto off-mobile">
             <p class="login-title">Panel Administrativo</p>
             <p class="login-message">Gestiona tu empresa de un solo lugar!</p>
         </div>

@@ -9,6 +9,7 @@
     <link rel="shortcut icon" href="/site/assets/images/favicon.png" type="image/x-icon" />
     <link rel="stylesheet" href="/site/assets/css/animate.css" />
     <link rel="stylesheet" href="/site/assets/css/tailwind.css" />
+    <link rel="stylesheet" href="/site/assets/css/site.css" />
 
     <link href="/site/assets/css/bootstrap.min.css" rel="stylesheet">
     <script src="/site/assets/js/wow.min.js"></script>

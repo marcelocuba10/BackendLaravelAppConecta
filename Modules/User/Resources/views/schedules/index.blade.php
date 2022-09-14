@@ -10,14 +10,14 @@
             <div class="title d-flex align-items-center flex-wrap mb-30">
               <h2 class="mr-40">Listado de presencia laboral</h2>
               @can('schedule-create')
-                <a href="{{ route('schedules.create') }}" class="main-btn info-btn btn-hover btn-sm"><i class="lni lni-plus mr-5"></i> Nuevo</a>
+                <a href="{{ route('schedules.create') }}" class="main-btn info-btn btn-hover btn-sm"><i class="lni lni-plus mr-5"></i></a>
               @endcan  
             </div>
           </div>
           <!-- end col -->
           <div class="col-md-4">
             <div class="right">
-              <div class="table-search d-flex" style="margin-top: -35px;float: right;">
+              <div class="table-search d-flex st-input-search">
                 <form action="/user/schedules/search">
                   <input style="background-color: #fff;" id="search" type="text" name="search" value="{{ $search ?? '' }}" placeholder="Buscar funcionario..">
                   <button type="submit"><i class="lni lni-search-alt"></i></button>
@@ -58,19 +58,19 @@
                   <table class="table">
                     <thead>
                       <tr>
-                        <th class="sm"><h6></h6></th>
-                        <th class="lg"><h6>Nombre</h6></th>
-                        <th class="md"><h6>Fecha</h6></th>
-                        <th class="md"><h6>Horario Entrada</h6></th>
-                        <th class="md"><h6>Horario Salida</h6></th>
-                        <th class="md"><h6>Acciones</h6></th>
+                        <th><h6>#</h6></th>
+                        <th><h6>Nombre</h6></th>
+                        <th><h6>Fecha</h6></th>
+                        <th><h6>Horario Entrada</h6></th>
+                        <th><h6>Horario Salida</h6></th>
+                        <th><h6>Acciones</h6></th>
                       </tr>
                       <!-- end table row-->
                     </thead>
                     <tbody>
                         @foreach ($schedules as $schedule)
                         <tr>
-                            <td class="min-width"><h6 class="text-sm">#{{ ++$i }}</h6></td>
+                            <td class="text-sm"><h6 class="text-sm">{{ ++$i }}</h6></td>
                             <td class="min-width"><p>{{ $schedule->name }}</p></td>
                             <td class="min-width"><p><i class="lni lni-calendar mr-10"></i>{{ $schedule->date }}</p></td>
                             <td class="min-width">

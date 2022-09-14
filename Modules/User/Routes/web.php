@@ -114,6 +114,11 @@ Route::prefix('user')->group(function () {
             Route::post('import', 'ImportExportController@importcsv')->name('import.csv');
         });
 
+        /** Charts & Graphics Routes */
+        Route::group(['prefix' => 'chart'], function () {
+            Route::get('machines','ChartController@index')->name('chart.machines');
+        });
+        
         /*** Customers Routes ***/
         Route::group(['prefix' => 'customers'], function () {
             Route::get('/', 'CustomersController@index')->name('customers.index');

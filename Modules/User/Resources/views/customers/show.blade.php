@@ -327,11 +327,23 @@
               </div>
             </div>
           </div>
-          <!-- end card -->
+          <!-- End card -->
         </div>
-        <!-- ENd Col -->
+        <!-- End Col -->
       </div>
       <!-- End Row -->
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-7">
+        <div class="card-style mb-30">
+  
+        </div>
+      </div>
     </div>
   </div>
 </section>

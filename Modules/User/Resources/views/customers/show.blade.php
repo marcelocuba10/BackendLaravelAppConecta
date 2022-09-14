@@ -27,7 +27,7 @@
     <!-- ========== title-wrapper end ========== -->
     <div class="invoice-wrapper">
       <div class="row">
-        <div class="col-12">
+        <div class="col-12 off-mobile">
           <div class="invoice-card card-style mb-30" style="padding: 15px 15px;">
             <div class="invoice-address">
 
@@ -75,12 +75,12 @@
                 @endif
                 @if ($customer->pool == "antpool.com")
                   <p class="text-sm">
-                    <span class="text-sm">Total Hashrate Local:</span>
-                    <span class="text-sm text-bold">{{ round($total_hash_local,3) ?? old('total_hash_local') }}</span>
+                    <span class="text-sm">Total Hashrate Local (TH):</span>
+                    <span class="text-sm text-bold">{{ $total_hash_local ?? old('total_hash_local') }}</span>
                   </p>
                   <p class="text-sm">
-                    <span class="text-sm">Total Hashrate Pool:</span>
-                    <span class="text-sm text-bold">{{ round($total_hash_pool,3) ?? old('total_hash_pool') }}</span>
+                    <span class="text-sm">Total Hashrate Pool (TH):</span>
+                    <span class="text-sm text-bold">{{ substr($total_hash_pool,0,7) ?? old('total_hash_pool') }}</span>
                   </p>
                 @endif
               </div>
@@ -127,48 +127,6 @@
                 </div>
               @endIf
 
-              @if ($customer->pool == "binance.com")
-                <div class="address-item">
-                  <p class="text-sm">
-                    <span class="text-sm">Total Máquinas Pool:</span>
-                    <span class="text-sm text-bold">{{ $customer->workers_total ?? old('workers_total') }}</span>
-                  </p>
-                  <p class="text-sm">
-                    <span class="text-sm">Máquinas Activas:</span>
-                    <span class="text-sm text-bold">{{ $customer->workers_active ?? old('workers_active') }}</span>
-                  </p>
-                  <p class="text-sm">
-                    <span class="text-sm">Máquinas Inactivas:</span>
-                    <span class="text-sm text-bold">{{ $customer->workers_inactive ?? old('workers_inactive') }}</span>
-                  </p>
-                  <p class="text-sm">
-                    <span class="text-sm">Máquinas Apagadas:</span>
-                    <span class="text-sm text-bold">{{ $customer->workers_dead ?? old('workers_dead') }}</span>
-                  </p>
-                </div>
-              @endIf
-
-              @if ($customer->pool == "poolin.com")
-                <div class="address-item">
-                  <p class="text-sm">
-                    <span class="text-sm">Total Máquinas Pool:</span>
-                    <span class="text-sm text-bold">{{ $customer->workers_total ?? old('workers_total') }}</span>
-                  </p>
-                  <p class="text-sm">
-                    <span class="text-sm">Máquinas Activas:</span>
-                    <span class="text-sm text-bold">{{ $customer->workers_active ?? old('workers_active') }}</span>
-                  </p>
-                  <p class="text-sm">
-                    <span class="text-sm">Máquinas Inactivas:</span>
-                    <span class="text-sm text-bold">{{ $customer->workers_inactive ?? old('workers_inactive') }}</span>
-                  </p>
-                  <p class="text-sm">
-                    <span class="text-sm">Máquinas Apagadas:</span>
-                    <span class="text-sm text-bold">{{ $customer->workers_dead ?? old('workers_dead') }}</span>
-                  </p>
-                </div>
-              @endIf
-
               @if ($customer->pool == "btc.com")
                 <div class="address-item" style="margin-left: -65px;">
                   <p class="text-sm">
@@ -193,64 +151,183 @@
               @if ($customer->pool == "antpool.com")
                 <div class="address-item" style="margin-left: -65px;">
                   <p class="text-sm">
-                    <span class="text-sm">10Min Hashrate:</span>
-                    <span class="text-sm text-bold">{{ $customer->hsLast10m ?? old('hsLast10m') }}</span>
+                    <span class="text-sm">10Min Hashrate (TH):</span>
+                    <span class="text-sm text-bold">{{ substr($customer->hsLast10m,0,5) ?? old('hsLast10m') }}</span>
                   </p>
                   <p class="text-sm">
-                    <span class="text-sm">1h TH:</span>
-                    <span class="text-sm text-bold">{{ $customer->hsLast1h ?? old('hsLast1h') }}</span>
+                    <span class="text-sm">1h Hashrate (TH):</span>
+                    <span class="text-sm text-bold">{{ substr($customer->hsLast1h,0,5) ?? old('hsLast1h') }}</span>
                   </p>
                   <p class="text-sm">
-                    <span class="text-sm">24hr TH:</span>
-                    <span class="text-sm text-bold">{{ $customer->hsLast1d ?? old('hsLast1d') }}</span>
+                    <span class="text-sm">24hr Hashrate (TH):</span>
+                    <span class="text-sm text-bold">{{ substr($customer->hsLast1d,0,8) ?? old('hsLast1d') }}</span>
                   </p>
                 </div>
               @endif
 
-              @if ($customer->pool == "binance.com")
-                <div class="address-item" style="margin-left: -65px;">
-                  <p class="text-sm">
-                    <span class="text-sm">1Min Hashrate:</span>
-                    <span class="text-sm text-bold">{{ $customer->shares_1m ?? old('shares_1m') }}</span>
-                  </p>
-                  <p class="text-sm">
-                    <span class="text-sm">5Min Hashrate:</span>
-                    <span class="text-sm text-bold">{{ $customer->shares_5m ?? old('shares_5m') }}</span>
-                  </p>
-                  <p class="text-sm">
-                    <span class="text-sm">1h Hashrate:</span>
-                    <span class="text-sm text-bold">{{ $customer->shares_1h ?? old('shares_1h') }}</span>
-                  </p>
-                  <p class="text-sm">
-                    <span class="text-sm">24hr Hashrate:</span>
-                    <span class="text-sm text-bold">{{ $customer->shares_1d ?? old('shares_1d') }}</span>
-                  </p>
-                </div>
-              @endif
-
-              @if ($customer->pool == "poolin.com")
-                <div class="address-item" style="margin-left: -65px;">
-                  <p class="text-sm">
-                    <span class="text-sm">1Min Hashrate:</span>
-                    <span class="text-sm text-bold">{{ $customer->shares_1m ?? old('shares_1m') }}</span>
-                  </p>
-                  <p class="text-sm">
-                    <span class="text-sm">5Min Hashrate:</span>
-                    <span class="text-sm text-bold">{{ $customer->shares_5m ?? old('shares_5m') }}</span>
-                  </p>
-                  <p class="text-sm">
-                    <span class="text-sm">1h Hashrate:</span>
-                    <span class="text-sm text-bold">{{ $customer->shares_1h ?? old('shares_1h') }}</span>
-                  </p>
-                  <p class="text-sm">
-                    <span class="text-sm">24hr Hashrate:</span>
-                    <span class="text-sm text-bold">{{ $customer->shares_1d ?? old('shares_1d') }}</span>
-                  </p>
-                </div>
-              @endif
             </div>
           </div>
           <!-- End Card -->
+        </div>
+
+        <div class="col-lg-6 on-mobile">
+          <div class="tab-style-2 card-style mb-30">
+            <nav class="nav" id="nav-tab">
+              <button id="tab-2-1" data-bs-toggle="tab" data-bs-target="#tabContent-2-1" class="active">
+                <i class="lni lni-stats-up"></i>
+              </button>
+              <button id="tab-2-2" data-bs-toggle="tab" data-bs-target="#tabContent-2-2">
+                <i class="lni lni-graph"></i>
+              </button>
+              <button id="tab-2-3" data-bs-toggle="tab" data-bs-target="#tabContent-2-3">
+                <i class="lni lni-postcard"></i>
+              </button>
+              <button id="tab-2-4" data-bs-toggle="tab" data-bs-target="#tabContent-2-4">
+                <i class="lni lni-postcard"></i>
+              </button>
+            </nav>
+            <div class="tab-content" id="nav-tabContent2">
+              <div class="tab-pane fade active show" id="tabContent-2-1">
+                @if ($customer->pool == "btc.com")
+                  <div class="address-item">
+                    <p class="text-sm">
+                      <span class="text-sm">Total Máquinas Pool:</span>
+                      <span class="text-sm text-bold">{{ $customer->workers_total ?? old('workers_total') }}</span>
+                    </p>
+                    <p class="text-sm">
+                      <span class="text-sm">Máquinas Activas:</span>
+                      <span class="text-sm text-bold">{{ $customer->workers_active ?? old('workers_active') }}</span>
+                    </p>
+                    <p class="text-sm">
+                      <span class="text-sm">Máquinas Inactivas:</span>
+                      <span class="text-sm text-bold">{{ $customer->workers_inactive ?? old('workers_inactive') }}</span>
+                    </p>
+                    <p class="text-sm">
+                      <span class="text-sm">Máquinas Apagadas:</span>
+                      <span class="text-sm text-bold">{{ $customer->workers_dead ?? old('workers_dead') }}</span>
+                    </p>
+                  </div>
+                @endIf
+
+                @if ($customer->pool == "antpool.com")
+                  <div class="address-item">
+                    <p class="text-sm">
+                      <span class="text-sm">Total Máquinas Pool:</span>
+                      <span class="text-sm text-bold">{{ $customer->totalWorkerNum ?? old('totalWorkerNum') }}</span>
+                    </p>
+                    <p class="text-sm">
+                      <span class="text-sm">Máquinas Activas:</span>
+                      <span class="text-sm text-bold">{{ $customer->activeWorkerNum ?? old('activeWorkerNum') }}</span>
+                    </p>
+                    <p class="text-sm">
+                      <span class="text-sm">Máquinas Inactivas:</span>
+                      <span class="text-sm text-bold">{{ $customer->inactiveWorkerNum ?? old('inactiveWorkerNum') }}</span>
+                    </p>
+                    <p class="text-sm">
+                      <span class="text-sm">Máquinas Apagadas:</span>
+                      <span class="text-sm text-bold">{{ $customer->invalidWorkerNum ?? old('invalidWorkerNum') }}</span>
+                    </p>
+                  </div>
+                @endIf
+              </div>
+              <div class="tab-pane fade" id="tabContent-2-2">
+                @if ($customer->pool == "btc.com")
+                  <div class="address-item">
+                    <p class="text-sm">
+                      <span class="text-sm">1Min Hashrate:</span>
+                      <span class="text-sm text-bold">{{ $customer->shares_1m ?? old('shares_1m') }}</span>
+                    </p>
+                    <p class="text-sm">
+                      <span class="text-sm">5Min Hashrate:</span>
+                      <span class="text-sm text-bold">{{ $customer->shares_5m ?? old('shares_5m') }}</span>
+                    </p>
+                    <p class="text-sm">
+                      <span class="text-sm">1h Hashrate:</span>
+                      <span class="text-sm text-bold">{{ $customer->shares_1h ?? old('shares_1h') }}</span>
+                    </p>
+                    <p class="text-sm">
+                      <span class="text-sm">24hr Hashrate:</span>
+                      <span class="text-sm text-bold">{{ $customer->shares_1d ?? old('shares_1d') }}</span>
+                    </p>
+                  </div>
+                @endif
+
+                @if ($customer->pool == "antpool.com")
+                  <div class="address-item">
+                    <p class="text-sm">
+                      <span class="text-sm">10Min Hashrate (TH):</span>
+                      <span class="text-sm text-bold">{{ substr($customer->hsLast10m,0,5) ?? old('hsLast10m') }}</span>
+                    </p>
+                    <p class="text-sm">
+                      <span class="text-sm">1h Hashrate (TH):</span>
+                      <span class="text-sm text-bold">{{ substr($customer->hsLast1h,0,5) ?? old('hsLast1h') }}</span>
+                    </p>
+                    <p class="text-sm">
+                      <span class="text-sm">24hr Hashrate (TH):</span>
+                      <span class="text-sm text-bold">{{ substr($customer->hsLast1d,0,8) ?? old('hsLast1d') }}</span>
+                    </p>
+                  </div>
+                @endif
+              </div>
+              <div class="tab-pane fade" id="tabContent-2-3">
+                <div class="address-item">
+                  <p class="text-sm">
+                    <span class="text-sm">Cliente:</span>
+                    <span class="text-sm text-bold">{{ $customer->name ?? old('name') }} {{ $customer->last_name ?? old('last_name') }}</span>
+                  </p>
+                  <p class="text-sm">
+                    <span class="text-sm">Máquinas Registradas:</span>
+                    <span class="text-sm text-bold">{{ count($machines) }}</span>
+                  </p>
+                  <p class="text-sm">
+                    <span class="text-sm">Teléfono:</span>
+                    <span class="text-sm text-medium">{{ $customer->phone ?? old('phone') }}</span>
+                  </p>
+                  <p class="text-sm">
+                    <span class="text-sm">Dirección:</span>
+                    <span class="text-sm text-medium">{{ $customer->address ?? old('address') }}</span>
+                  </p>
+                  <p class="text-sm">
+                    <span class="text-sm">Email:</span>
+                    <span class="text-sm text-medium">{{ $customer->email ?? old('email') }}</span>
+                  </p>
+                </div>
+              </div>
+              <div class="tab-pane fade" id="tabContent-2-4">
+                <div class="address-item">
+                  <p class="text-sm">
+                    <span class="text-sm">Doc Identidad:</span>
+                    <span class="text-sm text-medium">{{ $customer->doc_id ?? old('doc_id') }}</span>
+                  </p>
+                  <p class="text-sm">
+                    <span class="text-sm">Pool:</span>
+                    <span class="text-sm text-bold">{{ $customer->pool ?? old('pool') }}</span>
+                  </p>
+                  <p class="text-sm">
+                    <span class="text-sm">Actualizado:</span>
+                    <span class="text-sm text-bold">{{ $customer->updated_at ?? old('updated_at') }} </span>
+                  </p>
+                  @if ($customer->pool == "btc.com")
+                    <p class="text-sm">
+                      <span class="text-sm">Unidad Hashrate:</span>
+                      <span class="text-sm text-bold">{{ $customer->shares_unit ?? old('shares_unit') }}</span>
+                    </p>
+                  @endif
+                  @if ($customer->pool == "antpool.com")
+                    <p class="text-sm">
+                      <span class="text-sm">Total Hashrate Local (TH):</span>
+                      <span class="text-sm text-bold">{{ $total_hash_local ?? old('total_hash_local') }}</span>
+                    </p>
+                    <p class="text-sm">
+                      <span class="text-sm">Total Hashrate Pool (TH):</span>
+                      <span class="text-sm text-bold">{{ substr($total_hash_pool,0,7) ?? old('total_hash_pool') }}</span>
+                    </p>
+                  @endif
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- end card -->
         </div>
         <!-- ENd Col -->
       </div>
@@ -277,59 +354,48 @@
           <div class="d-flex flex-wrap justify-content-between align-items-center py-3">
             <div class="left col-md-9">
               <div id="legend3">
-                <ul class="legend3 d-flex align-items-center mb-30">
+                <ul class="legend3 d-flex flex-wrap align-items-center mb-30">
                   <li>
                     <div class="d-flex">
-                      <span class="bg-color bg-card-enabled"></span>
+                      <span class="bg-color success-bg"> </span>
                       <div class="text">
-                        <form action="#" method="">
-                          @csrf
-                          <button class="btn-group-status" name="filter" value="active" type="submit"><p class="text-sm text-dark">Work 100%</p></button>
-                        </form> 
+                        <p class="text-sm text-success">
+                          <span class="text-dark">Work</span>&nbsp; 100%
+                          <i class="lni lni-arrow-up"></i>
+                        </p>
                       </div>
                     </div>
                   </li>
                   <li>
                     <div class="d-flex">
-                      <span class="bg-color bg-card-attention"> </span>
+                      <span class="bg-color warning-bg"></span>
                       <div class="text">
-                        <form action="#" method="">
-                          @csrf
-                          <button class="btn-group-status" name="filter" value="Requiere Atención" type="submit"><p class="text-sm text-dark">Work -10 to -40%</p></button>
-                        </form> 
+                        <p class="text-sm text-danger">
+                          <span class="text-dark">Work</span>&nbsp; -10 & -40%
+                          <i class="lni lni-arrow-down"></i>
+                        </p>
                       </div>
                     </div>
                   </li>
                   <li>
                     <div class="d-flex">
-                      <span class="bg-color bg-card-attention-2"> </span>
+                      <span class="bg-color bg-card-attention-2"></span>
                       <div class="text">
-                        <form action="#" method="#">
-                          @csrf
-                          <button class="btn-group-status" name="filter" value="Error" type="submit"><p class="text-sm text-dark">Work -50%</p></button>
-                        </form> 
+                        <p class="text-sm text-danger">
+                          <span class="text-dark">Work</span>&nbsp; -50%
+                          <i class="lni lni-arrow-down"></i>
+                        </p>
                       </div>
                     </div>
                   </li>
-                  {{-- <li>
-                    <div class="d-flex">
-                      <span class="bg-color bg-card-maintenance"></span>
-                      <div class="text">
-                        <form action="#" method="#">
-                          @csrf
-                          <button class="btn-group-status" name="filter" value="Mantenimiento" type="submit"><p class="text-sm text-dark">Mantenimiento</p></button>
-                        </form> 
-                      </div>
-                    </div>
-                  </li> --}}
                   <li>
                     <div class="d-flex">
                       <span class="bg-color bg-card-disabled"></span>
                       <div class="text">
-                        <form action="#" method="#">
-                          @csrf
-                          <button class="btn-group-status" name="filter" value="inactive" type="submit"><p class="text-sm text-dark">Offline</p></button>
-                        </form> 
+                        <p class="text-sm text-danger">
+                          <span class="text-dark">Offline</span>&nbsp; 0%
+                          <i class="lni lni-arrow-down"></i>
+                        </p>
                       </div>
                     </div>
                   </li>

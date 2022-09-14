@@ -137,7 +137,8 @@ class CustomersController extends Controller
             $total_hash_pool = DB::table('machines_api')
                 ->where('machines_api.customer_id', '=', $customer->id)
                 ->orderBy('created_at', 'DESC')
-                ->take($customer->total_machines)
+                ->groupBy('created_at')
+                ->take(1)
                 ->sum('machines_api.last10m');
         }
 

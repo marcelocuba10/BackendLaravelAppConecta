@@ -22,7 +22,7 @@
         <!-- end col -->
         <div class="col-md-4">
           <div class="right">
-            <div class="table-search d-flex" style="margin-top: -35px;float: right;">
+            <div class="table-search d-flex st-input-search">
               <form action="/user/machines/search_gridview" method="POST">
                 @csrf
                 <input style="background-color: #fff;" id="search" type="text" name="search" value="{{ $search ?? '' }}" placeholder="Buscar">
@@ -281,6 +281,15 @@
                                             </p>
                                         </div>
                                     </div>
+                                </li>
+                                <li>
+                                  <div class="d-flex">
+                                      <div class="text">
+                                          <p class="text-sm text-active">
+                                              <span class="text-dark">Última Actualización</span>&nbsp;({{ $customer->updated_at }})
+                                          </p>
+                                      </div>
+                                  </div>
                                 </li>
                                 {{-- <li>
                                     <div class="d-flex">

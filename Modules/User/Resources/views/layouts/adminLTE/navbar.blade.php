@@ -66,8 +66,7 @@
               <!-- notification end -->
               <!-- profile start -->
               <div class="profile-box ml-15">
-                <button class="dropdown-toggle bg-transparent border-0" type="button" id="profile"
-                  data-bs-toggle="dropdown" aria-expanded="false">
+                <button class="dropdown-toggle bg-transparent border-0" type="button" id="profile" data-bs-toggle="dropdown" aria-expanded="false">
                   <div class="profile-info">
                     <div class="info">
                       <h6>@if(Auth::check()) {{Auth::user()->name}} @endif</h6>
@@ -79,7 +78,7 @@
                   </div>
                   <i class="lni lni-chevron-down"></i>
                 </button>
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profile">
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profile" style="position: absolute; inset: 0px 0px auto auto; margin: 0px; transform: translate3d(0px, 48px, 0px);" data-popper-placement="bottom-end">
                   <li>
                     <a href="{{ route('users_.show.profile', Auth::user()->id) }}"><i class="lni lni-user"></i> Mi Perfil</a>
                   </li>
@@ -97,7 +96,6 @@
                   </li>
                 </ul>
               </div>
-              <!-- profile end -->
             </div>
           </div>
         </div>

@@ -32,24 +32,24 @@
             <form method="POST">
               @csrf
               <div class="row">
-                <div class="col-6">
+                <div class="col-4">
                   <div class="input-style-1">
                     <label>Nombre</label>
                     <input type="text" value="{{ $machine->name }}" readonly>
                   </div>
                 </div>
                 <!-- end col -->
-                <div class="col-6">
+                <div class="col-3">
                   <div class="input-style-1">
-                    <label>Cliente</label>
-                    <input type="text" value="{{ $machine->customer_name }}" readonly>
+                    <label>Pool</label>
+                    <input type="text" value="{{ $machine->customer_pool ?? old('customer_pool')}}" readonly>
                   </div>
                 </div>
                 <!-- end col -->
-                <div class="col-4">
+                <div class="col-5">
                   <div class="input-style-1">
-                    <label>Estado</label>
-                    <input type="text" value="{{ $machine->status }}" readonly>
+                    <label>Cliente</label>
+                    <input type="text" value="{{ $machine->customer_name }}" readonly>
                   </div>
                 </div>
                 <!-- end col -->
@@ -82,23 +82,18 @@
                       @else
                         <input type="text" value="{{ $machine_api->last10m ?? old('last10m')}}" readonly>
                       @endif
-                    @elseIf($machine->customer_pool == 'binance.com')
-                      @if (!$machine_api)
-                        <input type="text" value="Sin Información" readonly>
-                      @else
-                        <input type="text" value="{{ $machine_api->last10m ?? old('last10m')}}" readonly>
-                      @endif  
-                    @elseIf($machine->customer_pool == 'poolin.com')
-                      @if (!$machine_api)
-                        <input type="text" value="Sin Información" readonly>
-                      @else
-                        <input type="text" value="{{ $machine_api->last10m ?? old('last10m')}}" readonly>
-                      @endif    
                     @endif
 
                     @if ($machine_api)
                       <span class="form-text m-b-none">Actualizado: {{ $machine_api->created_at ?? old('created_at')}}</span>
                     @endif
+                  </div>
+                </div>
+                <!-- end col -->
+                <div class="col-4">
+                  <div class="input-style-1">
+                    <label>Estado</label>
+                    <input type="text" value="{{ $machine->status }}" readonly>
                   </div>
                 </div>
                 <!-- end col -->
@@ -142,15 +137,13 @@
       </div>
       <!-- End Row -->
 
-
-          <div class="row">
-            <div class="col-lg-12">
-              <div class="card-style mb-30">
-                <div id="container"></div>
-              </div>
-            </div>
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="card-style mb-30">
+            <div id="container"></div>
           </div>
-
+        </div>
+      </div>
 
       <div class="row">
         <div class="title-wrapper pt-30">
@@ -255,6 +248,10 @@
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script type="text/javascript">
     
+    var getYear =  new Date().getFullYear();
+    var getMonth = new Date().getMonth();
+    var getDay = new Date().getDate();
+
     var machines_api_graph = <?php 
       $data = json_encode($machines_api_graph);
       echo str_replace('"', '', $data);
@@ -264,8 +261,7 @@
       $data = json_encode($machine->total_power);
       echo str_replace('"', '', $data);
     ?>;
-
-    var machine_api_pool = <?php echo json_encode($machine->customer_pool); ?>;
+    
     var machine_name = <?php echo json_encode($machine->name); ?>;
 
     Highcharts.chart('container', {
@@ -281,7 +277,7 @@
         align: 'left'
     },
     subtitle: {
-        text: machine_api_pool + ' - ' + machine_name,
+        text: machine_name,
         align: 'left'
     },
     xAxis: {
@@ -325,7 +321,7 @@
             },
 
             pointInterval: 180000, // one hour
-            pointStart: Date.UTC(2022, 8, 15, 0, 0, 0)
+            pointStart: Date.UTC(getYear, getMonth, getDay, 0, 0, 0)
         }
     },
     series: [{

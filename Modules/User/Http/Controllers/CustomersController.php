@@ -148,15 +148,13 @@ class CustomersController extends Controller
                 ->orderBy('created_at', 'ASC')
                 ->pluck('machines_api.last10m');
 
-                //dd($total_hash_pool_graph);
         }
 
         /** Count total hashrate from api antpool */
         if ($customer->pool == "btc.com") {
             $total_hash_pool = null;
+            $total_hash_pool_graph = null;
         }
-
-        // dd($total_hash_local);
 
         return view('user::customers.show', compact('total_hash_pool_graph', 'customer', 'machines', 'machines_api', 'total_hash_pool', 'total_hash_local'));
     }

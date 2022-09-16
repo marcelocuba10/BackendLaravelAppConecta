@@ -687,6 +687,9 @@ class MachinesController extends Controller
                 ->orderBy('created_at', 'DESC')
                 ->take(1)
                 ->first();
+
+            $machines_api_graph = null;
+
         } elseif ($machine->customer_pool == 'antpool.com') {
             $machine_api = DB::table('machines_api')
                 ->select('machines_api.id', 'machines_api.last10m', 'machines_api.worker', 'machines_api.created_at')
@@ -703,6 +706,7 @@ class MachinesController extends Controller
                 ->pluck('machines_api.last10m');
 
             $machines_api_graph = str_replace('"', '', $machines_api_graph);
+
         } else {
             $machine_api = null;
         }
@@ -719,7 +723,7 @@ class MachinesController extends Controller
         //to generate the qr code in the view from the obtained data
         $codeQR = $machine->codeQR;
 
-        return view('user::machines.show', compact( 'machines_api_graph', 'machine', 'codeQR', 'machine_changes', 'machine_api'));
+        return view('user::machines.show', compact('machines_api_graph', 'machine', 'codeQR', 'machine_changes', 'machine_api'));
     }
 
     public function show_api($id)

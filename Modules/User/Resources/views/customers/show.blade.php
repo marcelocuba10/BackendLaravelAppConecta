@@ -69,8 +69,12 @@
                 </p>
                 @if ($customer->pool == "btc.com")
                   <p class="text-sm">
-                    <span class="text-sm">Unidad Hashrate:</span>
-                    <span class="text-sm text-bold">{{ $customer->shares_unit ?? old('shares_unit') }}</span>
+                    <span class="text-sm">Total Hashrate Local (TH):</span>
+                    <span class="text-sm text-bold">{{ $total_hash_local ?? old('total_hash_local') }}</span>
+                  </p>
+                  <p class="text-sm">
+                    <span class="text-sm">Total Hashrate Pool (TH):</span>
+                    <span class="text-sm text-bold">{{ substr($total_hash_pool,0,7) ?? old('total_hash_pool') }}</span>
                   </p>
                 @endif
                 @if ($customer->pool == "antpool.com")
@@ -522,6 +526,10 @@
     //   $data = json_encode($total_hash_pool_graph);
     //   echo str_replace('"', '', $data);
     // ?>;
+
+    var getYear =  new Date().getFullYear();
+    var getMonth = new Date().getMonth();
+    var getDay = new Date().getDate();
     
     var total_hash_local = <?php echo str_replace('"', '', $total_hash_local); ?>;
 
@@ -584,7 +592,7 @@
             },
 
             pointInterval: 180000, // one hour
-            pointStart: Date.UTC(2022, 8, 15, 0, 0, 0)
+            pointStart: Date.UTC(getYear, getMonth, getDay, 0, 0, 0)
         }
     },
     series: [{

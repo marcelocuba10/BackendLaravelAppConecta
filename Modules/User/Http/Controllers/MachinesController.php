@@ -3,6 +3,7 @@
 namespace Modules\User\Http\Controllers;
 
 use Carbon\Carbon;
+use DateTime;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -44,6 +45,11 @@ class MachinesController extends Controller
     {
         $filter = null;
         $idRefCurrentUser = Auth::user()->idReference;
+
+        $date = new DateTime();
+        $date->modify('-3 minutes');
+        $formatted_date = $date->format('Y-m-d H:i:s');
+
         $machines_api = DB::table('machines_api')
             ->leftjoin('customers', 'machines_api.customer_id', '=', 'customers.id')
             ->select(
@@ -65,9 +71,11 @@ class MachinesController extends Controller
                 'machines_api.last30m',
                 'machines_api.last1h',
                 'machines_api.last1d',
+                'machines_api.created_at',
             )
             ->where('customers.idReference', '=', $idRefCurrentUser)
             ->orderBy('machines_api.created_at', 'DESC')
+            ->where('machines_api.created_at', '>=', $formatted_date)
             ->paginate(20);
 
         return view('user::machines.index_list_api', compact('machines_api', 'filter'))->with('i', (request()->input('page', 1) - 1) * 20);
@@ -302,6 +310,10 @@ class MachinesController extends Controller
         $idRefCurrentUser = Auth::user()->idReference;
         $countMachines = 0;
 
+        $date = new DateTime();
+        $date->modify('-3 minutes');
+        $formatted_date = $date->format('Y-m-d H:i:s');
+
         if ($filter == '') {
 
             $customers = DB::table('customers')
@@ -349,9 +361,11 @@ class MachinesController extends Controller
                     'machines_api.last30m',
                     'machines_api.last1h',
                     'machines_api.last1d',
+                    'machines_api.created_at'
                 )
                 ->where('customers.idReference', '=', $idRefCurrentUser)
-                ->paginate(30);
+                ->where('machines_api.created_at', '>=', $formatted_date)
+                ->paginate(20);
         } else {
             $machines_api = DB::table('machines_api')
                 ->leftjoin('customers', 'machines_api.customer_id', '=', 'customers.id')
@@ -371,15 +385,18 @@ class MachinesController extends Controller
                     'machines_api.last30m',
                     'machines_api.last1h',
                     'machines_api.last1d',
+                    'machines_api.created_at'
                 )
+                ->whereDate('machines_api.created_at', '=', date('Y-m-d'))
                 ->where('customers.name', 'LIKE', "%{$filter}%")
                 ->orWhere('machines_api.worker_name', 'LIKE', "%{$filter}%")
                 ->orWhere('machines_api.status', 'LIKE', "{$filter}")
                 ->where('customers.idReference', '=', $idRefCurrentUser)
-                ->paginate(30);
+                ->where('machines_api.created_at', '>=', $formatted_date)
+                ->paginate(20);
         }
 
-        return view('user::machines.index_list_api', compact('machines_api', 'filter'))->with('i', (request()->input('page', 1) - 1) * 30);
+        return view('user::machines.index_list_api', compact('machines_api', 'filter'))->with('i', (request()->input('page', 1) - 1) * 20);
     }
 
     public function search_gridview(Request $request)
@@ -511,24 +528,6 @@ class MachinesController extends Controller
                         ->take($customers[0]->total_machines)
                         ->get();
                 }
-            }
-
-            if ($customers[0]->pool == 'binance.com') {
-                $machines = DB::table('machines_api')
-                    ->select('machines_api.id', 'machines_api.worker_name', 'machines_api.status')
-                    ->where('machines_api.customer_id', '=', $customers[0]->id)
-                    ->orderBy('created_at', 'DESC')
-                    ->take($customers[0]->total_machines)
-                    ->get();
-            }
-
-            if ($customers[0]->pool == 'poolin.com') {
-                $machines = DB::table('machines_api')
-                    ->select('machines_api.id', 'machines_api.worker_name', 'machines_api.status')
-                    ->where('machines_api.customer_id', '=', $customers[0]->id)
-                    ->orderBy('created_at', 'DESC')
-                    ->take($customers[0]->total_machines)
-                    ->get();
             }
 
             /** if the user does not have any machine */
@@ -689,7 +688,6 @@ class MachinesController extends Controller
                 ->first();
 
             $machines_api_graph = null;
-
         } elseif ($machine->customer_pool == 'antpool.com') {
             $machine_api = DB::table('machines_api')
                 ->select('machines_api.id', 'machines_api.last10m', 'machines_api.worker', 'machines_api.created_at')
@@ -706,7 +704,6 @@ class MachinesController extends Controller
                 ->pluck('machines_api.last10m');
 
             $machines_api_graph = str_replace('"', '', $machines_api_graph);
-
         } else {
             $machine_api = null;
         }

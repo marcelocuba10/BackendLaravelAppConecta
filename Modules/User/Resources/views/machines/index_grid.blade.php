@@ -57,10 +57,11 @@
                     <div class="d-flex">
                       <span class="bg-color bg-card-enabled"></span>
                       <div class="text">
-                        <form action="/user/machines/filter_gridview" method="POST">
+                        {{-- <form action="/user/machines/filter_gridview" method="POST">
                           @csrf
                           <button class="btn-group-status" name="filter" value="Active" type="submit"><p class="text-sm text-dark">Work 100%</p></button>
-                        </form> 
+                        </form>  --}}
+                        <button class="btn-group-status" name="filter" value="Active" type="text"><p class="text-sm text-dark">Work 100%</p></button>
                       </div>
                     </div>
                   </li>
@@ -68,10 +69,11 @@
                     <div class="d-flex">
                       <span class="bg-color bg-card-disabled"></span>
                       <div class="text">
-                        <form action="/user/machines/filter_gridview" method="POST">
+                        {{-- <form action="/user/machines/filter_gridview" method="POST">
                           @csrf
                           <button class="btn-group-status" name="filter" value="Inactive" type="submit"><p class="text-sm text-dark">Offline</p></button>
-                        </form> 
+                        </form>  --}}
+                        <button class="btn-group-status" name="filter" value="Inactive" type="text"><p class="text-sm text-dark">Offline</p></button>
                       </div>
                     </div>
                   </li>
@@ -90,10 +92,11 @@
                     <div class="d-flex">
                       <span class="bg-color bg-card-attention"> </span>
                       <div class="text">
-                        <form action="/user/machines/filter_gridview" method="POST">
+                        {{-- <form action="/user/machines/filter_gridview" method="POST">
                           @csrf
                           <button class="btn-group-status" name="filter" value="Requiere Atención" type="submit"><p class="text-sm text-dark">Work -10 to -40%</p></button>
-                        </form> 
+                        </form>  --}}
+                        <button class="btn-group-status" name="filter" value="Requiere Atención" type="text"><p class="text-sm text-dark">Work -10 to -40%</p></button>
                       </div>
                     </div>
                   </li>
@@ -112,10 +115,11 @@
                     <div class="d-flex">
                       <span class="bg-color bg-card-attention-2"> </span>
                       <div class="text">
-                        <form action="/user/machines/filter_gridview" method="POST">
+                        {{-- <form action="/user/machines/filter_gridview" method="POST">
                           @csrf
                           <button class="btn-group-status" name="filter" value="Error" type="submit"><p class="text-sm text-dark">Work -50%</p></button>
-                        </form> 
+                        </form>  --}}
+                        <button class="btn-group-status" name="filter" value="Error" type="text"><p class="text-sm text-dark">Work -50%</p></button>
                       </div>
                     </div>
                   </li>

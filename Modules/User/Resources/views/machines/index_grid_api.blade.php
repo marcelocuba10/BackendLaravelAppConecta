@@ -49,10 +49,11 @@
                     <div class="d-flex">
                       <span class="bg-color bg-card-enabled"></span>
                       <div class="text">
-                        {{-- <form action="/user/machines/filter_gridview_api" method="POST"> --}}
+                        {{-- <form action="/user/machines/filter_gridview_api" method="POST">
                           @csrf
                           <button class="btn-group-status" name="filter" value="active" type="submit"><p class="text-sm text-dark">Activo</p></button>
-                        {{-- </form>  --}}
+                        </form>  --}}
+                        <button class="btn-group-status" name="filter" value="active" type="text"><p class="text-sm text-dark">Activo</p></button>
                       </div>
                     </div>
                   </li>
@@ -60,10 +61,11 @@
                     <div class="d-flex">
                       <span class="bg-color bg-card-disabled"></span>
                       <div class="text">
-                        {{-- <form action="/user/machines/filter_gridview_api" method="POST"> --}}
+                        {{-- <form action="/user/machines/filter_gridview_api" method="POST">
                           @csrf
                           <button class="btn-group-status" name="filter" value="inactive" type="submit"><p class="text-sm text-dark">Inactivo</p></button>
-                        {{-- </form>  --}}
+                        </form>  --}}
+                        <button class="btn-group-status" name="filter" value="inactive" type="text"><p class="text-sm text-dark">Inactivo</p></button>
                       </div>
                     </div>
                   </li>

@@ -54,21 +54,23 @@
                           <div class="d-flex">
                             <span class="bg-color bg-card-enabled"></span>
                             <div class="text">
-                              <form action="{{ route('machines.search_filter_list_api') }}" method="POST">
+                              {{-- <form action="{{ route('machines.search_filter_list_api') }}" method="POST">
                                 @csrf
                                 <button class="btn-group-status" id="filter" name="filter" value="active" type="submit"><p class="text-sm text-dark">Activo</p></button>
-                              </form> 
+                              </form>  --}}
+                              <button class="btn-group-status" id="filter" name="filter" value="active" type="text"><p class="text-sm text-dark">Activo</p></button>
                             </div>
                           </div>
                         </li>
                         <li>
                           <div class="d-flex">
-                            <span class="bg-color bg-card-offline"></span>
+                            <span class="bg-color bg-card-disabled"></span>
                             <div class="text">
-                              <form action="{{ route('machines.search_filter_list_api') }}" method="POST">
+                              {{-- <form action="{{ route('machines.search_filter_list_api') }}" method="POST">
                                 @csrf
                                 <button class="btn-group-status" id="filter" name="filter" value="inactive" type="submit"><p class="text-sm text-dark">Inactivo</p></button>
-                              </form> 
+                              </form>  --}}
+                              <button class="btn-group-status" id="filter" name="filter" value="inactive" type="text"><p class="text-sm text-dark">Inactivo</p></button>
                             </div>
                           </div>
                         </li>
@@ -100,7 +102,7 @@
                         <th><h6>Nombre</h6></th>
                         <th><h6>Estado</h6></th>
                         <th><h6>Cliente</h6></th>
-                        <th><h6>1Min Hashrate </h6></th>
+                        <th><h6>Actualizado</h6></th>
                         <th><h6>10Min Hashrate</h6></th>
                         <th><h6>1h Hashrate</h6></th>
                         <th><h6>1d Hashrate</h6></th>
@@ -110,17 +112,17 @@
                     <tbody>
                         @foreach ($machines_api as $machine)
                         <tr>
-                            <td class="text-sm"><h6 class="text-sm">#{{ ++$i }}</h6></td>
+                            <td class="text-sm"><h6 class="text-sm">{{ ++$i }}</h6></td>
                             @if ($machine->customer_pool == "btc.com")
                               <td class="min-width"><h5 class="text-bold text-dark"><a href="/user/machines/{{ $machine->id }}/show_api">{{ $machine->worker_name }}</a></h5></td>
                               <td class="min-width">
                                 <span class="status-btn 
-                                @if($machine->status == 'ACTIVE') btn-custom-enabled
+                                @if(strtolower($machine->status) == 'active') btn-custom-enabled
                                 @elseIf($machine->status == 'Apagado') btn-custom-disabled
                                 @elseIf($machine->status == 'Requiere Atención') btn-custom-attention
                                 @elseIf($machine->status == 'Mantenimiento') btn-custom-maintenance
                                 @elseIf($machine->status == 'Error') btn-custom-error
-                                @elseIf($machine->status == 'INACTIVE') btn-custom-offline
+                                @elseIf(strtolower($machine->status) == 'inactive') btn-custom-offline
                                 @endif">
                                   {{ $machine->status }}
                                 </span>
@@ -133,7 +135,7 @@
                               </td>
                             @endif
                             <td class="min-width"><p>{{ $machine->customer_name }}</p></td>
-                            <td class="min-width"><p>{{ $machine->shares_1m }}</p></td>
+                            <td class="min-width"><p>{{ $machine->created_at }}</p></td>
                             <td class="min-width"><p>{{ $machine->last10m }}</p></td>
                             @if ($machine->customer_pool == "btc.com")
                               <td class="min-width"><p>{{ $machine->shares_1h }}</p></td>

@@ -23,7 +23,19 @@ class MachinesController extends Controller
     public function cronjob()
     {
         $customers = DB::table('customers')
-            ->select('customers.id', 'customers.name', 'customers.pool', 'customers.created_at', 'customers.totalWorkerNum', 'customers.total_machines', 'customers.userIdPool', 'customers.apiKey', 'customers.secretKey', 'customers.access_key', 'customers.puid')
+            ->select(
+                'customers.id',
+                'customers.name',
+                'customers.pool',
+                'customers.created_at',
+                'customers.totalWorkerNum',
+                'customers.total_machines',
+                'customers.userIdPool',
+                'customers.apiKey',
+                'customers.secretKey',
+                'customers.access_key',
+                'customers.puid'
+            )
             ->get();
 
         foreach ($customers as $customer) {
@@ -31,13 +43,9 @@ class MachinesController extends Controller
             $created_at = \Carbon\Carbon::now();
 
             if ($customer->pool == 'btc.com') {
-
                 self::getDataFromApiBTC($customer, $created_at);
-                
             } elseif ($customer->pool == 'antpool.com') {
-
                 if ($customer->userIdPool && $customer->apiKey && $customer->secretKey) {
-
                     /** parameters to authenticate a request */
                     $currency = 'BTC';
                     $userId = $customer->userIdPool;
@@ -108,7 +116,7 @@ class MachinesController extends Controller
                             'updated_at' => $created_at
                         ]);
 
-                        \Log::info("customer: " . $customer->name . " stats info updated from: " . $customer->pool);
+                        // \Log::info("customer: " . $customer->name . " stats info updated from: " . $customer->pool);
 
                         /** call function to get all workers */
                         self::getDataFromApiANTPOOL($customer, $created_at);
@@ -153,7 +161,7 @@ class MachinesController extends Controller
                         'customer_id' => $customer->id
                     ]);
 
-                    \Log::info("customer: " . $customer->name . " machine: " . $listApi['worker_name'] . " added in machines_api");
+                    // \Log::info("customer: " . $customer->name . " machine: " . $listApi['worker_name'] . " added in machines_api");
                 }
 
                 \DB::table('customers')->where('id', $customer->id)->update([
@@ -170,7 +178,7 @@ class MachinesController extends Controller
                     'updated_at' => $created_at
                 ]);
 
-                \Log::info("customer: " . $customer->name . " stats info updated from: " . $customer->pool);
+                // \Log::info("customer: " . $customer->name . " stats info updated from: " . $customer->pool);
             }
         }
 
@@ -255,7 +263,7 @@ class MachinesController extends Controller
                     'customer_id' => $customer->id
                 ]);
 
-                \Log::info("customer: " . $customer->name . " machine: " . $listApi['worker'] . " added in machines_api");
+                // \Log::info("customer: " . $customer->name . " machine: " . $listApi['worker'] . " added in machines_api");
             }
         } else {
             exit('API Error: ' . print_r($result_json, true));

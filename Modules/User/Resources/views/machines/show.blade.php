@@ -63,7 +63,7 @@
                 <div class="col-4">
                   <div class="input-style-1">
                     <label>Standard Hashrate</label>
-                    <input type="text" value="{{ $machine->total_power }}" readonly>
+                    <input type="text" value="{{ $machine->total_power }}" readonly style="color: #07a30e;font-weight: 500;">
                   </div>
                 </div>
                 <!-- end col -->
@@ -74,13 +74,13 @@
                       @if (!$machine_api)
                         <input type="text" value="Sin Información" readonly>
                       @else
-                        <input type="text" value="{{ $machine_api->shares_1m ?? old('shares_1m')}}" readonly>
+                        <input type="text" value="{{ $machine_api->shares_1m ?? old('shares_1m')}}" readonly style="color: #4A6CF7;font-weight: 500;">
                       @endif
                     @elseIf($machine->customer_pool == 'antpool.com')
                       @if (!$machine_api)
                         <input type="text" value="Sin Información" readonly>
                       @else
-                        <input type="text" value="{{ $machine_api->last10m ?? old('last10m')}}" readonly>
+                        <input type="text" value="{{ $machine_api->last10m ?? old('last10m')}}" readonly style="color: #4A6CF7;font-weight: 500;">
                       @endif
                     @endif
 
@@ -296,11 +296,11 @@
         plotBands: [{ 
             from: 0,
             to: machine_hashrate_standard,
-            color: 'rgba(68, 170, 213, 0.1)',
+            color: '#4caf5087',
             label: {
                 text: '',
                 style: {
-                    color: '#606060'
+                    color: '#4caf5087'
                 }
             }
         }]
@@ -327,10 +327,11 @@
     series: [{
         name: 'HashRate Standard ' + machine_hashrate_standard + ' (TH/s)',
         // data: [13.5,13.5,13.5,13.5,13.5,13.5,13.5,13.5,13.5]
+        color:'#4caf5087'
 
     }, {
         name: 'HashRate Pool',
-        color: '#00b17b',
+        color: '#4A6CF7',
         data: machines_api_graph,
     }],
     navigation: {

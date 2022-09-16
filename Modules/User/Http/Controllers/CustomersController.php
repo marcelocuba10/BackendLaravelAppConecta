@@ -142,12 +142,12 @@ class CustomersController extends Controller
                 ->sum('machines_api.last10m');
 
             $total_hash_pool_graph = DB::table('machines_api')
-                ->selectRaw('machines_api.last10m')
-                ->whereDate('created_at', '=', date('Y-m-d'))
                 ->where('machines_api.customer_id', '=', $customer->id)
-                ->orderBy('created_at', 'ASC')
-                ->pluck('machines_api.last10m');
-
+                ->whereDate('created_at', 'LIKE', date('Y-m-d').'%')
+                ->selectRaw("REPLACE(FORMAT(SUM(last10m), 2), ',', '') as totalhash")
+                ->orderBy('created_at', 'DESC')
+                ->groupBy('created_at')
+                ->pluck('totalhash');
         }
 
         /** Count total hashrate from api antpool */

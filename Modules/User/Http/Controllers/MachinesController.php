@@ -418,7 +418,7 @@ class MachinesController extends Controller
             $machines = DB::table('machines')
                 ->leftjoin('users', 'machines.user_id', '=', 'users.id')
                 ->leftjoin('customers', 'machines.customer_id', '=', 'customers.id')
-                ->select('users.name AS user_name', 'machines.id', 'machines.name','machines.total_power' ,'machines.codeQR', 'machines.customer_id', 'machines.status', 'machines.observation', 'customers.name AS customer_name')
+                ->select('users.name AS user_name', 'machines.id', 'machines.name', 'machines.total_power', 'machines.codeQR', 'machines.customer_id', 'machines.status', 'machines.observation', 'customers.name AS customer_name')
                 ->get();
         } else {
             $machines = DB::table('machines')
@@ -581,14 +581,14 @@ class MachinesController extends Controller
             $machines = DB::table('machines')
                 ->leftjoin('users', 'machines.user_id', '=', 'users.id')
                 ->leftjoin('customers', 'machines.customer_id', '=', 'customers.id')
-                ->select('users.name AS user_name', 'machines.id', 'machines.total_power','machines.name', 'machines.codeQR', 'machines.customer_id', 'machines.status', 'machines.observation', 'customers.name AS customer_name')
+                ->select('users.name AS user_name', 'machines.id', 'machines.total_power', 'machines.name', 'machines.codeQR', 'machines.customer_id', 'machines.status', 'machines.observation', 'customers.name AS customer_name')
                 ->where('customers.idReference', '=', $idRefCurrentUser)
                 ->get();
         } else {
             $machines = DB::table('machines')
                 ->leftjoin('users', 'machines.user_id', '=', 'users.id')
                 ->leftjoin('customers', 'machines.customer_id', '=', 'customers.id')
-                ->select('users.name AS user_name', 'machines.id', 'machines.name','machines.total_power' ,'machines.codeQR', 'machines.customer_id', 'machines.status', 'machines.observation', 'customers.name AS customer_name')
+                ->select('users.name AS user_name', 'machines.id', 'machines.name', 'machines.total_power', 'machines.codeQR', 'machines.customer_id', 'machines.status', 'machines.observation', 'customers.name AS customer_name')
                 ->where('machines.status', 'LIKE', "{$filter}")
                 ->where('customers.idReference', '=', $idRefCurrentUser)
                 ->get();
@@ -602,7 +602,7 @@ class MachinesController extends Controller
                 ->get();
         }
 
-        return view('user::machines.index_grid', compact('filter', 'customers', 'machines','machines_api'));
+        return view('user::machines.index_grid', compact('filter', 'customers', 'machines', 'machines_api'));
     }
 
     public function filter_gridview_api(Request $request)
@@ -694,6 +694,15 @@ class MachinesController extends Controller
                 ->orderBy('created_at', 'DESC')
                 ->take(1)
                 ->first();
+
+            $machines_api_graph = DB::table('machines_api')
+                ->selectRaw('machines_api.last10m')
+                ->whereDate('created_at', '=', date('Y-m-d'))
+                ->where('machines_api.worker', '=', $machine->name)
+                ->orderBy('created_at', 'ASC')
+                ->pluck('machines_api.last10m');
+
+            $machines_api_graph = str_replace('"', '', $machines_api_graph);
         } else {
             $machine_api = null;
         }
@@ -710,7 +719,7 @@ class MachinesController extends Controller
         //to generate the qr code in the view from the obtained data
         $codeQR = $machine->codeQR;
 
-        return view('user::machines.show', compact('machine', 'codeQR', 'machine_changes', 'machine_api'));
+        return view('user::machines.show', compact( 'machines_api_graph', 'machine', 'codeQR', 'machine_changes', 'machine_api'));
     }
 
     public function show_api($id)

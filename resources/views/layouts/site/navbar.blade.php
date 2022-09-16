@@ -24,7 +24,11 @@
             <a href="/user/dashboard">
                 {{auth()->user()->name}}
             </a>
-            <a href="{{ route('logout.perform') }}">
+            @endauth
+        </li>
+        <li>
+            @auth
+            <a href="/user/logout">
                 Cerrar Sesión
             </a>
             @endauth

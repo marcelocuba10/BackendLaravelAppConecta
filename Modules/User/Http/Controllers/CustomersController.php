@@ -140,6 +140,15 @@ class CustomersController extends Controller
                 ->groupBy('created_at')
                 ->take(1)
                 ->sum('machines_api.last10m');
+
+            $total_hash_pool_graph = DB::table('machines_api')
+                ->selectRaw('machines_api.last10m')
+                ->whereDate('created_at', '=', date('Y-m-d'))
+                ->where('machines_api.customer_id', '=', $customer->id)
+                ->orderBy('created_at', 'ASC')
+                ->pluck('machines_api.last10m');
+
+                //dd($total_hash_pool_graph);
         }
 
         /** Count total hashrate from api antpool */
@@ -147,7 +156,9 @@ class CustomersController extends Controller
             $total_hash_pool = null;
         }
 
-        return view('user::customers.show', compact('customer', 'machines', 'machines_api', 'total_hash_pool', 'total_hash_local'));
+        // dd($total_hash_local);
+
+        return view('user::customers.show', compact('total_hash_pool_graph', 'customer', 'machines', 'machines_api', 'total_hash_pool', 'total_hash_local'));
     }
 
     public function edit($id)

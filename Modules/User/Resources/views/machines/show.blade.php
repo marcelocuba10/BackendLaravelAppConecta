@@ -142,6 +142,16 @@
       </div>
       <!-- End Row -->
 
+
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="card-style mb-30">
+                <div id="container"></div>
+              </div>
+            </div>
+          </div>
+
+
       <div class="row">
         <div class="title-wrapper pt-30">
           <div class="row align-items-center">
@@ -241,5 +251,99 @@
       @endif
     </div>
 </section>
+
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script type="text/javascript">
+    
+    var machines_api_graph = <?php 
+      $data = json_encode($machines_api_graph);
+      echo str_replace('"', '', $data);
+    ?>;
+
+    var machine_hashrate_standard = <?php 
+      $data = json_encode($machine->total_power);
+      echo str_replace('"', '', $data);
+    ?>;
+
+    var machine_api_pool = <?php echo json_encode($machine->customer_pool); ?>;
+    var machine_name = <?php echo json_encode($machine->name); ?>;
+
+    Highcharts.chart('container', {
+    chart: {
+        type: 'spline',
+        scrollablePlotArea: {
+            minWidth: 600,
+            scrollPositionX: 1
+        }
+    },
+    title: {
+        text: 'Gráfico HashRate Pool',
+        align: 'left'
+    },
+    subtitle: {
+        text: machine_api_pool + ' - ' + machine_name,
+        align: 'left'
+    },
+    xAxis: {
+        type: 'datetime',
+        labels: {
+            overflow: 'justify'
+        }
+    },
+    yAxis: {
+        title: {
+            text: 'HashRate (TH/s)'
+        },
+        minorGridLineWidth: 0,
+        gridLineWidth: 1,
+        alternateGridColor: null,
+        plotBands: [{ 
+            from: 0,
+            to: machine_hashrate_standard,
+            color: 'rgba(68, 170, 213, 0.1)',
+            label: {
+                text: '',
+                style: {
+                    color: '#606060'
+                }
+            }
+        }]
+    },
+    tooltip: {
+        valueSuffix: ' TH/s'
+    },
+    plotOptions: {
+        spline: {
+            lineWidth: 4,
+            states: {
+                hover: {
+                    lineWidth: 5
+                }
+            },
+            marker: {
+                enabled: false,
+            },
+
+            pointInterval: 180000, // one hour
+            pointStart: Date.UTC(2022, 8, 15, 0, 0, 0)
+        }
+    },
+    series: [{
+        name: 'HashRate Standard ' + machine_hashrate_standard + ' (TH/s)',
+        // data: [13.5,13.5,13.5,13.5,13.5,13.5,13.5,13.5,13.5]
+
+    }, {
+        name: 'HashRate Pool',
+        color: '#00b17b',
+        data: machines_api_graph,
+    }],
+    navigation: {
+        menuItemStyle: {
+            fontSize: '10px'
+        }
+    }
+});
+
+</script>
 
 @endsection

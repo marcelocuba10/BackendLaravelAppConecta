@@ -21,7 +21,7 @@ class AuthController extends Controller
             //'remember_me' => 'boolean'
         ]);
 
-        $credentials = request(['email', 'password']);
+        $credentials = $request->only('email', 'password');
 
         if (!Auth::attempt($credentials))
             return response()->json([

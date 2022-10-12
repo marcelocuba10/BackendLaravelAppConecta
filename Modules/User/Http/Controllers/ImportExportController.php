@@ -2,6 +2,7 @@
 
 namespace Modules\User\Http\Controllers;
 
+use App\Exports\MachinesExport;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -29,5 +30,11 @@ class ImportExportController extends Controller
         Excel::import($import, $file);
 
         return redirect()->to('/user/machines/import-csv')->with('message', 'El archivo ha sido importado correctamente');
+    }
+
+    public function exportcsv()
+    {
+
+        return Excel::download(new MachinesExport, 'machines.xlsx');
     }
 }

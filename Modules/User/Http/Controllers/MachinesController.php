@@ -58,7 +58,7 @@ class MachinesController extends Controller
             ->orderBy('machines_api.created_at', 'DESC')
             ->get();
 
-        return view('user::machines.index_list', compact('machines', 'machines_api','filter'))->with('i', (request()->input('page', 1) - 1) * 15);
+        return view('user::machines.index_list', compact('machines', 'machines_api', 'filter'))->with('i', (request()->input('page', 1) - 1) * 15);
     }
 
     public function index_list_api()
@@ -105,6 +105,10 @@ class MachinesController extends Controller
     {
         $filter = null;
         $idRefCurrentUser = Auth::user()->idReference;
+        $date = new DateTime();
+        $date->modify('-3 minutes');
+        $formatted_date = $date->format('Y-m-d H:i:s');
+
         $customers = DB::table('customers')
             ->where('customers.idReference', '=', $idRefCurrentUser)
             ->select(
@@ -157,9 +161,8 @@ class MachinesController extends Controller
         $machines_api = DB::table('machines_api')
             ->leftjoin('customers', 'machines_api.customer_id', '=', 'customers.id')
             ->select('machines_api.id', 'machines_api.last10m', 'machines_api.worker')
-            // ->where('machines_api.customer_id', '=', 'customers.id')
+            ->where('machines_api.created_at', '>=', $formatted_date)
             ->orderBy('machines_api.created_at', 'DESC')
-            ->take(350)
             ->get();
 
         return view('user::machines.index_grid', compact('machines', 'customers', 'filter', 'machines_api'));

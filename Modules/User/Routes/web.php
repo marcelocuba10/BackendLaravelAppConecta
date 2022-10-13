@@ -113,7 +113,6 @@ Route::prefix('user')->group(function () {
             Route::get('import-csv', 'ImportExportController@index')->name('index.import.csv');
             Route::post('import', 'ImportExportController@importcsv')->name('import.csv');
             Route::get('export-csv', 'ImportExportController@exportcsv');
-            Route::post('export', 'ImportExportController@exportcsv')->name('export.csv');
         });
 
         /** Charts & Graphics Routes */

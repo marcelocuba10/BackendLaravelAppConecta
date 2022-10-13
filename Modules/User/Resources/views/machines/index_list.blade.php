@@ -167,7 +167,7 @@
 
                       @foreach($machines as $machine)
                         @foreach ($machines_api as $machines_api_item)
-                            @if (strtolower($machines_api_item->worker) === strtolower($machine->name)  )
+                            @if (strtolower($machines_api_item->worker) === strtolower($machine->name))
                               @php
                                 $machineStatus = '';
                                 $machineStatusTitle = '';
